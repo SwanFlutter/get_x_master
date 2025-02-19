@@ -7,3 +7,8 @@
 * Add New Feature Dependency injection.
 * Extra codes cleaned up.
 
+## 0.0.2
+
+* Fix pub point
+
+
