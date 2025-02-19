@@ -22,11 +22,7 @@ class RouteDecoder {
   /// Additional arguments that can be passed along with the route.
   final Object? arguments;
 
-  const RouteDecoder(
-    this.treeBranch,
-    this.parameters,
-    this.arguments,
-  );
+  const RouteDecoder(this.treeBranch, this.parameters, this.arguments);
 
   /// Replaces the arguments of the current route.
   /// Example:
@@ -70,9 +66,7 @@ class RouteDecoder {
 /// ]);
 /// ```
 class ParseRouteTree {
-  ParseRouteTree({
-    required this.routes,
-  });
+  ParseRouteTree({required this.routes});
 
   /// List of all defined routes.
   final List<GetPage> routes;
@@ -103,11 +97,12 @@ class ParseRouteTree {
     }
 
     // Find matching routes in the tree.
-    final treeBranch = cumulativePaths
-        .map((e) => MapEntry(e, _findRoute(e)))
-        .where((element) => element.value != null)
-        .map((e) => MapEntry(e.key, e.value!))
-        .toList();
+    final treeBranch =
+        cumulativePaths
+            .map((e) => MapEntry(e, _findRoute(e)))
+            .where((element) => element.value != null)
+            .map((e) => MapEntry(e.key, e.value!))
+            .toList();
 
     // Extract URL parameters.
     final params = Map<String, String>.from(uri.queryParameters);
@@ -120,23 +115,20 @@ class ParseRouteTree {
       }
 
       // Apply parameters to all pages in the route.
-      final mappedTreeBranch = treeBranch
-          .map(
-            (e) => e.value.copy(
-              parameters: {
-                if (e.value.parameters != null) ...e.value.parameters!,
-                ...params,
-              },
-              name: e.key,
-            ),
-          )
-          .toList();
+      final mappedTreeBranch =
+          treeBranch
+              .map(
+                (e) => e.value.copy(
+                  parameters: {
+                    if (e.value.parameters != null) ...e.value.parameters!,
+                    ...params,
+                  },
+                  name: e.key,
+                ),
+              )
+              .toList();
 
-      return RouteDecoder(
-        mappedTreeBranch,
-        params,
-        arguments,
-      );
+      return RouteDecoder(mappedTreeBranch, params, arguments);
     }
 
     return RouteDecoder(
@@ -181,26 +173,18 @@ class ParseRouteTree {
       // Add parent middlewares to children.
       final parentMiddlewares = [
         if (page.middlewares != null) ...page.middlewares!,
-        if (route.middlewares != null) ...route.middlewares!
+        if (route.middlewares != null) ...route.middlewares!,
       ];
-      result.add(
-        _addChild(
-          page,
-          parentPath,
-          parentMiddlewares,
-        ),
-      );
+      result.add(_addChild(page, parentPath, parentMiddlewares));
 
       final children = _flattenPage(page);
       for (var child in children) {
-        result.add(_addChild(
-          child,
-          parentPath,
-          [
+        result.add(
+          _addChild(child, parentPath, [
             ...parentMiddlewares,
             if (child.middlewares != null) ...child.middlewares!,
-          ],
-        ));
+          ]),
+        );
       }
     }
     return result;
@@ -208,17 +192,17 @@ class ParseRouteTree {
 
   /// Modifies the route for a GetPage.
   GetPage _addChild(
-          GetPage origin, String parentPath, List<GetMiddleware> middlewares) =>
-      origin.copy(
-        middlewares: middlewares,
-        name: (parentPath + origin.name).replaceAll(r'//', '/'),
-      );
+    GetPage origin,
+    String parentPath,
+    List<GetMiddleware> middlewares,
+  ) => origin.copy(
+    middlewares: middlewares,
+    name: (parentPath + origin.name).replaceAll(r'//', '/'),
+  );
 
   /// Finds a route that matches the given name.
   GetPage? _findRoute(String name) {
-    return routes.firstWhereOrNull(
-      (route) => route.path.regex.hasMatch(name),
-    );
+    return routes.firstWhereOrNull((route) => route.path.regex.hasMatch(name));
   }
 
   /// Parses URL parameters.

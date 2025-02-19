@@ -12,7 +12,7 @@ import '../utils/body_decoder.dart';
 class IoRedirectInfo implements RedirectInfo {
   final io.RedirectInfo _redirectInfo;
   IoRedirectInfo({required io.RedirectInfo redirectInfo})
-      : _redirectInfo = redirectInfo;
+    : _redirectInfo = redirectInfo;
 
   @override
   int get statusCode => _redirectInfo.statusCode;
@@ -140,7 +140,7 @@ class IoHttpHeaders implements HttpHeaders {
 
 class IOHttpResponse implements HttpClientResponse {
   IOHttpResponse({required io.HttpClientResponse response})
-      : _response = response;
+    : _response = response;
   final io.HttpClientResponse _response;
   @override
   Future<bool> any(bool Function(List<int> element) test) {
@@ -148,9 +148,10 @@ class IOHttpResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> asBroadcastStream(
-      {void Function(StreamSubscription<List<int>> subscription)? onListen,
-      void Function(StreamSubscription<List<int>> subscription)? onCancel}) {
+  Stream<List<int>> asBroadcastStream({
+    void Function(StreamSubscription<List<int>> subscription)? onListen,
+    void Function(StreamSubscription<List<int>> subscription)? onCancel,
+  }) {
     return _response.asBroadcastStream(onListen: onListen, onCancel: onCancel);
   }
 
@@ -178,8 +179,9 @@ class IOHttpResponse implements HttpClientResponse {
   int get contentLength => _response.contentLength;
 
   @override
-  Stream<List<int>> distinct(
-      [bool Function(List<int> previous, List<int> next)? equals]) {
+  Stream<List<int>> distinct([
+    bool Function(List<int> previous, List<int> next)? equals,
+  ]) {
     return _response.distinct(equals);
   }
 
@@ -207,14 +209,18 @@ class IOHttpResponse implements HttpClientResponse {
   Future<List<int>> get first => _response.first;
 
   @override
-  Future<List<int>> firstWhere(bool Function(List<int> element) test,
-      {List<int> Function()? orElse}) {
+  Future<List<int>> firstWhere(
+    bool Function(List<int> element) test, {
+    List<int> Function()? orElse,
+  }) {
     return _response.firstWhere(test, orElse: orElse);
   }
 
   @override
   Future<S> fold<S>(
-      S initialValue, S Function(S previous, List<int> element) combine) {
+    S initialValue,
+    S Function(S previous, List<int> element) combine,
+  ) {
     return _response.fold(initialValue, combine);
   }
 
@@ -224,8 +230,10 @@ class IOHttpResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> handleError(Function onError,
-      {bool Function(dynamic error)? test}) {
+  Stream<List<int>> handleError(
+    Function onError, {
+    bool Function(dynamic error)? test,
+  }) {
     return _response.handleError(onError, test: test);
   }
 
@@ -250,8 +258,10 @@ class IOHttpResponse implements HttpClientResponse {
   Future<List<int>> get last => _response.last;
 
   @override
-  Future<List<int>> lastWhere(bool Function(List<int> element) test,
-      {List<int> Function()? orElse}) {
+  Future<List<int>> lastWhere(
+    bool Function(List<int> element) test, {
+    List<int> Function()? orElse,
+  }) {
     return _response.lastWhere(test, orElse: orElse);
   }
 
@@ -259,10 +269,18 @@ class IOHttpResponse implements HttpClientResponse {
   Future<int> get length => _response.length;
 
   @override
-  StreamSubscription<List<int>> listen(void Function(List<int> event)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    return _response.listen(onData,
-        onError: onError, onDone: onDone, cancelOnError: cancelOnError);
+  StreamSubscription<List<int>> listen(
+    void Function(List<int> event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    return _response.listen(
+      onData,
+      onError: onError,
+      onDone: onDone,
+      cancelOnError: cancelOnError,
+    );
   }
 
   @override
@@ -282,20 +300,25 @@ class IOHttpResponse implements HttpClientResponse {
   String get reasonPhrase => _response.reasonPhrase;
 
   @override
-  Future<HttpClientResponse> redirect(
-      [String? method, Uri? url, bool? followLoops]) async {
+  Future<HttpClientResponse> redirect([
+    String? method,
+    Uri? url,
+    bool? followLoops,
+  ]) async {
     final data = await _response.redirect(method, url, followLoops);
     return IOHttpResponse(response: data);
   }
 
   @override
-  List<RedirectInfo> get redirects => _response.redirects
-      .map((item) => IoRedirectInfo(redirectInfo: item))
-      .toList();
+  List<RedirectInfo> get redirects =>
+      _response.redirects
+          .map((item) => IoRedirectInfo(redirectInfo: item))
+          .toList();
 
   @override
   Future<List<int>> reduce(
-      List<int> Function(List<int> previous, List<int> element) combine) {
+    List<int> Function(List<int> previous, List<int> element) combine,
+  ) {
     return _response.reduce(combine);
   }
 
@@ -303,8 +326,10 @@ class IOHttpResponse implements HttpClientResponse {
   Future<List<int>> get single => _response.single;
 
   @override
-  Future<List<int>> singleWhere(bool Function(List<int> element) test,
-      {List<int> Function()? orElse}) {
+  Future<List<int>> singleWhere(
+    bool Function(List<int> element) test, {
+    List<int> Function()? orElse,
+  }) {
     return _response.singleWhere(test, orElse: orElse);
   }
 
@@ -332,8 +357,10 @@ class IOHttpResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> timeout(Duration timeLimit,
-      {void Function(EventSink<List<int>> sink)? onTimeout}) {
+  Stream<List<int>> timeout(
+    Duration timeLimit, {
+    void Function(EventSink<List<int>> sink)? onTimeout,
+  }) {
     return _response.timeout(timeLimit, onTimeout: onTimeout);
   }
 
@@ -373,8 +400,9 @@ class HttpRequestImpl extends IClient {
     if (trustedCertificates != null) {
       _securityContext = io.SecurityContext();
       for (final trustedCertificate in trustedCertificates) {
-        _securityContext!
-            .setTrustedCertificatesBytes(List.from(trustedCertificate.bytes));
+        _securityContext!.setTrustedCertificatesBytes(
+          List.from(trustedCertificate.bytes),
+        );
       }
     }
 
@@ -389,17 +417,19 @@ class HttpRequestImpl extends IClient {
     io.HttpClientRequest? ioRequest;
     try {
       _httpClient!.connectionTimeout = timeout;
-      ioRequest = (await _httpClient!.openUrl(request.method, request.url))
-        ..followRedirects = request.followRedirects
-        ..persistentConnection = request.persistentConnection
-        ..maxRedirects = request.maxRedirects
-        ..contentLength = request.contentLength ?? -1;
+      ioRequest =
+          (await _httpClient!.openUrl(request.method, request.url))
+            ..followRedirects = request.followRedirects
+            ..persistentConnection = request.persistentConnection
+            ..maxRedirects = request.maxRedirects
+            ..contentLength = request.contentLength ?? -1;
       request.headers.forEach(ioRequest.headers.set);
 
-      var response = timeout == null
-          ? await stream.pipe(ioRequest) as io.HttpClientResponse
-          : await stream.pipe(ioRequest).timeout(timeout!)
-              as io.HttpClientResponse;
+      var response =
+          timeout == null
+              ? await stream.pipe(ioRequest) as io.HttpClientResponse
+              : await stream.pipe(ioRequest).timeout(timeout!)
+                  as io.HttpClientResponse;
 
       var headers = <String, String>{};
       response.headers.forEach((key, values) {
@@ -408,8 +438,11 @@ class HttpRequestImpl extends IClient {
 
       final bodyBytes = (response);
 
-      final interceptionResponse = await request.responseInterceptor
-          ?.call(request, T, IOHttpResponse(response: response));
+      final interceptionResponse = await request.responseInterceptor?.call(
+        request,
+        T,
+        IOHttpResponse(response: response),
+      );
       if (interceptionResponse != null) return interceptionResponse;
 
       final stringBody = await bodyBytesToString(bodyBytes, headers);

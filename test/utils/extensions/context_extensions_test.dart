@@ -21,7 +21,8 @@ void main() {
     expect(devicePixelRatio, context.devicePixelRatio);
     var height = mediaQuerySize.height;
     expect(height, context.height);
-    final heightTransformer = (mediaQuerySize.height - ((mediaQuerySize.height / 100) * 0)) / 1;
+    final heightTransformer =
+        (mediaQuerySize.height - ((mediaQuerySize.height / 100) * 0)) / 1;
     expect(heightTransformer, context.heightTransformer());
     var iconColor = theme.iconTheme.color;
     expect(iconColor, context.iconColor);
@@ -32,7 +33,9 @@ void main() {
     var isLandscape = orientation == Orientation.landscape;
     expect(isLandscape, context.isLandscape);
     var mediaQueryShortestSide = mediaQuerySize.shortestSide;
-    expect(mediaQueryShortestSide, context.mediaQueryShortestSide);
+    expect(mediaQueryShortestSide, context.mediaQuerySize.shortestSide);
+    var mediaQueryLongestSide = mediaQuerySize.longestSide;
+    expect(mediaQueryLongestSide, context.mediaQuerySize.longestSide);
     var isLargeTablet = (mediaQueryShortestSide >= 720);
     expect(isLargeTablet, context.isLargeTablet);
     var isPhone = (mediaQueryShortestSide < 600);
@@ -44,12 +47,13 @@ void main() {
     var isTablet = isSmallTablet || isLargeTablet;
     expect(isTablet, context.isTablet);
     var mediaQueryPadding = mediaQuery.padding;
-    expect(mediaQueryPadding, context.mediaQueryPadding);
+    expect(mediaQueryPadding, context.mediaQuery.padding);
     var mediaQueryViewInsets = mediaQuery.viewInsets;
-    expect(mediaQueryViewInsets, context.mediaQueryViewInsets);
+    expect(mediaQueryViewInsets, context.mediaQuery.viewInsets);
     var mediaQueryViewPadding = mediaQuery.viewPadding;
-    expect(mediaQueryViewPadding, context.mediaQueryViewPadding);
-    var widthTransformer = (mediaQuerySize.width - ((mediaQuerySize.width / 100) * 0)) / 1;
+    expect(mediaQueryViewPadding, context.mediaQuery.viewPadding);
+    var widthTransformer =
+        (mediaQuerySize.width - ((mediaQuerySize.width / 100) * 0)) / 1;
     expect(widthTransformer, context.widthTransformer());
     var ratio = heightTransformer / widthTransformer;
     expect(ratio, context.ratio());
@@ -57,7 +61,7 @@ void main() {
     expect(width, context.width);
     var showNavbar = (width > 800);
     expect(showNavbar, context.showNavbar);
-    var textScaleFactor = mediaQuery.textScaleFactor;
-    expect(textScaleFactor, context.textScaleFactor);
+    var textScaleFactor = mediaQuery.textScaler;
+    expect(textScaleFactor, context.textScaler);
   });
 }

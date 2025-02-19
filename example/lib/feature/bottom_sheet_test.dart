@@ -16,7 +16,8 @@ class BottomSheetTest extends StatelessWidget {
             minWidth: Get.width / 2,
             height: 56,
             color: context.theme.colorScheme.inversePrimary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onPressed: () {
               Get.bottomSheet(
                   isDismissible: true,
@@ -33,7 +34,8 @@ class BottomSheetTest extends StatelessWidget {
             minWidth: Get.width / 2,
             height: 56,
             color: context.theme.colorScheme.inversePrimary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onPressed: _showExpandableBottomSheet,
             child: Text('ExpandableBottomSheet'),
           ),

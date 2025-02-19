@@ -34,9 +34,6 @@ typedef LogWriterCallback = void Function(String text, {bool isError});
 void defaultLogWriterCallback(String value, {bool isError = false}) {
   // Log if it's an error message or if logging is enabled globally
   if (isError || Get.isLogEnable) {
-    developer.log(
-      value,
-      name: 'GETX',
-    );
+    developer.log(value, name: 'GETX');
   }
 }

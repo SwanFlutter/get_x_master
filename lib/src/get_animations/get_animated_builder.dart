@@ -64,30 +64,21 @@ class GetAnimatedBuilderState<T> extends State<GetAnimatedBuilder<T>>
     super.initState();
     _idleValue = widget.idleValue; // Assign directly
     _initializeAnimation();
-    Future.delayed(
-      widget.delay,
-      () {
-        if (mounted) {
-          _controller.forward();
-          wasStarted = true;
-        }
-      },
-    );
+    Future.delayed(widget.delay, () {
+      if (mounted) {
+        _controller.forward();
+        wasStarted = true;
+      }
+    });
   }
 
   void _initializeAnimation() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _controller.addStatusListener(_listener);
 
     _animation = widget.tween.animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: widget.curve,
-      ),
+      CurvedAnimation(parent: _controller, curve: widget.curve),
     );
   }
 
@@ -122,12 +113,12 @@ class GetAnimatedBuilderState<T> extends State<GetAnimatedBuilder<T>>
     return _animation == null
         ? widget.builder(context, _idleValue, widget.child)
         : AnimatedBuilder(
-            animation: _animation!,
-            builder: (context, child) {
-              final value = _animation!.value;
-              return widget.builder(context, value, child);
-            },
-            child: widget.child,
-          );
+          animation: _animation!,
+          builder: (context, child) {
+            final value = _animation!.value;
+            return widget.builder(context, value, child);
+          },
+          child: widget.child,
+        );
   }
 }

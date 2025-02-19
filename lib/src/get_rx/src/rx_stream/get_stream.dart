@@ -112,18 +112,23 @@ class GetStream<T> {
     _value = null;
   }
 
-  LightSubscription<T> listen(void Function(T event) onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    final subs = LightSubscription<T>(
-      removeSubscription,
-      onPause: onPause,
-      onResume: onResume,
-      onCancel: onCancel,
-    )
-      ..onData(onData)
-      ..onError(onError)
-      ..onDone(onDone)
-      ..cancelOnError = cancelOnError;
+  LightSubscription<T> listen(
+    void Function(T event) onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    final subs =
+        LightSubscription<T>(
+            removeSubscription,
+            onPause: onPause,
+            onResume: onResume,
+            onCancel: onCancel,
+          )
+          ..onData(onData)
+          ..onError(onError)
+          ..onDone(onDone)
+          ..cancelOnError = cancelOnError;
     addSubscription(subs);
     onListen?.call();
     return subs;
@@ -135,8 +140,12 @@ class GetStream<T> {
 
 class LightSubscription<T> implements StreamSubscription<T> {
   final RemoveSubscription<T> _removeSubscription;
-  LightSubscription(this._removeSubscription,
-      {this.onPause, this.onResume, this.onCancel});
+  LightSubscription(
+    this._removeSubscription, {
+    this.onPause,
+    this.onResume,
+    this.onCancel,
+  });
   final void Function()? onPause;
   final void Function()? onResume;
   final FutureOr<void> Function()? onCancel;
@@ -192,18 +201,23 @@ class GetStreamTransformation<T> extends Stream<T> {
   GetStreamTransformation(this._addSubscription, this._removeSubscription);
 
   @override
-  LightSubscription<T> listen(void Function(T event)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    final subs = LightSubscription<T>(_removeSubscription)
-      ..onData(onData)
-      ..onError(onError)
-      ..onDone(onDone);
+  LightSubscription<T> listen(
+    void Function(T event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    final subs =
+        LightSubscription<T>(_removeSubscription)
+          ..onData(onData)
+          ..onError(onError)
+          ..onDone(onDone);
     _addSubscription(subs);
     return subs;
   }
 }
 
-typedef RemoveSubscription<T> = FutureOr<bool?> Function(
-    LightSubscription<T> subs);
+typedef RemoveSubscription<T> =
+    FutureOr<bool?> Function(LightSubscription<T> subs);
 
 typedef AddSubscription<T> = FutureOr<void> Function(LightSubscription<T> subs);

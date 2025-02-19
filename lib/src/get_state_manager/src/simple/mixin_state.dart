@@ -28,14 +28,15 @@ class MixinBuilder<T extends GetXController> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<T>(
-        init: init,
-        global: global,
-        autoRemove: autoRemove,
-        initState: initState,
-        dispose: dispose,
-        id: id,
-        didChangeDependencies: didChangeDependencies,
-        didUpdateWidget: didUpdateWidget,
-        builder: (controller) => Obx(() => builder.call(controller)));
+      init: init,
+      global: global,
+      autoRemove: autoRemove,
+      initState: initState,
+      dispose: dispose,
+      id: id,
+      didChangeDependencies: didChangeDependencies,
+      didUpdateWidget: didUpdateWidget,
+      builder: (controller) => Obx(() => builder.call(controller)),
+    );
   }
 }

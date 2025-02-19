@@ -39,14 +39,17 @@ const SEPARATOR_MAP = [
   F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, //
   F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, //
   F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, //
-  F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F
+  F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
 ];
 
 String validateField(String field) {
   for (var i = 0; i < field.length; i++) {
     if (!isTokenChar(field.codeUnitAt(i))) {
       throw FormatException(
-          'Invalid HTTP header field name: ${json.encode(field)}', field, i);
+        'Invalid HTTP header field name: ${json.encode(field)}',
+        field,
+        i,
+      );
     }
   }
   return field.toLowerCase();
@@ -137,5 +140,5 @@ const List<int> boundaryCharacters = <int>[
   119,
   120,
   121,
-  122
+  122,
 ];

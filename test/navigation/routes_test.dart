@@ -14,7 +14,11 @@ void main() {
           child: Center(
             child: CupertinoButton(
               onPressed: () {
-                Get.to(() => const CupertinoPageScaffold(child: Center(child: Text('route'))));
+                Get.to(
+                  () => const CupertinoPageScaffold(
+                    child: Center(child: Text('route')),
+                  ),
+                );
               },
               child: const Text('push'),
             ),
@@ -38,17 +42,37 @@ void main() {
     expect(
       // The 'route' route has been dragged to the right, halfway across
       // the screen
-      tester.getTopLeft(find.ancestor(of: find.text('route'), matching: find.byType(CupertinoPageScaffold))),
+      tester.getTopLeft(
+        find.ancestor(
+          of: find.text('route'),
+          matching: find.byType(CupertinoPageScaffold),
+        ),
+      ),
       const Offset(400, 0),
     );
     expect(
       // The 'push' route is sliding in from the left.
-      tester.getTopLeft(find.ancestor(of: find.text('push'), matching: find.byType(CupertinoPageScaffold))).dx,
+      tester
+          .getTopLeft(
+            find.ancestor(
+              of: find.text('push'),
+              matching: find.byType(CupertinoPageScaffold),
+            ),
+          )
+          .dx,
       0,
     );
     await tester.pumpAndSettle();
     expect(find.text('push'), findsOneWidget);
-    expect(tester.getTopLeft(find.ancestor(of: find.text('push'), matching: find.byType(CupertinoPageScaffold))), Offset.zero);
+    expect(
+      tester.getTopLeft(
+        find.ancestor(
+          of: find.text('push'),
+          matching: find.byType(CupertinoPageScaffold),
+        ),
+      ),
+      Offset.zero,
+    );
     expect(find.text('route'), findsNothing);
 
     // Run the dismiss animation 60%, which exposes the route "push" button,
@@ -71,19 +95,44 @@ void main() {
     // _CupertinoBackGestureController.dragEnd). It follows a curve that is very
     // steep initially.
     await tester.pump();
-    expect(tester.getTopLeft(find.ancestor(of: find.text('route'), matching: find.byType(CupertinoPageScaffold))), const Offset(400, 0));
+    expect(
+      tester.getTopLeft(
+        find.ancestor(
+          of: find.text('route'),
+          matching: find.byType(CupertinoPageScaffold),
+        ),
+      ),
+      const Offset(400, 0),
+    );
     // Let the dismissing snapping animation go 60%.
     await tester.pump(const Duration(milliseconds: 240));
-    expect(tester.getTopLeft(find.ancestor(of: find.text('route'), matching: find.byType(CupertinoPageScaffold))).dx, moreOrLessEquals(798, epsilon: 1));
+    expect(
+      tester
+          .getTopLeft(
+            find.ancestor(
+              of: find.text('route'),
+              matching: find.byType(CupertinoPageScaffold),
+            ),
+          )
+          .dx,
+      moreOrLessEquals(798, epsilon: 1),
+    );
 
     // Use the navigator to push a route instead of tapping the 'push' button.
     // The topmost route (the one that's animating away), ignores input while
     // the pop is underway because route.navigator.userGestureInProgress.
-    Get.to(() => const CupertinoPageScaffold(child: Center(child: Text('route'))));
+    Get.to(
+      () => const CupertinoPageScaffold(child: Center(child: Text('route'))),
+    );
 
     await tester.pumpAndSettle();
     expect(find.text('route'), findsOneWidget);
     expect(find.text('push'), findsNothing);
-    expect(tester.state<NavigatorState>(find.byType(Navigator)).userGestureInProgress, false);
+    expect(
+      tester
+          .state<NavigatorState>(find.byType(Navigator))
+          .userGestureInProgress,
+      false,
+    );
   });
 }

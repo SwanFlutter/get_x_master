@@ -14,7 +14,18 @@ void main() {
           name: '/home',
           page: Container.new,
           transition: Transition.rightToLeftWithFade,
-          children: [GetPage(name: '/bed-room', transition: Transition.size, page: Container.new), GetPage(name: '/living-room', transition: Transition.topLevel, page: Container.new)],
+          children: [
+            GetPage(
+              name: '/bed-room',
+              transition: Transition.size,
+              page: Container.new,
+            ),
+            GetPage(
+              name: '/living-room',
+              transition: Transition.topLevel,
+              page: Container.new,
+            ),
+          ],
         ),
         GetPage(
           name: '/work',
@@ -25,9 +36,25 @@ void main() {
               name: '/office',
               transition: Transition.zoom,
               page: Container.new,
-              children: [GetPage(name: '/pen', transition: Transition.cupertino, page: Container.new, parameters: testParams), GetPage(name: '/paper', page: Container.new, transition: Transition.downToUp)],
+              children: [
+                GetPage(
+                  name: '/pen',
+                  transition: Transition.cupertino,
+                  page: Container.new,
+                  parameters: testParams,
+                ),
+                GetPage(
+                  name: '/paper',
+                  page: Container.new,
+                  transition: Transition.downToUp,
+                ),
+              ],
             ),
-            GetPage(name: '/meeting-room', transition: Transition.fade, page: Container.new),
+            GetPage(
+              name: '/meeting-room',
+              transition: Transition.fade,
+              page: Container.new,
+            ),
           ],
         ),
       ],
@@ -50,15 +77,51 @@ void main() {
 
   test('Parse Page without children', () {
     final pageTree = [
-      GetPage(name: '/city', page: Container.new, transition: Transition.cupertino),
-      GetPage(name: '/city/home', page: Container.new, transition: Transition.downToUp),
-      GetPage(name: '/city/home/bed-room', page: Container.new, transition: Transition.fade),
-      GetPage(name: '/city/home/living-room', page: Container.new, transition: Transition.fadeIn),
-      GetPage(name: '/city/work', page: Container.new, transition: Transition.leftToRight),
-      GetPage(name: '/city/work/office', page: Container.new, transition: Transition.leftToRightWithFade),
-      GetPage(name: '/city/work/office/pen', page: Container.new, transition: Transition.native),
-      GetPage(name: '/city/work/office/paper', page: Container.new, transition: Transition.noTransition),
-      GetPage(name: '/city/work/meeting-room', page: Container.new, transition: Transition.rightToLeft),
+      GetPage(
+        name: '/city',
+        page: Container.new,
+        transition: Transition.cupertino,
+      ),
+      GetPage(
+        name: '/city/home',
+        page: Container.new,
+        transition: Transition.downToUp,
+      ),
+      GetPage(
+        name: '/city/home/bed-room',
+        page: Container.new,
+        transition: Transition.fade,
+      ),
+      GetPage(
+        name: '/city/home/living-room',
+        page: Container.new,
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: '/city/work',
+        page: Container.new,
+        transition: Transition.leftToRight,
+      ),
+      GetPage(
+        name: '/city/work/office',
+        page: Container.new,
+        transition: Transition.leftToRightWithFade,
+      ),
+      GetPage(
+        name: '/city/work/office/pen',
+        page: Container.new,
+        transition: Transition.native,
+      ),
+      GetPage(
+        name: '/city/work/office/paper',
+        page: Container.new,
+        transition: Transition.noTransition,
+      ),
+      GetPage(
+        name: '/city/work/meeting-room',
+        page: Container.new,
+        transition: Transition.rightToLeft,
+      ),
     ];
 
     final tree = ParseRouteTree(routes: pageTree);
@@ -110,10 +173,21 @@ void main() {
   });
 
   testWidgets('params in url by parameters', (tester) async {
-    await tester.pumpWidget(GetMaterialApp(initialRoute: '/first/juan', getPages: [GetPage(page: Container.new, name: '/first/:name'), GetPage(page: Container.new, name: '/italy')]));
+    await tester.pumpWidget(
+      GetMaterialApp(
+        initialRoute: '/first/juan',
+        getPages: [
+          GetPage(page: Container.new, name: '/first/:name'),
+          GetPage(page: Container.new, name: '/italy'),
+        ],
+      ),
+    );
 
     // Get.parameters = ({"varginias": "varginia", "vinis": "viniiss"});
-    var parameters = <String, String>{"varginias": "varginia", "vinis": "viniiss"};
+    var parameters = <String, String>{
+      "varginias": "varginia",
+      "vinis": "viniiss",
+    };
     // print("Get.parameters: ${Get.parameters}");
     parameters.addAll({"a": "b", "c": "d"});
     Get.toNamed("/italy", parameters: parameters);

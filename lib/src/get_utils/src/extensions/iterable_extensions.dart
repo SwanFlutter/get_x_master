@@ -9,7 +9,8 @@ extension IterableExtensions<T> on Iterable<T> {
   /// // Result: [1, 2, 2, 4, 3, 6]
   /// ```
   Iterable<TRes> mapMany<TRes>(
-      Iterable<TRes>? Function(T item) selector) sync* {
+    Iterable<TRes>? Function(T item) selector,
+  ) sync* {
     for (var item in this) {
       final res = selector(item);
       if (res != null) yield* res;

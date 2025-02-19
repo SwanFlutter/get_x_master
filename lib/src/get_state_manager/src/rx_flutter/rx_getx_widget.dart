@@ -8,8 +8,8 @@ import '../../../get_instance/src/get_instance.dart';
 import '../../../get_rx/src/rx_types/rx_types.dart';
 import 'rx_disposable.dart';
 
-typedef GetXControllerBuilder<T extends DisposableInterface> = Widget Function(
-    T controller);
+typedef GetXControllerBuilder<T extends DisposableInterface> =
+    Widget Function(T controller);
 
 class GetX<T extends DisposableInterface> extends StatefulWidget {
   final GetXControllerBuilder<T> builder;
@@ -46,12 +46,11 @@ class GetX<T extends DisposableInterface> extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(
-        DiagnosticsProperty<T>('controller', init),
-      )
+      ..add(DiagnosticsProperty<T>('controller', init))
       ..add(DiagnosticsProperty<String>('tag', tag))
       ..add(
-          ObjectFlagProperty<GetXControllerBuilder<T>>.has('builder', builder));
+        ObjectFlagProperty<GetXControllerBuilder<T>>.has('builder', builder),
+      );
   }
 
   @override
@@ -127,8 +126,6 @@ class GetXState<T extends DisposableInterface> extends State<GetX<T>> {
   }
 
   @override
-  Widget build(BuildContext context) => RxInterface.notifyChildren(
-        _observer,
-        () => widget.builder(controller!),
-      );
+  Widget build(BuildContext context) =>
+      RxInterface.notifyChildren(_observer, () => widget.builder(controller!));
 }

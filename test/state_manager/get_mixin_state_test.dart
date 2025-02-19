@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_x_master/get_x_master.dart';
-import 'package:get_x_master/src/get_state_manager/src/simple/mixin_state.dart' show MixinBuilder;
+import 'package:get_x_master/src/get_state_manager/src/simple/mixin_state.dart'
+    show MixinBuilder;
 
 void main() {
   testWidgets("MixinBuilder smoke test", (tester) async {
@@ -19,7 +20,10 @@ void main() {
                 Text('List: ${controller.list.length}'),
                 Text('Bool: ${controller.boolean.value}'),
                 Text('Map: ${controller.map.length}'),
-                TextButton(child: const Text("increment"), onPressed: () => controller.increment()),
+                TextButton(
+                  child: const Text("increment"),
+                  onPressed: () => controller.increment(),
+                ),
               ],
             );
           },

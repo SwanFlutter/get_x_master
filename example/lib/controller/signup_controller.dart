@@ -176,7 +176,11 @@ class SignupController extends GetXController {
     return null;
   }
 
-  void showMassage({required String title, required String message, required IconData icon, required Color iconColor}) {
+  void showMassage(
+      {required String title,
+      required String message,
+      required IconData icon,
+      required Color iconColor}) {
     Get.snackbar(
       title,
       message,

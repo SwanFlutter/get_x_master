@@ -2,7 +2,6 @@
 
 import '../../get_x_master.dart';
 
-
 extension PercentSized on double {
   /// height: 50.0.hp = 50%
   ///

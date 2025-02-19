@@ -13,6 +13,8 @@ import '../../../get_core/get_core.dart';
 /// _isEmpty({}); // true
 /// _isEmpty(null); // false
 /// _isEmpty(12); // false
+///
+///
 /// ```
 bool? _isEmpty(dynamic value) {
   if (value is String) {
@@ -37,6 +39,8 @@ bool? _isEmpty(dynamic value) {
 /// _hasLength({}); // true
 /// _hasLength(null); // false
 /// _hasLength(12); // false
+///
+///
 /// ```
 bool _hasLength(dynamic value) {
   return value is Iterable || value is String || value is Map;
@@ -62,6 +66,8 @@ bool _hasLength(dynamic value) {
 /// _obtainDynamicLength(12); // 2
 /// _obtainDynamicLength(12.5); // 3
 /// _obtainDynamicLength('Hello'); // 5
+///
+///
 /// ```
 int? _obtainDynamicLength(dynamic value) {
   if (value == null) {
@@ -96,6 +102,8 @@ class GetUtils {
   /// ```dart
   /// isNull(null); // true
   /// isNull(12); // false
+  ///
+  ///
   /// ```
   static bool isNull(dynamic value) => value == null;
 
@@ -110,6 +118,7 @@ class GetUtils {
   /// ```dart
   /// nil(null); // null
   /// nil(12); // 12
+  ///
   /// ```
   static dynamic nil(dynamic s) => s;
 
@@ -124,6 +133,8 @@ class GetUtils {
   /// isNullOrBlank({}); // true
   /// isNullOrBlank('Hello'); // false
   /// isNullOrBlank(12); // false
+  ///
+  ///
   /// ```
   static bool? isNullOrBlank(dynamic value) {
     if (isNull(value)) {
@@ -144,6 +155,8 @@ class GetUtils {
   /// isBlank(null); // null
   /// isBlank('Hello'); // false
   /// isBlank(12); // false
+  ///
+  ///
   /// ```
   static bool? isBlank(dynamic value) {
     return _isEmpty(value);
@@ -157,6 +170,8 @@ class GetUtils {
   /// isNum('12.5'); // true
   /// isNum('Hello'); // false
   /// isNum(null); // false
+  ///
+  ///
   /// ```
   static bool isNum(String? value) {
     if (isNull(value)) {
@@ -174,6 +189,8 @@ class GetUtils {
   /// isNumericOnly('123'); // true
   /// isNumericOnly('12.5'); // false
   /// isNumericOnly('Hello'); // false
+  ///
+  ///
   /// ```
   static bool isNumericOnly(String s) => hasPatternMatch(s, r'^\d+$');
 
@@ -184,6 +201,8 @@ class GetUtils {
   /// isAlphabetOnly('Hello'); // true
   /// isAlphabetOnly('Hello World'); // false
   /// isAlphabetOnly('123'); // false
+  ///
+  ///
   /// ```
   static bool isAlphabetOnly(String s) => hasPatternMatch(s, r'^[a-zA-Z]+$');
 
@@ -194,6 +213,8 @@ class GetUtils {
   /// hasCapitalLetter('Hello'); // true
   /// hasCapitalLetter('hello'); // false
   /// hasCapitalLetter('123'); // false
+  ///
+  ///
   /// ```
   static bool hasCapitalLetter(String s) => hasPatternMatch(s, r'[A-Z]');
 
@@ -206,6 +227,8 @@ class GetUtils {
   /// isBool('True'); // false
   /// isBool('1'); // false
   /// isBool(null); // false
+  ///
+  ///
   /// ```
   static bool isBool(String? value) {
     if (isNull(value)) {
@@ -222,6 +245,8 @@ class GetUtils {
   /// isVideo('video.mp4'); // true
   /// isVideo('video.avi'); // true
   /// isVideo('image.jpg'); // false
+  ///
+  ///
   /// ```
   static bool isVideo(String filePath) {
     final ext = filePath.toLowerCase();
@@ -242,6 +267,8 @@ class GetUtils {
   /// isImage('image.jpg'); // true
   /// isImage('image.png'); // true
   /// isImage('video.mp4'); // false
+  ///
+  ///
   /// ```
   static bool isImage(String filePath) {
     final ext = filePath.toLowerCase();
@@ -260,6 +287,8 @@ class GetUtils {
   /// isAudio('audio.mp3'); // true
   /// isAudio('audio.wav'); // true
   /// isAudio('image.jpg'); // false
+  ///
+  ///
   /// ```
   static bool isAudio(String filePath) {
     final ext = filePath.toLowerCase();
@@ -278,6 +307,8 @@ class GetUtils {
   /// isPPT('presentation.ppt'); // true
   /// isPPT('presentation.pptx'); // true
   /// isPPT('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isPPT(String filePath) {
     final ext = filePath.toLowerCase();
@@ -292,6 +323,8 @@ class GetUtils {
   /// isWord('document.doc'); // true
   /// isWord('document.docx'); // true
   /// isWord('presentation.ppt'); // false
+  ///
+  ///
   /// ```
   static bool isWord(String filePath) {
     final ext = filePath.toLowerCase();
@@ -306,6 +339,8 @@ class GetUtils {
   /// isExcel('spreadsheet.xls'); // true
   /// isExcel('spreadsheet.xlsx'); // true
   /// isExcel('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isExcel(String filePath) {
     final ext = filePath.toLowerCase();
@@ -319,6 +354,8 @@ class GetUtils {
   /// ```dart
   /// isAPK('app.apk'); // true
   /// isAPK('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isAPK(String filePath) {
     return filePath.toLowerCase().endsWith(".apk");
@@ -330,6 +367,8 @@ class GetUtils {
   /// ```dart
   /// isPDF('document.pdf'); // true
   /// isPDF('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isPDF(String filePath) {
     return filePath.toLowerCase().endsWith(".pdf");
@@ -341,6 +380,8 @@ class GetUtils {
   /// ```dart
   /// isTxt('text.txt'); // true
   /// isTxt('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isTxt(String filePath) {
     return filePath.toLowerCase().endsWith(".txt");
@@ -352,6 +393,8 @@ class GetUtils {
   /// ```dart
   /// isChm('help.chm'); // true
   /// isChm('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isChm(String filePath) {
     return filePath.toLowerCase().endsWith(".chm");
@@ -363,6 +406,8 @@ class GetUtils {
   /// ```dart
   /// isVector('image.svg'); // true
   /// isVector('image.jpg'); // false
+  ///
+  ///
   /// ```
   static bool isVector(String filePath) {
     return filePath.toLowerCase().endsWith(".svg");
@@ -374,6 +419,8 @@ class GetUtils {
   /// ```dart
   /// isHTML('webpage.html'); // true
   /// isHTML('document.docx'); // false
+  ///
+  ///
   /// ```
   static bool isHTML(String filePath) {
     return filePath.toLowerCase().endsWith(".html");
@@ -387,6 +434,8 @@ class GetUtils {
   /// isUsername('john doe'); // false
   /// isUsername('john'); // false
   /// isUsername('_johndoe'); // false
+  ///
+  ///
   /// ```
   static bool isUsername(String s) =>
       hasMatch(s, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');
@@ -402,9 +451,13 @@ class GetUtils {
   /// isURL('example'); // false
   /// isURL('https://www.example.com/path/to/page?param=value'); // true
   /// isURL('ftp://example.com'); // true
+  ///
+  ///
   /// ```
-  static bool isURL(String s) => hasMatch(s,
-      r"^((((H|h)(T|t)|(F|f))(T|t)(P|p)((S|s)?))\://)?(www.|[a-zA-Z0-9].)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,7}(\:[0-9]{1,5})*(/($|[a-zA-Z0-9\.\,\;\?\'\\\+&%\$#\=~_\-]+))*$");
+  static bool isURL(String s) => hasMatch(
+    s,
+    r"^((((H|h)(T|t)|(F|f))(T|t)(P|p)((S|s)?))\://)?(www.|[a-zA-Z0-9].)[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,7}(\:[0-9]{1,5})*(/($|[a-zA-Z0-9\.\,\;\?\'\\\+&%\$#\=~_\-]+))*$",
+  );
 
   /// Checks if string is email.
   ///
@@ -414,9 +467,13 @@ class GetUtils {
   /// isEmail('test.name@example.com'); // true
   /// isEmail('test@example'); // false
   /// isEmail('@example.com'); // false
+  ///
+  ///
   /// ```
-  static bool isEmail(String s) => hasMatch(s,
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  static bool isEmail(String s) => hasMatch(
+    s,
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+  );
 
   /// Checks if string is phone number.
   ///
@@ -428,6 +485,8 @@ class GetUtils {
   /// isPhoneNumber('+15555555555'); // true
   /// isPhoneNumber('123'); // false
   /// isPhoneNumber('abc'); // false
+  ///
+  ///
   /// ```
   static bool isPhoneNumber(String s) {
     if (s.length > 16 || s.length < 9) return false;
@@ -441,6 +500,8 @@ class GetUtils {
   /// isDateTime('2023-10-27T10:30:00Z'); // true
   /// isDateTime('2023-10-27T10:30:00.000Z'); // true
   /// isDateTime('2023-10-27 10:30:00'); // false
+  ///
+  ///
   /// ```
   static bool isDateTime(String s) =>
       hasMatch(s, r'^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}.\d{3}Z?$');
@@ -451,6 +512,8 @@ class GetUtils {
   /// ```dart
   /// isMD5('d41d8cd98f00b204e9800998ecf8427e'); // true
   /// isMD5('abc'); // false
+  ///
+  ///
   /// ```
   static bool isMD5(String s) => hasMatch(s, r'^[a-f0-9]{32}$');
 
@@ -460,6 +523,8 @@ class GetUtils {
   /// ```dart
   /// isSHA1('a9993e364706816aba3e25717850c26c9cd0d89d'); // true
   /// isSHA1('abc'); // false
+  ///
+  ///
   /// ```
   static bool isSHA1(String s) =>
       hasMatch(s, r'(([A-Fa-f0-9]{2}\:){19}[A-Fa-f0-9]{2}|[A-Fa-f0-9]{40})');
@@ -470,6 +535,8 @@ class GetUtils {
   /// ```dart
   /// isSHA256('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'); // true
   /// isSHA256('abc'); // false
+  ///
+  ///
   /// ```
   static bool isSHA256(String s) =>
       hasMatch(s, r'([A-Fa-f0-9]{2}\:){31}[A-Fa-f0-9]{2}|[A-Fa-f0-9]{64}');
@@ -480,9 +547,13 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isSSN('123-45-6789'); // true
   /// ValidationUtils.isSSN('000-12-3456'); // false
+  ///
+  ///
   /// ```
-  static bool isSSN(String s) => hasMatch(s,
-      r'^(?!0{3}|6{3}|9[0-9]{2})[0-9]{3}-?(?!0{2})[0-9]{2}-?(?!0{4})[0-9]{4}$');
+  static bool isSSN(String s) => hasMatch(
+    s,
+    r'^(?!0{3}|6{3}|9[0-9]{2})[0-9]{3}-?(?!0{2})[0-9]{2}-?(?!0{4})[0-9]{4}$',
+  );
 
   /// Checks if the string is binary (contains only 0s and 1s).
   ///
@@ -490,6 +561,8 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isBinary('101010'); // true
   /// ValidationUtils.isBinary('1234'); // false
+  ///
+  ///
   /// ```
   static bool isBinary(String s) => hasMatch(s, r'^[0-1]+$');
 
@@ -499,6 +572,8 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isIPv4('192.168.1.1'); // true
   /// ValidationUtils.isIPv4('999.999.999.999'); // false
+  ///
+  ///
   /// ```
   static bool isIPv4(String s) =>
       hasMatch(s, r'^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$');
@@ -509,9 +584,13 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isIPv6('2001:0db8:85a3:0000:0000:8a2e:0370:7334'); // true
   /// ValidationUtils.isIPv6('1234:5678'); // false
+  ///
+  ///
   /// ```
-  static bool isIPv6(String s) => hasMatch(s,
-      r'^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$');
+  static bool isIPv6(String s) => hasMatch(
+    s,
+    r'^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$',
+  );
 
   /// Checks if the string is a valid hexadecimal color.
   ///
@@ -519,6 +598,8 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isHexadecimal('#FFF'); // true
   /// ValidationUtils.isHexadecimal('#GGG'); // false
+  ///
+  ///
   /// ```
   static bool isHexadecimal(String s) =>
       hasMatch(s, r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$');
@@ -529,6 +610,8 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isPalindrome('racecar'); // true
   /// ValidationUtils.isPalindrome('hello'); // false
+  ///
+  ///
   /// ```
   static bool isPalindrome(String string) {
     final cleanString = string
@@ -550,6 +633,8 @@ class GetUtils {
   /// ```dart
   /// ValidationUtils.isOneAKind('111111'); // true
   /// ValidationUtils.isOneAKind('abcdef'); // false
+  ///
+  ///
   /// ```
   static bool isOneAKind(dynamic value) {
     if ((value is String || value is List) && !isNullOrBlank(value)!) {
@@ -585,6 +670,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isPassport("A1234567");
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isPassport(String s) =>
       hasMatch(s, r'^(?!^0+$)[a-zA-Z0-9]{6,9}$');
@@ -595,9 +682,13 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isCurrency("\$100");
   /// // Result: true
+  ///
+  ///
   /// ```
-  static bool isCurrency(String s) => hasMatch(s,
-      r'^(S?\$|\₩|Rp|\¥|\€|\₹|\₽|fr|R\$|R)?[ ]?[-]?([0-9]{1,3}[,.]([0-9]{3}[,.])*[0-9]{3}|[0-9]+)([,.][0-9]{1,2})?( ?(USD?|AUD|NZD|CAD|CHF|GBP|CNY|EUR|JPY|IDR|MXN|NOK|KRW|TRY|INR|RUB|BRL|ZAR|SGD|MYR))?$');
+  static bool isCurrency(String s) => hasMatch(
+    s,
+    r'^(S?\$|\₩|Rp|\¥|\€|\₹|\₽|fr|R\$|R)?[ ]?[-]?([0-9]{1,3}[,.]([0-9]{3}[,.])*[0-9]{3}|[0-9]+)([,.][0-9]{1,2})?( ?(USD?|AUD|NZD|CAD|CHF|GBP|CNY|EUR|JPY|IDR|MXN|NOK|KRW|TRY|INR|RUB|BRL|ZAR|SGD|MYR))?$',
+  );
 
   /// Checks if length of data is GREATER than maxLength.
   ///
@@ -605,6 +696,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isLengthGreaterThan("Hello", 3);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLengthGreaterThan(dynamic value, int maxLength) {
     final length = _obtainDynamicLength(value);
@@ -622,6 +715,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isLengthGreaterOrEqual("Hello", 5);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLengthGreaterOrEqual(dynamic value, int maxLength) {
     final length = _obtainDynamicLength(value);
@@ -639,6 +734,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isLengthLessThan("Hello", 10);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLengthLessThan(dynamic value, int maxLength) {
     final length = _obtainDynamicLength(value);
@@ -655,6 +752,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isLengthLessOrEqual("Hello", 5);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLengthLessOrEqual(dynamic value, int maxLength) {
     final length = _obtainDynamicLength(value);
@@ -672,6 +771,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isLengthEqualTo("Hello", 5);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLengthEqualTo(dynamic value, int otherLength) {
     final length = _obtainDynamicLength(value);
@@ -689,6 +790,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isLengthBetween("Hello", 3, 5);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLengthBetween(dynamic value, int minLength, int maxLength) {
     if (isNull(value)) {
@@ -706,6 +809,8 @@ class GetUtils {
   /// ```dart
   /// bool contains = GetUtils.isCaseInsensitiveContains("Hello", "hello");
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isCaseInsensitiveContains(String a, String b) {
     return a.toLowerCase().contains(b.toLowerCase());
@@ -718,6 +823,8 @@ class GetUtils {
   /// ```dart
   /// bool containsAny = GetUtils.isCaseInsensitiveContainsAny("Hello", "hello");
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isCaseInsensitiveContainsAny(String a, String b) {
     final lowA = a.toLowerCase();
@@ -732,6 +839,8 @@ class GetUtils {
   /// ```dart
   /// bool isLower = GetUtils.isLowerThan(5, 10);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isLowerThan(num a, num b) => a < b;
 
@@ -741,6 +850,8 @@ class GetUtils {
   /// ```dart
   /// bool isGreater = GetUtils.isGreaterThan(10, 5);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isGreaterThan(num a, num b) => a > b;
 
@@ -750,6 +861,8 @@ class GetUtils {
   /// ```dart
   /// bool isEqual = GetUtils.isEqual(5, 5);
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isEqual(num a, num b) => a == b;
 
@@ -759,6 +872,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isCnpj("12.345.678/0001-95");
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isCnpj(String cnpj) {
     // Get only the numbers from the CNPJ
@@ -814,6 +929,8 @@ class GetUtils {
   /// ```dart
   /// bool isValid = GetUtils.isCpf("123.456.789-09");
   /// // Result: true
+  ///
+  ///
   /// ```
   static bool isCpf(String cpf) {
     // get only the numbers
@@ -867,6 +984,8 @@ class GetUtils {
   /// ```dart
   /// String capitalized = GetUtils.capitalize("your name");
   /// // Result: "Your Name"
+  ///
+  ///
   /// ```
   static String capitalize(String value) {
     if (isBlank(value)!) return value;
@@ -879,6 +998,8 @@ class GetUtils {
   /// ```dart
   /// String capitalizedFirst = GetUtils.capitalizeFirst("your name");
   /// // Result: "Your name"
+  ///
+  ///
   /// ```
   static String capitalizeFirst(String s) {
     if (isBlank(s)!) return s;
@@ -891,6 +1012,8 @@ class GetUtils {
   /// ```dart
   /// String noWhitespace = GetUtils.removeAllWhitespace("your name");
   /// // Result: "yourname"
+  ///
+  ///
   /// ```
   static String removeAllWhitespace(String value) {
     return value.replaceAll(' ', '');
@@ -902,14 +1025,17 @@ class GetUtils {
   /// ```dart
   /// String camelCased = GetUtils.camelCase("your name");
   /// // Result: "yourName"
+  ///
+  ///
   /// ```
   static String? camelCase(String value) {
     if (isNullOrBlank(value)!) {
       return null;
     }
 
-    final separatedWords =
-        value.split(RegExp(r'[!@#<>?":`~;[\]\\|=+)(*&^%-\s_]+'));
+    final separatedWords = value.split(
+      RegExp(r'[!@#<>?":`~;[\]\\|=+)(*&^%-\s_]+'),
+    );
     var newString = '';
 
     for (final word in separatedWords) {
@@ -934,7 +1060,8 @@ class GetUtils {
         continue;
       }
       sb.write(char);
-      var isEndOfWord = nextChar == null ||
+      var isEndOfWord =
+          nextChar == null ||
           (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) ||
           _symbolSet.contains(nextChar);
       if (isEndOfWord) {
@@ -951,14 +1078,16 @@ class GetUtils {
   /// ```dart
   /// String snakeCased = GetUtils.snakeCase("your name");
   /// // Result: "your_name"
+  ///
+  ///
   /// ```
   static String? snakeCase(String? text, {String separator = '_'}) {
     if (isNullOrBlank(text)!) {
       return null;
     }
-    return _groupIntoWords(text!)
-        .map((word) => word.toLowerCase())
-        .join(separator);
+    return _groupIntoWords(
+      text!,
+    ).map((word) => word.toLowerCase()).join(separator);
   }
 
   /// param-case
@@ -967,6 +1096,8 @@ class GetUtils {
   /// ```dart
   /// String paramCased = GetUtils.paramCase("your name");
   /// // Result: "your-name"
+  ///
+  ///
   /// ```
   static String? paramCase(String? text) => snakeCase(text, separator: '-');
 
@@ -978,6 +1109,8 @@ class GetUtils {
   /// // Result: "1231227042020"
   /// String firstNumeric = GetUtils.numericOnly("OTP 12312 27/04/2020", firstWordOnly: true);
   /// // Result: "12312"
+  ///
+  ///
   /// ```
   static String numericOnly(String s, {bool firstWordOnly = false}) {
     var numericOnlyStr = '';
@@ -1000,6 +1133,8 @@ class GetUtils {
   /// ```dart
   /// String capitalizedWords = GetUtils.capitalizeAllWordsFirstLetter("getx will make it easy");
   /// // Result: "Getx Will Make It Easy"
+  ///
+  ///
   /// ```
   static String capitalizeAllWordsFirstLetter(String s) {
     String lowerCasedString = s.toLowerCase();
@@ -1013,25 +1148,20 @@ class GetUtils {
     }
 
     List<String> stringWordsList = stringWithoutExtraSpaces.split(" ");
-    List<String> capitalizedWordsFirstLetter = stringWordsList
-        .map(
-          (word) {
-            if (word.trim().isEmpty) return "";
-            return word.trim();
-          },
-        )
-        .where(
-          (word) => word != "",
-        )
-        .map(
-          (word) {
-            if (word.startsWith(RegExp(r'[\n\t\r]'))) {
-              return word;
-            }
-            return word[0].toUpperCase() + word.substring(1).toLowerCase();
-          },
-        )
-        .toList();
+    List<String> capitalizedWordsFirstLetter =
+        stringWordsList
+            .map((word) {
+              if (word.trim().isEmpty) return "";
+              return word.trim();
+            })
+            .where((word) => word != "")
+            .map((word) {
+              if (word.startsWith(RegExp(r'[\n\t\r]'))) {
+                return word;
+              }
+              return word[0].toUpperCase() + word.substring(1).toLowerCase();
+            })
+            .toList();
     String finalResult = capitalizedWordsFirstLetter.join(" ");
     return finalResult;
   }

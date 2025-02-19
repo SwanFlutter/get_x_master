@@ -145,8 +145,12 @@ class GetCupertinoApp extends StatelessWidget {
     this.defaultGlobalState,
     this.getPages,
     this.unknownRoute,
-  }) : routerDelegate = routerDelegate ??= Get.createDelegate(notFoundRoute: unknownRoute),
-       routeInformationParser = routeInformationParser ??= Get.createInformationParser(initialRoute: getPages?.first.name ?? '/'),
+  }) : routerDelegate =
+           routerDelegate ??= Get.createDelegate(notFoundRoute: unknownRoute),
+       routeInformationParser =
+           routeInformationParser ??= Get.createInformationParser(
+             initialRoute: getPages?.first.name ?? '/',
+           ),
        navigatorObservers = null,
        navigatorKey = null,
        onGenerateRoute = null,
@@ -230,7 +234,12 @@ class GetCupertinoApp extends StatelessWidget {
   final bool debugShowCheckedModeBanner;
 
   @override
-  Widget build(BuildContext context) => GetBuilder<GetMaterialController>(init: Get.rootController, dispose: (d) => onDispose?.call(), initState: _initState, builder: _buildApp);
+  Widget build(BuildContext context) => GetBuilder<GetMaterialController>(
+    init: Get.rootController,
+    dispose: (d) => onDispose?.call(),
+    initState: _initState,
+    builder: _buildApp,
+  );
 
   void _initState(GetBuilderState<GetMaterialController> state) {
     Get.engine.addPostFrameCallback((_) => onReady?.call());
@@ -267,12 +276,15 @@ class GetCupertinoApp extends StatelessWidget {
       defaultTransition: defaultTransition ?? Get.defaultTransition,
       defaultOpaqueRoute: opaqueRoute ?? Get.isOpaqueRouteDefault,
       defaultPopGesture: popGesture ?? Get.isPopGestureEnable,
-      defaultDurationTransition: transitionDuration ?? Get.defaultTransitionDuration,
+      defaultDurationTransition:
+          transitionDuration ?? Get.defaultTransitionDuration,
     );
   }
 
   Widget _buildApp(GetMaterialController controller) {
-    return routerDelegate != null ? _buildRouterApp(controller) : _buildNavigatorApp(controller);
+    return routerDelegate != null
+        ? _buildRouterApp(controller)
+        : _buildNavigatorApp(controller);
   }
 
   Widget _buildRouterApp(GetMaterialController controller) {
@@ -310,7 +322,10 @@ class GetCupertinoApp extends StatelessWidget {
       routes: routes ?? const <String, WidgetBuilder>{},
       initialRoute: initialRoute,
       onGenerateRoute: getPages != null ? generator : onGenerateRoute,
-      onGenerateInitialRoutes: (getPages == null || home != null) ? onGenerateInitialRoutes : initialRoutesGenerate,
+      onGenerateInitialRoutes:
+          (getPages == null || home != null)
+              ? onGenerateInitialRoutes
+              : initialRoutesGenerate,
       onUnknownRoute: onUnknownRoute,
       navigatorObservers: _buildNavigatorObservers(),
       builder: defaultBuilder,
@@ -332,7 +347,9 @@ class GetCupertinoApp extends StatelessWidget {
   }
 
   List<NavigatorObserver> _buildNavigatorObservers() {
-    final observers = <NavigatorObserver>[GetObserver(routingCallback, Get.routing)];
+    final observers = <NavigatorObserver>[
+      GetObserver(routingCallback, Get.routing),
+    ];
     if (navigatorObservers != null) {
       observers.addAll(navigatorObservers!);
     }
@@ -340,11 +357,20 @@ class GetCupertinoApp extends StatelessWidget {
   }
 
   Widget defaultBuilder(BuildContext context, Widget? child) {
-    return Directionality(textDirection: _getTextDirection(), child: builder == null ? (child ?? const Material()) : builder!(context, child ?? const Material()));
+    return Directionality(
+      textDirection: _getTextDirection(),
+      child:
+          builder == null
+              ? (child ?? const Material())
+              : builder!(context, child ?? const Material()),
+    );
   }
 
   TextDirection _getTextDirection() {
-    return textDirection ?? (rtlLanguages.contains(Get.locale?.languageCode) ? TextDirection.rtl : TextDirection.ltr);
+    return textDirection ??
+        (rtlLanguages.contains(Get.locale?.languageCode)
+            ? TextDirection.rtl
+            : TextDirection.ltr);
   }
 
   Route<dynamic> generator(RouteSettings settings) {
@@ -352,6 +378,11 @@ class GetCupertinoApp extends StatelessWidget {
   }
 
   List<Route<dynamic>> initialRoutesGenerate(String name) {
-    return [PageRedirect(settings: RouteSettings(name: name), unknownRoute: unknownRoute).page()];
+    return [
+      PageRedirect(
+        settings: RouteSettings(name: name),
+        unknownRoute: unknownRoute,
+      ).page(),
+    ];
   }
 }

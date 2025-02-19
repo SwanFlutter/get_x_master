@@ -8,7 +8,10 @@ void main() {
   testWidgets("Get.defaultDialog smoke test", (tester) async {
     await tester.pumpWidget(Wrapper(child: Container()));
 
-    Get.defaultDialog(onConfirm: () => debugPrint("Ok"), middleText: "Dialog made in 3 lines of code");
+    Get.defaultDialog(
+      onConfirm: () => debugPrint("Ok"),
+      middleText: "Dialog made in 3 lines of code",
+    );
 
     await tester.pumpAndSettle();
 

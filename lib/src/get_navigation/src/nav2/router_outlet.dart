@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../get_x_master.dart';
 
-
 /// A generic router outlet widget that manages navigation state and renders
 /// route-specific content based on the current navigation configuration.
 ///
@@ -33,14 +32,12 @@ class RouterOutlet<TDelegate extends RouterDelegate<T>, T extends Object>
     BuildContext context,
     TDelegate delegate,
     T? currentRoute,
-  ) builder;
+  )
+  builder;
 
   /// Creates a router outlet with a custom builder function.
-  RouterOutlet.builder({
-    super.key,
-    TDelegate? delegate,
-    required this.builder,
-  }) : routerDelegate = delegate ?? Get.delegate<TDelegate, T>()!;
+  RouterOutlet.builder({super.key, TDelegate? delegate, required this.builder})
+    : routerDelegate = delegate ?? Get.delegate<TDelegate, T>()!;
 
   /// Creates a router outlet with page picking and building capabilities.
   RouterOutlet({
@@ -51,19 +48,19 @@ class RouterOutlet<TDelegate extends RouterDelegate<T>, T extends Object>
       BuildContext context,
       TDelegate,
       Iterable<GetPage>? page,
-    ) pageBuilder,
+    )
+    pageBuilder,
   }) : this.builder(
-          builder: (context, rDelegate, currentConfig) {
-            var picked =
-                currentConfig == null ? null : pickPages(currentConfig);
-            if (picked?.isEmpty ?? false) {
-              picked = null;
-            }
-            return pageBuilder(context, rDelegate, picked);
-          },
-          delegate: delegate,
-          key: key,
-        );
+         builder: (context, rDelegate, currentConfig) {
+           var picked = currentConfig == null ? null : pickPages(currentConfig);
+           if (picked?.isEmpty ?? false) {
+             picked = null;
+           }
+           return pageBuilder(context, rDelegate, picked);
+         },
+         delegate: delegate,
+         key: key,
+       );
 
   @override
   RouterOutletState<TDelegate, T> createState() =>
@@ -141,29 +138,27 @@ class GetRouterOutlet extends RouterOutlet<GetDelegate, GetNavConfig> {
     GlobalKey<NavigatorState>? navigatorKey,
     GetDelegate? delegate,
   }) : this.pickPages(
-          pickPages: (config) {
-            Iterable<GetPage<dynamic>> ret;
-            if (anchorRoute == null) {
-              // Skip ancestor path segments based on initial route
-              final length = Uri.parse(initialRoute).pathSegments.length;
-              return config.currentTreeBranch
-                  .skip(length)
-                  .take(length)
-                  .toList();
-            }
-            ret = config.currentTreeBranch.pickAfterRoute(anchorRoute);
-            if (filterPages != null) {
-              ret = filterPages(ret);
-            }
-            return ret;
-          },
-          emptyPage: (delegate) =>
-              Get.routeTree.matchRoute(initialRoute).route ??
-              delegate.notFoundRoute,
-          key: key,
-          navigatorKey: navigatorKey,
-          delegate: delegate,
-        );
+         pickPages: (config) {
+           Iterable<GetPage<dynamic>> ret;
+           if (anchorRoute == null) {
+             // Skip ancestor path segments based on initial route
+             final length = Uri.parse(initialRoute).pathSegments.length;
+             return config.currentTreeBranch.skip(length).take(length).toList();
+           }
+           ret = config.currentTreeBranch.pickAfterRoute(anchorRoute);
+           if (filterPages != null) {
+             ret = filterPages(ret);
+           }
+           return ret;
+         },
+         emptyPage:
+             (delegate) =>
+                 Get.routeTree.matchRoute(initialRoute).route ??
+                 delegate.notFoundRoute,
+         key: key,
+         navigatorKey: navigatorKey,
+         delegate: delegate,
+       );
 
   /// Creates a GetRouterOutlet with custom page picking logic.
   GetRouterOutlet.pickPages({
@@ -175,39 +170,39 @@ class GetRouterOutlet extends RouterOutlet<GetDelegate, GetNavConfig> {
     GlobalKey<NavigatorState>? navigatorKey,
     GetDelegate? delegate,
   }) : super(
-          pageBuilder: (context, rDelegate, pages) {
-            final pageRes = <GetPage?>[
-              ...?pages,
-              if (pages == null || pages.isEmpty) emptyPage?.call(rDelegate),
-            ].whereType<GetPage>();
+         pageBuilder: (context, rDelegate, pages) {
+           final pageRes =
+               <GetPage?>[
+                 ...?pages,
+                 if (pages == null || pages.isEmpty) emptyPage?.call(rDelegate),
+               ].whereType<GetPage>();
 
-            if (pageRes.isNotEmpty) {
-              return GetNavigator(
-                onPopPage: onPopPage ??
-                    (route, result) {
-                      final didPop = route.didPop(result);
-                      if (!didPop) {
-                        return false;
-                      }
-                      return true;
-                    },
-                pages: pageRes.toList(),
-                key: navigatorKey,
-              );
-            }
-            return (emptyWidget?.call(rDelegate) ?? const SizedBox.shrink());
-          },
-          delegate: delegate ?? Get.rootDelegate,
-        );
+           if (pageRes.isNotEmpty) {
+             return GetNavigator(
+               onPopPage:
+                   onPopPage ??
+                   (route, result) {
+                     final didPop = route.didPop(result);
+                     if (!didPop) {
+                       return false;
+                     }
+                     return true;
+                   },
+               pages: pageRes.toList(),
+               key: navigatorKey,
+             );
+           }
+           return (emptyWidget?.call(rDelegate) ?? const SizedBox.shrink());
+         },
+         delegate: delegate ?? Get.rootDelegate,
+       );
 
   /// Creates a GetRouterOutlet with a custom builder function.
   GetRouterOutlet.builder({
     super.key, // Now a super parameter
     required super.builder, // Now a super parameter
     GetDelegate? routerDelegate,
-  }) : super.builder(
-          delegate: routerDelegate,
-        );
+  }) : super.builder(delegate: routerDelegate);
 }
 
 /// Extension methods for list of GetPage objects

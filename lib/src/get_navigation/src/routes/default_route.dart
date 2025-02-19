@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../../get_x_master.dart';
 import '../router_report.dart';
 import 'get_transition_mixin.dart';
@@ -98,7 +97,7 @@ class GetPageRoute<T> extends PageRoute<T>
 
     final localbindings = [
       if (bindings != null) ...bindings!,
-      if (binding != null) ...[binding!]
+      if (binding != null) ...[binding!],
     ];
     final bindingsToBind = middlewareRunner.runOnBindingsStart(localbindings);
     if (bindingsToBind != null) {

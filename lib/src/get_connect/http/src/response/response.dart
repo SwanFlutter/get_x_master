@@ -11,15 +11,16 @@ class GraphQLResponse<T> extends Response<T> {
   GraphQLResponse({super.body, this.graphQLErrors});
 
   GraphQLResponse.fromResponse(Response res)
-      : graphQLErrors = null,
-        super(
-            request: res.request,
-            statusCode: res.statusCode,
-            bodyBytes: res.bodyBytes,
-            bodyString: res.bodyString,
-            statusText: res.statusText,
-            headers: res.headers,
-            body: res.body['data'] as T?);
+    : graphQLErrors = null,
+      super(
+        request: res.request,
+        statusCode: res.statusCode,
+        bodyBytes: res.bodyBytes,
+        bodyString: res.bodyString,
+        statusText: res.statusText,
+        headers: res.headers,
+        body: res.body['data'] as T?,
+      );
 }
 
 class Response<T> {
@@ -94,7 +95,9 @@ class Response<T> {
 }
 
 Future<String> bodyBytesToString(
-    Stream<List<int>> bodyBytes, Map<String, String> headers) {
+  Stream<List<int>> bodyBytes,
+  Map<String, String> headers,
+) {
   return bodyBytes.bytesToString(_encodingForHeaders(headers));
 }
 
@@ -134,10 +137,12 @@ class HeaderValue {
     }
   }
 
-  static HeaderValue parse(String value,
-      {String parameterSeparator = ';',
-      String? valueSeparator,
-      bool preserveBackslash = false}) {
+  static HeaderValue parse(
+    String value, {
+    String parameterSeparator = ';',
+    String? valueSeparator,
+    bool preserveBackslash = false,
+  }) {
     var result = HeaderValue();
     result._parse(value, parameterSeparator, valueSeparator, preserveBackslash);
     return result;
@@ -171,8 +176,12 @@ class HeaderValue {
     return stringBuffer.toString();
   }
 
-  void _parse(String value, String parameterSeparator, String? valueSeparator,
-      bool preserveBackslash) {
+  void _parse(
+    String value,
+    String parameterSeparator,
+    String? valueSeparator,
+    bool preserveBackslash,
+  ) {
     var index = 0;
 
     bool done() => index == value.length;

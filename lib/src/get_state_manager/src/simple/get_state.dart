@@ -24,8 +24,8 @@ mixin GetStateUpdaterMixin<T extends StatefulWidget> on State<T> {
   }
 }
 
-typedef GetControllerBuilder<T extends DisposableInterface> = Widget Function(
-    T controller);
+typedef GetControllerBuilder<T extends DisposableInterface> =
+    Widget Function(T controller);
 
 // class _InheritedGetxController<T extends GetxController>
 //     extends InheritedWidget {
@@ -64,7 +64,7 @@ class GetBuilder<T extends GetXController> extends StatefulWidget {
       dispose,
       didChangeDependencies;
   final void Function(GetBuilder oldWidget, GetBuilderState<T> state)?
-      didUpdateWidget;
+  didUpdateWidget;
   final T? init;
 
   const GetBuilder({
@@ -152,14 +152,15 @@ class GetBuilderState<T extends GetXController> extends State<GetBuilder<T>>
   /// setState "link" from the Controller.
   void _subscribeToController() {
     _remove?.call();
-    _remove = (widget.id == null)
-        ? controller?.addListener(
-            _filter != null ? _filterUpdate : getUpdate,
-          )
-        : controller?.addListenerId(
-            widget.id,
-            _filter != null ? _filterUpdate : getUpdate,
-          );
+    _remove =
+        (widget.id == null)
+            ? controller?.addListener(
+              _filter != null ? _filterUpdate : getUpdate,
+            )
+            : controller?.addListenerId(
+              widget.id,
+              _filter != null ? _filterUpdate : getUpdate,
+            );
   }
 
   void _filterUpdate() {

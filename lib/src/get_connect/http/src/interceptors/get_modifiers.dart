@@ -5,8 +5,8 @@ import '../response/response.dart';
 
 typedef RequestModifier<T> = FutureOr<Request<T>> Function(Request<T?> request);
 
-typedef ResponseModifier<T> = FutureOr Function(
-    Request<T?> request, Response<T?> response);
+typedef ResponseModifier<T> =
+    FutureOr Function(Request<T?> request, Response<T?> response);
 
 typedef HandlerExecute<T> = Future<Request<T>> Function();
 
@@ -43,7 +43,9 @@ class GetModifier<S> {
   }
 
   Future<Response<T>> modifyResponse<T>(
-      Request<T> request, Response<T> response) async {
+    Request<T> request,
+    Response<T> response,
+  ) async {
     var newResponse = response;
     if (_responseModifiers.isNotEmpty) {
       for (var interceptor in _responseModifiers) {

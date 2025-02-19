@@ -25,7 +25,9 @@ class HttpRequestImpl implements IClient {
   Future<Response<T>> send<T>(Request<T> request) async {
     if (_isClosed) {
       throw GetHttpException(
-          'HTTP request failed. Client is already closed.', request.url);
+        'HTTP request failed. Client is already closed.',
+        request.url,
+      );
     }
 
     var bytes = await request.bodyBytes.toBytes();
@@ -38,48 +40,57 @@ class HttpRequestImpl implements IClient {
     _xhrs.add(xhr);
 
     xhr
-      ..responseType = 'arraybuffer' // Changed from 'blob' to 'arraybuffer'
+      ..responseType =
+          'arraybuffer' // Changed from 'blob' to 'arraybuffer'
       ..withCredentials = withCredentials;
 
     request.headers.forEach((key, value) => xhr.setRequestHeader(key, value));
 
     var completer = Completer<Response<T>>();
 
-    unawaited(xhr.onLoad.first.then((_) async {
-      final bodyBytes =
-          (xhr.response as JSArrayBuffer).toDart.asUint8List().toStream();
+    unawaited(
+      xhr.onLoad.first.then((_) async {
+        final bodyBytes =
+            (xhr.response as JSArrayBuffer).toDart.asUint8List().toStream();
 
-      if (request.responseInterceptor != null) {
-        throw GetHttpException(
-            'Response interception not implemented for web yet!', request.url);
-      }
+        if (request.responseInterceptor != null) {
+          throw GetHttpException(
+            'Response interception not implemented for web yet!',
+            request.url,
+          );
+        }
 
-      final stringBody =
-          await bodyBytesToString(bodyBytes, xhr.responseHeaders);
-      final contentType =
-          xhr.responseHeaders['content-type'] ?? 'application/json';
+        final stringBody = await bodyBytesToString(
+          bodyBytes,
+          xhr.responseHeaders,
+        );
+        final contentType =
+            xhr.responseHeaders['content-type'] ?? 'application/json';
 
-      final body = bodyDecoded<T>(request, stringBody, contentType);
+        final body = bodyDecoded<T>(request, stringBody, contentType);
 
-      final response = Response<T>(
-        bodyBytes: bodyBytes,
-        statusCode: xhr.status,
-        request: request,
-        headers: xhr.responseHeaders,
-        statusText: xhr.statusText,
-        body: body,
-        bodyString: stringBody,
-      );
+        final response = Response<T>(
+          bodyBytes: bodyBytes,
+          statusCode: xhr.status,
+          request: request,
+          headers: xhr.responseHeaders,
+          statusText: xhr.statusText,
+          body: body,
+          bodyString: stringBody,
+        );
 
-      completer.complete(response);
-    }));
+        completer.complete(response);
+      }),
+    );
 
-    unawaited(xhr.onError.first.then((_) {
-      completer.completeError(
-        GetHttpException('XMLHttpRequest error.', request.url),
-        StackTrace.current,
-      );
-    }));
+    unawaited(
+      xhr.onError.first.then((_) {
+        completer.completeError(
+          GetHttpException('XMLHttpRequest error.', request.url),
+          StackTrace.current,
+        );
+      }),
+    );
 
     xhr.send(bytes.toJS);
 

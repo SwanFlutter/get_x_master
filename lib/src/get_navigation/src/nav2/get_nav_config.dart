@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../../../get_x_master.dart';
 
-
 /// A navigation configuration class that enables direct navigation to sub-routes
 /// and manages the current navigation state in GetX.
 ///
@@ -58,9 +57,7 @@ class GetNavConfig extends RouteInformation {
     required this.currentTreeBranch,
     required String? location,
     required super.state,
-  }) : super(
-          uri: Uri.parse(location ?? '/'),
-        );
+  }) : super(uri: Uri.parse(location ?? '/'));
 
   /// Returns the string representation of the current location.
   String get locationString => uri.toString();

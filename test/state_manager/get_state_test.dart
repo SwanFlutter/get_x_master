@@ -13,8 +13,14 @@ void main() {
               (controller) => Column(
                 children: [
                   Text('${controller.counter}'),
-                  TextButton(child: const Text("increment"), onPressed: () => controller.increment()),
-                  TextButton(child: const Text("incrementWithId"), onPressed: () => controller.incrementWithId()),
+                  TextButton(
+                    child: const Text("increment"),
+                    onPressed: () => controller.increment(),
+                  ),
+                  TextButton(
+                    child: const Text("incrementWithId"),
+                    onPressed: () => controller.incrementWithId(),
+                  ),
                   GetBuilder<Controller>(
                     id: '1',
                     didChangeDependencies: (_) {

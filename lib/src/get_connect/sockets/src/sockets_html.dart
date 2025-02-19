@@ -22,9 +22,10 @@ class BaseWebSocket {
     this.ping = const Duration(seconds: 5),
     this.allowSelfSigned = true,
   }) {
-    url = url.startsWith('https')
-        ? url.replaceAll('https:', 'wss:')
-        : url.replaceAll('http:', 'ws:');
+    url =
+        url.startsWith('https')
+            ? url.replaceAll('https:', 'wss:')
+            : url.replaceAll('http:', 'ws:');
   }
 
   void close([int? status, String? reason]) {
@@ -118,8 +119,4 @@ class BaseWebSocket {
   }
 }
 
-enum ConnectionStatus {
-  connecting,
-  connected,
-  closed,
-}
+enum ConnectionStatus { connecting, connected, closed }

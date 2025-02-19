@@ -6,7 +6,11 @@ extension ListSortExtension<T> on List<T> {
   /// final numbers = [3, 1, 4, 1, 5];
   /// final sorted = numbers.sortList(); // [1, 1, 3, 4, 5]
   /// final descending = numbers.sortList(descending: true); // [5, 4, 3, 1, 1]
+  ///
+  ///
   /// ```
+  ///
+  ///
   List<T> sortList({bool descending = false}) {
     List<T> sorted = List.from(this);
     sorted.sort((a, b) {
@@ -28,9 +32,16 @@ extension ListSortExtension<T> on List<T> {
   ///   Person('Charlie', 35)
   /// ];
   /// final sortedByAge = people.sortByField((p) => p.age); // Sorted by age ascending
+  ///
+  ///
   /// ```
-  List<T> sortByField<K extends Comparable>(K Function(T) field,
-      {bool descending = false}) {
+  ///
+  ///
+  ///
+  List<T> sortByField<K extends Comparable>(
+    K Function(T) field, {
+    bool descending = false,
+  }) {
     List<T> sorted = List.from(this);
     sorted.sort((a, b) {
       if (descending) {
@@ -54,7 +65,11 @@ extension ListSortExtension<T> on List<T> {
   ///   (a, b) => a.age.compareTo(b.age),
   ///   (a, b) => a.name.compareTo(b.name)
   /// ]);
+  ///
+  ///
   /// ```
+  ///
+  ///
   List<T> sortByMultipleFields(List<Comparator<T>> comparators) {
     List<T> sorted = List.from(this);
     sorted.sort((a, b) {
@@ -75,7 +90,12 @@ extension ListSortExtension<T> on List<T> {
   /// final sortedCaseInsensitive = words.sortWithComparison(
   ///   (a, b) => a.toLowerCase().compareTo(b.toLowerCase())
   /// );
+  ///
+  ///
+  ///
   /// ```
+  ///
+  ///
   List<T> sortWithComparison(Comparator<T> comparison) {
     List<T> sorted = List.from(this);
     sorted.sort(comparison);
@@ -88,7 +108,11 @@ extension ListSortExtension<T> on List<T> {
   /// ```dart
   /// final numbers = [3, 1, 4, 1, 5, 3];
   /// final uniqueSorted = numbers.sortUnique(); // [1, 3, 4, 5]
+  ///
+  ///
   /// ```
+  ///
+  ///
   List<T> sortUnique({bool descending = false}) {
     return sortList(descending: descending).toSet().toList();
   }
@@ -99,7 +123,12 @@ extension ListSortExtension<T> on List<T> {
   /// ```dart
   /// final numbers = [5, 2, 8, 1, 9, 3, 7, 4, 6];
   /// final chunkSorted = numbers.chunkSort(chunkSize: 3);
+  ///
+  ///
+  ///
   /// ```
+  ///
+  ///
   List<T> chunkSort({int chunkSize = 1000, bool descending = false}) {
     if (length <= chunkSize) {
       return sortList(descending: descending);

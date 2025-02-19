@@ -84,10 +84,7 @@ abstract class GetConnectInterface with GetLifeCycleBase {
     Map<String, String>? headers,
   });
 
-  GetSocket socket(
-    String url, {
-    Duration ping = const Duration(seconds: 5),
-  });
+  GetSocket socket(String url, {Duration ping = const Duration(seconds: 5)});
 }
 
 class GetConnect extends GetConnectInterface {
@@ -122,18 +119,20 @@ class GetConnect extends GetConnectInterface {
   List<GetSocket> get sockets => _sockets ??= <GetSocket>[];
 
   @override
-  GetHttpClient get httpClient => _httpClient ??= GetHttpClient(
-      userAgent: userAgent,
-      sendUserAgent: sendUserAgent,
-      timeout: timeout,
-      followRedirects: followRedirects,
-      maxRedirects: maxRedirects,
-      maxAuthRetries: maxAuthRetries,
-      allowAutoSignedCert: allowAutoSignedCert,
-      baseUrl: baseUrl,
-      trustedCertificates: trustedCertificates,
-      withCredentials: withCredentials,
-      findProxy: findProxy);
+  GetHttpClient get httpClient =>
+      _httpClient ??= GetHttpClient(
+        userAgent: userAgent,
+        sendUserAgent: sendUserAgent,
+        timeout: timeout,
+        followRedirects: followRedirects,
+        maxRedirects: maxRedirects,
+        maxAuthRetries: maxAuthRetries,
+        allowAutoSignedCert: allowAutoSignedCert,
+        baseUrl: baseUrl,
+        trustedCertificates: trustedCertificates,
+        withCredentials: withCredentials,
+        findProxy: findProxy,
+      );
 
   /// Performs a GET request to the specified URL.
   ///
@@ -369,10 +368,7 @@ class GetConnect extends GetConnectInterface {
   }
 
   @override
-  GetSocket socket(
-    String url, {
-    Duration ping = const Duration(seconds: 5),
-  }) {
+  GetSocket socket(String url, {Duration ping = const Duration(seconds: 5)}) {
     _checkIfDisposed(isHttp: false);
 
     final newSocket = GetSocket(_concatUrl(url)!, ping: ping);
@@ -412,33 +408,34 @@ class GetConnect extends GetConnectInterface {
     Map<String, String>? headers,
   }) async {
     try {
-      final res = await post(
-        url,
-        {'query': query, 'variables': variables},
-        headers: headers,
-      );
+      final res = await post(url, {
+        'query': query,
+        'variables': variables,
+      }, headers: headers);
 
       final listError = res.body['errors'];
       if ((listError is List) && listError.isNotEmpty) {
         return GraphQLResponse<T>(
-            graphQLErrors: listError
-                .map((e) => GraphQLError(
-                      code: (e['extensions'] != null
-                              ? e['extensions']['code'] ?? ''
-                              : '')
-                          .toString(),
+          graphQLErrors:
+              listError
+                  .map(
+                    (e) => GraphQLError(
+                      code:
+                          (e['extensions'] != null
+                                  ? e['extensions']['code'] ?? ''
+                                  : '')
+                              .toString(),
                       message: (e['message'] ?? '').toString(),
-                    ))
-                .toList());
+                    ),
+                  )
+                  .toList(),
+        );
       }
       return GraphQLResponse<T>.fromResponse(res);
     } on Exception catch (err) {
-      return GraphQLResponse<T>(graphQLErrors: [
-        GraphQLError(
-          code: null,
-          message: err.toString(),
-        )
-      ]);
+      return GraphQLResponse<T>(
+        graphQLErrors: [GraphQLError(code: null, message: err.toString())],
+      );
     }
   }
 
@@ -450,30 +447,30 @@ class GetConnect extends GetConnectInterface {
     Map<String, String>? headers,
   }) async {
     try {
-      final res = await post(
-        url,
-        {'query': mutation, 'variables': variables},
-        headers: headers,
-      );
+      final res = await post(url, {
+        'query': mutation,
+        'variables': variables,
+      }, headers: headers);
 
       final listError = res.body['errors'];
       if ((listError is List) && listError.isNotEmpty) {
         return GraphQLResponse<T>(
-            graphQLErrors: listError
-                .map((e) => GraphQLError(
+          graphQLErrors:
+              listError
+                  .map(
+                    (e) => GraphQLError(
                       code: e['extensions']['code']?.toString(),
                       message: e['message']?.toString(),
-                    ))
-                .toList());
+                    ),
+                  )
+                  .toList(),
+        );
       }
       return GraphQLResponse<T>.fromResponse(res);
     } on Exception catch (err) {
-      return GraphQLResponse<T>(graphQLErrors: [
-        GraphQLError(
-          code: null,
-          message: err.toString(),
-        )
-      ]);
+      return GraphQLResponse<T>(
+        graphQLErrors: [GraphQLError(code: null, message: err.toString())],
+      );
     }
   }
 

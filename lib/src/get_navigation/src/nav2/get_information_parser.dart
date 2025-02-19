@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../../../get_x_master.dart';
 
-
 /// A custom route information parser for GetX navigation system.
 ///
 /// This parser converts between route information (URL and state) and [GetNavConfig] objects.
@@ -38,9 +37,7 @@ class GetInformationParser extends RouteInformationParser<GetNavConfig> {
   ///
   /// [initialRoute] specifies the default route to use when no route
   /// is provided or when the root route ('/') has no matching handler.
-  GetInformationParser({
-    this.initialRoute = '/',
-  }) {
+  GetInformationParser({this.initialRoute = '/'}) {
     Get.log('GetInformationParser is created !');
   }
 

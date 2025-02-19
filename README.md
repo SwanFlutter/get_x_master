@@ -126,14 +126,18 @@ These links will help you access the full documentation and detailed information
 Add Get to your pubspec.yaml file:
 
 ```yaml
+
 dependencies:
-  get:
+  get_x_master: ^0.0.1
+
 ```
 
 Import get in files that it will be used:
 
 ```dart
-import 'package:getx/getx.dart';
+
+import 'package:get_x_master/get_x_master.dart';
+
 ```
 
 # Counter App with GetX
@@ -144,7 +148,9 @@ The "counter" project created by default on new project on Flutter has over 100 
   Add "Get" before your MaterialApp, turning it into GetMaterialApp
 
 ```dart
+
 void main() => runApp(GetMaterialApp(home: Home()));
+
 ```
 
 - Note: this does not modify the MaterialApp of the Flutter, GetMaterialApp is not a modified MaterialApp, it is just a pre-configured Widget, which has the default MaterialApp as a child. You can configure this manually, but it is definitely not necessary. GetMaterialApp will create routes, inject them, inject translations, inject everything you need for route navigation. If you use Get only for state management or dependency management, it is not necessary to use GetMaterialApp. GetMaterialApp is necessary for routes, snackbars, internationalization, bottomSheets, dialogs, and high-level apis related to routes and absence of context.
@@ -155,16 +161,19 @@ void main() => runApp(GetMaterialApp(home: Home()));
   You can make any variable observable using a simple ".obs".
 
 ```dart
+
 class Controller extends GetxController{
   var count = 0.obs;
   increment() => count++;
 }
+
 ```
 
 - Step 3:
   Create your View, use StatelessWidget and save some RAM, with Get you may no longer need to use StatefulWidget.
 
 ```dart
+
 class Home extends StatelessWidget {
 
   @override
@@ -195,7 +204,47 @@ class Other extends StatelessWidget {
      return Scaffold(body: Center(child: Text("${c.count}")));
   }
 }
+
 ```
+
+- New feature
+
+```dart
+
+class Home extends StatelessWidget {
+
+  @override
+  Widget build(context) {
+
+    // Instantiate your class using Get.smartLazyPut() to make it available for all "child" routes there.
+    final Controller c = Get.smartLazyPut(Controller());
+
+    return Scaffold(
+      // Use Obx(()=> to update Text() whenever count is changed.
+      appBar: AppBar(title: Obx(() => Text("Clicks: ${c.count}"))),
+
+      // Replace the 8 lines Navigator.push by a simple Get.to(). You don't need context
+      body: Center(child: ElevatedButton(
+              child: Text("Go to Other"), onPressed: () => Get.to(Other()))),
+      floatingActionButton:
+          FloatingActionButton(child: Icon(Icons.add), onPressed: c.increment));
+  }
+}
+
+class Other extends StatelessWidget {
+  // You can ask Get to find a Controller that is being used by another page and redirect you to it.
+  final Controller c = Get.smartFind();
+
+  @override
+  Widget build(context){
+     // Access the updated count variable
+     return Scaffold(body: Center(child: Text("${c.count}")));
+  }
+}
+
+```
+
+---
 
 Result:
 
@@ -230,19 +279,25 @@ Let's imagine that you have a name variable and want that every time you change 
 This is your count variable:
 
 ```dart
+
 var name = 'Jonatas Borges';
+
 ```
 
 To make it observable, you just need to add ".obs" to the end of it:
 
 ```dart
+
 var name = 'Jonatas Borges'.obs;
+
 ```
 
 And in the UI, when you want to show that value and update the screen whenever the values changes, simply do this:
 
 ```dart
+
 Obx(() => Text("${controller.name}"));
+
 ```
 
 That's all. It's _that_ simple.
@@ -260,9 +315,11 @@ If you are going to use routes/snackbars/dialogs/bottomsheets without context, G
 Add "Get" before your MaterialApp, turning it into GetMaterialApp
 
 ```dart
+
 GetMaterialApp( // Before: MaterialApp(
   home: MyHome(),
 )
+
 ```
 
 Navigate to a new screen:
@@ -270,6 +327,7 @@ Navigate to a new screen:
 ```dart
 
 Get.to(NextScreen());
+
 ```
 
 Navigate to new screen with name. See more details on named routes [here](./documentation/en_US/route_management.md#navigation-with-named-routes)
@@ -277,24 +335,31 @@ Navigate to new screen with name. See more details on named routes [here](./docu
 ```dart
 
 Get.toNamed('/details');
+
 ```
 
 To close snackbars, dialogs, bottomsheets, or anything you would normally close with Navigator.pop(context);
 
 ```dart
+
 Get.back();
+
 ```
 
 To go to the next screen and no option to go back to the previous screen (for use in SplashScreens, login screens, etc.)
 
 ```dart
+
 Get.off(NextScreen());
+
 ```
 
 To go to the next screen and cancel all previous routes (useful in shopping carts, polls, and tests)
 
 ```dart
+
 Get.offAll(NextScreen());
+
 ```
 
 Noticed that you didn't have to use context to do any of these things? That's one of the biggest advantages of using Get route management. With this, you can execute all these methods from within your controller class, without worries.
@@ -308,7 +373,9 @@ Noticed that you didn't have to use context to do any of these things? That's on
 Get has a simple and powerful dependency manager that allows you to retrieve the same class as your Bloc or Controller with just 1 lines of code, no Provider context, no inheritedWidget:
 
 ```dart
+
 Controller controller = Get.put(Controller()); // Rather Controller controller = Controller();
+
 ```
 
 - Note: If you are using Get's State Manager, pay more attention to the bindings API, which will make it easier to connect your view to your controller.
@@ -319,21 +386,29 @@ So you can use your controller (or class Bloc) normally
 **Tip:** Get dependency management is decoupled from other parts of the package, so if for example, your app is already using a state manager (any one, it doesn't matter), you don't need to rewrite it all, you can use this dependency injection with no problems at all
 
 ```dart
+
 controller.fetchApi();
+
 ```
 
 Imagine that you have navigated through numerous routes, and you need data that was left behind in your controller, you would need a state manager combined with the Provider or Get_it, correct? Not with Get. You just need to ask Get to "find" for your controller, you don't need any additional dependencies:
 
 ```dart
+
 Controller controller = Get.find();
+
 //Yes, it looks like Magic, Get will find your controller, and will deliver it to you. You can have 1 million controllers instantiated, Get will always give you the right controller.
 ```
 
 And then you will be able to recover your controller data that was obtained back there:
 
 ```dart
+
 Text(controller.textFromApi);
+
 ```
+
+---
 
 ### More details about dependency management
 
@@ -349,6 +424,7 @@ Translations are kept as a simple key-value dictionary map.
 To add custom translations, create a class and extend `Translations`.
 
 ```dart
+
 import 'package:get/get.dart';
 
 class Messages extends Translations {
@@ -362,6 +438,7 @@ class Messages extends Translations {
         }
       };
 }
+
 ```
 
 #### Using translations
@@ -369,19 +446,24 @@ class Messages extends Translations {
 Just append `.tr` to the specified key and it will be translated, using the current value of `Get.locale` and `Get.fallbackLocale`.
 
 ```dart
+
 Text('title'.tr);
+
 ```
 
 #### Using translation with singular and plural
 
 ```dart
+
 var products = [];
 Text('singularKey'.trPlural('pluralKey', products.length, Args));
+
 ```
 
 #### Using translation with parameters
 
 ```dart
+
 import 'package:get/get.dart';
 
 
@@ -398,6 +480,7 @@ Text('logged_in'.trParams({
   'name': 'Jhon',
   'email': 'jhon@example.com'
   }));
+
 ```
 
 ### Locales
@@ -405,11 +488,13 @@ Text('logged_in'.trParams({
 Pass parameters to `GetMaterialApp` to define the locale and translations.
 
 ```dart
+
 return GetMaterialApp(
     translations: Messages(), // your translations
     locale: Locale('en', 'US'), // translations will be displayed in that locale
     fallbackLocale: Locale('en', 'UK'), // specify the fallback locale in case an invalid locale is selected.
 );
+
 ```
 
 #### Change locale
@@ -417,8 +502,10 @@ return GetMaterialApp(
 Call `Get.updateLocale(locale)` to update the locale. Translations then automatically use the new locale.
 
 ```dart
+
 var locale = Locale('en', 'US');
 Get.updateLocale(locale);
+
 ```
 
 #### System locale
@@ -426,10 +513,14 @@ Get.updateLocale(locale);
 To read the system locale, you could use `Get.deviceLocale`.
 
 ```dart
+
 return GetMaterialApp(
     locale: Get.deviceLocale,
 );
+
 ```
+
+---
 
 ## Change Theme
 
@@ -438,7 +529,9 @@ Please do not use any higher level widget than `GetMaterialApp` in order to upda
 You can create your custom theme and simply add it within `Get.changeTheme` without any boilerplate for that:
 
 ```dart
+
 Get.changeTheme(ThemeData.light());
+
 ```
 
 If you want to create something like a button that changes the Theme in `onTap`, you can combine two **GetX™** APIs for that:
@@ -447,10 +540,16 @@ If you want to create something like a button that changes the Theme in `onTap`,
 - And the `Theme` Change API, you can just put this within an `onPressed`:
 
 ```dart
+
 Get.changeTheme(Get.isDarkMode? ThemeData.light(): ThemeData.dark());
+
 ```
 
 When `.darkmode` is activated, it will switch to the _light theme_, and when the _light theme_ becomes active, it will change to _dark theme_.
+
+
+---
+
 
 ## GetConnect
 
@@ -461,6 +560,7 @@ GetConnect is an easy way to communicate from your back to your front with http 
 You can simply extend GetConnect and use the GET/POST/PUT/DELETE/SOCKET methods to communicate with your Rest API or websockets.
 
 ```dart
+
 class UserProvider extends GetConnect {
   // Get request
   Future<Response> getUser(int id) => get('http://youapi/users/$id');
@@ -479,13 +579,17 @@ class UserProvider extends GetConnect {
     return socket('https://yourapi/users/socket');
   }
 }
+
 ```
+
+
 
 ### Custom configuration
 
 GetConnect is highly customizable You can define base Url, as answer modifiers, as Requests modifiers, define an authenticator, and even the number of attempts in which it will try to authenticate itself, in addition to giving the possibility to define a standard decoder that will transform all your requests into your Models without any additional configuration.
 
 ```dart
+
 class HomeProvider extends GetConnect {
   @override
   void onInit() {
@@ -527,7 +631,11 @@ class HomeProvider extends GetConnect {
   @override
   Future<Response<CasesModel>> getCases(String path) => get(path);
 }
+
 ```
+
+---
+
 
 ## GetPage Middleware
 
@@ -540,12 +648,14 @@ The GetPage has now new property that takes a list of GetMiddleWare and run them
 The Order of the Middlewares to run can be set by the priority in the GetMiddleware.
 
 ```dart
+
 final middlewares = [
   GetMiddleware(priority: 2),
   GetMiddleware(priority: 5),
   GetMiddleware(priority: 4),
   GetMiddleware(priority: -8),
 ];
+
 ```
 
 those middlewares will be run in this order **-8 => 2 => 4 => 5**
@@ -555,10 +665,12 @@ those middlewares will be run in this order **-8 => 2 => 4 => 5**
 This function will be called when the page of the called route is being searched for. It takes RouteSettings as a result to redirect to. Or give it null and there will be no redirecting.
 
 ```dart
+
 RouteSettings redirect(String route) {
   final authService = Get.find<AuthService>();
   return authService.authed.value ? null : RouteSettings(name: '/login')
 }
+
 ```
 
 ### onPageCalled
@@ -567,10 +679,12 @@ This function will be called when this Page is called before anything created
 you can use it to change something about the page or give it new page
 
 ```dart
+
 GetPage onPageCalled(GetPage page) {
   final authService = Get.find<AuthService>();
   return page.copyWith(title: 'Welcome ${authService.UserName}');
 }
+
 ```
 
 ### OnBindingsStart
@@ -579,6 +693,7 @@ This function will be called right before the Bindings are initialize.
 Here you can change Bindings for this page.
 
 ```dart
+
 List<Bindings> onBindingsStart(List<Bindings> bindings) {
   final authService = Get.find<AuthService>();
   if (authService.isAdmin) {
@@ -586,6 +701,7 @@ List<Bindings> onBindingsStart(List<Bindings> bindings) {
   }
   return bindings;
 }
+
 ```
 
 ### OnPageBuildStart
@@ -594,10 +710,12 @@ This function will be called right after the Bindings are initialize.
 Here you can do something after that you created the bindings and before creating the page widget.
 
 ```dart
+
 GetPageBuilder onPageBuildStart(GetPageBuilder page) {
   print('bindings are ready');
   return page;
 }
+
 ```
 
 ### OnPageBuilt
@@ -611,6 +729,7 @@ This function will be called right after disposing all the related objects (Cont
 ## Other Advanced APIs
 
 ```dart
+
 // give the current args from currentScreen
 Get.arguments
 
@@ -738,6 +857,8 @@ context.isTablet()
 /// tablet: if the shortestSide is smaller than 1200
 /// desktop: if width is largest than 1200
 context.responsiveValue<T>()
+
+
 ```
 
 ### Optional Global Settings and Manual configurations
@@ -745,27 +866,34 @@ context.responsiveValue<T>()
 GetMaterialApp configures everything for you, but if you want to configure Get manually.
 
 ```dart
+
 MaterialApp(
   navigatorKey: Get.key,
   navigatorObservers: [GetObserver()],
 );
+
+
 ```
 
 You will also be able to use your own Middleware within `GetObserver`, this will not influence anything.
 
 ```dart
+
 MaterialApp(
   navigatorKey: Get.key,
   navigatorObservers: [
     GetObserver(MiddleWare.observer) // Here
   ],
 );
+
+
 ```
 
 You can create _Global Settings_ for `Get`. Just add `Get.config` to your code before pushing any route.
 Or do it directly in your `GetMaterialApp`
 
 ```dart
+
 GetMaterialApp(
   enableLog: true,
   defaultTransition: Transition.fade,
@@ -780,6 +908,7 @@ Get.config(
   defaultPopGesture = true,
   defaultTransition = Transitions.cupertino
 )
+
 ```
 
 You can optionally redirect all the logging messages from `Get`.
@@ -787,6 +916,7 @@ If you want to use your own, favourite logging package,
 and want to capture the logs there:
 
 ```dart
+
 GetMaterialApp(
   enableLog: true,
   logWriterCallback: localLogWriter,
@@ -813,6 +943,7 @@ of the body in a `Scaffold`.
 A simplification of `StatefulWidget` that works with a `.setState` callback that takes the updated value.
 
 ```dart
+
 ValueBuilder<bool>(
   initialValue: false,
   builder: (value, updateFn) => Switch(
@@ -823,6 +954,7 @@ ValueBuilder<bool>(
   onUpdate: (value) => print("Value updated: $value"),
   onDispose: () => print("Widget unmounted"),
 ),
+
 ```
 
 #### ObxValue
@@ -831,12 +963,14 @@ Similar to [`ValueBuilder`](#valuebuilder), but this is the Reactive version, yo
 updates automatically... isn't it awesome?
 
 ```dart
+
 ObxValue((data) => Switch(
         value: data.value,
         onChanged: data, // Rx has a _callable_ function! You could use (flag) => data.value = flag,
     ),
     false.obs,
 ),
+
 ```
 
 ## Useful tips
@@ -848,8 +982,10 @@ ObxValue((data) => Switch(
 > looks cleaner, but:
 
 ```dart
+
 var message = 'Hello world'.obs;
 print( 'Message "$message" has Type ${message.runtimeType}');
+
 ```
 
 Even if `message` _prints_ the actual String value, the Type is **RxString**!
@@ -943,6 +1079,7 @@ user.update((value){
 });
 
 print( user );
+
 ```
 ## StateMixin
 
@@ -951,28 +1088,35 @@ To implement it, use the `with` to add the `StateMixin<T>`
 to your controller which allows a T model.
 
 ``` dart
+
 class Controller extends GetController with StateMixin<User>{}
+
 ```
 
 The `change()` method change the State whenever we want.
 Just pass the data and the status in this way:
 
 ```dart
+
 change(data, status: RxStatus.success());
+
 ```
 
 RxStatus allow these status:
 
 ``` dart
+
 RxStatus.loading();
 RxStatus.success();
 RxStatus.empty();
 RxStatus.error('message');
+
 ```
 
 To represent it in the UI, use:
 
 ```dart
+
 class OtherClass extends GetView<Controller> {
   @override
   Widget build(BuildContext context) {
@@ -991,8 +1135,12 @@ class OtherClass extends GetView<Controller> {
         onError: (error)=>Text(error),
       ),
     );
+  }
 }
+
 ```
+
+---
 
 #### GetView
 
@@ -1001,6 +1149,7 @@ I love this Widget, is so simple, yet, so useful!
 Is a `const Stateless` Widget that has a getter `controller` for a registered `Controller`, that's all.
 
 ```dart
+
  class AwesomeController extends GetController {
    final String title = 'My Awesome View';
  }
@@ -1015,7 +1164,10 @@ Is a `const Stateless` Widget that has a getter `controller` for a registered `C
      );
    }
  }
+
 ```
+
+
 
 #### GetResponsiveView
 
@@ -1066,6 +1218,7 @@ So is super useful to keep your "Services" always reachable and active with `Get
 `ApiService`, `StorageService`, `CacheService`.
 
 ```dart
+
 Future<void> main() async {
   await initServices(); /// AWAIT SERVICES INITIALIZATION.
   runApp(SomeApp());
@@ -1113,6 +1266,7 @@ lifetime of your app, use `GetxService`.
 You can test your controllers like any other class, including their lifecycles:
 
 ```dart
+
 class Controller extends GetxController {
   @override
   void onInit() {
@@ -1157,6 +1311,7 @@ Test the state of the reactive variable "name" across all of its lifecycles''',
     expect(controller.name.value, '');
   });
 }
+
 ```
 
 #### Tips
@@ -1165,7 +1320,9 @@ Test the state of the reactive variable "name" across all of its lifecycles''',
 If you need to mock your GetxController/GetxService, you should extend GetxController, and mixin it with Mock, that way
 
 ```dart
+
 class NotificationServiceMock extends GetxService with Mock implements NotificationService {}
+
 ```
 
 ##### Using Get.reset()
@@ -1194,21 +1351,25 @@ RxController and GetBuilder now have merged, you no longer need to memorize whic
 Before:
 
 ```dart
+
 GetMaterialApp(
   namedRoutes: {
     '/': GetRoute(page: Home()),
   }
 )
+
 ```
 
 Now:
 
 ```dart
+
 GetMaterialApp(
   getPages: [
     GetPage(name: '/', page: () => Home()),
   ]
 )
+
 ```
 
 Why this change?
@@ -1226,7 +1387,10 @@ GetMaterialApp(
     })
   ]
 )
+
 ```
+
+---
 
 # Why Getx?
 
@@ -1240,6 +1404,8 @@ GetMaterialApp(
 If you need context to find an InheritedWidget, you need it in the view, or pass the context by parameter. I particularly find this solution very ugly, and to work in teams we will always have a dependence on View's business logic. Getx is unorthodox with the standard approach, and while it does not completely ban the use of StatefulWidgets, InitState, etc., it always has a similar approach that can be cleaner. Controllers have life cycles, and when you need to make an APIREST request for example, you don't depend on anything in the view. You can use onInit to initiate the http call, and when the data arrives, the variables will be populated. As GetX is fully reactive (really, and works under streams), once the items are filled, all widgets that use that variable will be automatically updated in the view. This allows people with UI expertise to work only with widgets, and not have to send anything to business logic other than user events (like clicking a button), while people working with business logic will be free to create and test the business logic separately.
 
 This library will always be updated and implementing new features. Feel free to offer PRs and contribute to them.
+
+---
 
 # Community
 

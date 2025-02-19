@@ -18,7 +18,10 @@ void main() {
                 Text('List: ${controller.list.length}'),
                 Text('Bool: ${controller.boolean.value}'),
                 Text('Map: ${controller.map.length}'),
-                TextButton(child: const Text("increment"), onPressed: () => controller.increment()),
+                TextButton(
+                  child: const Text("increment"),
+                  onPressed: () => controller.increment(),
+                ),
                 GetX<Controller2>(
                   builder: (controller) {
                     return Text('lazy ${controller.lazy.value}');

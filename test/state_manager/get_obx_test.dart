@@ -18,7 +18,10 @@ void main() {
                   Text('List: ${controller.list.length}'),
                   Text('Bool: ${controller.boolean.value}'),
                   Text('Map: ${controller.map.length}'),
-                  TextButton(onPressed: controller.increment, child: const Text("increment")),
+                  TextButton(
+                    onPressed: controller.increment,
+                    child: const Text("increment"),
+                  ),
                   Obx(() => Text('Obx: ${controller.map.length}')),
                 ],
               ),

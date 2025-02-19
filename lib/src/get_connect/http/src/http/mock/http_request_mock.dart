@@ -22,15 +22,12 @@ class MockClient extends IClient {
 
     final stringBody = await bodyBytesToString(bodyBytes, response.headers!);
 
-    var mimeType = response.headers!.containsKey('content-type')
-        ? response.headers!['content-type']
-        : '';
+    var mimeType =
+        response.headers!.containsKey('content-type')
+            ? response.headers!['content-type']
+            : '';
 
-    final body = bodyDecoded<T>(
-      request,
-      stringBody,
-      mimeType,
-    );
+    final body = bodyDecoded<T>(request, stringBody, mimeType);
     return Response(
       headers: response.headers,
       request: request,

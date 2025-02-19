@@ -2,7 +2,6 @@
 
 import 'package:flutter/widgets.dart';
 
-
 import '../../../../get_x_master.dart';
 import 'get_widget_cache.dart';
 

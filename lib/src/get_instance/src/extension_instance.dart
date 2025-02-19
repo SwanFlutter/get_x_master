@@ -28,8 +28,11 @@ extension Inst on GetInterface {
   ///
   /// Subsequent calls to `Get.lazyPut` with the same parameters
   /// (`<S>` and optionally [tag] will **not** override the original).
-  void lazyPut<S>(InstanceBuilderCallback<S> builder,
-      {String? tag, bool fenix = false}) {
+  void lazyPut<S>(
+    InstanceBuilderCallback<S> builder, {
+    String? tag,
+    bool fenix = false,
+  }) {
     GetInstance().lazyPut<S>(builder, tag: tag, fenix: fenix);
   }
 
@@ -40,8 +43,11 @@ extension Inst on GetInterface {
   /// async version of `Get.put()`.
   /// Awaits for the resolution of the Future from `builder()`parameter and
   /// stores the Instance returned.
-  Future<S> putAsync<S>(AsyncInstanceBuilderCallback<S> builder,
-          {String? tag, bool permanent = false}) async =>
+  Future<S> putAsync<S>(
+    AsyncInstanceBuilderCallback<S> builder, {
+    String? tag,
+    bool permanent = false,
+  }) async =>
       GetInstance().putAsync<S>(builder, tag: tag, permanent: permanent);
 
   /// Creates a new Class Instance [S] from the builder callback[S].
@@ -61,9 +67,11 @@ extension Inst on GetInterface {
   /// Repl a = find();
   /// Repl b = find();
   /// print(a==b); (false)```
-  void create<S>(InstanceBuilderCallback<S> builder,
-          {String? tag, bool permanent = true}) =>
-      GetInstance().create<S>(builder, tag: tag, permanent: permanent);
+  void create<S>(
+    InstanceBuilderCallback<S> builder, {
+    String? tag,
+    bool permanent = true,
+  }) => GetInstance().create<S>(builder, tag: tag, permanent: permanent);
 
   /// Finds a Instance of the required Class `<S>`(or [tag])
   /// In the case of using `Get.create()`, it will generate an Instance
@@ -84,11 +92,12 @@ extension Inst on GetInterface {
   /// rules. Although, can be removed by `GetInstance.reset()`
   /// and `Get.delete()`
   /// - [builder] If defined, the [dependency] must be returned from here
-  S put<S>(S dependency,
-          {String? tag,
-          bool permanent = false,
-          InstanceBuilderCallback<S>? builder}) =>
-      GetInstance().put<S>(dependency, tag: tag, permanent: permanent);
+  S put<S>(
+    S dependency, {
+    String? tag,
+    bool permanent = false,
+    InstanceBuilderCallback<S>? builder,
+  }) => GetInstance().put<S>(dependency, tag: tag, permanent: permanent);
 
   /// Clears all registered instances (and/or tags).
   /// Even the persistent ones.
@@ -152,8 +161,11 @@ extension Inst on GetInterface {
   ///
   ///  Note: if fenix is not provided it will be set to true if
   /// the parent instance was permanent
-  void lazyReplace<P>(InstanceBuilderCallback<P> builder,
-      {String? tag, bool? fenix}) {
+  void lazyReplace<P>(
+    InstanceBuilderCallback<P> builder, {
+    String? tag,
+    bool? fenix,
+  }) {
     final info = GetInstance().getInstanceInfo<P>(tag: tag);
     final permanent = (info.isPermanent ?? false);
     delete<P>(tag: tag, force: permanent);

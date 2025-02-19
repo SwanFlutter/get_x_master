@@ -40,6 +40,7 @@ extension ExtensionBottomSheet on GetInterface {
   ///  * [exitBottomSheetDuration]: The duration of the exit animation.
   Future<T?> bottomSheet<T>(
     Widget bottomsheet, {
+
     /// The background color of the bottom sheet.
     Color? backgroundColor,
 
@@ -82,29 +83,32 @@ extension ExtensionBottomSheet on GetInterface {
     /// The duration of the exit animation.
     Duration? exitBottomSheetDuration,
   }) {
-    return Navigator.of(overlayContext!, rootNavigator: useRootNavigator)
-        .push(GetModalBottomSheetRoute<T>(
-      builder: (_) => bottomsheet,
-      isPersistent: persistent,
-      // theme: Theme.of(key.currentContext, shadowThemeOnly: true), //Consider removing this or making it optional
-      theme: Theme.of(key.currentContext!),
-      isScrollControlled: isScrollControlled,
-      barrierLabel: MaterialLocalizations.of(key.currentContext!)
-          .modalBarrierDismissLabel,
-      backgroundColor: backgroundColor ?? Colors.transparent,
-      elevation: elevation,
-      shape: shape,
-      removeTop: ignoreSafeArea ?? true,
-      clipBehavior: clipBehavior,
-      isDismissible: isDismissible,
-      modalBarrierColor: barrierColor,
-      settings: settings,
-      enableDrag: enableDrag,
-      enterBottomSheetDuration:
-          enterBottomSheetDuration ?? const Duration(milliseconds: 250),
-      exitBottomSheetDuration:
-          exitBottomSheetDuration ?? const Duration(milliseconds: 200),
-    ));
+    return Navigator.of(overlayContext!, rootNavigator: useRootNavigator).push(
+      GetModalBottomSheetRoute<T>(
+        builder: (_) => bottomsheet,
+        isPersistent: persistent,
+        // theme: Theme.of(key.currentContext, shadowThemeOnly: true), //Consider removing this or making it optional
+        theme: Theme.of(key.currentContext!),
+        isScrollControlled: isScrollControlled,
+        barrierLabel:
+            MaterialLocalizations.of(
+              key.currentContext!,
+            ).modalBarrierDismissLabel,
+        backgroundColor: backgroundColor ?? Colors.transparent,
+        elevation: elevation,
+        shape: shape,
+        removeTop: ignoreSafeArea ?? true,
+        clipBehavior: clipBehavior,
+        isDismissible: isDismissible,
+        modalBarrierColor: barrierColor,
+        settings: settings,
+        enableDrag: enableDrag,
+        enterBottomSheetDuration:
+            enterBottomSheetDuration ?? const Duration(milliseconds: 250),
+        exitBottomSheetDuration:
+            exitBottomSheetDuration ?? const Duration(milliseconds: 200),
+      ),
+    );
   }
 
   /// Shows a custom expandable bottom sheet that can open from the top or bottom.
@@ -255,9 +259,11 @@ extension ExtensionDialog on GetInterface {
     return generalDialog<T>(
       pageBuilder: (buildContext, animation, secondaryAnimation) {
         final pageChild = widget;
-        Widget dialog = Builder(builder: (context) {
-          return Theme(data: theme, child: pageChild);
-        });
+        Widget dialog = Builder(
+          builder: (context) {
+            return Theme(data: theme, child: pageChild);
+          },
+        );
         if (useSafeArea) {
           dialog = SafeArea(child: dialog);
         }
@@ -294,10 +300,12 @@ extension ExtensionDialog on GetInterface {
     RouteSettings? routeSettings,
   }) {
     assert(!barrierDismissible || barrierLabel != null);
-    final nav = navigatorKey?.currentState ??
-        Navigator.of(overlayContext!,
-            rootNavigator:
-                true); //overlay context will always return the root navigator
+    final nav =
+        navigatorKey?.currentState ??
+        Navigator.of(
+          overlayContext!,
+          rootNavigator: true,
+        ); //overlay context will always return the root navigator
     return nav.push<T>(
       GetDialogRoute<T>(
         pageBuilder: pageBuilder,
@@ -352,48 +360,58 @@ extension ExtensionDialog on GetInterface {
       actions.add(cancel);
     } else {
       if (leanCancel) {
-        actions.add(TextButton(
-          style: TextButton.styleFrom(
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            shape: RoundedRectangleBorder(
+        actions.add(
+          TextButton(
+            style: TextButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              shape: RoundedRectangleBorder(
                 side: BorderSide(
-                    color: buttonColor ?? theme.colorScheme.secondary,
-                    width: 2,
-                    style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(100)),
+                  color: buttonColor ?? theme.colorScheme.secondary,
+                  width: 2,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+            onPressed: () {
+              onCancel?.call();
+              back();
+            },
+            child: Text(
+              textCancel ?? "Cancel",
+              style: TextStyle(
+                color: cancelTextColor ?? theme.colorScheme.secondary,
+              ),
+            ),
           ),
-          onPressed: () {
-            onCancel?.call();
-            back();
-          },
-          child: Text(
-            textCancel ?? "Cancel",
-            style: TextStyle(
-                color: cancelTextColor ?? theme.colorScheme.secondary),
-          ),
-        ));
+        );
       }
     }
     if (confirm != null) {
       actions.add(confirm);
     } else {
       if (leanConfirm) {
-        actions.add(TextButton(
+        actions.add(
+          TextButton(
             style: TextButton.styleFrom(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               backgroundColor: buttonColor ?? theme.colorScheme.secondary,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100)),
+                borderRadius: BorderRadius.circular(100),
+              ),
             ),
             child: Text(
               textConfirm ?? "Ok",
               style: TextStyle(
-                  color: confirmTextColor ?? theme.colorScheme.surface),
+                color: confirmTextColor ?? theme.colorScheme.surface,
+              ),
             ),
             onPressed: () {
               onConfirm?.call();
-            }));
+            },
+          ),
+        );
       }
     }
 
@@ -403,15 +421,19 @@ extension ExtensionDialog on GetInterface {
 
       backgroundColor: backgroundColor ?? theme.dialogTheme.backgroundColor,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(radius))),
+        borderRadius: BorderRadius.all(Radius.circular(radius)),
+      ),
       title: Text(title, textAlign: TextAlign.center, style: titleStyle),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           content ??
-              Text(middleText,
-                  textAlign: TextAlign.center, style: middleTextStyle),
+              Text(
+                middleText,
+                textAlign: TextAlign.center,
+                style: middleTextStyle,
+              ),
           const SizedBox(height: 16),
           ButtonTheme(
             minWidth: 78.0,
@@ -422,7 +444,7 @@ extension ExtensionDialog on GetInterface {
               runSpacing: 8,
               children: actions,
             ),
-          )
+          ),
         ],
       ),
       // actions: actions, // ?? <Widget>[cancelButton, confirmButton],
@@ -431,10 +453,7 @@ extension ExtensionDialog on GetInterface {
 
     return dialog<T>(
       onWillPop != null
-          ? PopScope(
-              onPopInvokedWithResult: onWillPop,
-              child: baseAlertDialog,
-            )
+          ? PopScope(onPopInvokedWithResult: onWillPop, child: baseAlertDialog)
           : baseAlertDialog,
       barrierDismissible: barrierDismissible,
       navigatorKey: navigatorKey,
@@ -579,55 +598,58 @@ extension ExtensionSnackbar on GetInterface {
     Form? userInputForm,
   }) {
     final getSnackBar = GetSnackBar(
-        snackbarStatus: snackbarStatus,
-        titleText: titleText ??
-            Text(
-              title,
-              style: TextStyle(
-                color: colorText ?? iconColor ?? Colors.black,
-                fontWeight: FontWeight.w800,
-                fontSize: 16,
-              ),
+      snackbarStatus: snackbarStatus,
+      titleText:
+          titleText ??
+          Text(
+            title,
+            style: TextStyle(
+              color: colorText ?? iconColor ?? Colors.black,
+              fontWeight: FontWeight.w800,
+              fontSize: 16,
             ),
-        messageText: messageText ??
-            Text(
-              message,
-              style: TextStyle(
-                color: colorText ?? iconColor ?? Colors.black,
-                fontWeight: FontWeight.w300,
-                fontSize: 14,
-              ),
+          ),
+      messageText:
+          messageText ??
+          Text(
+            message,
+            style: TextStyle(
+              color: colorText ?? iconColor ?? Colors.black,
+              fontWeight: FontWeight.w300,
+              fontSize: 14,
             ),
-        snackPosition: snackPosition ?? SnackPosition.TOP,
-        borderRadius: borderRadius ?? 15,
-        margin: margin ?? const EdgeInsets.symmetric(horizontal: 10),
-        duration: duration,
-        barBlur: barBlur ?? 7.0,
-        backgroundColor: backgroundColor ?? Colors.grey.withValues(alpha: 0.2),
-        icon: icon,
-        shouldIconPulse: shouldIconPulse ?? true,
-        maxWidth: maxWidth,
-        padding: padding ?? const EdgeInsets.all(16),
-        borderColor: borderColor,
-        borderWidth: borderWidth,
-        leftBarIndicatorColor: leftBarIndicatorColor,
-        boxShadows: boxShadows,
-        backgroundGradient: backgroundGradient,
-        mainButton: mainButton,
-        onTap: onTap,
-        isDismissible: isDismissible ?? true,
-        dismissDirection: dismissDirection,
-        showProgressIndicator: showProgressIndicator ?? false,
-        progressIndicatorController: progressIndicatorController,
-        progressIndicatorBackgroundColor: progressIndicatorBackgroundColor,
-        progressIndicatorValueColor: progressIndicatorValueColor,
-        snackStyle: snackStyle ?? SnackStyle.FLOATING,
-        forwardAnimationCurve: forwardAnimationCurve ?? Curves.easeOutCirc,
-        reverseAnimationCurve: reverseAnimationCurve ?? Curves.easeOutCirc,
-        animationDuration: animationDuration ?? const Duration(seconds: 1),
-        overlayBlur: overlayBlur ?? 0.0,
-        overlayColor: overlayColor ?? Colors.transparent,
-        userInputForm: userInputForm);
+          ),
+      snackPosition: snackPosition ?? SnackPosition.TOP,
+      borderRadius: borderRadius ?? 15,
+      margin: margin ?? const EdgeInsets.symmetric(horizontal: 10),
+      duration: duration,
+      barBlur: barBlur ?? 7.0,
+      backgroundColor: backgroundColor ?? Colors.grey.withValues(alpha: 0.2),
+      icon: icon,
+      shouldIconPulse: shouldIconPulse ?? true,
+      maxWidth: maxWidth,
+      padding: padding ?? const EdgeInsets.all(16),
+      borderColor: borderColor,
+      borderWidth: borderWidth,
+      leftBarIndicatorColor: leftBarIndicatorColor,
+      boxShadows: boxShadows,
+      backgroundGradient: backgroundGradient,
+      mainButton: mainButton,
+      onTap: onTap,
+      isDismissible: isDismissible ?? true,
+      dismissDirection: dismissDirection,
+      showProgressIndicator: showProgressIndicator ?? false,
+      progressIndicatorController: progressIndicatorController,
+      progressIndicatorBackgroundColor: progressIndicatorBackgroundColor,
+      progressIndicatorValueColor: progressIndicatorValueColor,
+      snackStyle: snackStyle ?? SnackStyle.FLOATING,
+      forwardAnimationCurve: forwardAnimationCurve ?? Curves.easeOutCirc,
+      reverseAnimationCurve: reverseAnimationCurve ?? Curves.easeOutCirc,
+      animationDuration: animationDuration ?? const Duration(seconds: 1),
+      overlayBlur: overlayBlur ?? 0.0,
+      overlayColor: overlayColor ?? Colors.transparent,
+      userInputForm: userInputForm,
+    );
 
     final controller = SnackBarController(getSnackBar);
 
@@ -690,23 +712,20 @@ extension GetNavigation on GetInterface {
       return null;
     }
     return global(id).currentState?.push<T>(
-          GetPageRoute<T>(
-            opaque: opaque ?? true,
-            page: _resolvePage(page, 'to'),
-            routeName: routeName,
-            gestureWidth: gestureWidth,
-            settings: RouteSettings(
-              name: routeName,
-              arguments: arguments,
-            ),
-            popGesture: popGesture ?? defaultPopGesture,
-            transition: transition ?? defaultTransition,
-            curve: curve ?? defaultTransitionCurve,
-            fullscreenDialog: fullscreenDialog,
-            binding: binding,
-            transitionDuration: duration ?? defaultTransitionDuration,
-          ),
-        );
+      GetPageRoute<T>(
+        opaque: opaque ?? true,
+        page: _resolvePage(page, 'to'),
+        routeName: routeName,
+        gestureWidth: gestureWidth,
+        settings: RouteSettings(name: routeName, arguments: arguments),
+        popGesture: popGesture ?? defaultPopGesture,
+        transition: transition ?? defaultTransition,
+        curve: curve ?? defaultTransitionCurve,
+        fullscreenDialog: fullscreenDialog,
+        binding: binding,
+        transitionDuration: duration ?? defaultTransitionDuration,
+      ),
+    );
   }
 
   GetPageBuilder _resolvePage(dynamic page, String method) {
@@ -714,9 +733,10 @@ extension GetNavigation on GetInterface {
       return page;
     } else if (page is Widget) {
       Get.log(
-          '''WARNING, consider using: "Get.$method(() => Page())" instead of "Get.$method(Page())".
+        '''WARNING, consider using: "Get.$method(() => Page())" instead of "Get.$method(Page())".
 Using a widget function instead of a widget fully guarantees that the widget and its controllers will be removed from memory when they are no longer used.
-      ''');
+      ''',
+      );
       return () => page;
     } else if (page is String) {
       throw '''Unexpected String,
@@ -759,10 +779,7 @@ you can only use widgets and widget functions here''';
       page = uri.toString();
     }
 
-    return global(id).currentState?.pushNamed<T>(
-          page,
-          arguments: arguments,
-        );
+    return global(id).currentState?.pushNamed<T>(page, arguments: arguments);
   }
 
   /// **Navigation.pushReplacementNamed()** shortcut.<br><br>
@@ -796,10 +813,9 @@ you can only use widgets and widget functions here''';
       final uri = Uri(path: page, queryParameters: parameters);
       page = uri.toString();
     }
-    return global(id).currentState?.pushReplacementNamed(
-          page,
-          arguments: arguments,
-        );
+    return global(
+      id,
+    ).currentState?.pushReplacementNamed(page, arguments: arguments);
   }
 
   /// **Navigation.popUntil()** shortcut.<br><br>
@@ -876,10 +892,10 @@ you can only use widgets and widget functions here''';
     }
 
     return global(id).currentState?.pushNamedAndRemoveUntil<T>(
-          page,
-          predicate,
-          arguments: arguments,
-        );
+      page,
+      predicate,
+      arguments: arguments,
+    );
   }
 
   /// **Navigation.popAndPushNamed()** shortcut.<br><br>
@@ -904,11 +920,9 @@ you can only use widgets and widget functions here''';
       final uri = Uri(path: page, queryParameters: parameters);
       page = uri.toString();
     }
-    return global(id).currentState?.popAndPushNamed(
-          page,
-          arguments: arguments,
-          result: result,
-        );
+    return global(
+      id,
+    ).currentState?.popAndPushNamed(page, arguments: arguments, result: result);
   }
 
   /// **Navigation.removeRoute()** shortcut.<br><br>
@@ -954,10 +968,10 @@ you can only use widgets and widget functions here''';
     }
 
     return global(id).currentState?.pushNamedAndRemoveUntil<T>(
-          newRouteName,
-          predicate ?? (_) => false,
-          arguments: arguments,
-        );
+      newRouteName,
+      predicate ?? (_) => false,
+      arguments: arguments,
+    );
   }
 
   /// Returns true if a Snackbar, Dialog or BottomSheet is currently OPEN
@@ -1069,21 +1083,21 @@ you can only use widgets and widget functions here''';
     if (preventDuplicates && routeName == currentRoute) {
       return null;
     }
-    return global(id).currentState?.pushReplacement(GetPageRoute(
+    return global(id).currentState?.pushReplacement(
+      GetPageRoute(
         opaque: opaque,
         gestureWidth: gestureWidth,
         page: _resolvePage(page, 'off'),
         binding: binding,
-        settings: RouteSettings(
-          arguments: arguments,
-          name: routeName,
-        ),
+        settings: RouteSettings(arguments: arguments, name: routeName),
         routeName: routeName,
         fullscreenDialog: fullscreenDialog,
         popGesture: popGesture ?? defaultPopGesture,
         transition: transition ?? defaultTransition,
         curve: curve ?? defaultTransitionCurve,
-        transitionDuration: duration ?? defaultTransitionDuration));
+        transitionDuration: duration ?? defaultTransitionDuration,
+      ),
+    );
   }
 
   ///
@@ -1134,23 +1148,21 @@ you can only use widgets and widget functions here''';
     routeName ??= "/${page.runtimeType.toString()}";
     routeName = _cleanRouteName(routeName);
     return global(id).currentState?.pushAndRemoveUntil<T>(
-        GetPageRoute<T>(
-          opaque: opaque,
-          popGesture: popGesture ?? defaultPopGesture,
-          page: _resolvePage(page, 'offAll'),
-          binding: binding,
-          gestureWidth: gestureWidth,
-          settings: RouteSettings(
-            name: routeName,
-            arguments: arguments,
-          ),
-          fullscreenDialog: fullscreenDialog,
-          routeName: routeName,
-          transition: transition ?? defaultTransition,
-          curve: curve ?? defaultTransitionCurve,
-          transitionDuration: duration ?? defaultTransitionDuration,
-        ),
-        predicate ?? (route) => false);
+      GetPageRoute<T>(
+        opaque: opaque,
+        popGesture: popGesture ?? defaultPopGesture,
+        page: _resolvePage(page, 'offAll'),
+        binding: binding,
+        gestureWidth: gestureWidth,
+        settings: RouteSettings(name: routeName, arguments: arguments),
+        fullscreenDialog: fullscreenDialog,
+        routeName: routeName,
+        transition: transition ?? defaultTransition,
+        curve: curve ?? defaultTransitionCurve,
+        transitionDuration: duration ?? defaultTransitionDuration,
+      ),
+      predicate ?? (route) => false,
+    );
   }
 
   /// Takes a route [name] String generated by [to], [off], [offAll]
@@ -1170,14 +1182,15 @@ you can only use widgets and widget functions here''';
   }
 
   /// change default config of Get
-  void config(
-      {bool? enableLog,
-      LogWriterCallback? logWriterCallback,
-      bool? defaultPopGesture,
-      bool? defaultOpaqueRoute,
-      Duration? defaultDurationTransition,
-      bool? defaultGlobalState,
-      Transition? defaultTransition}) {
+  void config({
+    bool? enableLog,
+    LogWriterCallback? logWriterCallback,
+    bool? defaultPopGesture,
+    bool? defaultOpaqueRoute,
+    Duration? defaultDurationTransition,
+    bool? defaultGlobalState,
+    Transition? defaultTransition,
+  }) {
     if (enableLog != null) {
       Get.isLogEnable = enableLog;
     }
@@ -1508,29 +1521,33 @@ extension OverlayExt on GetInterface {
     double opacity = 0.5,
   }) async {
     // Get the current navigator and overlay state
-    final navigatorState =
-        Navigator.of(Get.overlayContext!, rootNavigator: false);
+    final navigatorState = Navigator.of(
+      Get.overlayContext!,
+      rootNavigator: false,
+    );
     final overlayState = navigatorState.overlay!;
 
     // Create an overlay entry for the background opacity
-    final overlayEntryOpacity = OverlayEntry(builder: (context) {
-      return Opacity(
-        opacity: opacity,
-        child: Container(color: opacityColor),
-      );
-    });
+    final overlayEntryOpacity = OverlayEntry(
+      builder: (context) {
+        return Opacity(opacity: opacity, child: Container(color: opacityColor));
+      },
+    );
 
     // Create an overlay entry for the loading widget
-    final overlayEntryLoader = OverlayEntry(builder: (context) {
-      return loadingWidget ??
-          const Center(
-            child: SizedBox(
-              height: 90,
-              width: 90,
-              child: CircularProgressIndicator(), // Improved loading indicator
-            ),
-          );
-    });
+    final overlayEntryLoader = OverlayEntry(
+      builder: (context) {
+        return loadingWidget ??
+            const Center(
+              child: SizedBox(
+                height: 90,
+                width: 90,
+                child:
+                    CircularProgressIndicator(), // Improved loading indicator
+              ),
+            );
+      },
+    );
 
     // Insert the overlay entries into the overlay state
     overlayState.insert(overlayEntryOpacity);

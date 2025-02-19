@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../../get_x_master.dart';
 
-
 class RouterReportManager<T> {
   /// Holds a reference to `Get.reference` when the Instance was
   /// created to manage the memory.

@@ -119,8 +119,12 @@ mixin RxObjectMixin<T> on NotifyManager<T> {
   /// added benefit that it primes the stream with the current [value], rather
   /// than waiting for the next [value]. This should not be called in [onInit]
   /// or anywhere else during the build process.
-  StreamSubscription<T> listenAndPump(void Function(T event) onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<T> listenAndPump(
+    void Function(T event) onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     final subscription = listen(
       onData,
       onError: onError,
@@ -170,13 +174,12 @@ mixin NotifyManager<T> {
     Function? onError,
     void Function()? onDone,
     bool? cancelOnError,
-  }) =>
-      subject.listen(
-        onData,
-        onError: onError,
-        onDone: onDone,
-        cancelOnError: cancelOnError ?? false,
-      );
+  }) => subject.listen(
+    onData,
+    onError: onError,
+    onDone: onDone,
+    cancelOnError: cancelOnError ?? false,
+  );
 
   /// Closes the subscriptions for this Rx, releasing the resources.
   void close() {

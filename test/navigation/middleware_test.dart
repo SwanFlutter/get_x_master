@@ -16,7 +16,11 @@ void main() {
         initialRoute: '/',
         getPages: [
           GetPage(name: '/', page: Container.new),
-          GetPage(name: '/first', page: FirstScreen.new, middlewares: [RedirectMiddleware()]),
+          GetPage(
+            name: '/first',
+            page: FirstScreen.new,
+            middlewares: [RedirectMiddleware()],
+          ),
           GetPage(name: '/second', page: SecondScreen.new),
           GetPage(name: '/third', page: ThirdScreen.new),
         ],

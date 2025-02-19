@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../get_x_master.dart';
 
-
 /// Controller for managing and displaying GetSnack bars.
 ///
 /// This class handles the queuing, display, and dismissal of snack bars
@@ -128,8 +127,10 @@ class SnackBarController {
 
   /// Sets up the snackbar display, including animations and timer.
   void _configureSnackBarDisplay() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot configure a snackbar after disposing it.');
+    assert(
+      !_transitionCompleter.isCompleted,
+      'Cannot configure a snackbar after disposing it.',
+    );
     _controller = _createAnimationController();
     _configureAlignment(snackbar.snackPosition);
     _snackbarStatus = snackbar.snackbarStatus;
@@ -157,8 +158,10 @@ class SnackBarController {
 
   /// Creates the animation for the snackbar's entry and exit transitions.
   Animation<Alignment> _createAnimation() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot create a animation from a disposed snackbar');
+    assert(
+      !_transitionCompleter.isCompleted,
+      'Cannot create a animation from a disposed snackbar',
+    );
     return AlignmentTween(begin: _initialAlignment, end: _endAlignment).animate(
       CurvedAnimation(
         parent: _controller,
@@ -170,8 +173,10 @@ class SnackBarController {
 
   /// Creates the animation controller for the snackbar transitions.
   AnimationController _createAnimationController() {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot create a animationController from a disposed snackbar');
+    assert(
+      !_transitionCompleter.isCompleted,
+      'Cannot create a animationController from a disposed snackbar',
+    );
     assert(snackbar.animationDuration >= Duration.zero);
     return AnimationController(
       duration: snackbar.animationDuration,
@@ -185,11 +190,7 @@ class SnackBarController {
     return Tween(begin: 0.0, end: snackbar.overlayBlur).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(
-          0.0,
-          0.35,
-          curve: Curves.easeInOutCirc,
-        ),
+        curve: const Interval(0.0, 0.35, curve: Curves.easeInOutCirc),
       ),
     );
   }
@@ -197,15 +198,12 @@ class SnackBarController {
   /// Creates the animation for the backdrop color overlay.
   Animation<Color?> _createColorOverlayColor() {
     return ColorTween(
-            begin: const Color(0x00000000), end: snackbar.overlayColor)
-        .animate(
+      begin: const Color(0x00000000),
+      end: snackbar.overlayColor,
+    ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(
-          0.0,
-          0.35,
-          curve: Curves.easeInOutCirc,
-        ),
+        curve: const Interval(0.0, 0.35, curve: Curves.easeInOutCirc),
       ),
     );
   }
@@ -218,48 +216,51 @@ class SnackBarController {
       // Overlay entry for the backdrop blur and color filter.
       if (snackbar.overlayBlur > 0.0) ...[
         OverlayEntry(
-          builder: (context) => GestureDetector(
-            onTap: () {
-              // If the snackbar is dismissible and hasn't already been tapped,
-              // close it on tap.
-              if (snackbar.isDismissible && !_onTappedDismiss) {
-                _onTappedDismiss = true;
-                close();
-              }
-            },
-            child: AnimatedBuilder(
-              animation: _filterBlurAnimation,
-              builder: (context, child) {
-                return BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: max(0.001, _filterBlurAnimation.value),
-                    sigmaY: max(0.001, _filterBlurAnimation.value),
-                  ),
-                  child: Container(
-                    constraints: const BoxConstraints.expand(),
-                    color: _filterColorAnimation.value,
-                  ),
-                );
-              },
-            ),
-          ),
+          builder:
+              (context) => GestureDetector(
+                onTap: () {
+                  // If the snackbar is dismissible and hasn't already been tapped,
+                  // close it on tap.
+                  if (snackbar.isDismissible && !_onTappedDismiss) {
+                    _onTappedDismiss = true;
+                    close();
+                  }
+                },
+                child: AnimatedBuilder(
+                  animation: _filterBlurAnimation,
+                  builder: (context, child) {
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: max(0.001, _filterBlurAnimation.value),
+                        sigmaY: max(0.001, _filterBlurAnimation.value),
+                      ),
+                      child: Container(
+                        constraints: const BoxConstraints.expand(),
+                        color: _filterColorAnimation.value,
+                      ),
+                    );
+                  },
+                ),
+              ),
           maintainState: false,
           opaque: false,
         ),
       ],
       // Overlay entry for the snackbar content.
       OverlayEntry(
-        builder: (context) => Semantics(
-          focused: false,
-          container: true,
-          explicitChildNodes: true,
-          child: AlignTransition(
-            alignment: _animation,
-            child: snackbar.isDismissible
-                ? _getDismissibleSnack(child)
-                : _getSnackbarContainer(child),
-          ),
-        ),
+        builder:
+            (context) => Semantics(
+              focused: false,
+              container: true,
+              explicitChildNodes: true,
+              child: AlignTransition(
+                alignment: _animation,
+                child:
+                    snackbar.isDismissible
+                        ? _getDismissibleSnack(child)
+                        : _getSnackbarContainer(child),
+              ),
+            ),
         maintainState: false,
         opaque: false,
       ),
@@ -268,14 +269,17 @@ class SnackBarController {
 
   /// Builds the main content of the snackbar.
   Widget _getBodyWidget() {
-    return Builder(builder: (_) {
-      return GestureDetector(
-        onTap: snackbar.onTap != null
-            ? () => snackbar.onTap?.call(snackbar)
-            : null,
-        child: snackbar,
-      );
-    });
+    return Builder(
+      builder: (_) {
+        return GestureDetector(
+          onTap:
+              snackbar.onTap != null
+                  ? () => snackbar.onTap?.call(snackbar)
+                  : null,
+          child: snackbar,
+        );
+      },
+    );
   }
 
   /// Gets the default dismiss direction based on the snackbar position.
@@ -310,10 +314,7 @@ class SnackBarController {
 
   /// Returns the container for the snackbar content.
   Widget _getSnackbarContainer(Widget child) {
-    return Container(
-      margin: snackbar.margin,
-      child: child,
-    );
+    return Container(margin: snackbar.margin, child: child);
   }
 
   /// Handles animation status changes.
@@ -367,8 +368,10 @@ class SnackBarController {
       element.remove();
     }
 
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot remove overlay from a disposed snackbar');
+    assert(
+      !_transitionCompleter.isCompleted,
+      'Cannot remove overlay from a disposed snackbar',
+    );
     _controller.dispose();
     _overlayEntries.clear();
     _transitionCompleter.complete();

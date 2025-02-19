@@ -27,8 +27,11 @@ class RxList<E> extends ListMixin<E>
   }
 
   /// Generates a list of values.
-  factory RxList.generate(int length, E Function(int index) generator,
-      {bool growable = true}) {
+  factory RxList.generate(
+    int length,
+    E Function(int index) generator, {
+    bool growable = true,
+  }) {
     return RxList(List.generate(length, generator, growable: growable));
   }
 

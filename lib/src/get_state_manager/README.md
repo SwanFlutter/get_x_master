@@ -377,137 +377,479 @@ The code provides a robust framework for managing state and lifecycle events in 
 
 ### Example Usage of `GetResponsiveView` and `GetResponsiveWidget`
 
-Here's the documentation in Markdown format without the `///` comments:
+- ### Complete Example Usage:
 
-# Responsive Flutter Package with GetX Integration
-
-A Flutter package for creating responsive layouts with GetX integration.
-This package provides mixins and widgets to help create responsive UIs that adapt
-to different screen sizes and device types.
-
-## Key Components
-
-- **GetResponsiveMixin**: A mixin for making widgets responsive
-- **GetResponsiveView**: A responsive view widget with GetX controller support
-- **GetResponsiveWidget**: A stateless responsive widget
-- **ResponsiveScreen**: Provides screen size information and utilities
-- **ResponsiveScreenSettings**: Configuration for screen breakpoints
-
-## Example Usage
 
 ```dart
-class MyResponsiveView extends GetResponsiveView<MyController> {
-  @override
-  Widget? desktop() {
-    return Container(
-      child: Text('Desktop Layout'),
-    );
-  }
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'path_to_your_responsive_file.dart'; // Import the responsive file
+import 'path_to_your_context_extension_file.dart'; // Import the ContextExt extension
+
+class MyResponsiveScreen extends GetResponsiveView {
+  MyResponsiveScreen({super.key});
 
   @override
-  Widget? phone() {
-    return Container(
-      child: Text('Phone Layout'),
-    );
-  }
+  Widget? watch() => const Center(
+        child: Text(
+          'Watch Screen',
+          style: TextStyle(fontSize: 12),
+        ),
+      );
+
+  @override
+  Widget? phone() => Scaffold(
+        appBar: AppBar(
+          title: const Text('Phone Screen'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'This is a Phone Screen',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Get.snackbar('Phone', 'Phone button pressed'),
+                child: const Text('Phone Button'),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  @override
+  Widget? tablet() => Scaffold(
+        appBar: AppBar(
+          title: const Text('Tablet Screen'),
+        ),
+        body: Row(
+          children: [
+            // Sidebar for tablet
+            Container(
+              width: screen.context.width * 0.3, // 30% of screen width
+              color: Colors.grey[300],
+              child: const Center(child: Text('Tablet Sidebar')),
+            ),
+            // Main content
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'This is a Tablet Screen',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Get.snackbar('Tablet', 'Tablet button pressed'),
+                      child: const Text('Tablet Button'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget? largeTablet() => Scaffold(
+        appBar: AppBar(
+          title: const Text('Large Tablet Screen'),
+        ),
+        body: Row(
+          children: [
+            // Wider sidebar for large tablet
+            Container(
+              width: screen.context.width * 0.35, // 35% of screen width
+              color: Colors.grey[300],
+              child: const Center(child: Text('Large Tablet Sidebar')),
+            ),
+            // Main content
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'This is a Large Tablet Screen',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Get.snackbar('Large Tablet', 'Large Tablet button pressed'),
+                      child: const Text('Large Tablet Button'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget? desktop() => Scaffold(
+        appBar: AppBar(
+          title: const Text('Desktop Screen'),
+        ),
+        body: Row(
+          children: [
+            // Desktop sidebar
+            Container(
+              width: screen.context.width * 0.25, // 25% of screen width
+              color: Colors.grey[300],
+              child: const Center(child: Text('Desktop Sidebar')),
+            ),
+            // Main content
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'This is a Desktop Screen',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Get.snackbar('Desktop', 'Desktop button pressed'),
+                      child: const Text('Desktop Button'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget? largeDesktop() => Scaffold(
+        appBar: AppBar(
+          title: const Text('Large Desktop Screen'),
+        ),
+        body: Row(
+          children: [
+            // Larger desktop sidebar
+            Container(
+              width: screen.context.width * 0.2, // 20% of screen width
+              color: Colors.grey[300],
+              child: const Center(child: Text('Large Desktop Sidebar')),
+            ),
+            // Main content
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'This is a Large Desktop Screen',
+                      style: TextStyle(fontSize: 26),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Get.snackbar('Large Desktop', 'Large Desktop button pressed'),
+                      child: const Text('Large Desktop Button'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget? tv() => Scaffold(
+        appBar: AppBar(
+          title: const Text('TV Screen'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'This is a TV Screen',
+                style: TextStyle(fontSize: 30),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Get.snackbar('TV', 'TV button pressed'),
+                child: const Text('TV Button'),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  @override
+  Widget? builder() => const Center(
+        child: Text(
+          'Default Screen',
+          style: TextStyle(fontSize: 18),
+        ),
+      );
 }
 ```
 
-## Screen Types
+---
 
-- Desktop: >= 1200px (default)
-- Tablet: >= 600px (default)
-- Phone: > 300px (default)
-- Watch: <= 300px (default)
+### How to Use the Example:
 
-## Features
+1. **Add the Responsive Screen to Your App:**
+   - Use `MyResponsiveScreen` as the main widget in your app or as part of a route.
+   - Example:
+     ```dart
+     void main() {
+       runApp(
+         GetMaterialApp(
+           home: MyResponsiveScreen(),
+         ),
+       );
+     }
+     ```
 
-- Automatic screen type detection
-- Custom breakpoint configuration
-- Platform-aware responsiveness
-- Flexible layout building
-- GetX integration
-- Responsive value selection
+2. **Customize Breakpoints (Optional):**
+   - If you need to adjust the breakpoints, you can pass custom `ResponsiveScreenSettings` to `MyResponsiveScreen`:
+     ```dart
+     MyResponsiveScreen(
+       settings: const ResponsiveScreenSettings(
+         tvChangePoint: 2000,
+         largeDesktopChangePoint: 1700,
+         desktopChangePoint: 1300,
+         largeTabletChangePoint: 800,
+         tabletChangePoint: 650,
+         phoneChangePoint: 350,
+         watchChangePoint: 200,
+       ),
+     )
+     ```
 
-## Customizing Breakpoints
-
-Breakpoints can be customized using ResponsiveScreenSettings:
-
-```dart
-ResponsiveScreenSettings(
-  desktopChangePoint: 1200,
-  tabletChangePoint: 600,
-  watchChangePoint: 300,
-)
-```
-
-## Layout Selection
-
-The package automatically selects the appropriate layout based on screen size:
-1. Desktop layout for large screens
-2. Tablet layout for medium screens
-3. Phone layout for small screens
-4. Watch layout for very small screens
-
-## ResponsiveScreen Utilities
-
-- Screen dimensions (width, height)
-- Screen type detection (isDesktop, isTablet, isPhone, isWatch)
-- Responsive value selection based on screen type
-
-## Advanced Responsive Strategies
-
-- **Fallback Layout Mechanism**: If a specific layout is not defined, 
-  the system will attempt to use the next larger screen layout
-- **Flexible Builder Pattern**: Use `alwaysUseBuilder` to force custom builder method
-- **Cross-Platform Compatibility**: 
-  - Mobile platforms use shortest side for detection
-  - Desktop platforms use actual screen width
-
-## Performance Considerations
-
-- Minimal overhead for responsive layout switching
-- Efficient screen type calculation
-- Lazy loading of layouts
-
-## Best Practices
-
-- Define layouts for primary screen types
-- Use responsive values for dynamic content
-- Test across multiple device sizes
-- Leverage GetX state management for complex UIs
-
-## Error Handling
-
-- Graceful fallback to default layouts
-- Clear console warnings for undefined layouts
-- Predictable layout selection strategy
-
-## Internationalization Support
-
-- Compatible with RTL and LTR layouts
-- Adapts to different text directions
-- Respects system language and locale settings
-
-
-
-### Explanation of the Example
-
-1. **Controller**:
-   - A simple `MyController` class is defined that holds a title string.
-
-2. **GetResponsiveView**:
-   - `MyResponsiveView` extends `GetResponsiveView<MyController>`. It implements the required methods to provide different widgets for desktop, tablet, phone, and watch layouts.
-   - The `builder()` method returns a basic scaffold with an app bar and center text.
-   - The specific methods (`desktop`, `tablet`, `phone`, `watch`) provide different UI representations based on the screen type.
-
-3. **GetResponsiveWidget**:
-   - Similarly, `MyResponsiveWidget` extends `GetResponsiveWidget<MyController>`. It provides another example of how to create a responsive widget with different layouts for various screen sizes.
-
-4. **Main Application**:
-   - In the `main()` function, the app is initialized with `MyApp`, which sets up the controller and launches the responsive view.
+3. **Test on Different Devices:**
+   - Run the app on different screen sizes (e.g., phone, tablet, desktop, TV) to see how the UI adapts.
+   - The example includes:
+     - A simple text for watch screens.
+     - A basic layout with an app bar and button for phone screens.
+     - A sidebar and main content layout for tablet, large tablet, desktop, and large desktop screens.
+     - A centered layout with larger text for TV screens.
 
 ---
+
+### Key Features of the Example:
+
+1. **Responsive Layouts:**
+   - Each screen type has a unique layout tailored to its size.
+   - Sidebars are included for larger screens (tablet and above) to demonstrate responsive design.
+
+2. **Dynamic Sizing:**
+   - Uses `screen.context.width` to dynamically size elements (e.g., sidebar width).
+   - Font sizes increase progressively for larger screens.
+
+3. **Interactive Elements:**
+   - Each screen includes a button that triggers a snackbar to demonstrate interactivity.
+   - The snackbar message is specific to the screen type.
+
+4. **Fallback Mechanism:**
+   - The `builder` method provides a default fallback if no specific widget is defined for a screen type.
+
+
+
+# How to Use the Extension with GetX:
+
+ ## 1. Accessing Context in GetX
+
+```dart
+
+import 'package:get/get.dart';
+import 'path_to_your_extension_file.dart'; // Import your extension file
+
+class ExampleController extends GetxController {
+  void someMethod() {
+    // Access context via GetX
+    final context = Get.context!;
+    
+    // Use the extension
+    final screenWidth = context.width;
+    final isPhone = context.isPhone;
+    final isDarkMode = context.isDarkMode;
+    
+    print('Screen Width: $screenWidth');
+    print('Is Phone: $isPhone');
+    print('Is Dark Mode: $isDarkMode');
+  }
+}
+
+```
+
+## 2. Using in Widgets (UI)
+
+- In widgets, you can use the BuildContext that is automatically available in the build method. Example:
+
+```dart
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'path_to_your_extension_file.dart';
+
+class ExampleScreen extends StatelessWidget {
+  const ExampleScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Responsive Example'),
+      ),
+      body: Column(
+        children: [
+          // Using width and height
+          Container(
+            width: context.width * 0.8, // 80% of screen width
+            height: context.heightTransformer(dividedBy: 2), // Half of screen height
+            color: Colors.blue,
+            child: const Center(child: Text('Responsive Container')),
+          ),
+          
+          // Checking device type
+          Text(
+            context.isPhone
+                ? 'This is a Phone'
+                : context.isTablet
+                    ? 'This is a Tablet'
+                    : context.isDesktop
+                        ? 'This is a Desktop'
+                        : context.isTV
+                            ? 'This is a TV'
+                            : 'Unknown Device',
+            style: context.textTheme.headlineMedium,
+          ),
+          
+          // Using responsiveValue for different values
+          Container(
+            padding: EdgeInsets.all(
+              context.responsiveValue(
+                phone: 8.0,
+                tablet: 16.0,
+                desktop: 24.0,
+                tv: 32.0,
+              )!,
+            ),
+            color: Colors.green,
+            child: const Text('Responsive Padding'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+```
+
+## Using GetX for State Management:
+
+- If you want to use this extension in GetX controllers for state management, you can store device-related information in the controller and use it in the UI.
+
+```dart
+
+class DeviceController extends GetxController {
+  // Reactive variables to store device information
+  final RxDouble screenWidth = 0.0.obs;
+  final RxBool isPhone = false.obs;
+  final RxBool isTablet = false.obs;
+  final RxBool isDesktop = false.obs;
+  final RxBool isTV = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Update device information
+    updateDeviceInfo();
+  }
+
+  void updateDeviceInfo() {
+    final context = Get.context!;
+    screenWidth.value = context.width;
+    isPhone.value = context.isPhone;
+    isTablet.value = context.isTablet;
+    isDesktop.value = context.isDesktop;
+    isTV.value = context.isTV;
+  }
+}
+
+```
+
+- Then, use this controller in the UI:
+
+```dart
+
+class DeviceScreen extends StatelessWidget {
+  final DeviceController deviceController = Get.put(DeviceController());
+
+  DeviceScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Device Info')),
+      body: Obx(() => Column(
+            children: [
+              Text('Screen Width: ${deviceController.screenWidth.value}'),
+              Text(deviceController.isPhone.value ? 'Phone' : 'Not a Phone'),
+              Text(deviceController.isTablet.value ? 'Tablet' : 'Not a Tablet'),
+              Text(deviceController.isDesktop.value ? 'Desktop' : 'Not a Desktop'),
+              Text(deviceController.isTV.value ? 'TV' : 'Not a TV'),
+            ],
+          )),
+    );
+  }
+}
+
+```
+
+## 4. Using responsiveValue in GetX
+
+- The responsiveValue method is very useful for providing different values based on device type. Example:
+
+```dart
+
+class ResponsiveExample extends StatelessWidget {
+  const ResponsiveExample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          width: context.responsiveValue(
+            phone: 200.0,
+            tablet: 400.0,
+            desktop: 600.0,
+            tv: 800.0,
+          ),
+          height: context.responsiveValue(
+            phone: 100.0,
+            tablet: 200.0,
+            desktop: 300.0,
+            tv: 400.0,
+          ),
+          color: Colors.red,
+          child: const Center(child: Text('Responsive Box')),
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+---
+
+
 
 
 ## Overview of GetView and GetWidget in GetX

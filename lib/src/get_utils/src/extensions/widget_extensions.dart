@@ -25,9 +25,9 @@ extension WidgetExtensions on Widget {
   Widget paddingSymmetric({double horizontal = 0.0, double vertical = 0.0}) {
     assert(horizontal >= 0 && vertical >= 0, 'Padding must be non-negative');
     return Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
-        child: this);
+      padding: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
+      child: this,
+    );
   }
 
   /// Padding only on specified sides with validation
@@ -42,12 +42,19 @@ extension WidgetExtensions on Widget {
     double right = 0.0,
     double bottom = 0.0,
   }) {
-    assert(left >= 0 && top >= 0 && right >= 0 && bottom >= 0,
-        'Padding must be non-negative');
+    assert(
+      left >= 0 && top >= 0 && right >= 0 && bottom >= 0,
+      'Padding must be non-negative',
+    );
     return Padding(
-        padding:
-            EdgeInsets.only(top: top, left: left, right: right, bottom: bottom),
-        child: this);
+      padding: EdgeInsets.only(
+        top: top,
+        left: left,
+        right: right,
+        bottom: bottom,
+      ),
+      child: this,
+    );
   }
 
   /// Zero padding
@@ -78,9 +85,9 @@ extension WidgetExtensions on Widget {
   Widget marginSymmetric({double horizontal = 0.0, double vertical = 0.0}) {
     assert(horizontal >= 0 && vertical >= 0, 'Margin must be non-negative');
     return Container(
-        margin:
-            EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
-        child: this);
+      margin: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
+      child: this,
+    );
   }
 
   /// Margin only on specified sides with validation
@@ -95,12 +102,19 @@ extension WidgetExtensions on Widget {
     double right = 0.0,
     double bottom = 0.0,
   }) {
-    assert(left >= 0 && top >= 0 && right >= 0 && bottom >= 0,
-        'Margin must be non-negative');
+    assert(
+      left >= 0 && top >= 0 && right >= 0 && bottom >= 0,
+      'Margin must be non-negative',
+    );
     return Container(
-        margin:
-            EdgeInsets.only(top: top, left: left, right: right, bottom: bottom),
-        child: this);
+      margin: EdgeInsets.only(
+        top: top,
+        left: left,
+        right: right,
+        bottom: bottom,
+      ),
+      child: this,
+    );
   }
 
   /// Zero margin
@@ -120,7 +134,9 @@ extension WidgetExtensions on Widget {
   Widget backgroundColor(Color color, {double opacity = 1.0}) {
     assert(opacity >= 0 && opacity <= 1, 'Opacity must be between 0 and 1');
     return Opacity(
-        opacity: opacity, child: Container(color: color, child: this));
+      opacity: opacity,
+      child: Container(color: color, child: this),
+    );
   }
 
   /// Conditionally display the widget based on the isVisible flag
@@ -173,9 +189,7 @@ extension WidgetExtensions on Widget {
   /// ```
   Widget withBorder({Color color = Colors.black, double width = 1.0}) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: color, width: width),
-      ),
+      decoration: BoxDecoration(border: Border.all(color: color, width: width)),
       child: this,
     );
   }
@@ -196,7 +210,8 @@ extension WidgetResponsiveX on Widget {
 
   // Center widget with optional dimension control
   Widget centered({bool horizontal = true, bool vertical = true}) => Center(
-      widthFactor: horizontal ? null : 1.0,
-      heightFactor: vertical ? null : 1.0,
-      child: this);
+    widthFactor: horizontal ? null : 1.0,
+    heightFactor: vertical ? null : 1.0,
+    child: this,
+  );
 }

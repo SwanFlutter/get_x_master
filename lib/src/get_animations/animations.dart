@@ -65,23 +65,35 @@ class Animate extends StatelessWidget {
             return Opacity(opacity: 1 - value, child: child);
           case AnimationType.rotate:
             return Transform.rotate(
-                angle: value * pi * 2 * (end - begin), child: child);
+              angle: value * pi * 2 * (end - begin),
+              child: child,
+            );
           case AnimationType.scale:
             return Transform.scale(
-                scale: value * (end - begin) + begin, child: child);
+              scale: value * (end - begin) + begin,
+              child: child,
+            );
           case AnimationType.bounce:
             return Transform.scale(
-                scale: 1 + value.abs() * (end - begin), child: child);
+              scale: 1 + value.abs() * (end - begin),
+              child: child,
+            );
           case AnimationType.spin:
             return Transform.rotate(
-                angle: value * 360 * pi / 180.0, child: child);
+              angle: value * 360 * pi / 180.0,
+              child: child,
+            );
           case AnimationType.size:
             return Transform.scale(
-                scale: value * (end - begin) + begin, child: child);
+              scale: value * (end - begin) + begin,
+              child: child,
+            );
           case AnimationType.blur:
             return BackdropFilter(
               filter: ImageFilter.blur(
-                  sigmaX: value * (end - begin), sigmaY: value * (end - begin)),
+                sigmaX: value * (end - begin),
+                sigmaY: value * (end - begin),
+              ),
               child: child,
             );
           case AnimationType.flip:
@@ -93,47 +105,60 @@ class Animate extends StatelessWidget {
           case AnimationType.wave:
             return Transform(
               transform: Matrix4.translationValues(
-                  0.0, 20.0 * sin(value * pi * 2), 0.0),
+                0.0,
+                20.0 * sin(value * pi * 2),
+                0.0,
+              ),
               child: child,
             );
           case AnimationType.wobble:
             return Transform(
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateZ(sin(value * pi * 2) * 0.1 * (end - begin)),
+              transform:
+                  Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..rotateZ(sin(value * pi * 2) * 0.1 * (end - begin)),
               alignment: Alignment.center,
               child: child,
             );
           case AnimationType.slideInLeft:
             return Transform.translate(
-                offset: Offset(
-                    value * MediaQuery.of(context).size.width * (end - begin),
-                    0),
-                child: child);
+              offset: Offset(
+                value * MediaQuery.of(context).size.width * (end - begin),
+                0,
+              ),
+              child: child,
+            );
           case AnimationType.slideInRight:
             return Transform.translate(
-                offset: Offset(
-                    (1 - value) *
-                        MediaQuery.of(context).size.width *
-                        (end - begin),
-                    0),
-                child: child);
+              offset: Offset(
+                (1 - value) * MediaQuery.of(context).size.width * (end - begin),
+                0,
+              ),
+              child: child,
+            );
           case AnimationType.slideInUp:
             return Transform.translate(
-                offset: Offset(0,
-                    value * MediaQuery.of(context).size.height * (end - begin)),
-                child: child);
+              offset: Offset(
+                0,
+                value * MediaQuery.of(context).size.height * (end - begin),
+              ),
+              child: child,
+            );
           case AnimationType.slideInDown:
             return Transform.translate(
-                offset: Offset(
-                    (1 - value) *
-                        MediaQuery.of(context).size.height *
-                        (end - begin),
-                    0),
-                child: child);
+              offset: Offset(
+                (1 - value) *
+                    MediaQuery.of(context).size.height *
+                    (end - begin),
+                0,
+              ),
+              child: child,
+            );
           case AnimationType.zoom:
             return Transform.scale(
-                scale: lerpDouble(1, end, value)!, child: child);
+              scale: lerpDouble(1, end, value)!,
+              child: child,
+            );
           case AnimationType.color:
             final beginColor =
                 begin is Color ? begin as Color : Colors.transparent;

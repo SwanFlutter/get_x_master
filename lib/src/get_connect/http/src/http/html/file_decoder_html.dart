@@ -5,7 +5,8 @@ List<int> fileToBytes(dynamic data) {
     return data;
   } else {
     throw const FormatException(
-        'File is not "File" or "String" or "List<int>"');
+      'File is not "File" or "String" or "List<int>"',
+    );
   }
 }
 

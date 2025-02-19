@@ -16,8 +16,12 @@ abstract class RxInterface<T> {
   void close();
 
   /// Calls `callback` with current value, when the value changes.
-  StreamSubscription<T> listen(void Function(T event) onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError});
+  StreamSubscription<T> listen(
+    void Function(T event) onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  });
 
   /// Avoids an unsafe usage of the `proxy`
   static T notifyChildren<T>(RxNotifier observer, ValueGetter<T> builder) {

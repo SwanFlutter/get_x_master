@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-
 import '../../../../get_x_master.dart';
 import '../../../get_state_manager/src/simple/list_notifier.dart';
 
@@ -29,13 +28,12 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     this.backButtonPopMode = PopMode.History,
     this.preventDuplicateHandlingMode =
         PreventDuplicateHandlingMode.ReorderRoutes,
-  }) : notFoundRoute = notFoundRoute ??
-            GetPage(
-              name: '/404',
-              page: () => const Scaffold(
-                body: Text('Route not found'),
-              ),
-            ) {
+  }) : notFoundRoute =
+           notFoundRoute ??
+           GetPage(
+             name: '/404',
+             page: () => const Scaffold(body: Text('Route not found')),
+           ) {
     Get.log('GetDelegate is created !');
   }
 
@@ -84,10 +82,7 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
       key: navigatorKey,
       onPopPage: _onPopVisualRoute,
       pages: pages,
-      observers: [
-        GetObserver(),
-        if (extraObservers != null) ...extraObservers,
-      ],
+      observers: [GetObserver(), if (extraObservers != null) ...extraObservers],
       transitionDelegate:
           transitionDelegate ?? const DefaultTransitionDelegate<dynamic>(),
     );
@@ -112,8 +107,9 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     final currentHistory = currentConfiguration;
     if (currentHistory == null) return <GetPage>[];
 
-    final res = currentHistory.currentTreeBranch
-        .where((r) => r.participatesInRootNavigator != null);
+    final res = currentHistory.currentTreeBranch.where(
+      (r) => r.participatesInRootNavigator != null,
+    );
     if (res.isEmpty) {
       //default behavoir, all routes participate in root navigator
       return history.map((e) => e.currentPage!).toList();
@@ -130,9 +126,7 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
   //       .page();
   // }
 
-  Future<bool> handlePopupRoutes({
-    Object? result,
-  }) async {
+  Future<bool> handlePopupRoutes({Object? result}) async {
     Route? currentRoute;
     navigatorKey.currentState!.popUntil((route) {
       currentRoute = route;
@@ -329,9 +323,9 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     final settings = route.settings;
     if (settings is GetPage) {
       final config = history.cast<GetNavConfig?>().firstWhere(
-            (element) => element?.currentPage == settings,
-            orElse: () => null,
-          );
+        (element) => element?.currentPage == settings,
+        orElse: () => null,
+      );
       if (config != null) {
         _removeHistoryEntry(config);
       }
@@ -368,7 +362,8 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
   Future<void> _pushHistory(GetNavConfig config) async {
     if (config.currentPage!.preventDuplicates) {
       final originalEntryIndex = history.indexWhere(
-          (element) => element.locationString == config.locationString);
+        (element) => element.locationString == config.locationString,
+      );
       if (originalEntryIndex >= 0) {
         switch (preventDuplicateHandlingMode) {
           case PreventDuplicateHandlingMode.PopUntilOriginalRoute:
@@ -424,22 +419,23 @@ class GetNavigator extends Navigator {
     super.reportsRouteUpdateToEngine,
     TransitionDelegate? transitionDelegate,
   }) : super(
-          //keys should be optional
-          onPopPage: onPopPage ??
-              (route, result) {
-                final didPop = route.didPop(result);
-                if (!didPop) {
-                  return false;
-                }
-                return true;
-              },
-          observers: [
-            // GetObserver(),
-            if (observers != null) ...observers,
-          ],
-          transitionDelegate:
-              transitionDelegate ?? const DefaultTransitionDelegate<dynamic>(),
-        );
+         //keys should be optional
+         onPopPage:
+             onPopPage ??
+             (route, result) {
+               final didPop = route.didPop(result);
+               if (!didPop) {
+                 return false;
+               }
+               return true;
+             },
+         observers: [
+           // GetObserver(),
+           if (observers != null) ...observers,
+         ],
+         transitionDelegate:
+             transitionDelegate ?? const DefaultTransitionDelegate<dynamic>(),
+       );
 }
 
 /// Enables the user to customize the intended pop behavior
@@ -462,10 +458,7 @@ class GetNavigator extends Navigator {
 ///
 /// another pop will change the history stack to:
 /// 1) /home
-enum PopMode {
-  History,
-  Page,
-}
+enum PopMode { History, Page }
 
 /// Enables the user to customize the behavior when pushing multiple routes that
 /// shouldn't be duplicates
@@ -480,5 +473,5 @@ enum PreventDuplicateHandlingMode {
   ///
   /// With this mode, you guarantee there will be only one
   /// route entry for each location
-  ReorderRoutes
+  ReorderRoutes,
 }

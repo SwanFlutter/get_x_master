@@ -3,14 +3,25 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() {
-  testWidgets("test if Get.isSnackbarOpen works with Get.snackbar", (tester) async {
+  testWidgets("test if Get.isSnackbarOpen works with Get.snackbar", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       GetMaterialApp(
         popGesture: true,
         home: ElevatedButton(
           child: const Text('Open Snackbar'),
           onPressed: () {
-            Get.snackbar('title', "message", duration: const Duration(seconds: 1), mainButton: TextButton(onPressed: () {}, child: const Text('button')), isDismissible: false);
+            Get.snackbar(
+              'title',
+              "message",
+              duration: const Duration(seconds: 1),
+              mainButton: TextButton(
+                onPressed: () {},
+                child: const Text('button'),
+              ),
+              isDismissible: false,
+            );
           },
         ),
       ),
@@ -69,8 +80,14 @@ void main() {
         home: ElevatedButton(
           child: const Text('Open Snackbar'),
           onPressed: () {
-            Get.rawSnackbar(messageText: messageOne, duration: const Duration(seconds: 1));
-            Get.rawSnackbar(messageText: messageTwo, duration: const Duration(seconds: 1));
+            Get.rawSnackbar(
+              messageText: messageOne,
+              duration: const Duration(seconds: 1),
+            );
+            Get.rawSnackbar(
+              messageText: messageTwo,
+              duration: const Duration(seconds: 1),
+            );
           },
         ),
       ),
@@ -105,7 +122,12 @@ void main() {
                   GestureDetector(
                     key: snackBarTapTarget,
                     onTap: () {
-                      getBar = const GetSnackBar(message: 'bar1', duration: Duration(seconds: 2), isDismissible: true, dismissDirection: dismissDirection);
+                      getBar = const GetSnackBar(
+                        message: 'bar1',
+                        duration: Duration(seconds: 2),
+                        isDismissible: true,
+                        dismissDirection: dismissDirection,
+                      );
                       Get.showSnackbar(getBar);
                     },
                     behavior: HitTestBehavior.opaque,

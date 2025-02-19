@@ -1,171 +1,206 @@
 import 'package:flutter/material.dart';
 
 extension ContextExt on BuildContext {
-  /// The same of [MediaQuery.sizeOf(context)]
+  // === Core Media Query Properties ===
+  /// Provides the size of the media query.
   Size get mediaQuerySize => MediaQuery.sizeOf(this);
 
-  /// The same of [MediaQuery.of(context).size.height]
-  /// Note: updates when you resize your screen (like on a browser or
-  /// desktop window)
+  /// Returns the height of the media query.
   double get height => mediaQuerySize.height;
 
-  /// The same of [MediaQuery.of(context).size.width]
-  /// Note: updates when you resize your screen (like on a browser or
-  /// desktop window)
+  /// Returns the width of the media query.
   double get width => mediaQuerySize.width;
 
-  /// Gives you the power to get a portion of the height.
-  /// Useful for responsive applications.
-  ///
-  /// [dividedBy] is for when you want to have a portion of the value you
-  /// would get like for example: if you want a value that represents a third
-  /// of the screen you can set it to 3, and you will get a third of the height
-  ///
-  /// [reducedBy] is a percentage value of how much of the height you want
-  /// if you for example want 46% of the height, then you reduce it by 56%.
-  double heightTransformer({double dividedBy = 1, double reducedBy = 0.0}) {
-    return (mediaQuerySize.height -
-            ((mediaQuerySize.height / 100) * reducedBy)) /
-        dividedBy;
-  }
+  /// Returns the shortest side of the screen.
+  double get shortestSide => mediaQuerySize.shortestSide;
 
-  /// Gives you the power to get a portion of the width.
-  /// Useful for responsive applications.
-  ///
-  /// [dividedBy] is for when you want to have a portion of the value you
-  /// would get like for example: if you want a value that represents a third
-  /// of the screen you can set it to 3, and you will get a third of the width
-  ///
-  /// [reducedBy] is a percentage value of how much of the width you want
-  /// if you for example want 46% of the width, then you reduce it by 56%.
-  double widthTransformer({double dividedBy = 1, double reducedBy = 0.0}) {
-    return (mediaQuerySize.width - ((mediaQuerySize.width / 100) * reducedBy)) /
-        dividedBy;
-  }
+  /// Returns the longest side of the screen.
+  double get longestSide => mediaQuerySize.longestSide;
 
-  /// Divide the height proportionally by the given value
-  double ratio({
-    double dividedBy = 1,
-    double reducedByW = 0.0,
-    double reducedByH = 0.0,
-  }) {
-    return heightTransformer(dividedBy: dividedBy, reducedBy: reducedByH) /
-        widthTransformer(dividedBy: dividedBy, reducedBy: reducedByW);
-  }
-
-  /// similar to [MediaQuery.of(context).padding]
-  ThemeData get theme => Theme.of(this);
-
-  /// Check if dark mode theme is enable
-  bool get isDarkMode => (theme.brightness == Brightness.dark);
-
-  /// give access to Theme.of(context).iconTheme.color
-  Color? get iconColor => theme.iconTheme.color;
-
-  /// similar to [MediaQuery.of(context).padding]
-  TextTheme get textTheme => Theme.of(this).textTheme;
-
-  /// similar to [MediaQuery.paddingOf(context)]
-  EdgeInsets get mediaQueryPadding => MediaQuery.paddingOf(this);
-
-  /// similar to [MediaQuery.of(context).padding]
+  /// Accesses MediaQuery data.
   MediaQueryData get mediaQuery => MediaQuery.of(this);
 
-  /// similar to [MediaQuery.viewPaddingOf(context)]
-  EdgeInsets get mediaQueryViewPadding => MediaQuery.viewPaddingOf(this);
+  /// Accesses padding information from MediaQuery.
+  EdgeInsets get padding => MediaQuery.paddingOf(this);
 
-  /// similar to [MediaQuery.viewInsetsOf(context)]
-  EdgeInsets get mediaQueryViewInsets => MediaQuery.viewInsetsOf(this);
+  /// Accesses view padding information from MediaQuery.
+  EdgeInsets get viewPadding => MediaQuery.viewPaddingOf(this);
 
-  /// similar to [MediaQuery.orientationOf(context)]
+  /// Accesses view insets information from MediaQuery.
+  EdgeInsets get viewInsets => MediaQuery.viewInsetsOf(this);
+
+  /// Gets the orientation of the device.
   Orientation get orientation => MediaQuery.orientationOf(this);
 
-  /// check if device is on landscape mode
-  bool get isLandscape => orientation == Orientation.landscape;
-
-  /// check if device is on portrait mode
-  bool get isPortrait => orientation == Orientation.portrait;
-
-  /// similar to [MediaQuery.devicePixelRatioOf(context)]
+  /// Gets the pixel ratio of the device.
   double get devicePixelRatio => MediaQuery.devicePixelRatioOf(this);
 
-  /// similar to [MediaQuery.textScaleFactorOf(context)]
-  TextScaler get textScaleFactor => MediaQuery.textScalerOf(this);
+  /// Gets text scale factor from MediaQuery.
+  TextScaler get textScaler => MediaQuery.textScalerOf(this);
 
-  /// get the shortestSide from screen
-  double get mediaQueryShortestSide => mediaQuerySize.shortestSide;
+  // === Theme Related Properties ===
+  /// Provides access to the current theme data.
+  ThemeData get theme => Theme.of(this);
 
-  /// True if width be larger than 800
-  bool get showNavbar => (width > 800);
+  /// Checks if dark mode theme is enabled.
+  bool get isDarkMode => theme.brightness == Brightness.dark;
 
-  /// True if the width is smaller than 600p
-  bool get isPhoneOrLess => width <= 600;
+  /// Accesses icon color from the theme.
+  Color? get iconColor => theme.iconTheme.color;
 
-  /// True if the width is higher than 600p
-  bool get isPhoneOrWider => width >= 600;
+  /// Accesses text theme from the current theme.
+  TextTheme get textTheme => theme.textTheme;
 
-  /// True if the shortestSide is smaller than 600p
-  bool get isPhone => (mediaQueryShortestSide < 600);
+  // === Orientation Checks ===
+  /// Checks if the device is in landscape mode.
+  bool get isLandscape => orientation == Orientation.landscape;
 
-  /// True if the width is smaller than 600p
-  bool get isSmallTabletOrLess => width <= 600;
+  /// Checks if the device is in portrait mode.
+  bool get isPortrait => orientation == Orientation.portrait;
 
-  /// True if the width is higher than 600p
-  bool get isSmallTabletOrWider => width >= 600;
+  // === Size Transformers ===
+  /// Returns a portion of the height based on [dividedBy] and [reducedBy].
+  double heightTransformer({double dividedBy = 1, double reducedBy = 0.0}) {
+    return (height - ((height / 100) * reducedBy)) / dividedBy;
+  }
 
-  /// True if the shortestSide is largest than 600p
-  bool get isSmallTablet => (mediaQueryShortestSide >= 600);
+  /// Returns a portion of the width based on [dividedBy] and [reducedBy].
+  double widthTransformer({double dividedBy = 1, double reducedBy = 0.0}) {
+    return (width - ((width / 100) * reducedBy)) / dividedBy;
+  }
 
-  /// True if the shortestSide is largest than 720p
-  bool get isLargeTablet => (mediaQueryShortestSide >= 720);
+  /// Divides height proportionally by a given value.
+  double ratio({
+    double dividedBy = 1,
+    double reducedByWidth = 0.0,
+    double reducedByHeight = 0.0,
+  }) {
+    return heightTransformer(dividedBy: dividedBy, reducedBy: reducedByHeight) /
+        widthTransformer(dividedBy: dividedBy, reducedBy: reducedByWidth);
+  }
 
-  /// True if the width is smaller than 720p
-  bool get isLargeTabletOrLess => width <= 720;
+  // === Device Type Detection ===
+  // Breakpoints based on common device sizes
+  static const double _phoneBreakpoint = 600;
+  static const double _smallTabletBreakpoint = 600;
+  static const double _largeTabletBreakpoint = 720;
+  static const double _desktopBreakpoint = 1200;
+  static const double _largeDesktopBreakpoint = 1600;
+  static const double _tvBreakpoint = 1920;
 
-  /// True if the width is higher than 720p
-  bool get isLargeTabletOrWider => width >= 720;
+  // --- Phone ---
+  /// Checks if the device is a phone (shortest side < 600px).
+  bool get isPhone => shortestSide < _phoneBreakpoint;
 
-  /// True if the current device is Tablet
+  /// Checks if width is smaller than or equal to phone size (600px).
+  bool get isPhoneOrLess => width <= _phoneBreakpoint;
+
+  /// Checks if width is greater than or equal to phone size (600px).
+  bool get isPhoneOrWider => width >= _phoneBreakpoint;
+
+  // --- Small Tablet ---
+  /// Checks if the device is a small tablet (shortest side >= 600px).
+  bool get isSmallTablet => shortestSide >= _smallTabletBreakpoint;
+
+  /// Checks if width is smaller than or equal to small tablet size (600px).
+  bool get isSmallTabletOrLess => width <= _smallTabletBreakpoint;
+
+  /// Checks if width is greater than or equal to small tablet size (600px).
+  bool get isSmallTabletOrWider => width >= _smallTabletBreakpoint;
+
+  // --- Large Tablet ---
+  /// Checks if the device is a large tablet (shortest side >= 720px).
+  bool get isLargeTablet => shortestSide >= _largeTabletBreakpoint;
+
+  /// Checks if width is smaller than or equal to large tablet size (720px).
+  bool get isLargeTabletOrLess => width <= _largeTabletBreakpoint;
+
+  /// Checks if width is greater than or equal to large tablet size (720px).
+  bool get isLargeTabletOrWider => width >= _largeTabletBreakpoint;
+
+  // --- General Tablet ---
+  /// Checks if the device is any type of tablet.
   bool get isTablet => isSmallTablet || isLargeTablet;
 
-  /// True if the width is smaller than 1200p
-  bool get isDesktopOrLess => width <= 1200;
+  // --- Desktop ---
+  /// Checks if the device is a desktop (shortest side >= 1200px).
+  bool get isDesktop => shortestSide >= _desktopBreakpoint;
 
-  /// True if the width is higher than 1200p
-  bool get isDesktopOrWider => width >= 1200;
+  /// Checks if width is smaller than or equal to desktop size (1200px).
+  bool get isDesktopOrLess => width <= _desktopBreakpoint;
 
-  /// same as [isDesktopOrLess]
-  bool get isDesktop => isDesktopOrLess;
+  /// Checks if width is greater than or equal to desktop size (1200px).
+  bool get isDesktopOrWider => width >= _desktopBreakpoint;
 
-  /// Returns a specific value according to the screen size
-  /// if the device width is higher than or equal to 1200 return
-  /// [desktop] value. if the device width is higher than  or equal to 600
-  /// and less than 1200 return [tablet] value.
-  /// if the device width is less than 300  return [watch] value.
-  /// in other cases return [mobile] value.
+  // --- Large Desktop ---
+  /// Checks if the device is a large desktop (shortest side >= 1600px).
+  bool get isLargeDesktop => shortestSide >= _largeDesktopBreakpoint;
+
+  /// Checks if width is smaller than or equal to large desktop size (1600px).
+  bool get isLargeDesktopOrLess => width <= _largeDesktopBreakpoint;
+
+  /// Checks if width is greater than or equal to large desktop size (1600px).
+  bool get isLargeDesktopOrWider => width >= _largeDesktopBreakpoint;
+
+  // --- TV ---
+  /// Checks if the device is a TV (shortest side >= 1920px).
+  bool get isTV => shortestSide >= _tvBreakpoint;
+
+  /// Checks if width is smaller than or equal to TV size (1920px).
+  bool get isTVOrLess => width <= _tvBreakpoint;
+
+  /// Checks if width is greater than or equal to TV size (1920px).
+  bool get isTVOrWider => width >= _tvBreakpoint;
+
+  // --- Navigation Bar ---
+  /// Checks if width is larger than or equal to 800 pixels (for showing navigation bar).
+  bool get showNavbar => width >= 800;
+
+  // === Responsive Value ===
+  /// Returns specific value according to screen size.
   T responsiveValue<T>({
     T? watch,
-    T? mobile,
-    T? tablet,
+    T? phone,
+    T? smallTablet,
+    T? largeTablet,
     T? desktop,
+    T? largeDesktop,
+    T? tv,
   }) {
     assert(
-        watch != null || mobile != null || tablet != null || desktop != null);
+      watch != null ||
+          phone != null ||
+          smallTablet != null ||
+          largeTablet != null ||
+          desktop != null ||
+          largeDesktop != null ||
+          tv != null,
+      'At least one value must be provided',
+    );
 
-    var deviceWidth = mediaQuerySize.width;
-    //big screen width can display smaller sizes
-    final strictValues = [
-      if (deviceWidth >= 1200) desktop, //desktop is allowed
-      if (deviceWidth >= 600) tablet, //tablet is allowed
-      if (deviceWidth >= 300) mobile, //mobile is allowed
-      watch, //watch is allowed
-    ].whereType<T>();
-    final looseValues = [
-      watch,
-      mobile,
-      tablet,
-      desktop,
-    ].whereType<T>();
+    final deviceWidth = width;
+    final strictValues =
+        [
+          if (deviceWidth >= _tvBreakpoint) tv,
+          if (deviceWidth >= _largeDesktopBreakpoint) largeDesktop,
+          if (deviceWidth >= _desktopBreakpoint) desktop,
+          if (deviceWidth >= _largeTabletBreakpoint) largeTablet,
+          if (deviceWidth >= _smallTabletBreakpoint) smallTablet,
+          if (deviceWidth >= 300) phone,
+          watch,
+        ].whereType<T>();
+
+    final looseValues =
+        [
+          watch,
+          phone,
+          smallTablet,
+          largeTablet,
+          desktop,
+          largeDesktop,
+          tv,
+        ].whereType<T>();
+
     return strictValues.firstOrNull ?? looseValues.first;
   }
 }
@@ -173,8 +208,7 @@ extension ContextExt on BuildContext {
 extension IterableExt<T> on Iterable<T> {
   /// The first element, or `null` if the iterable is empty.
   T? get firstOrNull {
-    var iterator = this.iterator;
-    if (iterator.moveNext()) return iterator.current;
-    return null;
+    final iterator = this.iterator;
+    return iterator.moveNext() ? iterator.current : null;
   }
 }

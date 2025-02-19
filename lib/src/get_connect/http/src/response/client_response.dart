@@ -74,8 +74,11 @@ abstract interface class HttpClientResponse implements Stream<List<int>> {
   ///
   /// The method will ignore [HttpClientRequest.maxRedirects]
   /// and will always perform the redirect.
-  Future<HttpClientResponse> redirect(
-      [String? method, Uri? url, bool? followLoops]);
+  Future<HttpClientResponse> redirect([
+    String? method,
+    Uri? url,
+    bool? followLoops,
+  ]);
 
   /// Returns the client response headers.
   ///
@@ -205,7 +208,7 @@ abstract interface class HttpHeaders {
     transferEncodingHeader,
     upgradeHeader,
     viaHeader,
-    warningHeader
+    warningHeader,
   ];
 
   static const entityHeaders = [
@@ -218,7 +221,7 @@ abstract interface class HttpHeaders {
     contentRangeHeader,
     contentTypeHeader,
     expiresHeader,
-    lastModifiedHeader
+    lastModifiedHeader,
   ];
 
   static const responseHeaders = [
@@ -231,7 +234,7 @@ abstract interface class HttpHeaders {
     serverHeader,
     varyHeader,
     wwwAuthenticateHeader,
-    contentDisposition
+    contentDisposition,
   ];
 
   static const requestHeaders = [
@@ -253,7 +256,7 @@ abstract interface class HttpHeaders {
     rangeHeader,
     refererHeader,
     teHeader,
-    userAgentHeader
+    userAgentHeader,
   ];
 
   /// The date specified by the [dateHeader] header, if any.

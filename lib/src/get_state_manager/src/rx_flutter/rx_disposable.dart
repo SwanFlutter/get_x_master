@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../get_x_master.dart';
 
-
 /// Unlike GetXController, which serves to control events on each of its pages,
 /// GetXService is not automatically disposed (nor can be removed with
 /// Get.delete()).

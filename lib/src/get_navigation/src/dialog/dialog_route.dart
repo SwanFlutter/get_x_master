@@ -66,12 +66,12 @@ class GetDialogRoute<T> extends PopupRoute<T> {
     Duration transitionDuration = const Duration(milliseconds: 200),
     RouteTransitionsBuilder? transitionBuilder,
     super.settings,
-  })  : _pageBuilder = pageBuilder,
-        _barrierDismissible = barrierDismissible,
-        _barrierLabel = barrierLabel,
-        _barrierColor = barrierColor,
-        _transitionDuration = transitionDuration,
-        _transitionBuilder = transitionBuilder {
+  }) : _pageBuilder = pageBuilder,
+       _barrierDismissible = barrierDismissible,
+       _barrierLabel = barrierLabel,
+       _barrierColor = barrierColor,
+       _transitionDuration = transitionDuration,
+       _transitionBuilder = transitionBuilder {
     // Report route creation for tracking purposes
     RouterReportManager.reportCurrentRoute(this);
   }
@@ -112,8 +112,11 @@ class GetDialogRoute<T> extends PopupRoute<T> {
 
   /// Builds the dialog's content with proper semantics wrapping.
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return Semantics(
       scopesRoute: true,
       explicitChildNodes: true,
@@ -126,14 +129,15 @@ class GetDialogRoute<T> extends PopupRoute<T> {
   /// If [_transitionBuilder] is null, provides a default fade transition.
   /// Otherwise, uses the custom transition builder.
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     if (_transitionBuilder == null) {
       return FadeTransition(
-        opacity: CurvedAnimation(
-          parent: animation,
-          curve: Curves.linear,
-        ),
+        opacity: CurvedAnimation(parent: animation, curve: Curves.linear),
         child: child,
       );
     }

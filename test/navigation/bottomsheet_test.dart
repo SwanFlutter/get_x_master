@@ -8,7 +8,17 @@ void main() {
   testWidgets("Get.bottomSheet smoke test", (tester) async {
     await tester.pumpWidget(Wrapper(child: Container()));
 
-    Get.bottomSheet(Wrap(children: <Widget>[ListTile(leading: const Icon(Icons.music_note), title: const Text('Music'), onTap: () {})]));
+    Get.bottomSheet(
+      Wrap(
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.music_note),
+            title: const Text('Music'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
 
     await tester.pumpAndSettle();
 
@@ -18,7 +28,17 @@ void main() {
   testWidgets("Get.bottomSheet close test", (tester) async {
     await tester.pumpWidget(Wrapper(child: Container()));
 
-    Get.bottomSheet(Wrap(children: <Widget>[ListTile(leading: const Icon(Icons.music_note), title: const Text('Music'), onTap: () {})]));
+    Get.bottomSheet(
+      Wrap(
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.music_note),
+            title: const Text('Music'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
 
     expect(Get.isBottomSheetOpen, true);
 

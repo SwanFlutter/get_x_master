@@ -42,11 +42,15 @@ class SignUp extends StatelessWidget {
                 minWidth: Get.width / 2,
                 height: 56,
                 color: context.theme.colorScheme.inversePrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 onPressed: () {
                   SignupController.to.chackSignup();
                 },
-                child: AnimationExtension(Text('SignUp', style: TextStyle(color: Colors.deepPurpleAccent, fontSize: 14.sp))).rotate(begin: 0, end: 1),
+                child: AnimationExtension(Text('SignUp',
+                        style: TextStyle(
+                            color: Colors.deepPurpleAccent, fontSize: 14.sp)))
+                    .rotate(begin: 0, end: 1),
               ),
             ).wave(),
             SizedBox(height: 5),
@@ -69,7 +73,8 @@ class SignUp extends StatelessWidget {
                               color: context.theme.primaryColor,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline, // Optional underline for emphasis
+                              decoration: TextDecoration
+                                  .underline, // Optional underline for emphasis
                             ),
                           ),
                         ),

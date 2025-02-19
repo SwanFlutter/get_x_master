@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../get_x_master.dart';
 
-
-
 class GetMaterialController extends SuperController {
   bool testMode = false;
   Key? unikey;

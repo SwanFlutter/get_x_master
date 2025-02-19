@@ -80,10 +80,11 @@ class GetInstance {
     InstanceBuilderCallback<S>? builder,
   }) {
     _insert(
-        isSingleton: true,
-        name: tag,
-        permanent: permanent,
-        builder: builder ?? (() => dependency));
+      isSingleton: true,
+      name: tag,
+      permanent: permanent,
+      builder: builder ?? (() => dependency),
+    );
     return find<S>(tag: tag);
   }
 
@@ -427,11 +428,7 @@ class GetInstance {
     });
   }
 
-  void reload<S>({
-    String? tag,
-    String? key,
-    bool force = false,
-  }) {
+  void reload<S>({String? tag, String? key, bool force = false}) {
     final newKey = key ?? _getKey(S, tag);
 
     final builder = _getDependency<S>(tag: tag, key: newKey);

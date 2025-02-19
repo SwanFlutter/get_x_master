@@ -41,10 +41,14 @@ class BindingsBuilder<T> extends Bindings {
   ///   binding: BindingsBuilder.put(() => HomeController()),
   /// ),
   /// ```
-  factory BindingsBuilder.put(InstanceBuilderCallback<T> builder,
-      {String? tag, bool permanent = false}) {
+  factory BindingsBuilder.put(
+    InstanceBuilderCallback<T> builder, {
+    String? tag,
+    bool permanent = false,
+  }) {
     return BindingsBuilder(
-        () => GetInstance().put<T>(builder(), tag: tag, permanent: permanent));
+      () => GetInstance().put<T>(builder(), tag: tag, permanent: permanent),
+    );
   }
 
   /// WARNING: don't use `()=> Get.put(Controller())`,

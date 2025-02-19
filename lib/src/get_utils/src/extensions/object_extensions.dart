@@ -29,10 +29,12 @@ extension ObjectExtension on Object {
     final hour =
         time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
     final period = time.hour < 12 ? 'صبح' : 'بعد از ظهر';
-    final persianHour =
-        convertToPersianDigitsForNew(hour.toString().padLeft(2, '0'));
-    final persianMinute =
-        convertToPersianDigitsForNew(time.minute.toString().padLeft(2, '0'));
+    final persianHour = convertToPersianDigitsForNew(
+      hour.toString().padLeft(2, '0'),
+    );
+    final persianMinute = convertToPersianDigitsForNew(
+      time.minute.toString().padLeft(2, '0'),
+    );
     return '$persianHour:$persianMinute $period';
   }
 
@@ -149,8 +151,9 @@ extension ObjectExtension on Object {
   /// ```
   String formatDateTimeForIran(Jalali jalaliDate, TimeOfDay time) {
     final formattedTime = convertTimeToPersian(time);
-    final formattedDate =
-        DateFormat('yyyy/MM/dd').format(jalaliDate.toDateTime());
+    final formattedDate = DateFormat(
+      'yyyy/MM/dd',
+    ).format(jalaliDate.toDateTime());
     return '$formattedDate - $formattedTime';
   }
 
@@ -165,8 +168,9 @@ extension ObjectExtension on Object {
   /// ```
   String formatDateTimeForIranNew(Jalali jalaliDate, TimeOfDay time) {
     final formattedTime = convertTimeToPersianForNew(time);
-    final formattedDate =
-        DateFormat('yyyy/MM/dd').format(jalaliDate.toDateTime());
+    final formattedDate = DateFormat(
+      'yyyy/MM/dd',
+    ).format(jalaliDate.toDateTime());
     return '$formattedDate - $formattedTime';
   }
 
@@ -249,7 +253,7 @@ extension ObjectExtension on Object {
       'Tuesday': 'سه‌شنبه',
       'Wednesday': 'چهارشنبه',
       'Thursday': 'پنج‌شنبه',
-      'Friday': 'جمعه'
+      'Friday': 'جمعه',
     };
     return dayNames[dayName] ?? dayName;
   }
@@ -270,7 +274,7 @@ extension ObjectExtension on Object {
       'سه‌شنبه': 'Tuesday',
       'چهارشنبه': 'Wednesday',
       'پنج‌شنبه': 'Thursday',
-      'جمعه': 'Friday'
+      'جمعه': 'Friday',
     };
     return dayNames[persianDayName] ?? persianDayName;
   }
@@ -293,7 +297,7 @@ extension DateTimeExtension on DateTime {
       'Tuesday',
       'Wednesday',
       'Thursday',
-      'Friday'
+      'Friday',
     ];
     final englishMonthNames = [
       'January',
@@ -307,7 +311,7 @@ extension DateTimeExtension on DateTime {
       'September',
       'October',
       'November',
-      'December'
+      'December',
     ];
     final dayOfWeek = weekday % 7;
     final f = NumberFormat("00", "en");
@@ -343,7 +347,7 @@ extension DateTimeExtension on DateTime {
       'سه‌شنبه',
       'چهارشنبه',
       'پنج‌شنبه',
-      'جمعه'
+      'جمعه',
     ];
     final persianMonthNames = [
       'فروردین',
@@ -357,7 +361,7 @@ extension DateTimeExtension on DateTime {
       'آذر',
       'دی',
       'بهمن',
-      'اسفند'
+      'اسفند',
     ];
     final dayOfWeek = weekday % 7;
     final f = NumberFormat("00", "fa");

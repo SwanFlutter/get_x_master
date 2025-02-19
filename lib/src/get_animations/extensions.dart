@@ -30,8 +30,10 @@ extension AnimationExtension on Widget {
     ValueSetter<AnimationController>? onComplete,
     bool isSequential = false,
   }) {
-    assert(isSequential || this is! GetAnimatedBuilder,
-        'Can not use fadeOut + fadeIn when isSequential is false');
+    assert(
+      isSequential || this is! GetAnimatedBuilder,
+      'Can not use fadeOut + fadeIn when isSequential is false',
+    );
 
     return GetAnimatedBuilder<double>(
       duration: duration,
@@ -56,18 +58,25 @@ extension AnimationExtension on Widget {
     ValueSetter<AnimationController>? onComplete,
     bool isSequential = false,
   }) {
-    assert(isSequential || this is! GetAnimatedBuilder,
-        'Cannot use fadeOut() + fadeIn() when isSequential is false');
+    assert(
+      isSequential || this is! GetAnimatedBuilder,
+      'Cannot use fadeOut() + fadeIn() when isSequential is false',
+    );
 
     return GetAnimatedBuilder<double>(
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(
-          begin: 0.0, end: 1.0), // Fade from opaque to transparent
+        begin: 0.0,
+        end: 1.0,
+      ), // Fade from opaque to transparent
       idleValue: 1.0, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Opacity(
-          opacity: 1 - value, child: child), // Invert value for fade-out
+      builder:
+          (context, value, child) => Opacity(
+            opacity: 1 - value,
+            child: child,
+          ), // Invert value for fade-out
       child: this,
     );
   }
@@ -92,10 +101,11 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Transform.rotate(
-        angle: value * pi * 2, // Convert turns to radians
-        child: child,
-      ),
+      builder:
+          (context, value, child) => Transform.rotate(
+            angle: value * pi * 2, // Convert turns to radians
+            child: child,
+          ),
       child: this,
     );
   }
@@ -120,10 +130,9 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Transform.scale(
-        scale: value,
-        child: child,
-      ),
+      builder:
+          (context, value, child) =>
+              Transform.scale(scale: value, child: child),
       child: this,
     );
   }
@@ -197,10 +206,9 @@ extension AnimationExtension on Widget {
       idleValue: begin, // Add idleValue
       onComplete: onComplete,
       curve: Curves.bounceInOut, // Use a bounce curve
-      builder: (context, value, child) => Transform.scale(
-        scale: value,
-        child: child,
-      ),
+      builder:
+          (context, value, child) =>
+              Transform.scale(scale: value, child: child),
       child: this,
     );
   }
@@ -224,10 +232,9 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: 0, end: 1),
       idleValue: 0.0, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Transform.rotate(
-        angle: value * pi * 2,
-        child: child,
-      ),
+      builder:
+          (context, value, child) =>
+              Transform.rotate(angle: value * pi * 2, child: child),
       child: this,
     );
   }
@@ -255,10 +262,11 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Transform.scale(
-        scale: value, // Use scale for size animation
-        child: child,
-      ),
+      builder:
+          (context, value, child) => Transform.scale(
+            scale: value, // Use scale for size animation
+            child: child,
+          ),
       child: this,
     );
   }
@@ -283,10 +291,11 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin, //add idle value
       onComplete: onComplete,
-      builder: (context, value, child) => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: value, sigmaY: value),
-        child: child,
-      ),
+      builder:
+          (context, value, child) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: value, sigmaY: value),
+            child: child,
+          ),
       child: this,
     );
   }
@@ -312,11 +321,12 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Transform(
-        transform: Matrix4.rotationY(value * pi), // Rotate around Y-axis
-        alignment: Alignment.center, // Flip from the center
-        child: child,
-      ),
+      builder:
+          (context, value, child) => Transform(
+            transform: Matrix4.rotationY(value * pi), // Rotate around Y-axis
+            alignment: Alignment.center, // Flip from the center
+            child: child,
+          ),
       child: this,
     );
   }
@@ -342,11 +352,15 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin, // Add idleValue
       onComplete: onComplete,
-      builder: (context, value, child) => Transform(
-        transform:
-            Matrix4.translationValues(0.0, 20.0 * sin(value * pi * 2), 0.0),
-        child: child,
-      ),
+      builder:
+          (context, value, child) => Transform(
+            transform: Matrix4.translationValues(
+              0.0,
+              20.0 * sin(value * pi * 2),
+              0.0,
+            ),
+            child: child,
+          ),
       child: this,
     );
   }
@@ -363,8 +377,10 @@ extension AnimationExtension on Widget {
   /// true, and that manually specified delays are respected when
   /// `isSequential` is false.
   Duration _getDelay(bool isSequential, Duration delay) {
-    assert(!(isSequential && delay != Duration.zero),
-        "Error: When isSequential is true, delay must be non-zero");
+    assert(
+      !(isSequential && delay != Duration.zero),
+      "Error: When isSequential is true, delay must be non-zero",
+    );
 
     return isSequential
         ? (_currentAnimation?.totalDuration ?? Duration.zero)

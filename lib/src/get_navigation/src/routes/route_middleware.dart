@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 
 import '../../../../get_x_master.dart';
 
-
 abstract class _RouteMiddleware {
   /// The Order of the Middlewares to run.
   ///
@@ -132,10 +131,7 @@ class MiddlewareRunner {
 
   List<GetMiddleware> _getMiddlewares() {
     final m = _middlewares ?? <GetMiddleware>[];
-    return m
-      ..sort(
-        (a, b) => (a.priority ?? 0).compareTo(b.priority ?? 0),
-      );
+    return m..sort((a, b) => (a.priority ?? 0).compareTo(b.priority ?? 0));
   }
 
   GetPage? runOnPageCalled(GetPage? page) {
@@ -202,12 +198,10 @@ class PageRedirect {
     return GetPageRoute<T>(
       page: r.page,
       parameter: r.parameters,
-      settings: isUnknown
-          ? RouteSettings(
-              name: r.name,
-              arguments: settings!.arguments,
-            )
-          : settings,
+      settings:
+          isUnknown
+              ? RouteSettings(name: r.name, arguments: settings!.arguments)
+              : settings,
       curve: r.curve,
       opaque: r.opaque,
       showCupertinoParallax: r.showCupertinoParallax,
