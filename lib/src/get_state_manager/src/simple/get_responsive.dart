@@ -214,11 +214,13 @@ class ResponsiveScreen {
   ScreenType get screenType {
     final deviceWidth = _deviceWidth;
     if (deviceWidth >= settings.tvChangePoint) return ScreenType.tv;
-    if (deviceWidth >= settings.largeDesktopChangePoint)
+    if (deviceWidth >= settings.largeDesktopChangePoint) {
       return ScreenType.largeDesktop;
+    }
     if (deviceWidth >= settings.desktopChangePoint) return ScreenType.desktop;
-    if (deviceWidth >= settings.largeTabletChangePoint)
+    if (deviceWidth >= settings.largeTabletChangePoint) {
       return ScreenType.largeTablet;
+    }
     if (deviceWidth >= settings.tabletChangePoint) return ScreenType.tablet;
     if (deviceWidth >= settings.phoneChangePoint) return ScreenType.phone;
     return ScreenType.watch;

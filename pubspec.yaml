@@ -1,5 +1,5 @@
 name: get_x_master
-description: "A powerful and updated version of the GetX package for Flutter, offering enhanced state management, routing, and dependency injection.This version includes new features, performance improvements, and better compatibility with the latest Flutter updates."
+description: "GetX for Flutter enhances state management, routing, and dependency injection with improved performance and compatibility with the latest updates."
 version: 0.0.1
 homepage: "https://github.com/SwanFlutter/get_x_master"
 
