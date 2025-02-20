@@ -85,10 +85,10 @@ To read the documentation for these sections, you can use the following links to
 - New features package and read documentation
 
 
-- [GetX State Management](https://github.com/SwanFlutter/getx/blob/main/lib/src/get_state_manager/README.md)
-- [GetX Utilities](https://github.com/SwanFlutter/getx/blob/main/lib/src/get_utils/README.md)
-- [GetX Animations](https://github.com/SwanFlutter/getx/blob/main/lib/src/get_animations/README.md)
-- [GetX Instance Management](https://github.com/SwanFlutter/getx/blob/main/lib/src/get_instance/README.md)
+- [GetX State Management](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_state_manager/README.md)
+- [GetX Utilities](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_utils/README.md)
+- [GetX Animations](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_animations/README.md)
+- [GetX Instance Management](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_instance/README.md)
 - [GetX Utils AND Extensions](https://github.com/SwanFlutter/getx/blob/main/lib/src/get_utils/README.md)
 
 These links will help you access the full documentation and detailed information about each section.

@@ -1,7 +1,7 @@
-## get_utils
+# Get_utils AND Extensions
 
   
-# Equality Mixin
+## Equality Mixin
 
 The `Equality` mixin provides a simple way to implement equality checks and hashing for Dart classes. It is particularly useful for value objects where equality is based on a list of properties.
 

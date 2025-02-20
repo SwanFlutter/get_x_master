@@ -32,6 +32,18 @@ The `smartLazyPut` method registers a controller with GetX, ensuring that the co
 #### Example Usage
 
 ```dart
+
+class AppBindings extends Bindings {
+  @override
+  void dependencies() {
+    
+    Get.smartLazyPut<MyController>(() => MyController());
+
+    
+  }
+}
+
+
 // Define your controller
 class MyController extends GetxController {
   final count = 0.obs;
@@ -44,8 +56,6 @@ class MyController extends GetxController {
 // In your main function or wherever you manage dependencies
 void main() {
   // Using smartLazyPut to register MyController
-  Get.smartLazyPut<MyController>(() => MyController());
-
   // Using smartFind to retrieve MyController
   MyController myController = Get.smartFind<MyController>();
 
