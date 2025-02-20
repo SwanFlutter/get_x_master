@@ -128,7 +128,7 @@ Add Get to your pubspec.yaml file:
 ```yaml
 
 dependencies:
-  get_x_master: ^0.0.2
+  get_x_master: ^0.0.3
 
 ```
 
