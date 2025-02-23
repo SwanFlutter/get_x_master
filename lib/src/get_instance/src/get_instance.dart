@@ -125,6 +125,43 @@ class GetInstance {
     );
   }
 
+  /// Enhanced version of lazyPut that handles controller recreation.
+  ///
+  /// Use this method to register a controller with GetX, ensuring that
+  /// the controller is only created if it hasn't been registered before
+  /// or if it has been removed. It also checks if the builder for the
+  /// controller has been prepared before proceeding.
+  ///
+  /// Example:
+  /// ```
+  /// Get.smartLazyPut<MyController>(() => MyController());
+  /// ```
+  ///
+  /// Parameters:
+  ///   - [builder]: A callback function that returns an instance of the controller.
+  ///   - [tag]: An optional tag to identify the controller instance.
+  ///   - [fenix]: If true (default), the controller instance will remain in memory even when not in use.
+  ///   - [autoRemove]: If true, the controller instance will be automatically removed when not in use.
+  void smartLazyPut<S>(
+    InstanceBuilderCallback<S> builder, {
+    String? tag,
+    bool? fenix,
+    bool autoRemove = true,
+  }) {
+    // If it is not registered previously or has been removed
+    if (!isRegistered<S>(tag: tag)) {
+      // Check if the builder has been prepared before
+      if (!isPrepared<S>(tag: tag)) {
+        lazyPut<S>(
+          builder,
+          tag: tag,
+          // If fenix is not specified, default to true
+          fenix: fenix ?? true,
+        );
+      }
+    }
+  }
+
   /// Creates a new Class Instance [S] from the builder callback[S].
   /// Every time [find]<[S]>() is used, it calls the builder method to generate
   /// a new Instance [S].
@@ -275,6 +312,39 @@ class GetInstance {
     }
   }
 
+  /// Enhanced version of find that ensures the controller exists.
+  ///
+  /// Use this method to retrieve a registered controller from GetX. If the
+  /// controller is not found and its builder is prepared, a new instance
+  /// of the controller will be created.
+  ///
+  /// Example:
+  /// ```
+  /// MyController myController = Get.smartFind<MyController>();
+  /// ```
+  ///
+  /// Parameters:
+  ///   - [tag]: An optional tag to identify the controller instance.
+  ///
+  /// Returns:
+  ///   - The controller instance.
+  ///
+  /// Throws:
+  ///   - An exception if the controller is not found and its builder is not prepared.
+  S smartFind<S>({String? tag}) {
+    try {
+      return find<S>(tag: tag);
+    } catch (e) {
+      // If the controller was not found and its builder is prepared
+      if (isPrepared<S>(tag: tag)) {
+        // Create a new instance
+        return find<S>(tag: tag);
+      }
+      // Modified error message for smartFind when instance is not found
+      throw '"$S" not found. You need to call "Get.smartLazyPut(()=>$S())" ';
+    }
+  }
+
   /// Finds the registered type <[S]> (or [tag])
   /// In case of using Get.[create] to register a type <[S]> or [tag],
   /// it will create an instance each time you call [find].
@@ -293,8 +363,8 @@ class GetInstance {
       }
 
       // if (dep.lateRemove != null) {
-      //   dep.isDirty = true;
-      //   if(dep.fenix)
+      //   dep.isDirty = true;
+      //   if(dep.fenix)
       // }
 
       /// although dirty solution, the lifecycle starts inside
@@ -303,7 +373,7 @@ class GetInstance {
       final i = _initDependencies<S>(name: tag);
       return i ?? dep.getDependency() as S;
     } else {
-      // ignore: lines_longer_than_80_chars
+      // Original error message for find
       throw '"$S" not found. You need to call "Get.put($S())" OR "Get.lazyPut(()=>$S())" OR "Get.smartPut(()=>$S()" OR "Get.lazyManage(()=>$S()" OR "Get.smartPutIf(()=>$S()"';
     }
   }

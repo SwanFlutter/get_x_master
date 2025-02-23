@@ -239,7 +239,7 @@ extension SmartLazyPut on GetInterface {
         // Create a new instance
         return find<S>(tag: tag);
       }
-      rethrow;
+      throw '"$S" not found. You need to call "Get.smartLazyPut(()=>$S())" ';
     }
   }
 }
