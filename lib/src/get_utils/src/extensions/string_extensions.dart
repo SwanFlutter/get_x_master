@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 
 import '../../../../get_x_master.dart';
@@ -30,8 +29,7 @@ extension GetStringUtils on String {
   /// String numeric = "abc123".numericOnly();
   /// // Result: "123"
   /// ```
-  String numericOnly({bool firstWordOnly = false}) =>
-      GetUtils.numericOnly(this, firstWordOnly: firstWordOnly);
+  String numericOnly({bool firstWordOnly = false}) => GetUtils.numericOnly(this, firstWordOnly: firstWordOnly);
 
   /// Discover if the String is alphanumeric only
   ///
@@ -301,8 +299,7 @@ extension GetStringUtils on String {
   /// bool contains = "Hello World".isCaseInsensitiveContains("hello");
   /// // Result: true
   /// ```
-  bool isCaseInsensitiveContains(String b) =>
-      GetUtils.isCaseInsensitiveContains(this, b);
+  bool isCaseInsensitiveContains(String b) => GetUtils.isCaseInsensitiveContains(this, b);
 
   /// Discover if the String contains any value case insensitively
   ///
@@ -311,8 +308,7 @@ extension GetStringUtils on String {
   /// bool containsAny = "Hello World".isCaseInsensitiveContainsAny("hello");
   /// // Result: true
   /// ```
-  bool isCaseInsensitiveContainsAny(String b) =>
-      GetUtils.isCaseInsensitiveContainsAny(this, b);
+  bool isCaseInsensitiveContainsAny(String b) => GetUtils.isCaseInsensitiveContainsAny(this, b);
 
   /// Capitalize the String
   ///
@@ -378,8 +374,7 @@ extension GetStringUtils on String {
   /// String capitalizedWords = "hello world".capitalizeAllWordsFirstLetter();
   /// // Result: "Hello World"
   /// ```
-  String capitalizeAllWordsFirstLetter() =>
-      GetUtils.capitalizeAllWordsFirstLetter(this);
+  String capitalizeAllWordsFirstLetter() => GetUtils.capitalizeAllWordsFirstLetter(this);
 
   /// Reverse the String
   ///
@@ -459,6 +454,121 @@ extension StringNumberFormatter on String {
       return this;
     }
   }
+
+  /// تبدیل متن فارسی به فرمت استاندارد (اصلاح فاصله‌ها و کاراکترها)
+  ///
+  /// مثال:
+  /// ```dart
+  /// String text = "سلام  دنيا";
+  /// String standardText = text.standardizePersianText();
+  /// // نتیجه: "سلام دنیا"
+  ///
+  ///
+  /// ```
+  String standardizePersianText() {
+    // تبدیل کاراکترهای عربی به فارسی
+    String result = replaceAll('ي', 'ی').replaceAll('ك', 'ک');
+
+    // اصلاح فاصله‌های اضافی
+    result = result.replaceAll(RegExp(r'\s+'), ' ').trim();
+
+    // اصلاح نیم‌فاصله‌ها
+    final halfSpaceNeededAfter = ['می', 'نمی', 'بی', 'می‌', 'نمی‌'];
+    for (final word in halfSpaceNeededAfter) {
+      result = result.replaceAll('$word ', '$word‌');
+    }
+
+    return result;
+  }
+
+  /// تبدیل اعداد انگلیسی به فارسی در متن
+  ///
+  /// مثال:
+  /// ```dart
+  /// String text = "قیمت: 12500 تومان";
+  /// String persianText = text.convertDigitsToPersian();
+  /// // نتیجه: "قیمت: ۱۲۵۰۰ تومان"
+  ///
+  ///
+  /// ```
+  String convertDigitsToPersian() {
+    final persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return replaceAllMapped(RegExp(r'\d'), (match) {
+      return persianDigits[int.parse(match.group(0)!)];
+    });
+  }
+
+  /// تبدیل اعداد فارسی به انگلیسی در متن
+  ///
+  /// مثال:
+  /// ```dart
+  /// String text = "قیمت: ۱۲۵۰۰ تومان";
+  /// String englishText = text.convertDigitsToEnglish();
+  /// // نتیجه: "قیمت: 12500 تومان"
+  ///
+  ///
+  /// ```
+  String convertDigitsToEnglish() {
+    const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    String result = this;
+    for (int i = 0; i < persianDigits.length; i++) {
+      result = result.replaceAll(persianDigits[i], i.toString());
+    }
+    return result;
+  }
+
+  /// اعتبارسنجی کد ملی ایرانی
+  ///
+  /// مثال:
+  /// ```dart
+  /// String nationalCode = "0123456789";
+  /// bool isValid = nationalCode.isValidIranianNationalCode();
+  ///
+  /// // نتیجه: true
+  ///
+  ///
+  /// ```
+  bool isValidIranianNationalCode() {
+    // کد ملی باید 10 رقم باشد
+    if (length != 10) return false;
+
+    // کد ملی نباید با کاراکتر غیرعددی باشد
+    if (contains(RegExp(r'\D'))) return false;
+
+    // کد ملی نباید همه ارقامش یکسان باشد
+    if (RegExp(r'^(\d)\1+$').hasMatch(this)) return false;
+
+    // الگوریتم محاسبه
+    int sum = 0;
+    for (int i = 0; i < 9; i++) {
+      sum += int.parse(this[i]) * (10 - i);
+    }
+    int remainder = sum % 11;
+    int controlDigit = remainder < 2 ? remainder : 11 - remainder;
+
+    return controlDigit == int.parse(this[9]);
+  }
+
+  /// اعتبارسنجی شماره شبا (IBAN) ایرانی
+  ///
+  /// مثال:
+  /// ```dart
+  /// String iban = "IR062960000000100324200001";
+  /// bool isValid = iban.isValidIranianSheba();
+  ///
+  ///
+  /// ```
+  bool isValidIranianSheba() {
+    // شماره شبای ایران باید با IR شروع شود و 24 رقم داشته باشد
+    if (!startsWith('IR') || length != 26) return false;
+
+    // بررسی اینکه بقیه کاراکترها عدد باشند
+    if (substring(2).contains(RegExp(r'\D'))) return false;
+
+    // الگوریتم بررسی شبا (محاسبات پیچیده‌تر مورد نیاز است)
+    // این یک بررسی ساده اولیه است
+    return true;
+  }
 }
 
 /// Extension on String to provide responsive text widget creation.
@@ -487,23 +597,11 @@ extension StringNumberFormatter on String {
 /// prevent extremely large or small fonts.
 
 extension ResponsiveText on String {
-  Text responsive({
-    Key? key,
-    double? fontSize,
-    FontWeight? fontWeight,
-    Color? color,
-    TextAlign? textAlign,
-    int? maxLines,
-    TextOverflow? overflow,
-  }) {
+  Text responsive({Key? key, double? fontSize, FontWeight? fontWeight, Color? color, TextAlign? textAlign, int? maxLines, TextOverflow? overflow}) {
     return Text(
       this,
       key: key,
-      style: TextStyle(
-        fontSize: _getResponsiveFontSize(fontSize ?? 14.0),
-        fontWeight: fontWeight,
-        color: color,
-      ),
+      style: TextStyle(fontSize: _getResponsiveFontSize(fontSize ?? 14.0), fontWeight: fontWeight, color: color),
       textAlign: textAlign,
       maxLines: maxLines,
       overflow: overflow,
@@ -550,17 +648,8 @@ extension ResponsiveText on String {
 extension ResponsiveTextNull on String? {
   String get value => this ?? '';
 
-  TextStyle responsiveStyle({
-    double? fontSize,
-    FontWeight? fontWeight,
-    Color? color,
-    TextStyle? baseStyle,
-  }) {
-    return (baseStyle ?? TextStyle()).copyWith(
-      fontSize: _getResponsiveFontSize(fontSize ?? 14.0),
-      fontWeight: fontWeight,
-      color: color,
-    );
+  TextStyle responsiveStyle({double? fontSize, FontWeight? fontWeight, Color? color, TextStyle? baseStyle}) {
+    return (baseStyle ?? TextStyle()).copyWith(fontSize: _getResponsiveFontSize(fontSize ?? 14.0), fontWeight: fontWeight, color: color);
   }
 
   double _getResponsiveFontSize(double fontSize) {

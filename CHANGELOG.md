@@ -15,3 +15,14 @@
 ## 0.0.3
 
 * Edit Document.
+
+## 0.0.4
+
+* Edit Document.
+* Fix erroe handling smatFind.
+
+## 0.0.5
+
+* Fix bug .
+* Add new extensions .
+

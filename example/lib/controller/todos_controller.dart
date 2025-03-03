@@ -10,9 +10,14 @@ class TodosController extends GetXController {
 
   late List<String> sort;
 
+  final selectedDate = DateTime.now();
+
+  RxString selected = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
     sort = todos.sortList(descending: true);
+    // selected = selectedDate.formatPersianFullDateWithDay().;
   }
 }

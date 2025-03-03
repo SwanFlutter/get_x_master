@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(height: 20),
           TextField(
             controller: LoginController.to.passwordController,
-            obscureText: true,
+            obscureText: false,
             decoration: InputDecoration(
               labelText: 'Password',
               border: OutlineInputBorder(),
@@ -44,16 +44,14 @@ class _LoginPageState extends State<LoginPage> {
               minWidth: Get.width / 2,
               height: 56,
               color: context.theme.colorScheme.inversePrimary,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               onPressed: () {
                 LoginController.to.chackLogin();
               },
               child: AnimationExtension(
                 Text(
                   'Login',
-                  style: TextStyle(
-                      color: Colors.deepPurpleAccent, fontSize: 14.sp),
+                  style: TextStyle(color: Colors.deepPurpleAccent, fontSize: 14.sp),
                 ),
               ).rotate(begin: 0, end: 1),
             ),
@@ -77,8 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: context.theme.primaryColor,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            decoration: TextDecoration
-                                .underline, // Optional underline for emphasis
+                            decoration: TextDecoration.underline, // Optional underline for emphasis
                           ),
                         ),
                       ),
@@ -93,8 +90,7 @@ class _LoginPageState extends State<LoginPage> {
             minWidth: Get.width / 2,
             height: 56,
             color: context.theme.colorScheme.inversePrimary,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onPressed: () {
               Get.showSnackbar(
                 GetSnackBar(

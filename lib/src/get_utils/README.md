@@ -1818,22 +1818,114 @@ The extension includes built-in error handling for common cases:
 - Null values are handled appropriately in comparisons
 - Invalid chunk sizes are adjusted automatically
 
-## Contributing
+برای ایجاد مستندات برای توابع شما در یک فایل Markdown، می‌توانید از قالب زیر استفاده کنید. این قالب شامل توضیحات و مثال‌هایی برای هر تابع است:
 
-Feel free to contribute to this extension by:
-1. Adding new sorting algorithms
-2. Improving performance
-3. Adding new features
-4. Fixing bugs
-5. Improving documentation
 
-## GetX and RxList Examples
+# افزونه‌های رشته‌ای فارسی
 
+این افزونه‌ها برای پردازش رشته‌های فارسی و انجام عملیات استانداردسازی و تبدیل اعداد طراحی شده‌اند.
+
+## توابع
+
+### `standardizePersianText`
+
+**توضیحات:**
+تبدیل متن فارسی به فرمت استاندارد با اصلاح فاصله‌ها و کاراکترها.
+
+**مثال:**
 ```dart
-
-
-
+String text = "سلام  دنيا";
+String standardText = text.standardizePersianText();
+// نتیجه: "سلام دنیا"
 ```
+
+### `convertDigitsToPersian`
+
+**توضیحات:**
+تبدیل اعداد انگلیسی به فارسی در متن.
+
+**مثال:**
+```dart
+String text = "قیمت: 12500 تومان";
+String persianText = text.convertDigitsToPersian();
+// نتیجه: "قیمت: ۱۲۵۰۰ تومان"
+```
+
+### `convertDigitsToEnglish`
+
+**توضیحات:**
+تبدیل اعداد فارسی به انگلیسی در متن.
+
+**مثال:**
+```dart
+String text = "قیمت: ۱۲۵۰۰ تومان";
+String englishText = text.convertDigitsToEnglish();
+// نتیجه: "قیمت: 12500 تومان"
+```
+
+### `isValidIranianNationalCode`
+
+**توضیحات:**
+اعتبارسنجی کد ملی ایرانی.
+
+**مثال:**
+```dart
+String nationalCode = "0123456789";
+bool isValid = nationalCode.isValidIranianNationalCode();
+// نتیجه: true
+```
+
+### `isValidIranianSheba`
+
+**توضیحات:**
+اعتبارسنجی شماره شبا (IBAN) ایرانی.
+
+**مثال:**
+```dart
+String iban = "IR062960000000100324200001";
+bool isValid = iban.isValidIranianSheba();
+```
+
+
+### `getPersianMonthName`
+
+
+**توضیحات:**
+دریافت نام ماه فارسی متناظر با تاریخ میلادی.
+
+**مثال:**
+```dart
+DateTime dateTime = DateTime(2023, 6, 18);
+String monthName = dateTime.getPersianMonthName();
+// نتیجه: "خرداد"
+```
+
+### `getPersianDayName`
+
+**توضیحات:**
+دریافت نام روز هفته فارسی متناظر با تاریخ میلادی.
+
+**مثال:**
+```dart
+DateTime dateTime = DateTime(2023, 6, 18);
+String dayName = dateTime.getPersianDayName();
+// نتیجه: "دوشنبه"
+```
+
+### `getPersianYear`
+
+**توضیحات:**
+دریافت سال فارسی متناظر با تاریخ میلادی.
+
+**مثال:**
+```dart
+DateTime dateTime = DateTime(2023, 6, 18);
+String yearString = dateTime.getPersianYear();
+// نتیجه: "۱۴۰۲"
+```
+
+
+
 
 
 

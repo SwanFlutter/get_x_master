@@ -89,7 +89,7 @@ To read the documentation for these sections, you can use the following links to
 - [GetX Utilities](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_utils/README.md)
 - [GetX Animations](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_animations/README.md)
 - [GetX Instance Management](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_instance/README.md)
-- [GetX Utils AND Extensions](https://github.com/SwanFlutter/getx/blob/main/lib/src/get_utils/README.md)
+- [GetX Utils AND Extensions](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_utils/README.md)
 - [New Features Get.customExpandableBottomSheet](https://github.com/SwanFlutter/get_x_master/tree/main/lib/src/get_navigation)
 
 These links will help you access the full documentation and detailed information about each section.
@@ -129,7 +129,7 @@ Add Get to your pubspec.yaml file:
 ```yaml
 
 dependencies:
-  get_x_master: ^0.0.4
+  get_x_master: ^0.0.5
 
 ```
 

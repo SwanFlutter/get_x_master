@@ -46,7 +46,7 @@ class LoginController extends GetXController {
         icon: Icons.error,
         iconColor: Colors.redAccent,
       );
-    } else if (passwordController.text.length > 6) {
+    } else if (passwordController.text.length < 6) {
       showMassage(
         title: "Worning",
         message: 'Password must be at least 6 characters',
@@ -56,7 +56,7 @@ class LoginController extends GetXController {
     } else {
       Get.showOverlay(
         asyncFunction: () => login(),
-        opacity: 1,
+        opacity: 0.4,
         loadingWidget: const Center(
           child: CircularProgressIndicator.adaptive(),
         ),
@@ -76,7 +76,7 @@ class LoginController extends GetXController {
     };
 
     final response = await http.post(
-      '',
+      'http://192.168.1.103/testapinew/v1/login',
       headers: header,
       body,
     );
@@ -88,7 +88,7 @@ class LoginController extends GetXController {
       String message = jsonData['message'];
 
       if (success) {
-        UserModel user = UserModel.fromJson(jsonData['data']);
+        UserModel user = UserModel.fromMap(jsonData['data']);
         showMassage(
           title: "Success",
           message: message,
@@ -116,11 +116,7 @@ class LoginController extends GetXController {
     return null;
   }
 
-  void showMassage(
-      {required String title,
-      required String message,
-      required IconData icon,
-      required Color iconColor}) {
+  void showMassage({required String title, required String message, required IconData icon, required Color iconColor}) {
     Get.snackbar(
       title,
       message,
