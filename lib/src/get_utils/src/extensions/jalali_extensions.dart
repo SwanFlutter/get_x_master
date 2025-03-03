@@ -12,7 +12,20 @@ extension JalaliExtension on Jalali {
   ///
   /// ```
   String getPersianMonthName() {
-    final persianMonthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+    final persianMonthNames = [
+      'فروردین',
+      'اردیبهشت',
+      'خرداد',
+      'تیر',
+      'مرداد',
+      'شهریور',
+      'مهر',
+      'آبان',
+      'آذر',
+      'دی',
+      'بهمن',
+      'اسفند',
+    ];
     return persianMonthNames[month - 1];
   }
 
@@ -27,7 +40,15 @@ extension JalaliExtension on Jalali {
   ///
   /// ```
   String getPersianDayName() {
-    final persianDayNames = ['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
+    final persianDayNames = [
+      'شنبه',
+      'یک‌شنبه',
+      'دوشنبه',
+      'سه‌شنبه',
+      'چهارشنبه',
+      'پنج‌شنبه',
+      'جمعه',
+    ];
     return persianDayNames[weekDay % 7];
   }
 

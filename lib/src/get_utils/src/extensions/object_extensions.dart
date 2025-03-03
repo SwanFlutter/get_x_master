@@ -26,10 +26,15 @@ extension ObjectExtension on Object {
   /// // Result: "۰۲:۳۰ بعد از ظهر"
   /// ```
   String convertTimeToPersianForNew(TimeOfDay time) {
-    final hour = time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
+    final hour =
+        time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
     final period = time.hour < 12 ? 'صبح' : 'بعد از ظهر';
-    final persianHour = convertToPersianDigitsForNew(hour.toString().padLeft(2, '0'));
-    final persianMinute = convertToPersianDigitsForNew(time.minute.toString().padLeft(2, '0'));
+    final persianHour = convertToPersianDigitsForNew(
+      hour.toString().padLeft(2, '0'),
+    );
+    final persianMinute = convertToPersianDigitsForNew(
+      time.minute.toString().padLeft(2, '0'),
+    );
     return '$persianHour:$persianMinute $period';
   }
 
@@ -72,7 +77,8 @@ extension ObjectExtension on Object {
   /// // Result: "02:30 PM"
   /// ```
   String convertTimeToStringEnglish(TimeOfDay time) {
-    final hour = time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
+    final hour =
+        time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
     final period = time.hour < 12 ? 'AM' : 'PM';
     final englishHour = hour.toString().padLeft(2, '0');
     final englishMinute = time.minute.toString().padLeft(2, '0');
@@ -145,7 +151,9 @@ extension ObjectExtension on Object {
   /// ```
   String formatDateTimeForIran(Jalali jalaliDate, TimeOfDay time) {
     final formattedTime = convertTimeToPersian(time);
-    final formattedDate = DateFormat('yyyy/MM/dd').format(jalaliDate.toDateTime());
+    final formattedDate = DateFormat(
+      'yyyy/MM/dd',
+    ).format(jalaliDate.toDateTime());
     return '$formattedDate - $formattedTime';
   }
 
@@ -160,7 +168,9 @@ extension ObjectExtension on Object {
   /// ```
   String formatDateTimeForIranNew(Jalali jalaliDate, TimeOfDay time) {
     final formattedTime = convertTimeToPersianForNew(time);
-    final formattedDate = DateFormat('yyyy/MM/dd').format(jalaliDate.toDateTime());
+    final formattedDate = DateFormat(
+      'yyyy/MM/dd',
+    ).format(jalaliDate.toDateTime());
     return '$formattedDate - $formattedTime';
   }
 
@@ -280,7 +290,15 @@ extension DateTimeExtension on DateTime {
   /// // Result: "Saturday 10 October 23"
   /// ```
   String formatFullDateWithDay() {
-    final englishDayNames = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    final englishDayNames = [
+      'Saturday',
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+    ];
     final englishMonthNames = [
       'January',
       'February',
@@ -322,8 +340,29 @@ extension DateTimeExtension on DateTime {
   /// // Result: "شنبه ۱۸ مهر ۱۴۰۲"
   /// ```
   String formatPersianFullDateWithDay() {
-    final persianDayNames = ['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
-    final persianMonthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+    final persianDayNames = [
+      'شنبه',
+      'یک‌شنبه',
+      'دوشنبه',
+      'سه‌شنبه',
+      'چهارشنبه',
+      'پنج‌شنبه',
+      'جمعه',
+    ];
+    final persianMonthNames = [
+      'فروردین',
+      'اردیبهشت',
+      'خرداد',
+      'تیر',
+      'مرداد',
+      'شهریور',
+      'مهر',
+      'آبان',
+      'آذر',
+      'دی',
+      'بهمن',
+      'اسفند',
+    ];
     final dayOfWeek = weekday % 7;
     final f = NumberFormat("00", "fa");
     return '${persianDayNames[dayOfWeek]} ${f.format(day)} ${persianMonthNames[month - 1]} ${f.format(year % 100)}';
@@ -340,7 +379,20 @@ extension DateTimeExtension on DateTime {
   ///
   /// ```
   String getPersianMonthName() {
-    final persianMonthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+    final persianMonthNames = [
+      'فروردین',
+      'اردیبهشت',
+      'خرداد',
+      'تیر',
+      'مرداد',
+      'شهریور',
+      'مهر',
+      'آبان',
+      'آذر',
+      'دی',
+      'بهمن',
+      'اسفند',
+    ];
     // تبدیل ماه میلادی به ماه شمسی
     Jalali jalaliDate = Jalali.fromDateTime(this);
     return persianMonthNames[jalaliDate.month - 1];
@@ -357,7 +409,15 @@ extension DateTimeExtension on DateTime {
   ///
   /// ```
   String getPersianDayName() {
-    final persianDayNames = ['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
+    final persianDayNames = [
+      'شنبه',
+      'یک‌شنبه',
+      'دوشنبه',
+      'سه‌شنبه',
+      'چهارشنبه',
+      'پنج‌شنبه',
+      'جمعه',
+    ];
     return persianDayNames[weekday % 7];
   }
 
