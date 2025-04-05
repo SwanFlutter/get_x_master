@@ -4,7 +4,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:get_x_master/src/get_navigation/src/navigation_condition.dart';
 
 import '../../get_core/get_core.dart';
 import '../../get_instance/src/bindings_interface.dart';
@@ -749,7 +748,7 @@ extension GetNavigation on GetInterface {
     if (condition != null) {
       page = condition.evaluate();
     }
-    
+
     routeName ??= "/${page.runtimeType}";
     routeName = _cleanRouteName(routeName);
     if (preventDuplicates && routeName == currentRoute) {
@@ -1420,7 +1419,7 @@ you can only use widgets and widget functions here''';
   double get bottomBarHeight => window?.padding.bottom ?? 0;
 
   ///The system-reported text scale.
-  double get textScaleFactor => PlatformDispatcher.instance.textScaleFactor;  
+  double get textScaleFactor => PlatformDispatcher.instance.textScaleFactor;
 
   /// give access to TextTheme.of(context)
   TextTheme get textTheme => theme.textTheme;

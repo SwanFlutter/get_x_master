@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 class Screen extends StatelessWidget {
-  const Screen({Key? key}) : super(key: key);
+  const Screen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,14 +15,13 @@ class Screen extends StatelessWidget {
   }
 }
 
-
 class Screen2 extends StatelessWidget {
-  const Screen2({Key? key}) : super(key: key);
+  const Screen2({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Screen2'), 
+        title: Text('Screen2'),
       ),
       body: Center(
         child: Text('Screen2'),

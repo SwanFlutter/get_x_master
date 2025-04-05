@@ -70,7 +70,8 @@ class _LoginPageState extends State<LoginPage> {
                     WidgetSpan(
                       child: InkWell(
                         onTap: () {
-                          Get.to(() => SignUp(),
+                          Get.to(
+                            () => SignUp(),
                           );
                         },
                         child: Text(
@@ -126,12 +127,13 @@ class _LoginPageState extends State<LoginPage> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onPressed: () {
-              Get.to(() => Screen(),
-              condition: ConditionalNavigation(
-                condition: () => true,
-                truePage: () => Screen(),
-                falsePage: () => Screen2(),
-              ),
+              Get.to(
+                () => Screen(),
+                condition: ConditionalNavigation(
+                  condition: () => true,
+                  truePage: () => Screen(),
+                  falsePage: () => Screen2(),
+                ),
               );
             },
             child: Text('Test'),

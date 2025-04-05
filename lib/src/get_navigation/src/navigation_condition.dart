@@ -12,4 +12,4 @@ class ConditionalNavigation {
   dynamic evaluate() {
     return condition() ? truePage : falsePage;
   }
-} 
+}
