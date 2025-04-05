@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:example/controller/login_controller.dart';
+import 'package:example/new.dart';
 import 'package:example/screen/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
@@ -69,7 +70,8 @@ class _LoginPageState extends State<LoginPage> {
                     WidgetSpan(
                       child: InkWell(
                         onTap: () {
-                          Get.to(() => SignUp());
+                          Get.to(() => SignUp(),
+                          );
                         },
                         child: Text(
                           'Sign Up',
@@ -116,6 +118,23 @@ class _LoginPageState extends State<LoginPage> {
               );
             },
             child: Text('Sanakbar'),
+          ),
+          MaterialButton(
+            minWidth: Get.width / 2,
+            height: 56,
+            color: context.theme.colorScheme.inversePrimary,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () {
+              Get.to(() => Screen(),
+              condition: ConditionalNavigation(
+                condition: () => true,
+                truePage: () => Screen(),
+                falsePage: () => Screen2(),
+              ),
+              );
+            },
+            child: Text('Test'),
           ),
         ],
       ).paddingAll(20.0),

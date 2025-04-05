@@ -22,13 +22,17 @@ class MyBinding extends Bindings {
       permanent: true,
     );
 
-    Get.smartPut(
+  /*  Get.smartPut(
       builder: () => LoginController(),
       permanent: true,
       fenix: true,
       condition: () => true,
       validityCheck: (controller) => true,
-    );
+    );*/
+     
+
+     Get.smartLazyPut<LoginController>(() => LoginController());
+
 
     Get.smartLazyPut<SignupController>(() => SignupController());
 

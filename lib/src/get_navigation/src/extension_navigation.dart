@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get_x_master/src/get_navigation/src/navigation_condition.dart';
 
 import '../../get_core/get_core.dart';
 import '../../get_instance/src/bindings_interface.dart';
@@ -690,6 +691,45 @@ extension GetNavigation on GetInterface {
   ///
   /// By default, GetX will prevent you from push a route that you already in,
   /// if you want to push anyway, set [preventDuplicates] to false
+  ///
+  /// Example:
+  /// ```dart
+  /// // Basic navigation
+  /// Get.to(() => HomePage());
+  ///
+  /// // Conditional navigation based on login status
+  /// Get.to(
+  ///   () => HomePage(),
+  ///   condition: ConditionalNavigation(
+  ///     condition: () => AuthService.isLoggedIn,
+  ///     truePage: () => HomePage(),
+  ///     falsePage: () => LoginPage(),
+  ///   ),
+  /// );
+  ///
+  /// // Conditional navigation with custom transition
+  /// Get.to(
+  ///   () => SettingsPage(),
+  ///   condition: ConditionalNavigation(
+  ///     condition: () => UserPermissions.hasAccess,
+  ///     truePage: () => SettingsPage(),
+  ///     falsePage: () => AccessDeniedPage(),
+  ///   ),
+  ///   transition: Transition.rightToLeft,
+  ///   duration: Duration(milliseconds: 500),
+  /// );
+  ///
+  /// // Conditional navigation with arguments
+  /// Get.to(
+  ///   () => ProfilePage(),
+  ///   condition: ConditionalNavigation(
+  ///     condition: () => UserService.hasProfile,
+  ///     truePage: () => ProfilePage(),
+  ///     falsePage: () => CreateProfilePage(),
+  ///   ),
+  ///   arguments: {'userId': 123},
+  /// );
+  /// ```
   Future<T?>? to<T>(
     dynamic page, {
     bool? opaque,
@@ -704,8 +744,12 @@ extension GetNavigation on GetInterface {
     bool preventDuplicates = true,
     bool? popGesture,
     double Function(BuildContext context)? gestureWidth,
+    ConditionalNavigation? condition,
   }) {
-    // var routeName = "/${page.runtimeType}";
+    if (condition != null) {
+      page = condition.evaluate();
+    }
+    
     routeName ??= "/${page.runtimeType}";
     routeName = _cleanRouteName(routeName);
     if (preventDuplicates && routeName == currentRoute) {
@@ -1345,14 +1389,21 @@ you can only use widgets and widget functions here''';
   }
 
   /// The window to which this binding is bound.
-  FlutterView get window => View.of(context!);
+  FlutterView? get window {
+    if (context == null) return PlatformDispatcher.instance.views.first;
+    return View.of(context!);
+  }
 
   Locale? get deviceLocale => PlatformDispatcher.instance.locale;
 
   ///The number of device pixels for each logical pixel.
-  double get pixelRatio => window.devicePixelRatio;
+  double get pixelRatio => window?.devicePixelRatio ?? 1.0;
 
-  Size get size => window.physicalSize / pixelRatio;
+  Size get size {
+    final currentWindow = window;
+    if (currentWindow == null) return Size.zero;
+    return currentWindow.physicalSize / currentWindow.devicePixelRatio;
+  }
 
   ///The horizontal extent of this size.
   double get width => size.width;
@@ -1362,14 +1413,14 @@ you can only use widgets and widget functions here''';
 
   ///The distance from the top edge to the first unpadded pixel,
   ///in physical pixels.
-  double get statusBarHeight => window.padding.top;
+  double get statusBarHeight => window?.padding.top ?? 0;
 
   ///The distance from the bottom edge to the first unpadded pixel,
   ///in physical pixels.
-  double get bottomBarHeight => window.padding.bottom;
+  double get bottomBarHeight => window?.padding.bottom ?? 0;
 
   ///The system-reported text scale.
-  double get textScaleFactor => PlatformDispatcher.instance.textScaleFactor;
+  double get textScaleFactor => PlatformDispatcher.instance.textScaleFactor;  
 
   /// give access to TextTheme.of(context)
   TextTheme get textTheme => theme.textTheme;
