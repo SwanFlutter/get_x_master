@@ -26,3 +26,6 @@
 * Fix bug .
 * Add new extensions .
 
+## 0.0.6
+
+* Add New feature for route .
