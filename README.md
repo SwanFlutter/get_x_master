@@ -87,6 +87,7 @@ To read the documentation for these sections, you can use the following links to
 
 
 - [GetX State Management](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_state_manager/README.md)
+- [GetX Connect - HTTP Client & WebSocket](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_connect/README.md)
 - [GetX Utilities](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_utils/README.md)
 - [GetX Animations](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_animations/README.md)
 - [GetX Instance Management](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_instance/README.md)

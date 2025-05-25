@@ -37,7 +37,7 @@ class _CupertinoLoginPageState extends State<CupertinoLoginPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Password TextField
               CupertinoTextField(
                 controller: LoginController.to.passwordController,
@@ -50,7 +50,7 @@ class _CupertinoLoginPageState extends State<CupertinoLoginPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // Login Button
               AnimationExtension(
                 SizedBox(
@@ -73,9 +73,9 @@ class _CupertinoLoginPageState extends State<CupertinoLoginPage> {
                   ),
                 ),
               ).rotate(begin: 0, end: 1),
-              
+
               const SizedBox(height: 5),
-              
+
               // Sign Up Link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -101,9 +101,9 @@ class _CupertinoLoginPageState extends State<CupertinoLoginPage> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Snackbar Button
               SizedBox(
                 width: Get.width / 2,
@@ -138,9 +138,9 @@ class _CupertinoLoginPageState extends State<CupertinoLoginPage> {
                   child: const Text('Snackbar'),
                 ),
               ),
-              
+
               const SizedBox(height: 10),
-              
+
               // Test Button
               SizedBox(
                 width: Get.width / 2,

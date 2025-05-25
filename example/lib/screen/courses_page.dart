@@ -188,7 +188,7 @@ class CoursesPage extends StatelessWidget {
                   title: titleController.text,
                   description: descriptionController.text,
                 );
-                
+
                 // This will work because we used init in GetBuilder above
                 Get.find<CoursesController>().addCourse(course);
                 Navigator.of(context).pop();

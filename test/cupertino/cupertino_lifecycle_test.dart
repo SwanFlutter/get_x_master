@@ -4,74 +4,64 @@ import 'package:get_x_master/get_x_master.dart';
 
 void main() {
   group('Cupertino Lifecycle Tests', () {
-    testWidgets('GetCupertinoApp builds without lifecycle errors', (tester) async {
-      await tester.pumpWidget(
-        GetCupertinoApp(
-          home: const TestHomePage(),
-        ),
-      );
+    testWidgets('GetCupertinoApp builds without lifecycle errors', (
+      tester,
+    ) async {
+      await tester.pumpWidget(GetCupertinoApp(home: const TestHomePage()));
 
       expect(find.text('Test Home'), findsOneWidget);
-      
+
       // No lifecycle errors should occur
       await tester.pumpAndSettle();
     });
 
     testWidgets('Controller lifecycle works correctly', (tester) async {
       await tester.pumpWidget(
-        GetCupertinoApp(
-          home: const TestControllerPage(),
-        ),
+        GetCupertinoApp(home: const TestControllerPage()),
       );
 
       expect(find.text('Count: 0'), findsOneWidget);
-      
+
       // Test increment
       await tester.tap(find.text('+'));
       await tester.pump();
-      
+
       expect(find.text('Count: 1'), findsOneWidget);
-      
+
       // Test decrement
       await tester.tap(find.text('-'));
       await tester.pump();
-      
+
       expect(find.text('Count: 0'), findsOneWidget);
     });
 
     testWidgets('Navigation works without lifecycle errors', (tester) async {
       await tester.pumpWidget(
-        GetCupertinoApp(
-          home: const TestNavigationPage(),
-        ),
+        GetCupertinoApp(home: const TestNavigationPage()),
       );
 
       expect(find.text('First Page'), findsOneWidget);
-      
+
       // Navigate to second page
       await tester.tap(find.text('Go to Second'));
       await tester.pumpAndSettle();
-      
+
       expect(find.text('Second Page'), findsOneWidget);
-      
+
       // Navigate back
       await tester.tap(find.text('Go Back'));
       await tester.pumpAndSettle();
-      
+
       expect(find.text('First Page'), findsOneWidget);
     });
 
     testWidgets('No nested apps cause lifecycle errors', (tester) async {
       // This should NOT cause lifecycle errors
-      await tester.pumpWidget(
-        GetCupertinoApp(
-          home: const TestSingleAppPage(),
-        ),
-      );
+      await tester.pumpWidget(GetCupertinoApp(home: const TestSingleAppPage()));
 
       expect(find.text('Single App'), findsOneWidget);
       await tester.pumpAndSettle();
-      
+
       // Verify no errors in the widget tree
     });
   });
@@ -83,12 +73,8 @@ class TestHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Test Home'),
-      ),
-      child: Center(
-        child: Text('Test Home Page'),
-      ),
+      navigationBar: CupertinoNavigationBar(middle: Text('Test Home')),
+      child: Center(child: Text('Test Home Page')),
     );
   }
 }
@@ -203,12 +189,8 @@ class TestSingleAppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // This is correct - no nested GetCupertinoApp
     return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Single App'),
-      ),
-      child: Center(
-        child: Text('This page does not create nested apps'),
-      ),
+      navigationBar: CupertinoNavigationBar(middle: Text('Single App')),
+      child: Center(child: Text('This page does not create nested apps')),
     );
   }
 }

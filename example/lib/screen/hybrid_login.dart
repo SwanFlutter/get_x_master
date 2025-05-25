@@ -38,7 +38,7 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 TextField(
                   controller: LoginController.to.passwordController,
                   obscureText: true,
@@ -48,7 +48,7 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // You can mix Cupertino and Material widgets
                 AnimationExtension(
                   SizedBox(
@@ -71,9 +71,9 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
                     ),
                   ),
                 ).rotate(begin: 0, end: 1),
-                
+
                 const SizedBox(height: 5),
-                
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -97,9 +97,9 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Material Button
                 SizedBox(
                   width: Get.width / 2,
@@ -140,9 +140,9 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 10),
-                
+
                 SizedBox(
                   width: Get.width / 2,
                   height: 56,

@@ -7,16 +7,16 @@ void main() {
     testWidgets('GetCupertinoApp builds successfully', (tester) async {
       await tester.pumpWidget(
         GetCupertinoApp(
-          home: const CupertinoPageScaffold(
-            child: Center(child: Text('Test')),
-          ),
+          home: const CupertinoPageScaffold(child: Center(child: Text('Test'))),
         ),
       );
 
       expect(find.text('Test'), findsOneWidget);
     });
 
-    testWidgets('GetCupertinoApp with new features builds successfully', (tester) async {
+    testWidgets('GetCupertinoApp with new features builds successfully', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         GetCupertinoApp(
           theme: const CupertinoThemeData(
@@ -25,9 +25,7 @@ void main() {
           scrollBehavior: const CupertinoScrollBehavior(),
           restorationId: 'test_app',
           home: const CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: Text('Enhanced App'),
-            ),
+            navigationBar: CupertinoNavigationBar(middle: Text('Enhanced App')),
             child: Center(child: Text('Enhanced Test')),
           ),
         ),
@@ -59,26 +57,22 @@ void main() {
 
     testWidgets('GetCupertinoApp handles navigation correctly', (tester) async {
       await tester.pumpWidget(
-        GetCupertinoApp(
-          home: const TestNavigationPage(),
-        ),
+        GetCupertinoApp(home: const TestNavigationPage()),
       );
 
       expect(find.text('Navigation Test'), findsOneWidget);
-      
+
       // Test navigation
       await tester.tap(find.text('Go to Second'));
       await tester.pumpAndSettle();
-      
+
       expect(find.text('Second Page'), findsOneWidget);
     });
 
-    testWidgets('GetCupertinoApp shows alert dialog with squircle', (tester) async {
-      await tester.pumpWidget(
-        GetCupertinoApp(
-          home: const TestAlertPage(),
-        ),
-      );
+    testWidgets('GetCupertinoApp shows alert dialog with squircle', (
+      tester,
+    ) async {
+      await tester.pumpWidget(GetCupertinoApp(home: const TestAlertPage()));
 
       // Tap button to show alert
       await tester.tap(find.text('Show Alert'));
@@ -103,7 +97,7 @@ void main() {
       );
 
       expect(find.text('Themed App'), findsOneWidget);
-      
+
       // Verify theme is applied
       final app = tester.widget<CupertinoApp>(find.byType(CupertinoApp));
       expect(app.theme?.primaryColor, CupertinoColors.systemRed);
@@ -118,9 +112,7 @@ class TestHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Home Page'),
-      ),
+      navigationBar: CupertinoNavigationBar(middle: Text('Home Page')),
       child: Center(child: Text('Home Page')),
     );
   }
@@ -132,9 +124,7 @@ class TestSecondPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Second Page'),
-      ),
+      navigationBar: CupertinoNavigationBar(middle: Text('Second Page')),
       child: Center(child: Text('Second Page')),
     );
   }
@@ -154,9 +144,7 @@ class TestNavigationPage extends StatelessWidget {
           child: const Text('Go to Second'),
           onPressed: () {
             Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => const TestSecondPage(),
-              ),
+              CupertinoPageRoute(builder: (context) => const TestSecondPage()),
             );
           },
         ),
@@ -177,16 +165,17 @@ class TestAlertPage extends StatelessWidget {
           onPressed: () {
             showCupertinoDialog(
               context: context,
-              builder: (context) => CupertinoAlertDialog(
-                title: const Text('Test Alert'),
-                content: const Text('This alert uses enhanced features'),
-                actions: [
-                  CupertinoDialogAction(
-                    child: const Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
+              builder:
+                  (context) => CupertinoAlertDialog(
+                    title: const Text('Test Alert'),
+                    content: const Text('This alert uses enhanced features'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: const Text('OK'),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
                   ),
-                ],
-              ),
             );
           },
         ),
