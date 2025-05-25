@@ -97,6 +97,9 @@ To read the documentation for these sections, you can use the following links to
 
 GetX now includes full support for the latest Flutter Cupertino features, bringing authentic iOS design to your applications:
 
+![get_x_cuoertino](https://github.com/user-attachments/assets/22a912c6-2ca4-4d0e-829c-151e840ddf10)
+
+
 ### 🔥 New Cupertino Features
 
 #### **Rounded Superellipse (Apple Squircle)**
