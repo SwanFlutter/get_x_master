@@ -9,7 +9,7 @@
 
 **Languages:**
 
-  
+
 [![English](https://img.shields.io/badge/Language-English-blueviolet?style=for-the-badge)](README.md)
 [![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-vi.md)
 [![Indonesian](https://img.shields.io/badge/Language-Indonesian-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.id-ID.md)
@@ -24,11 +24,12 @@
 [![Japanese](https://img.shields.io/badge/Language-Japanese-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.ja-JP.md)
 [![Hindi](https://img.shields.io/badge/Language-Hindi-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-hi.md)
 [![Bangla](https://img.shields.io/badge/Language-Bangla-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-bn.md)
-  
-  
+
+
 </div>
 
 - [About Get](#about-get)
+- [Enhanced Cupertino Support](#-enhanced-cupertino-support)
 - [Installing](#installing)
 - [Counter App with GetX](#counter-app-with-getx)
 - [The Three pillars](#the-three-pillars)
@@ -92,6 +93,121 @@ To read the documentation for these sections, you can use the following links to
 - [GetX Utils AND Extensions](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_utils/README.md)
 - [New Features Get.customExpandableBottomSheet](https://github.com/SwanFlutter/get_x_master/tree/main/lib/src/get_navigation)
 
+## 🆕 Enhanced Cupertino Support
+
+GetX now includes full support for the latest Flutter Cupertino features, bringing authentic iOS design to your applications:
+
+### 🔥 New Cupertino Features
+
+#### **Rounded Superellipse (Apple Squircle)**
+- ✅ **Apple-authentic shapes** with smooth, continuous curves
+- ✅ **Automatic integration** in `CupertinoAlertDialog` and `CupertinoActionSheet`
+- ✅ **Custom shape APIs** for your own widgets
+- ✅ **Cross-platform support** with graceful fallbacks
+
+```dart
+// Enhanced GetCupertinoApp with new features
+GetCupertinoApp(
+  theme: CupertinoThemeData(
+    primaryColor: CupertinoColors.systemBlue,
+    brightness: Brightness.light,
+  ),
+  scrollBehavior: CupertinoScrollBehavior(),
+  restorationId: 'my_app',
+  home: MyHomePage(),
+)
+
+// Using new squircle shapes
+Container(
+  decoration: ShapeDecoration(
+    color: CupertinoColors.systemBlue,
+    shape: RoundedSuperellipseBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+  ),
+)
+```
+
+#### **Enhanced Cupertino Sheets**
+- ✅ **Improved animations** and transitions
+- ✅ **Better navigation bar** height handling
+- ✅ **Enhanced drag behavior** with `enableDrag` parameter
+- ✅ **Fixed content clipping** issues
+
+```dart
+// Enhanced sheet with new features
+showCupertinoModalPopup(
+  context: context,
+  builder: (context) => Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    child: YourSheetContent(),
+  ),
+)
+```
+
+#### **Improved Navigation**
+- ✅ **Smoother transitions** matching latest iOS
+- ✅ **Better search field** alignment in `CupertinoSliverNavigationBar`
+- ✅ **Enhanced icon positioning** and animations
+
+### 📱 GetCupertinoApp vs GetMaterialApp
+
+| Feature | GetMaterialApp | GetCupertinoApp |
+|---------|----------------|-----------------|
+| Design System | Material Design | iOS/Cupertino |
+| Widgets | Material widgets | Cupertino widgets |
+| Squircle Support | ❌ | ✅ |
+| iOS Authenticity | Good | Excellent |
+| Cross-platform | ✅ | ✅ |
+
+### 🚀 Quick Start with Cupertino
+
+```dart
+import 'package:flutter/cupertino.dart';
+import 'package:get_x_master/get_x_master.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetCupertinoApp(
+      title: 'My iOS App',
+      theme: CupertinoThemeData(
+        primaryColor: CupertinoColors.systemBlue,
+      ),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('Home'),
+      ),
+      child: Center(
+        child: CupertinoButton.filled(
+          onPressed: () => Get.to(() => SecondPage()),
+          child: Text('Navigate'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+### 📚 Documentation Links
+
+- [Enhanced GetBuilder Widgets Guide](ENHANCED_GETBUILDER_GUIDE.md)
+- [Cupertino Features Guide](CUPERTINO_FEATURES_GUIDE.md)
+- [Material/Cupertino Mixing Guide](MATERIAL_CUPERTINO_MIXING_GUIDE.md)
+- [Lifecycle Error Fix Guide](LIFECYCLE_ERROR_FIX_GUIDE.md)
+
 These links will help you access the full documentation and detailed information about each section.
 
 
@@ -129,7 +245,7 @@ Add Get to your pubspec.yaml file:
 ```yaml
 
 dependencies:
-  get_x_master: ^0.0.6
+  get_x_master: ^0.0.7
 
 ```
 
@@ -1125,7 +1241,7 @@ class OtherClass extends GetView<Controller> {
 
       body: controller.obx(
         (state)=>Text(state.name),
-        
+
         // here you can put your custom loading indicator, but
         // by default would be Center(child:CircularProgressIndicator())
         onLoading: CustomLoadingIndicator(),
@@ -1329,7 +1445,7 @@ class NotificationServiceMock extends GetxService with Mock implements Notificat
 ##### Using Get.reset()
 If you are testing widgets, or test groups, use Get.reset at the end of your test or in tearDown to reset all settings from your previous test.
 
-##### Get.testMode 
+##### Get.testMode
 if you are using your navigation in your controllers, use `Get.testMode = true` at the beginning of your main.
 
 
@@ -1439,10 +1555,10 @@ This project is a modified version of the [GetX](https://pub.dev/packages/get) p
 This package is built upon GetX, a powerful state management and navigation solution for Flutter. It includes custom improvements and additional features tailored for specific use cases.
 
 ## 📝 Original Package Information
-- **Package Name:** GetX  
-- **Author:** Jonny Borges ([GitHub](https://github.com/jonataslaw/getx))  
-- **Original Package Link:** [GetX on pub.dev](https://pub.dev/packages/get)  
-- **License:** MIT License  
+- **Package Name:** GetX
+- **Author:** Jonny Borges ([GitHub](https://github.com/jonataslaw/getx))
+- **Original Package Link:** [GetX on pub.dev](https://pub.dev/packages/get)
+- **License:** MIT License
 
 This project retains the original [MIT License](LICENSE) and includes proper attribution to the original author, Jonny Borges.
 
@@ -1450,9 +1566,9 @@ This project retains the original [MIT License](LICENSE) and includes proper att
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ## 🧑‍⚖️ Legal Notice
-- This modified version of GetX is distributed with the original author's permission under the MIT License.  
-- The modifications, updates, and additional features are maintained by **swanflutter**.  
-- All trademarks and copyrights belong to their respective owners.  
+- This modified version of GetX is distributed with the original author's permission under the MIT License.
+- The modifications, updates, and additional features are maintained by **swanflutter**.
+- All trademarks and copyrights belong to their respective owners.
 
 ---
 

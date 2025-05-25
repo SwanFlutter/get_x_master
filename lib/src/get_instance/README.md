@@ -1,146 +1,348 @@
 # Get Instance Management
 
-This section of the code is responsible for managing dependencies and instances of classes in your application. With this system, you can easily create, manage, and delete class instances.
-
+This section of the code is responsible for managing dependencies and class instances in your application. With this system, you can easily create, manage, and delete class instances.
 
 ---
 
-
 ## Key Features
 
-# Smart Dependency Management Extension
+- **Smart Dependency Management**
+- **Memory Optimization**
+- **Automatic Lifecycle Management**
+- **Lazy Loading Support**
+- **Automatic Controller Recreation**
 
+---
 
-## SmartLazyPut
+## Different Types of Bindings
 
+### 1. Traditional Bindings Class
 
-
-The `smartLazyPut` extension enhances the standard `lazyPut` method from the GetX package, providing additional functionality for managing controller instances. This method ensures that controllers are only created when necessary, allowing for efficient memory usage and improved application performance.
-
-#### Overview
-
-The `smartLazyPut` method registers a controller with GetX, ensuring that the controller is only instantiated if it hasn't been registered before or if it has been removed. This extension checks if the builder for the controller has been prepared before proceeding with the registration.
-
-#### Features Compared to Standard `lazyPut`
-
-- **Controller Recreation Handling**: Unlike the standard `lazyPut`, which simply registers a controller, `smartLazyPut` checks if a controller is already registered or has been removed. If it has been removed, it allows for recreation, ensuring that you always have access to a valid instance.
-  
-- **Preparation Check**: Before registering a controller, `smartLazyPut` verifies if the builder has been prepared, adding an extra layer of safety to avoid unnecessary instantiation.
-
-- **Automatic Memory Management**: The method automatically manages memory by ensuring that controllers are only created when needed. This is particularly useful in applications with complex navigation and multiple controllers.
-
-#### Example Usage
-
+#### Simple Example:
 ```dart
-
-class AppBindings extends Bindings {
+class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    
-    Get.smartLazyPut<MyController>(() => MyController());
+    Get.lazyPut<HomeController>(() => HomeController());
+  }
+}
+```
 
-    
+#### Advanced Example with Multiple Controllers:
+```dart
+class AppBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Global controllers needed throughout the app
+    Get.put<AuthController>(AuthController(), permanent: true);
+    Get.put<ThemeController>(ThemeController(), permanent: true);
+
+    // Lazy controllers created only when needed
+    Get.lazyPut<UserController>(() => UserController());
+    Get.lazyPut<SettingsController>(() => SettingsController());
+
+    // Smart controllers with automatic recreation
+    Get.smartLazyPut<NotificationController>(() => NotificationController());
+  }
+}
+```
+
+### 2. BindingsBuilder - Simple Approach
+
+#### For Single Controller:
+```dart
+// Using put (immediate creation)
+GetPage(
+  name: '/home',
+  page: () => HomePage(),
+  binding: BindingsBuilder<HomeController>.put(() => HomeController()),
+)
+
+// Using lazyPut (creation when needed)
+GetPage(
+  name: '/profile',
+  page: () => ProfilePage(),
+  binding: BindingsBuilder<ProfileController>.lazyPut(
+    () => ProfileController(),
+    fenix: true, // automatic recreation
+  ),
+)
+
+// Using smartLazyPut (recommended)
+GetPage(
+  name: '/courses',
+  page: () => CoursesPage(),
+  binding: BindingsBuilder<CoursesController>.smartLazyPut(
+    () => CoursesController(),
+    fenix: true,
+  ),
+)
+```
+
+#### For Multiple Controllers:
+```dart
+GetPage(
+  name: '/dashboard',
+  page: () => DashboardPage(),
+  binding: BindingsBuilder(() {
+    Get.smartLazyPut<DashboardController>(() => DashboardController());
+    Get.smartLazyPut<AnalyticsController>(() => AnalyticsController());
+    Get.smartLazyPut<ReportsController>(() => ReportsController());
+  }),
+)
+```
+
+### 3. Conditional Bindings
+
+```dart
+class ConditionalBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Check authentication status
+    if (Get.find<AuthController>().isLoggedIn) {
+      Get.smartLazyPut<UserDashboardController>(() => UserDashboardController());
+      Get.smartLazyPut<UserProfileController>(() => UserProfileController());
+    } else {
+      Get.smartLazyPut<GuestController>(() => GuestController());
+      Get.smartLazyPut<LoginController>(() => LoginController());
+    }
+
+    // Check user role
+    final userRole = Get.find<AuthController>().userRole;
+    switch (userRole) {
+      case UserRole.admin:
+        Get.smartLazyPut<AdminController>(() => AdminController());
+        break;
+      case UserRole.teacher:
+        Get.smartLazyPut<TeacherController>(() => TeacherController());
+        break;
+      case UserRole.student:
+        Get.smartLazyPut<StudentController>(() => StudentController());
+        break;
+    }
+  }
+}
+```
+
+### 4. Tagged Bindings
+
+```dart
+class TaggedBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Multiple instances of one controller with different tags
+    Get.smartLazyPut<CourseController>(
+      () => CourseController(courseType: 'programming'),
+      tag: 'programming_courses',
+    );
+
+    Get.smartLazyPut<CourseController>(
+      () => CourseController(courseType: 'design'),
+      tag: 'design_courses',
+    );
+
+    Get.smartLazyPut<CourseController>(
+      () => CourseController(courseType: 'marketing'),
+      tag: 'marketing_courses',
+    );
   }
 }
 
+// Usage in page
+class CoursePage extends StatelessWidget {
+  final String courseTag;
 
-// Define your controller
+  const CoursePage({required this.courseTag});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<CourseController>(
+      tag: courseTag,
+      builder: (controller) => YourWidget(),
+    );
+  }
+}
+```
+
+### 5. Nested Bindings
+
+```dart
+class MainAppBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Main app controllers
+    Get.put<AppController>(AppController(), permanent: true);
+    Get.put<NavigationController>(NavigationController(), permanent: true);
+  }
+}
+
+class AuthBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.smartLazyPut<AuthController>(() => AuthController());
+    Get.smartLazyPut<LoginController>(() => LoginController());
+    Get.smartLazyPut<RegisterController>(() => RegisterController());
+  }
+}
+
+class UserBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.smartLazyPut<UserController>(() => UserController());
+    Get.smartLazyPut<ProfileController>(() => ProfileController());
+    Get.smartLazyPut<SettingsController>(() => SettingsController());
+  }
+}
+
+// Usage in routes
+final routes = [
+  GetPage(
+    name: '/',
+    page: () => HomePage(),
+    binding: MainAppBinding(),
+  ),
+  GetPage(
+    name: '/auth',
+    page: () => AuthPage(),
+    bindings: [AuthBinding()], // Multiple bindings
+  ),
+  GetPage(
+    name: '/user',
+    page: () => UserPage(),
+    bindings: [UserBinding(), AuthBinding()], // Combined bindings
+  ),
+];
+```
+
+### 6. Dynamic Bindings
+
+```dart
+class DynamicBinding extends Bindings {
+  final Map<String, dynamic> parameters;
+
+  DynamicBinding({required this.parameters});
+
+  @override
+  void dependencies() {
+    final userId = parameters['userId'] as String?;
+    final courseId = parameters['courseId'] as String?;
+
+    if (userId != null) {
+      Get.smartLazyPut<UserController>(
+        () => UserController(userId: userId),
+        tag: 'user_$userId',
+      );
+    }
+
+    if (courseId != null) {
+      Get.smartLazyPut<CourseController>(
+        () => CourseController(courseId: courseId),
+        tag: 'course_$courseId',
+      );
+    }
+  }
+}
+
+// Usage
+GetPage(
+  name: '/user/:userId/course/:courseId',
+  page: () => UserCoursePage(),
+  binding: DynamicBinding(parameters: Get.parameters),
+)
+```
+
+### 7. Service Bindings
+
+```dart
+class ServiceBinding extends Bindings {
+  @override
+  void dependencies() {
+    // API services
+    Get.put<ApiService>(ApiService(), permanent: true);
+    Get.put<DatabaseService>(DatabaseService(), permanent: true);
+
+    // Utility services
+    Get.lazyPut<CacheService>(() => CacheService());
+    Get.lazyPut<LoggingService>(() => LoggingService());
+
+    // Business logic services
+    Get.smartLazyPut<UserService>(() => UserService());
+    Get.smartLazyPut<CourseService>(() => CourseService());
+  }
+}
+```
+
+## SmartLazyPut - Advanced Feature
+
+`smartLazyPut` is an enhanced version of `lazyPut` that provides smarter controller management.
+
+### SmartLazyPut Features:
+
+- **Existence Check**: Before creation, checks if the controller is already registered
+- **Automatic Recreation**: Provides recreation capability when disposed
+- **Memory Management**: Automatically manages memory
+- **Duplication Prevention**: Prevents re-registration of existing controllers
+
+### Usage Example:
+
+```dart
+class AppBindings extends Bindings {
+  @override
+  void dependencies() {
+    // Using smartLazyPut
+    Get.smartLazyPut<MyController>(() => MyController());
+
+    // With additional parameters
+    Get.smartLazyPut<UserController>(
+      () => UserController(),
+      tag: 'main_user',
+      fenix: true, // automatic recreation
+      autoRemove: true, // automatic removal
+    );
+  }
+}
+
+// Controller definition
 class MyController extends GetxController {
   final count = 0.obs;
 
   void increment() {
     count.value++;
   }
-}
 
-// In your main function or wherever you manage dependencies
-void main() {
-  // Using smartLazyPut to register MyController
-  // Using smartFind to retrieve MyController
-  MyController myController = Get.smartFind<MyController>();
-
-  // Now you can use myController as needed
-  myController.increment();
-  print('Count: ${myController.count.value}');
-}
-```
-
-### Parameters
-
-- **builder**: A callback function that returns an instance of the controller.
-- **tag**: An optional tag to identify the controller instance.
-- **fenix**: If true (default), the controller instance will remain in memory even when not in use.
-- **autoRemove**: If true, the controller instance will be automatically removed when not in use.
-
-### Conclusion
-
-The `smartLazyPut` extension provides a more robust and efficient way to manage controller instances in your GetX applications. By ensuring that controllers are only created when necessary and checking for existing registrations, this method enhances performance and reduces memory overhead compared to the standard `lazyPut`.
-
-
-
-
-## Overview
-
-The `SmartDependencyManagement` extension provides advanced dependency injection and management strategies for Dart applications using GetX.
-
-## Methods
-
-### 1. `smartPut<S>`
-
-#### Description
-Intelligently manages dependency injection with conditional logic and instance validation.
-
-#### Example
-```dart
-class AppBindings extends Bindings {
   @override
-  void dependencies() {
-    Get.smartPut(
-      builder: () => TodosController(),
-      condition: () => true, // Optional condition
-      validityCheck: (controller) => controller.todos.isEmpty,
-      permanent: true,
-    );
+  void onInit() {
+    super.onInit();
+    print('MyController initialized');
+  }
+
+  @override
+  void onClose() {
+    print('MyController disposed');
+    super.onClose();
   }
 }
-```
 
-### 2. `smartPutIf<S>`
-
-#### Description
-Advanced dependency management with primary and secondary conditions, including fallback mechanisms.
-
-#### Example
-```dart
-class AppBindings extends Bindings {
+// Usage in page
+class MyPage extends StatelessWidget {
   @override
-  void dependencies() {
-    Get.smartPutIf(
-      primaryCondition: () => authController.isLoggedIn,
-      builder: () => UserProfileController(),
-      fallbackBuilder: () => GuestProfileController(),
-      secondaryValidation: (controller) => controller.isProfileComplete(),
-      enableLogging: true,
-      permanent: true,
-    );
-  }
-}
-```
-
-### 3. `lazyManage<S>`
-
-#### Description
-Simplified lazy initialization of dependencies with optional creation conditions.
-
-#### Example
-```dart
-class AppBindings extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyManage(
-      builder: () => ExpensiveServiceController(),
-      initCondition: () => FeatureFlags.isAdvancedFeatureEnabled,
-      permanent: false,
+  Widget build(BuildContext context) {
+    return GetBuilder<MyController>(
+      builder: (controller) {
+        return Scaffold(
+          body: Center(
+            child: Column(
+              children: [
+                Obx(() => Text('Count: ${controller.count}')),
+                ElevatedButton(
+                  onPressed: controller.increment,
+                  child: Text('Increment'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -148,346 +350,347 @@ class AppBindings extends Bindings {
 
 ## Best Practices
 
-- Use `smartPut` for simple conditional initialization
-- Prefer `smartPutIf` for complex dependency scenarios
-- Utilize `lazyManage` for performance-sensitive or optional services
-- Always provide meaningful conditions and validation checks
-- Enable logging during development for better debugging
+### 1. Choosing the Right Binding Type:
+```dart
+// For global controllers
+Get.put<AuthController>(AuthController(), permanent: true);
 
-## Use Cases
+// For page controllers
+Get.smartLazyPut<PageController>(() => PageController());
 
-- Conditional service initialization
-- Authentication-based dependency management
-- Feature flag-controlled service creation
-- Fallback strategies for dependencies
-- Lazy loading of resource-intensive services
+// For heavy controllers
+Get.lazyPut<HeavyController>(() => HeavyController(), fenix: true);
+```
 
-## Performance Considerations
+### 2. Lifecycle Management:
+```dart
+class LifecycleBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Controllers that should always be in memory
+    Get.put<CoreController>(CoreController(), permanent: true);
 
-- Minimal overhead for dependency management
-- Efficient instance caching and reuse
-- Supports multiple instances with tagging
+    // Controllers that can be disposed
+    Get.smartLazyPut<TemporaryController>(() => TemporaryController());
+  }
+}
+```
+
+### 3. Using Tags:
+```dart
+// For multiple instances of one controller
+Get.smartLazyPut<TabController>(() => TabController(), tag: 'tab1');
+Get.smartLazyPut<TabController>(() => TabController(), tag: 'tab2');
+
+// Access with tag
+final tab1Controller = Get.find<TabController>(tag: 'tab1');
+```
+
+### 4. Status Checking:
+```dart
+// Check if registered
+if (Get.isRegistered<MyController>()) {
+  final controller = Get.find<MyController>();
+}
+
+// Check if prepared
+if (Get.isPrepared<MyController>()) {
+  // Controller is ready to be created
+}
+```
+```
 
 ---
 
+## Practical Real-World Examples
 
-# Authentication Dependency Management Example
+### 1. E-commerce Application
 
-## Scenario: Multi-Role Authentication System
-
-### User Roles and Controllers
 ```dart
-// Base authentication controller
-class AuthController extends GetxController {
-  final _userRole = UserRole.guest.obs;
-  UserRole get userRole => _userRole.value;
+// Main app binding
+class ShopAppBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Core services
+    Get.put<ApiService>(ApiService(), permanent: true);
+    Get.put<AuthService>(AuthService(), permanent: true);
+    Get.put<CartService>(CartService(), permanent: true);
 
-  void login(String username, String password) {
-    if (username == 'admin' && password == 'admin123') {
-      _userRole.value = UserRole.admin;
-    } else if (username == 'user' && password == 'user123') {
-      _userRole.value = UserRole.premium;
+    // Global controllers
+    Get.put<AppController>(AppController(), permanent: true);
+    Get.smartLazyPut<ThemeController>(() => ThemeController());
+  }
+}
+
+// Products page binding
+class ProductsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.smartLazyPut<ProductsController>(() => ProductsController());
+    Get.smartLazyPut<CategoryController>(() => CategoryController());
+    Get.smartLazyPut<FilterController>(() => FilterController());
+  }
+}
+
+// Cart binding
+class CartBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.smartLazyPut<CartController>(() => CartController());
+    Get.smartLazyPut<CheckoutController>(() => CheckoutController());
+  }
+}
+
+// Routes
+final shopRoutes = [
+  GetPage(
+    name: '/',
+    page: () => HomePage(),
+    binding: ShopAppBinding(),
+  ),
+  GetPage(
+    name: '/products',
+    page: () => ProductsPage(),
+    binding: ProductsBinding(),
+  ),
+  GetPage(
+    name: '/cart',
+    page: () => CartPage(),
+    binding: CartBinding(),
+  ),
+];
+```
+
+### 2. Educational Application
+
+```dart
+// Student binding
+class StudentBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.smartLazyPut<StudentDashboardController>(() => StudentDashboardController());
+    Get.smartLazyPut<CourseListController>(() => CourseListController());
+    Get.smartLazyPut<AssignmentController>(() => AssignmentController());
+  }
+}
+
+// Teacher binding
+class TeacherBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.smartLazyPut<TeacherDashboardController>(() => TeacherDashboardController());
+    Get.smartLazyPut<ClassManagementController>(() => ClassManagementController());
+    Get.smartLazyPut<GradeController>(() => GradeController());
+  }
+}
+
+// Role-based binding
+class RoleBasedBinding extends Bindings {
+  @override
+  void dependencies() {
+    final userRole = Get.find<AuthController>().userRole;
+
+    switch (userRole) {
+      case UserRole.student:
+        StudentBinding().dependencies();
+        break;
+      case UserRole.teacher:
+        TeacherBinding().dependencies();
+        break;
+      case UserRole.admin:
+        Get.smartLazyPut<AdminController>(() => AdminController());
+        break;
     }
   }
 }
-
-// Enum for user roles
-enum UserRole { guest, user, premium, admin }
-
-// Different controllers for each role
-class GuestController extends GetxController {
-  List<String> get availableFeatures => ['limited_view'];
-}
-
-class UserController extends GetxController {
-  List<String> get availableFeatures => ['basic_crud', 'profile_edit'];
-}
-
-class PremiumUserController extends GetxController {
-  List<String> get availableFeatures => ['advanced_analytics', 'priority_support'];
-}
-
-class AdminController extends GetxController {
-  List<String> get availableFeatures => [
-    'user_management', 
-    'system_config', 
-    'full_dashboard_access'
-  ];
-}
 ```
 
-### Smart Dependency Binding
+### 3. Chat Application
+
 ```dart
-class AuthBindings extends Bindings {
+// Chat room binding
+class ChatRoomBinding extends Bindings {
+  final String roomId;
+
+  ChatRoomBinding({required this.roomId});
+
   @override
   void dependencies() {
-    // Global authentication controller
-    Get.put(AuthController(), permanent: true);
-
-    // Smart role-based controller injection
-    Get.smartPutIf(
-      primaryCondition: () {
-        final auth = Get.find<AuthController>();
-        return auth.userRole != UserRole.guest;
-      },
-      builder: () {
-        final auth = Get.find<AuthController>();
-        switch (auth.userRole) {
-          case UserRole.admin:
-            return AdminController();
-          case UserRole.premium:
-            return PremiumUserController();
-          case UserRole.user:
-            return UserController();
-          default:
-            return GuestController();
-        }
-      },
-      fallbackBuilder: () => GuestController(),
-      permanent: false,
-      enableLogging: true
+    Get.smartLazyPut<ChatController>(
+      () => ChatController(roomId: roomId),
+      tag: 'chat_$roomId',
     );
-  }
-}
-```
 
-### Usage Example
-```dart
-class LoginPage extends GetView<AuthController> {
-  void performLogin(String username, String password) {
-    controller.login(username, password);
-    
-    // Automatically loads appropriate role controller
-    final roleController = Get.find<dynamic>();
-    
-    print('Available Features: ${roleController.availableFeatures}');
-  }
-}
-```
-
-## Key Benefits
-- Dynamic role-based dependency injection
-- Secure and flexible authentication management
-- Automatic controller switching based on user role
-- Fallback to guest controller for unauthorized access
-
-
---- 
-
-
-# Advanced Smart Dependency Management Examples
-
-## 1. Real-Time Chat System (`smartPut`)
-```dart
-// Real-time chat system with connection management
-class ChatBindings extends Bindings {
-  @override
-  void dependencies() {
-    // Socket connection controller with validation
-    Get.smartPut<SocketController>(
-      builder: () => SocketController(),
-      condition: () => NetworkUtils.hasInternetConnection(),
-      validityCheck: (controller) => controller.isConnectionActive(),
-      permanent: true,
-      fenix: true,
+    Get.smartLazyPut<MessageController>(
+      () => MessageController(roomId: roomId),
+      tag: 'message_$roomId',
     );
   }
 }
 
-class SocketController extends GetxController {
-  final _connection = WebSocketConnection();
-  final _messages = <ChatMessage>[].obs;
-  final _connectionStatus = ConnectionStatus.disconnected.obs;
+// Usage in route
+GetPage(
+  name: '/chat/:roomId',
+  page: () => ChatPage(),
+  binding: ChatRoomBinding(roomId: Get.parameters['roomId']!),
+)
+```
 
-  bool isConnectionActive() => 
-    _connectionStatus.value == ConnectionStatus.connected;
+## Important Notes and Troubleshooting
 
+### 1. Controller Not Found Issue
+
+```dart
+// ❌ Wrong
+GetBuilder<MyController>(
+  builder: (controller) => MyWidget(),
+)
+
+// ✅ Correct - with init
+GetBuilder<MyController>(
+  init: MyController(),
+  builder: (controller) => MyWidget(),
+)
+
+// ✅ Correct - with binding
+class MyBinding extends Bindings {
   @override
-  void onInit() {
-    super.onInit();
-    _initializeConnection();
-    _setupHeartbeat();
+  void dependencies() {
+    Get.smartLazyPut<MyController>(() => MyController());
   }
+}
+```
 
-  void _initializeConnection() {
-    _connection.connect();
-    ever(_connectionStatus, (status) {
-      if (status == ConnectionStatus.disconnected) {
-        _attemptReconnect();
+### 2. Memory Management
+
+```dart
+// For heavy controllers
+Get.smartLazyPut<HeavyController>(
+  () => HeavyController(),
+  fenix: true, // recreation when needed
+);
+
+// For temporary controllers
+Get.lazyPut<TemporaryController>(
+  () => TemporaryController(),
+  fenix: false, // no recreation
+);
+```
+
+### 3. Status Check Before Usage
+
+```dart
+class SafeControllerAccess {
+  static T? getSafeController<T>({String? tag}) {
+    try {
+      if (Get.isRegistered<T>(tag: tag)) {
+        return Get.find<T>(tag: tag);
       }
-    });
+    } catch (e) {
+      print('Error accessing controller: $e');
+    }
+    return null;
   }
 
-  void _setupHeartbeat() {
-    Timer.periodic(Duration(seconds: 30), (_) {
-      if (!isConnectionActive()) {
-        _attemptReconnect();
-      }
-    });
+  static T getOrCreateController<T>(
+    T Function() builder, {
+    String? tag,
+  }) {
+    try {
+      return Get.find<T>(tag: tag);
+    } catch (e) {
+      Get.smartLazyPut<T>(builder, tag: tag);
+      return Get.find<T>(tag: tag);
+    }
   }
 }
 ```
 
-## 2. Multi-Environment Configuration (`smartPutIf`)
+### 4. Testing Bindings
+
 ```dart
-// Advanced configuration management with environment-specific implementations
-class ConfigBindings extends Bindings {
-  @override
-  void dependencies() {
-    Get.smartPutIf<EnvironmentConfig>(
-      primaryCondition: () => !isProduction(),
-      builder: () => DevelopmentConfig(
-        apiUrl: 'dev-api.example.com',
-        features: DevFeatures(),
-        loggingEnabled: true,
-      ),
-      fallbackBuilder: () => ProductionConfig(
-        apiUrl: 'api.example.com',
-        features: ProdFeatures(),
-        loggingEnabled: false,
-      ),
-      secondaryValidation: (config) => config.validateConfiguration(),
-      enableLogging: true,
-      permanent: true,
-    );
-  }
-}
+void main() {
+  group('Binding Tests', () {
+    setUp(() {
+      Get.reset(); // Clear all instances
+    });
 
-abstract class EnvironmentConfig {
-  String get apiUrl;
-  FeatureFlags get features;
-  bool get loggingEnabled;
-  bool validateConfiguration();
-}
+    test('should register controller correctly', () {
+      // Arrange
+      final binding = MyBinding();
 
-class DevelopmentConfig implements EnvironmentConfig {
-  final String apiUrl;
-  final FeatureFlags features;
-  final bool loggingEnabled;
+      // Act
+      binding.dependencies();
 
-  DevelopmentConfig({
-    required this.apiUrl,
-    required this.features,
-    required this.loggingEnabled,
+      // Assert
+      expect(Get.isRegistered<MyController>(), true);
+    });
+
+    test('should create controller when needed', () {
+      // Arrange
+      final binding = MyBinding();
+      binding.dependencies();
+
+      // Act
+      final controller = Get.find<MyController>();
+
+      // Assert
+      expect(controller, isA<MyController>());
+    });
   });
-
-  @override
-  bool validateConfiguration() {
-    return apiUrl.contains('dev') && loggingEnabled;
-  }
-}
-
-class ProductionConfig implements EnvironmentConfig {
-  // Similar implementation...
 }
 ```
 
-## 3. Resource-Intensive Analytics System (`lazyManage`)
+## Summary and Recommendations
+
+### Choosing the Right Approach:
+
+1. **BindingsBuilder.smartLazyPut**: For most cases (recommended)
+2. **Traditional Bindings**: For complex logic
+3. **Get.put**: For global controllers
+4. **Tagged bindings**: For multiple instances of one controller
+
+### Performance Tips:
+
+- Use `smartLazyPut` for automatic management
+- Set `fenix: true` for controllers that might be disposed
+- Use `permanent: true` only for global controllers
+- Always check controller status before usage
+
+### Complete App Example:
+
 ```dart
-// Analytics system with lazy loading and resource management
-class AnalyticsBindings extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyManage<AnalyticsEngine>(
-      builder: () => AnalyticsEngine(
-        trackers: [
-          PerformanceTracker(),
-          UserBehaviorTracker(),
-          ErrorTracker(),
-        ],
-        configuration: AnalyticsConfig(
-          batchSize: 100,
-          sendInterval: Duration(minutes: 5),
-          maxStorageSize: 50 * 1024 * 1024, // 50MB
+void main() {
+  runApp(
+    GetMaterialApp(
+      title: 'My App',
+      initialRoute: '/',
+      initialBinding: AppBinding(), // Main binding
+      getPages: [
+        GetPage(
+          name: '/',
+          page: () => HomePage(),
+          binding: BindingsBuilder<HomeController>.smartLazyPut(
+            () => HomeController(),
+          ),
         ),
-      ),
-      initCondition: () => 
-        DeviceResources.hasRequiredMemory() && 
-        UserPreferences.analyticsEnabled &&
-        !LowPowerMode.isActive,
-      permanent: false,
-    );
-  }
+        GetPage(
+          name: '/profile',
+          page: () => ProfilePage(),
+          binding: ProfileBinding(),
+        ),
+      ],
+    ),
+  );
 }
 
-class AnalyticsEngine extends GetxController {
-  final List<BaseTracker> trackers;
-  final AnalyticsConfig configuration;
-  final _eventQueue = <AnalyticsEvent>[].obs;
-  Timer? _batchTimer;
-
-  AnalyticsEngine({
-    required this.trackers,
-    required this.configuration,
-  });
-
+class AppBinding extends Bindings {
   @override
-  void onInit() {
-    super.onInit();
-    _initializeTrackers();
-    _startBatchProcessing();
-  }
-
-  void _initializeTrackers() {
-    for (var tracker in trackers) {
-      tracker.initialize();
-      tracker.onEvent.listen((event) {
-        _eventQueue.add(event);
-      });
-    }
-  }
-
-  void _startBatchProcessing() {
-    _batchTimer = Timer.periodic(
-      configuration.sendInterval,
-      (_) => _processBatch(),
-    );
-  }
-
-  Future<void> _processBatch() async {
-    if (_eventQueue.length >= configuration.batchSize) {
-      final batch = _eventQueue.take(configuration.batchSize).toList();
-      await _sendBatch(batch);
-      _eventQueue.removeRange(0, configuration.batchSize);
-    }
-  }
-
-  @override
-  void onClose() {
-    _batchTimer?.cancel();
-    for (var tracker in trackers) {
-      tracker.dispose();
-    }
-    super.onClose();
+  void dependencies() {
+    Get.put<AuthController>(AuthController(), permanent: true);
+    Get.put<ThemeController>(ThemeController(), permanent: true);
   }
 }
 ```
 
-These examples demonstrate:
-
-1. **Socket Controller (`smartPut`)**
-   - Real-time connection management
-   - Automatic reconnection
-   - Connection validity checking
-   - Heartbeat monitoring
-
-2. **Environment Config (`smartPutIf`)**
-   - Environment-specific implementations
-   - Configuration validation
-   - Feature flag management
-   - Conditional initialization
-
-3. **Analytics Engine (`lazyManage`)**
-   - Resource-aware initialization
-   - Batch processing
-   - Multiple tracking systems
-   - Memory management
-   - Event queuing
-
-Each example showcases professional-grade implementation with:
-- Proper resource management
-- Error handling
-- Configuration flexibility
-- Performance optimization
-- Clean architecture principles
-
+Using these approaches, controller management in your application will be optimized and reliable.

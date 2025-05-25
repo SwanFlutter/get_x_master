@@ -186,6 +186,347 @@ The `Obx` and `ObxValue` widgets are integral to building responsive application
 
 ---
 
+## Enhanced GetBuilder Widgets
+
+The GetX state management library has been enhanced with new powerful widgets that combine the best features of `GetBuilder` and `Obx`, providing more flexibility and control over reactive state management.
+
+### New Widgets Overview
+
+#### 1. GetBuilderObs - Enhanced GetBuilder with Observable Support
+
+`GetBuilderObs` is an advanced version of `GetBuilder` that allows you to observe multiple reactive variables while maintaining access to your controller instance.
+
+**Key Features:**
+- ✅ Access to controller instance (like GetBuilder)
+- ✅ Observe multiple reactive variables (like Obx)
+- ✅ Automatic lifecycle management
+- ✅ Smart controller initialization
+- ✅ Filter support for optimized rebuilds
+
+**Basic Usage:**
+
+```dart
+class MyController extends GetXController {
+  final RxInt count = 0.obs;
+  final RxString message = 'Hello GetX'.obs;
+  final RxBool isLoading = false.obs;
+
+  void increment() {
+    count.value++;
+    message.value = 'Count: ${count.value}';
+  }
+
+  void toggleLoading() {
+    isLoading.value = !isLoading.value;
+  }
+}
+
+// Usage in widget
+GetBuilderObs<MyController>(
+  init: MyController(),
+  observables: [
+    Get.find<MyController>().count,
+    Get.find<MyController>().message,
+    Get.find<MyController>().isLoading,
+  ],
+  builder: (controller) {
+    return Column(
+      children: [
+        Text('Count: ${controller.count.value}'),
+        Text(controller.message.value),
+        if (controller.isLoading.value)
+          CircularProgressIndicator(),
+        ElevatedButton(
+          onPressed: controller.increment,
+          child: Text('Increment'),
+        ),
+        ElevatedButton(
+          onPressed: controller.toggleLoading,
+          child: Text('Toggle Loading'),
+        ),
+      ],
+    );
+  },
+)
+```
+
+**Advanced Usage with Filter:**
+
+```dart
+GetBuilderObs<MyController>(
+  init: MyController(),
+  observables: [controller.count],
+  filter: (controller) => controller.count.value ~/ 10, // Only rebuild every 10 counts
+  builder: (controller) {
+    return Text('Tens: ${controller.count.value ~/ 10}');
+  },
+)
+```
+
+#### 2. MultiObx - Multiple Observable Watcher
+
+`MultiObx` allows you to watch multiple reactive variables without needing a controller, perfect for simple reactive UIs.
+
+**Key Features:**
+- ✅ Watch multiple observables simultaneously
+- ✅ No controller required
+- ✅ Lightweight and efficient
+- ✅ Perfect for simple reactive UIs
+
+**Usage Example:**
+
+```dart
+// Create standalone reactive variables
+final RxString title = 'Hello World'.obs;
+final RxInt counter = 0.obs;
+final RxBool isDarkMode = false.obs;
+
+MultiObx(
+  observables: [title, counter, isDarkMode],
+  builder: () {
+    return Column(
+      children: [
+        Text(title.value),
+        Text('Counter: ${counter.value}'),
+        Switch(
+          value: isDarkMode.value,
+          onChanged: (value) => isDarkMode.value = value,
+        ),
+        ElevatedButton(
+          onPressed: () => counter.value++,
+          child: Text('Increment'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            title.value = title.value == 'Hello World'
+                ? 'Updated Title!'
+                : 'Hello World';
+          },
+          child: Text('Toggle Title'),
+        ),
+      ],
+    );
+  },
+)
+```
+
+#### 3. Enhanced BuildContext Extensions
+
+New extensions for `BuildContext` provide easy access to GetX controllers and utilities.
+
+**Controller Access:**
+
+```dart
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Find controller
+    final controller = context.find<MyController>();
+
+    // Find controller safely (returns null if not found)
+    final safeController = context.findOrNull<MyController>();
+
+    // Check if controller is registered
+    final isRegistered = context.isControllerRegistered<MyController>();
+
+    // Observe controller (use within Obx or GetX widget)
+    final observedController = context.obs<MyController>();
+
+    return Column(
+      children: [
+        Text('Controller found: ${safeController != null}'),
+        Text('Controller registered: $isRegistered'),
+        ElevatedButton(
+          onPressed: () => context.showSnackbar('Hello from extension!'),
+          child: Text('Show Snackbar'),
+        ),
+        ElevatedButton(
+          onPressed: () => context.push(NextPage()),
+          child: Text('Navigate'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Comparison with Existing Widgets
+
+#### GetBuilder vs GetBuilderObs
+
+| Feature | GetBuilder | GetBuilderObs |
+|---------|------------|---------------|
+| Controller Access | ✅ | ✅ |
+| Manual Updates | ✅ | ✅ |
+| Reactive Variables | ❌ | ✅ |
+| Multiple Observables | ❌ | ✅ |
+| Performance | High | High |
+| Filter Support | ✅ | ✅ |
+
+#### Obx vs MultiObx
+
+| Feature | Obx | MultiObx |
+|---------|-----|----------|
+| Single Observable | ✅ | ✅ |
+| Multiple Observables | Manual | ✅ |
+| Controller Access | ❌ | ❌ |
+| Simplicity | High | High |
+| Performance | High | High |
+
+### Best Practices
+
+#### When to Use GetBuilderObs
+
+Use `GetBuilderObs` when:
+- You need both controller methods and reactive variables
+- You want to observe multiple reactive variables
+- You need complex state management with filters
+- You want the benefits of both GetBuilder and Obx
+
+```dart
+// Good use case: Complex form with validation
+GetBuilderObs<FormController>(
+  observables: [
+    controller.email,
+    controller.password,
+    controller.isValid,
+    controller.isSubmitting,
+  ],
+  builder: (controller) {
+    return Form(
+      child: Column(
+        children: [
+          TextFormField(
+            onChanged: controller.setEmail,
+            decoration: InputDecoration(
+              errorText: controller.emailError.value,
+            ),
+          ),
+          TextFormField(
+            onChanged: controller.setPassword,
+            obscureText: true,
+            decoration: InputDecoration(
+              errorText: controller.passwordError.value,
+            ),
+          ),
+          ElevatedButton(
+            onPressed: controller.isValid.value ? controller.submit : null,
+            child: controller.isSubmitting.value
+                ? CircularProgressIndicator()
+                : Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  },
+)
+```
+
+#### When to Use MultiObx
+
+Use `MultiObx` when:
+- You have simple reactive variables without a controller
+- You want to watch multiple observables in a lightweight way
+- You're building simple reactive UIs
+
+```dart
+// Good use case: Simple settings panel
+final RxBool notifications = true.obs;
+final RxBool darkMode = false.obs;
+final RxDouble volume = 0.5.obs;
+
+MultiObx(
+  observables: [notifications, darkMode, volume],
+  builder: () {
+    return Column(
+      children: [
+        SwitchListTile(
+          title: Text('Notifications'),
+          value: notifications.value,
+          onChanged: (value) => notifications.value = value,
+        ),
+        SwitchListTile(
+          title: Text('Dark Mode'),
+          value: darkMode.value,
+          onChanged: (value) => darkMode.value = value,
+        ),
+        Slider(
+          value: volume.value,
+          onChanged: (value) => volume.value = value,
+        ),
+      ],
+    );
+  },
+)
+```
+
+### Performance Tips
+
+1. **Specify only necessary observables**: Don't include observables that don't affect the UI
+2. **Use filters when appropriate**: Filter updates to reduce unnecessary rebuilds
+3. **Combine with GetBuilder**: Use regular GetBuilder for non-reactive parts
+
+```dart
+// Efficient: Only watch what you need
+GetBuilderObs<MyController>(
+  observables: [controller.count], // Only count, not all variables
+  filter: (controller) => controller.count.value ~/ 10, // Only rebuild every 10 counts
+  builder: (controller) => Text('Tens: ${controller.count.value ~/ 10}'),
+)
+```
+
+### Migration Guide
+
+#### From GetBuilder to GetBuilderObs
+
+```dart
+// Before: Nested Obx inside GetBuilder
+GetBuilder<MyController>(
+  builder: (controller) {
+    return Obx(() => Text('${controller.count.value}')); // Nested Obx
+  },
+)
+
+// After: Direct reactive access
+GetBuilderObs<MyController>(
+  observables: [controller.count],
+  builder: (controller) {
+    return Text('${controller.count.value}'); // Direct access
+  },
+)
+```
+
+#### From Multiple Obx to MultiObx
+
+```dart
+// Before: Multiple separate Obx widgets
+Column(
+  children: [
+    Obx(() => Text(title.value)),
+    Obx(() => Text('${counter.value}')),
+    Obx(() => Switch(value: flag.value, onChanged: (v) => flag.value = v)),
+  ],
+)
+
+// After: Single MultiObx widget
+MultiObx(
+  observables: [title, counter, flag],
+  builder: () => Column(
+    children: [
+      Text(title.value),
+      Text('${counter.value}'),
+      Switch(value: flag.value, onChanged: (v) => flag.value = v),
+    ],
+  ),
+)
+```
+
+### Conclusion
+
+The enhanced GetBuilder widgets provide more flexibility and power while maintaining the simplicity and performance that GetX is known for. These new widgets bridge the gap between `GetBuilder` and `Obx`, offering developers the best of both worlds for state management in Flutter applications.
+
+---
+
 ## Overview of Animation Controller Mixins in GetX
 
 The provided Dart code defines two mixins, `GetSingleTickerProviderStateMixin` and `GetTickerProviderStateMixin`, which simplify the creation and management of `AnimationController` instances within a `GetxController`. These mixins implement the `TickerProvider` interface, allowing for smooth animations in Flutter applications.
@@ -672,12 +1013,12 @@ class ExampleController extends GetxController {
   void someMethod() {
     // Access context via GetX
     final context = Get.context!;
-    
+
     // Use the extension
     final screenWidth = context.width;
     final isPhone = context.isPhone;
     final isDarkMode = context.isDarkMode;
-    
+
     print('Screen Width: $screenWidth');
     print('Is Phone: $isPhone');
     print('Is Dark Mode: $isDarkMode');
@@ -714,7 +1055,7 @@ class ExampleScreen extends StatelessWidget {
             color: Colors.blue,
             child: const Center(child: Text('Responsive Container')),
           ),
-          
+
           // Checking device type
           Text(
             context.isPhone
@@ -728,7 +1069,7 @@ class ExampleScreen extends StatelessWidget {
                             : 'Unknown Device',
             style: context.textTheme.headlineMedium,
           ),
-          
+
           // Using responsiveValue for different values
           Container(
             padding: EdgeInsets.all(
@@ -955,7 +1296,7 @@ class MyWidget extends GetWidget<MyController> {
 
 void main() {
   final MyController myController = Get.put(MyController());
-  
+
   runApp(MaterialApp(home: MyView()));
 }
 ```
@@ -1049,7 +1390,7 @@ void main() {
 
 ### Conclusion
 
-This example shows how to use `GetWidgetCache` and `WidgetCache` to manage the state of widgets in Flutter. 
+This example shows how to use `GetWidgetCache` and `WidgetCache` to manage the state of widgets in Flutter.
 Each time a button is pressed, the counter is incremented and the UI is updated.
 
 
@@ -1189,7 +1530,7 @@ void main() => runApp(MaterialApp(home: CounterView()));
 
 The code provides a comprehensive framework for managing state in Flutter applications using GetX. By leveraging notifiers, mixins, and status management, developers can create responsive applications that efficiently handle asynchronous operations and UI updates based on changes in application state. This structure promotes clean code practices while enhancing application performance.
 
---- 
+---
 
 
 ## Overview of MixinBuilder in GetX
@@ -1260,7 +1601,7 @@ class MyView extends StatelessWidget {
 
 void main() {
   final MyController myController = Get.put(MyController());
-  
+
   runApp(MaterialApp(home: Scaffold(body: MyView())));
 }
 ```

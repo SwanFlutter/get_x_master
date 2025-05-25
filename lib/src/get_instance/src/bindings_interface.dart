@@ -23,6 +23,8 @@ abstract class Bindings {
 ///   binding: BindingsBuilder(() { Get.put(HomeController(); })),
 ///   // Using .lazyPut() works fine.
 ///   // binding: BindingsBuilder(() => Get.lazyPut(() => HomeController())),
+///   // Using .smartLazyPut() is recommended for better lifecycle management.
+///   // binding: BindingsBuilder(() => Get.smartLazyPut(() => HomeController())),
 /// ),
 /// ```
 class BindingsBuilder<T> extends Bindings {
@@ -51,9 +53,65 @@ class BindingsBuilder<T> extends Bindings {
     );
   }
 
+  /// Enhanced shortcut to register 1 Controller with Get.lazyPut(),
+  /// Provides better memory management and lifecycle control.
+  ///
+  /// Sample:
+  /// ```
+  /// GetPage(
+  ///   name: '/',
+  ///   page: () => Home(),
+  ///   binding: BindingsBuilder.lazyPut(() => HomeController()),
+  /// ),
+  /// ```
+  factory BindingsBuilder.lazyPut(
+    InstanceBuilderCallback<T> builder, {
+    String? tag,
+    bool? fenix,
+    bool permanent = false,
+  }) {
+    return BindingsBuilder(
+      () => GetInstance().lazyPut<T>(
+        builder,
+        tag: tag,
+        fenix: fenix,
+        permanent: permanent,
+      ),
+    );
+  }
+
+  /// Smart shortcut to register 1 Controller with Get.smartLazyPut(),
+  /// Provides intelligent lifecycle management and automatic recreation.
+  /// This is the recommended method for most use cases.
+  ///
+  /// Sample:
+  /// ```
+  /// GetPage(
+  ///   name: '/',
+  ///   page: () => Home(),
+  ///   binding: BindingsBuilder.smartLazyPut(() => HomeController()),
+  /// ),
+  /// ```
+  factory BindingsBuilder.smartLazyPut(
+    InstanceBuilderCallback<T> builder, {
+    String? tag,
+    bool? fenix,
+    bool autoRemove = true,
+  }) {
+    return BindingsBuilder(
+      () => GetInstance().smartLazyPut<T>(
+        builder,
+        tag: tag,
+        fenix: fenix,
+        autoRemove: autoRemove,
+      ),
+    );
+  }
+
   /// WARNING: don't use `()=> Get.put(Controller())`,
   /// if only passing 1 callback use `BindingsBuilder.put(Controller())`
   /// or `BindingsBuilder(()=> Get.lazyPut(Controller()))`
+  /// or `BindingsBuilder.smartLazyPut(() => Controller())` (recommended)
   BindingsBuilder(this.builder);
 
   @override

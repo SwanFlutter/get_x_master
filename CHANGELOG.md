@@ -28,4 +28,14 @@
 
 ## 0.0.6
 
-* Add New feature for route .
+* Add New feature for route.
+
+## 0.0.7
+
+* Add New feature for route.
+* Add New feature for Cupertino.
+* Add New feature for Animation.
+* Add New feature for Dependency injection.
+* Add New feature for Utils.
+* Add New feature for State management.
+* Fix Bug GetBuilder.

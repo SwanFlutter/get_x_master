@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class LoginController extends GetXController {
-  static LoginController get to => Get.find();
+  static LoginController get to => Get.smartFind();
 
   late TextEditingController emailController;
   late TextEditingController passwordController;
+  RxBool isLoading = false.obs;
 
   GetConnect http = GetConnect(
     allowAutoSignedCert: true,

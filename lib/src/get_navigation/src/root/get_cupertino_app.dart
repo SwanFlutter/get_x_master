@@ -11,6 +11,13 @@ import '../../get_navigation.dart';
 /// A GetX-powered CupertinoApp that provides additional functionality for
 /// state management, routing, and internationalization.
 ///
+/// This enhanced version supports all the latest Flutter Cupertino features including:
+/// - Rounded Superellipse (Apple Squircle) shapes
+/// - Enhanced Cupertino sheets with improved animations
+/// - Better navigation bar transitions
+/// - State restoration support
+/// - Custom scroll behavior
+///
 /// Example usage:
 /// ```dart
 /// // Basic usage
@@ -19,6 +26,17 @@ import '../../get_navigation.dart';
 ///   theme: CupertinoThemeData(
 ///     primaryColor: CupertinoColors.systemBlue,
 ///   ),
+/// );
+///
+/// // With new Flutter Cupertino features
+/// GetCupertinoApp(
+///   home: MyHomePage(),
+///   theme: CupertinoThemeData(
+///     primaryColor: CupertinoColors.systemBlue,
+///     brightness: Brightness.light,
+///   ),
+///   scrollBehavior: CupertinoScrollBehavior(),
+///   restorationId: 'my_app',
 /// );
 ///
 /// // With routing
@@ -91,6 +109,9 @@ class GetCupertinoApp extends StatelessWidget {
     this.highContrastTheme,
     this.highContrastDarkTheme,
     this.actions,
+    this.scrollBehavior,
+    this.restorationScopeId,
+    this.restorationId,
   }) : routeInformationProvider = null,
        routeInformationParser = null,
        routerDelegate = null,
@@ -145,6 +166,9 @@ class GetCupertinoApp extends StatelessWidget {
     this.defaultGlobalState,
     this.getPages,
     this.unknownRoute,
+    this.scrollBehavior,
+    this.restorationScopeId,
+    this.restorationId,
   }) : routerDelegate =
            routerDelegate ??= Get.createDelegate(notFoundRoute: unknownRoute),
        routeInformationParser =
@@ -233,6 +257,11 @@ class GetCupertinoApp extends StatelessWidget {
   final bool showSemanticsDebugger;
   final bool debugShowCheckedModeBanner;
 
+  // New Flutter Cupertino features
+  final ScrollBehavior? scrollBehavior;
+  final bool? restorationScopeId;
+  final String? restorationId;
+
   @override
   Widget build(BuildContext context) => GetBuilder<GetMaterialController>(
     init: Get.rootController,
@@ -310,6 +339,9 @@ class GetCupertinoApp extends StatelessWidget {
       showSemanticsDebugger: showSemanticsDebugger,
       debugShowCheckedModeBanner: debugShowCheckedModeBanner,
       shortcuts: shortcuts,
+      actions: actions,
+      scrollBehavior: scrollBehavior,
+      restorationScopeId: restorationId,
     );
   }
 
@@ -343,6 +375,9 @@ class GetCupertinoApp extends StatelessWidget {
       showSemanticsDebugger: showSemanticsDebugger,
       debugShowCheckedModeBanner: debugShowCheckedModeBanner,
       shortcuts: shortcuts,
+      actions: actions,
+      scrollBehavior: scrollBehavior,
+      restorationScopeId: restorationId,
     );
   }
 
