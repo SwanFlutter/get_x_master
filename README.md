@@ -249,7 +249,7 @@ Add Get to your pubspec.yaml file:
 ```yaml
 
 dependencies:
-  get_x_master: ^0.0.7
+  get_x_master: ^0.0.8
 
 ```
 
@@ -1457,14 +1457,7 @@ if you are using your navigation in your controllers, use `Get.testMode = true` 
 
 1- Rx types:
 
-| Before  | After      |
-| ------- | ---------- |
-| StringX | `RxString` |
-| IntX    | `RxInt`    |
-| MapX    | `RxMap`    |
-| ListX   | `RxList`   |
-| NumX    | `RxNum`    |
-| DoubleX | `RxDouble` |
+***
 
 RxController and GetBuilder now have merged, you no longer need to memorize which controller you want to use, just use GetxController, it will work for simple state management and for reactive as well.
 

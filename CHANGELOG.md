@@ -39,3 +39,9 @@
 * Add New feature for Utils.
 * Add New feature for State management.     
 * Fix Bug GetBuilder.
+
+## 0.0.8
+
+* Add New feature for Responsive.
+* Add New feature for Utils.
+* Add New feature for State management.
