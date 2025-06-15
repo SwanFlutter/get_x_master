@@ -30,7 +30,7 @@ Here’s a simple example demonstrating how to use the `GetX` widget:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 
 // Define a simple controller
 class CounterController extends GetxController {
@@ -723,7 +723,7 @@ The code provides a robust framework for managing state and lifecycle events in 
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 import 'path_to_your_responsive_file.dart'; // Import the responsive file
 import 'path_to_your_context_extension_file.dart'; // Import the ContextExt extension
 
@@ -1005,8 +1005,7 @@ class MyResponsiveScreen extends GetResponsiveView {
  ## 1. Accessing Context in GetX
 
 ```dart
-
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 import 'path_to_your_extension_file.dart'; // Import your extension file
 
 class ExampleController extends GetxController {
@@ -1024,7 +1023,6 @@ class ExampleController extends GetxController {
     print('Is Dark Mode: $isDarkMode');
   }
 }
-
 ```
 
 ## 2. Using in Widgets (UI)
@@ -1032,9 +1030,8 @@ class ExampleController extends GetxController {
 - In widgets, you can use the BuildContext that is automatically available in the build method. Example:
 
 ```dart
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 import 'path_to_your_extension_file.dart';
 
 class ExampleScreen extends StatelessWidget {
@@ -1569,7 +1566,7 @@ Here’s an example demonstrating how to use the `MixinBuilder`:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 
 class MyController extends GetxController {
   var count = 0.obs;

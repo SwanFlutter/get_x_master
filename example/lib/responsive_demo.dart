@@ -199,7 +199,7 @@ class ResponsiveDemo extends StatelessWidget {
               '  phone: 14.0,',
               '  tablet: 16.0,',
               '  desktop: 18.0,',
-              ') = ${ResponsiveHelper.responsiveValue(phone: 14.0, tablet: 16.0, desktop: 18.0)}',
+              ') = ${ResponsiveHelper.responsiveValue(phone: 14.0, tablet: 16.0, laptop: 18.0)}',
             ],
             Colors.orange,
           ),

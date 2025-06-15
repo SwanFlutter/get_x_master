@@ -1,37 +1,32 @@
-![](https://raw.githubusercontent.com/jonataslaw/getx-community/master/get.png)
+# GetX Master
 
+[![pub package](https://img.shields.io/pub/v/get_x_master.svg)](https://pub.dev/packages/get_x_master)
+[![GitHub](https://img.shields.io/github/license/SwanFlutter/get_x_master)](https://github.com/SwanFlutter/get_x_master/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/SwanFlutter/get_x_master)](https://github.com/SwanFlutter/get_x_master/stargazers)
 
+## ⚠️ Important Notice
 
-![](https://raw.githubusercontent.com/jonataslaw/getx-community/master/getx.png)
+**This package is an independent state management solution inspired by [GetX](https://pub.dev/packages/get) by [Jonny Borges](https://github.com/jonataslaw/getx).**
 
+GetX Master is a completely separate implementation that provides similar functionality to GetX but with enhanced features, improved performance, and better compatibility with the latest Flutter updates. While inspired by GetX's design principles, this is an independent project developed from the ground up.
 
-<div align="center">
+### Why GetX Master?
+- Enhanced Cupertino support with Apple-authentic design elements
+- Additional utility functions and extensions
+- Improved compatibility with latest Flutter versions
+- Independent development and maintenance
+- Custom features tailored for modern Flutter development
 
-**Languages:**
+### Inspiration
+- **Inspired by:** GetX design principles
+- **This Project:** Independent implementation with enhanced features
 
+## Table of Contents
 
-[![English](https://img.shields.io/badge/Language-English-blueviolet?style=for-the-badge)](README.md)
-[![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-vi.md)
-[![Indonesian](https://img.shields.io/badge/Language-Indonesian-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.id-ID.md)
-[![Urdu](https://img.shields.io/badge/Language-Urdu-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.ur-PK.md)
-[![Chinese](https://img.shields.io/badge/Language-Chinese-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.zh-cn.md)
-[![Portuguese](https://img.shields.io/badge/Language-Portuguese-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.pt-br.md)
-[![Spanish](https://img.shields.io/badge/Language-Spanish-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-es.md)
-[![Russian](https://img.shields.io/badge/Language-Russian-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.ru.md)
-[![Polish](https://img.shields.io/badge/Language-Polish-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.pl.md)
-[![Korean](https://img.shields.io/badge/Language-Korean-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.ko-kr.md)
-[![French](https://img.shields.io/badge/Language-French-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-fr.md)
-[![Japanese](https://img.shields.io/badge/Language-Japanese-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README.ja-JP.md)
-[![Hindi](https://img.shields.io/badge/Language-Hindi-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-hi.md)
-[![Bangla](https://img.shields.io/badge/Language-Bangla-blueviolet?style=for-the-badge)](https://github.com/jonataslaw/getx/blob/master/README-bn.md)
-
-
-</div>
-
-- [About Get](#about-get)
+- [About GetX Master](#about-getx-master)
 - [Enhanced Cupertino Support](#-enhanced-cupertino-support)
 - [Installing](#installing)
-- [Counter App with GetX](#counter-app-with-getx)
+- [Counter App with GetX Master](#counter-app-with-getx-master)
 - [The Three pillars](#the-three-pillars)
   - [State management](#state-management)
     - [Reactive State Manager](#reactive-state-manager)
@@ -70,16 +65,12 @@
       - [How to use it](#how-to-use-it)
     - [GetWidget](#getwidget)
     - [GetxService](#getxservice)
-- [Breaking changes from 2.0](#breaking-changes-from-20)
-- [Why Getx?](#why-getx)
-- [Community](#community)
-  - [Community channels](#community-channels)
-  - [How to contribute](#how-to-contribute)
-  - [Articles and videos](#articles-and-videos)
+- [Why GetX Master?](#why-getx-master)
+- [Contributing](#contributing)
 
-# About Get
+# About GetX Master
 
-- GetX is an extra-light and powerful solution for Flutter. It combines high-performance state management, intelligent dependency injection, and route management quickly and practically.
+- GetX Master is an independent, extra-light and powerful solution for Flutter. It combines high-performance state management, intelligent dependency injection, and route management quickly and practically, with enhanced features and modern compatibility.
 
 To read the documentation for these sections, you can use the following links to navigate to the respective pages on GitHub:
 
@@ -218,52 +209,43 @@ These links will help you access the full documentation and detailed information
 
 
 
-- GetX has 3 basic principles. This means that these are the priority for all resources in the library: **PRODUCTIVITY, PERFORMANCE AND ORGANIZATION.**
+- GetX Master has 3 basic principles. This means that these are the priority for all resources in the library: **PRODUCTIVITY, PERFORMANCE AND ORGANIZATION.**
 
-  - **PERFORMANCE:** GetX is focused on performance and minimum consumption of resources. GetX does not use Streams or ChangeNotifier.
+  - **PERFORMANCE:** GetX Master is focused on performance and minimum consumption of resources. GetX Master does not use Streams or ChangeNotifier.
 
-  - **PRODUCTIVITY:** GetX uses an easy and pleasant syntax. No matter what you want to do, there is always an easier way with GetX. It will save hours of development and will provide the maximum performance your application can deliver.
+  - **PRODUCTIVITY:** GetX Master uses an easy and pleasant syntax. No matter what you want to do, there is always an easier way with GetX Master. It will save hours of development and will provide the maximum performance your application can deliver.
 
-    Generally, the developer should be concerned with removing controllers from memory. With GetX this is not necessary because resources are removed from memory when they are not used by default. If you want to keep it in memory, you must explicitly declare "permanent: true" in your dependency. That way, in addition to saving time, you are less at risk of having unnecessary dependencies on memory. Dependency loading is also lazy by default.
+    Generally, the developer should be concerned with removing controllers from memory. With GetX Master this is not necessary because resources are removed from memory when they are not used by default. If you want to keep it in memory, you must explicitly declare "permanent: true" in your dependency. That way, in addition to saving time, you are less at risk of having unnecessary dependencies on memory. Dependency loading is also lazy by default.
 
-  - **ORGANIZATION:** GetX allows the total decoupling of the View, presentation logic, business logic, dependency injection, and navigation. You do not need context to navigate between routes, so you are not dependent on the widget tree (visualization) for this. You don't need context to access your controllers/blocs through an inheritedWidget, so you completely decouple your presentation logic and business logic from your visualization layer. You do not need to inject your Controllers/Models/Blocs classes into your widget tree through `MultiProvider`s. For this, GetX uses its own dependency injection feature, decoupling the DI from its view completely.
+  - **ORGANIZATION:** GetX Master allows the total decoupling of the View, presentation logic, business logic, dependency injection, and navigation. You do not need context to navigate between routes, so you are not dependent on the widget tree (visualization) for this. You don't need context to access your controllers/blocs through an inheritedWidget, so you completely decouple your presentation logic and business logic from your visualization layer. You do not need to inject your Controllers/Models/Blocs classes into your widget tree through `MultiProvider`s. For this, GetX Master uses its own dependency injection feature, decoupling the DI from its view completely.
 
-    With GetX you know where to find each feature of your application, having clean code by default. In addition to making maintenance easy, this makes the sharing of modules something that until then in Flutter was unthinkable, something totally possible.
-    BLoC was a starting point for organizing code in Flutter, it separates business logic from visualization. GetX is a natural evolution of this, not only separating the business logic but the presentation logic. Bonus injection of dependencies and routes are also decoupled, and the data layer is out of it all. You know where everything is, and all of this in an easier way than building a hello world.
-    GetX is the easiest, practical, and scalable way to build high-performance applications with the Flutter SDK. It has a large ecosystem around it that works perfectly together, it's easy for beginners, and it's accurate for experts. It is secure, stable, up-to-date, and offers a huge range of APIs built-in that are not present in the default Flutter SDK.
+    With GetX Master you know where to find each feature of your application, having clean code by default. In addition to making maintenance easy, this makes the sharing of modules something that until then in Flutter was unthinkable, something totally possible.
+    BLoC was a starting point for organizing code in Flutter, it separates business logic from visualization. GetX Master is a natural evolution of this, not only separating the business logic but the presentation logic. Bonus injection of dependencies and routes are also decoupled, and the data layer is out of it all. You know where everything is, and all of this in an easier way than building a hello world.
+    GetX Master is the easiest, practical, and scalable way to build high-performance applications with the Flutter SDK. It offers a huge range of APIs built-in that are not present in the default Flutter SDK.
 
-- GetX is not bloated. It has a multitude of features that allow you to start programming without worrying about anything, but each of these features are in separate containers and are only started after use. If you only use State Management, only State Management will be compiled. If you only use routes, nothing from the state management will be compiled.
+- GetX Master is not bloated. It has a multitude of features that allow you to start programming without worrying about anything, but each of these features are in separate containers and are only started after use. If you only use State Management, only State Management will be compiled. If you only use routes, nothing from the state management will be compiled.
 
-- GetX has a huge ecosystem, a large community, a large number of collaborators, and will be maintained as long as the Flutter exists. GetX too is capable of running with the same code on Android, iOS, Web, Mac, Linux, Windows, and on your server.
-  **It is possible to fully reuse your code made on the frontend on your backend with [Get Server](https://github.com/jonataslaw/get_server)**.
-
-**In addition, the entire development process can be completely automated, both on the server and on the front end with [Get CLI](https://github.com/jonataslaw/get_cli)**.
-
-**In addition, to further increase your productivity, we have the
-[extension to VSCode](https://marketplace.visualstudio.com/items?itemName=get-snippets.get-snippets) and the [extension to Android Studio/Intellij](https://plugins.jetbrains.com/plugin/14975-getx-snippets)**
+- GetX Master is capable of running with the same code on Android, iOS, Web, Mac, Linux, Windows, and on your server.
+  **Note:** GetX Master is a standalone solution that doesn't require additional tools or extensions.
 
 # Installing
 
-Add Get to your pubspec.yaml file:
+Add GetX Master to your pubspec.yaml file:
 
 ```yaml
-
 dependencies:
   get_x_master: ^0.0.8
-
 ```
 
-Import get in files that it will be used:
+Import GetX Master in files that it will be used:
 
 ```dart
-
 import 'package:get_x_master/get_x_master.dart';
-
 ```
 
-# Counter App with GetX
+# Counter App with GetX Master
 
-The "counter" project created by default on new project on Flutter has over 100 lines (with comments). To show the power of Get, I will demonstrate how to make a "counter" changing the state with each click, switching between pages and sharing the state between screens, all in an organized way, separating the business logic from the view, in ONLY 26 LINES CODE INCLUDING COMMENTS.
+The "counter" project created by default on new project on Flutter has over 100 lines (with comments). To show the power of GetX Master, I will demonstrate how to make a "counter" changing the state with each click, switching between pages and sharing the state between screens, all in an organized way, separating the business logic from the view, in ONLY 26 LINES CODE INCLUDING COMMENTS.
 
 - Step 1:
   Add "Get" before your MaterialApp, turning it into GetMaterialApp
@@ -369,23 +351,21 @@ class Other extends StatelessWidget {
 
 Result:
 
-![](https://raw.githubusercontent.com/jonataslaw/getx-community/master/counter-app-gif.gif)
+This is a simple project but it already makes clear how powerful GetX Master is. As your project grows, this difference will become more significant.
 
-This is a simple project but it already makes clear how powerful Get is. As your project grows, this difference will become more significant.
+GetX Master was designed to work with teams, but it makes the job of an individual developer simple.
 
-Get was designed to work with teams, but it makes the job of an individual developer simple.
-
-Improve your deadlines, deliver everything on time without losing performance. Get is not for everyone, but if you identified with that phrase, Get is for you!
+Improve your deadlines, deliver everything on time without losing performance. GetX Master is designed for developers who value productivity and clean code!
 
 # The Three pillars
 
 ## State management
 
-Get has two different state managers: the simple state manager (we'll call it GetBuilder) and the reactive state manager (GetX/Obx)
+GetX Master has two different state managers: the simple state manager (we'll call it GetBuilder) and the reactive state manager (GetX/Obx)
 
 ### Reactive State Manager
 
-Reactive programming can alienate many people because it is said to be complicated. GetX turns reactive programming into something quite simple:
+Reactive programming can alienate many people because it is said to be complicated. GetX Master turns reactive programming into something quite simple:
 
 - You won't need to create StreamControllers.
 - You won't need to create a StreamBuilder for each variable
@@ -393,7 +373,7 @@ Reactive programming can alienate many people because it is said to be complicat
 - You will not need to create a get for an initial value.
 - You will not need to use code generators
 
-Reactive programming with Get is as easy as using setState.
+Reactive programming with GetX Master is as easy as using setState.
 
 Let's imagine that you have a name variable and want that every time you change it, all widgets that use it are automatically changed.
 
@@ -425,13 +405,13 @@ That's all. It's _that_ simple.
 
 ### More details about state management
 
-**See an more in-depth explanation of state management [here](./documentation/en_US/state_management.md). There you will see more examples and also the difference between the simple state manager and the reactive state manager**
+**GetX Master provides comprehensive state management with both simple and reactive approaches.**
 
-You will get a good idea of GetX power.
+You will get a good idea of GetX Master power.
 
 ## Route management
 
-If you are going to use routes/snackbars/dialogs/bottomsheets without context, GetX is excellent for you too, just see it:
+If you are going to use routes/snackbars/dialogs/bottomsheets without context, GetX Master is excellent for you too, just see it:
 
 Add "Get" before your MaterialApp, turning it into GetMaterialApp
 
@@ -451,7 +431,7 @@ Get.to(NextScreen());
 
 ```
 
-Navigate to new screen with name. See more details on named routes [here](./documentation/en_US/route_management.md#navigation-with-named-routes)
+Navigate to new screen with name:
 
 ```dart
 
@@ -483,15 +463,15 @@ Get.offAll(NextScreen());
 
 ```
 
-Noticed that you didn't have to use context to do any of these things? That's one of the biggest advantages of using Get route management. With this, you can execute all these methods from within your controller class, without worries.
+Noticed that you didn't have to use context to do any of these things? That's one of the biggest advantages of using GetX Master route management. With this, you can execute all these methods from within your controller class, without worries.
 
 ### More details about route management
 
-**Get works with named routes and also offers lower-level control over your routes! There is in-depth documentation [here](./documentation/en_US/route_management.md)**
+**GetX Master works with named routes and also offers lower-level control over your routes!**
 
 ## Dependency management
 
-Get has a simple and powerful dependency manager that allows you to retrieve the same class as your Bloc or Controller with just 1 lines of code, no Provider context, no inheritedWidget:
+GetX Master has a simple and powerful dependency manager that allows you to retrieve the same class as your Bloc or Controller with just 1 lines of code, no Provider context, no inheritedWidget:
 
 ```dart
 
@@ -499,12 +479,12 @@ Controller controller = Get.put(Controller()); // Rather Controller controller =
 
 ```
 
-- Note: If you are using Get's State Manager, pay more attention to the bindings API, which will make it easier to connect your view to your controller.
+- Note: If you are using GetX Master's State Manager, pay more attention to the bindings API, which will make it easier to connect your view to your controller.
 
-Instead of instantiating your class within the class you are using, you are instantiating it within the Get instance, which will make it available throughout your App.
+Instead of instantiating your class within the class you are using, you are instantiating it within the GetX Master instance, which will make it available throughout your App.
 So you can use your controller (or class Bloc) normally
 
-**Tip:** Get dependency management is decoupled from other parts of the package, so if for example, your app is already using a state manager (any one, it doesn't matter), you don't need to rewrite it all, you can use this dependency injection with no problems at all
+**Tip:** GetX Master dependency management is decoupled from other parts of the package, so if for example, your app is already using a state manager (any one, it doesn't matter), you don't need to rewrite it all, you can use this dependency injection with no problems at all
 
 ```dart
 
@@ -512,13 +492,13 @@ controller.fetchApi();
 
 ```
 
-Imagine that you have navigated through numerous routes, and you need data that was left behind in your controller, you would need a state manager combined with the Provider or Get_it, correct? Not with Get. You just need to ask Get to "find" for your controller, you don't need any additional dependencies:
+Imagine that you have navigated through numerous routes, and you need data that was left behind in your controller, you would need a state manager combined with the Provider or Get_it, correct? Not with GetX Master. You just need to ask GetX Master to "find" for your controller, you don't need any additional dependencies:
 
 ```dart
 
 Controller controller = Get.find();
 
-//Yes, it looks like Magic, Get will find your controller, and will deliver it to you. You can have 1 million controllers instantiated, Get will always give you the right controller.
+//Yes, it looks like Magic, GetX Master will find your controller, and will deliver it to you. You can have 1 million controllers instantiated, GetX Master will always give you the right controller.
 ```
 
 And then you will be able to recover your controller data that was obtained back there:
@@ -533,7 +513,7 @@ Text(controller.textFromApi);
 
 ### More details about dependency management
 
-**See a more in-depth explanation of dependency management [here](./documentation/en_US/dependency_management.md)**
+**GetX Master provides comprehensive dependency management capabilities.**
 
 # Utils
 
@@ -545,8 +525,7 @@ Translations are kept as a simple key-value dictionary map.
 To add custom translations, create a class and extend `Translations`.
 
 ```dart
-
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 
 class Messages extends Translations {
   @override
@@ -559,7 +538,6 @@ class Messages extends Translations {
         }
       };
 }
-
 ```
 
 #### Using translations
@@ -584,9 +562,7 @@ Text('singularKey'.trPlural('pluralKey', products.length, Args));
 #### Using translation with parameters
 
 ```dart
-
-import 'package:get/get.dart';
-
+import 'package:get_x_master/get_x_master.dart';
 
 Map<String, Map<String, String>> get keys => {
     'en_US': {
@@ -601,7 +577,6 @@ Text('logged_in'.trParams({
   'name': 'Jhon',
   'email': 'jhon@example.com'
   }));
-
 ```
 
 ### Locales
@@ -645,7 +620,7 @@ return GetMaterialApp(
 
 ## Change Theme
 
-Please do not use any higher level widget than `GetMaterialApp` in order to update it. This can trigger duplicate keys. A lot of people are used to the prehistoric approach of creating a "ThemeProvider" widget just to change the theme of your app, and this is definitely NOT necessary with **GetX™**.
+Please do not use any higher level widget than `GetMaterialApp` in order to update it. This can trigger duplicate keys. A lot of people are used to the prehistoric approach of creating a "ThemeProvider" widget just to change the theme of your app, and this is definitely NOT necessary with **GetX Master**.
 
 You can create your custom theme and simply add it within `Get.changeTheme` without any boilerplate for that:
 
@@ -655,7 +630,7 @@ Get.changeTheme(ThemeData.light());
 
 ```
 
-If you want to create something like a button that changes the Theme in `onTap`, you can combine two **GetX™** APIs for that:
+If you want to create something like a button that changes the Theme in `onTap`, you can combine two **GetX Master** APIs for that:
 
 - The api that checks if the dark `Theme` is being used.
 - And the `Theme` Change API, you can just put this within an `onPressed`:
@@ -1332,7 +1307,7 @@ to keep a list of Todo items. So, if the widget gets "rebuilt", it will keep the
 #### GetxService
 
 This class is like a `GetxController`, it shares the same lifecycle ( `onInit()`, `onReady()`, `onClose()`).
-But has no "logic" inside of it. It just notifies **GetX** Dependency Injection system, that this subclass
+But has no "logic" inside of it. It just notifies **GetX Master** Dependency Injection system, that this subclass
 **can not** be removed from memory.
 
 So is super useful to keep your "Services" always reachable and active with `Get.find()`. Like:
@@ -1521,78 +1496,30 @@ This library will always be updated and implementing new features. Feel free to 
 
 ---
 
-# Community
-
-## Community channels
-
-GetX has a highly active and helpful community. If you have questions, or would like any assistance regarding the use of this framework, please join our community channels, your question will be answered more quickly, and it will be the most suitable place. This repository is exclusive for opening issues, and requesting resources, but feel free to be part of GetX Community.
-
-| **Slack**                                                                 | **Telegram GetX Community Persian**                                 | **Telegram GetX Community**                                      |
-| :-----------------------------------------------------------------------: | :-------------------------------------------------------------------: | :---------------------------------------------------------------: |
-| [![Get on Slack](https://img.shields.io/badge/slack-join-orange.svg)]()     | [![Telegram](https://img.shields.io/badge/chat-on%20Telegram-blue.svg)](https://t.me/dartandflutterIr) | [![Telegram](https://img.shields.io/badge/chat-on%20Telegram-blue.svg)](https://t.me/communityGetX) |
-
+# Contributing
 
 ## How to contribute
 
-_Want to contribute to the project? We will be proud to highlight you as one of our collaborators. Here are some points where you can contribute and make Get (and Flutter) even better._
+_Want to contribute to the project? We will be proud to highlight you as one of our collaborators. Here are some points where you can contribute and make GetX Master even better._
 
 - Helping to translate the readme into other languages.
-- Adding documentation to the readme (a lot of Get's functions haven't been documented yet).
-- Write articles or make videos teaching how to use Get (they will be inserted in the Readme and in the future in our Wiki).
+- Adding documentation to the readme.
+- Write articles or make videos teaching how to use GetX Master.
 - Offering PRs for code/tests.
 - Including new functions.
 
 Any contribution is welcome!
 
-# My Custom GetX Version
+## Support
 
-This project is a modified version of the [GetX](https://pub.dev/packages/get) package for Flutter.
+If you have questions or need assistance regarding the use of GetX Master, please:
+- Open an issue in this repository
+- Check the documentation and examples
+- Review the source code for implementation details
 
-## 🛠️ About This Project
-This package is built upon GetX, a powerful state management and navigation solution for Flutter. It includes custom improvements and additional features tailored for specific use cases.
-
-## 📝 Original Package Information
-- **Package Name:** GetX
-- **Author:** Jonny Borges ([GitHub](https://github.com/jonataslaw/getx))
-- **Original Package Link:** [GetX on pub.dev](https://pub.dev/packages/get)
-- **License:** MIT License
-
-This project retains the original [MIT License](LICENSE) and includes proper attribution to the original author, Jonny Borges.
-
-## 📄 License
+##  License
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
-## 🧑‍⚖️ Legal Notice
-- This modified version of GetX is distributed with the original author's permission under the MIT License.
-- The modifications, updates, and additional features are maintained by **swanflutter**.
-- All trademarks and copyrights belong to their respective owners.
 
 ---
 
-### 📢 Attribution (Mandatory Under MIT License):
-This project is based on [GetX](https://pub.dev/packages/get), created by **Jonny Borges** and distributed under the **MIT License**.
-
-```
-MIT License
-
-Copyright (c) 2019 Jonny Borges
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-```
+**GetX Master** - An independent state management solution for Flutter applications.

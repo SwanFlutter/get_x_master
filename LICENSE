@@ -22,7 +22,7 @@ SOFTWARE.
 
 ---
 
-This project is a modified version of GetX, originally developed by Jonny Borges.
-The original GetX package is distributed under the MIT License.
+This project is an independent implementation inspired by GetX, originally developed by Jonny Borges.
+While inspired by GetX's design principles, this is a separate project developed from scratch.
 
 

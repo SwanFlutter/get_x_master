@@ -172,7 +172,7 @@ Here is a complete example demonstrating how to use the `customExpandableBottomS
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 
 void main() {
   runApp(MyApp());
