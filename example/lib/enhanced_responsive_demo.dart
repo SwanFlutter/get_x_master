@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class EnhancedResponsiveDemo extends StatelessWidget {
-  const EnhancedResponsiveDemo({Key? key}) : super(key: key);
+  const EnhancedResponsiveDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +22,19 @@ class EnhancedResponsiveDemo extends StatelessWidget {
             // Device Info Section
             _buildDeviceInfoCard(),
             SizedBox(height: 20.h),
-            
+
             // Font Size Examples
             _buildFontSizeExamples(),
             SizedBox(height: 20.h),
-            
+
             // Widget Size Examples
             _buildWidgetSizeExamples(),
             SizedBox(height: 20.h),
-            
+
             // Image Size Examples
             _buildImageSizeExamples(),
             SizedBox(height: 20.h),
-            
+
             // Responsive Values Examples
             _buildResponsiveValuesExamples(),
           ],
@@ -62,9 +62,12 @@ class EnhancedResponsiveDemo extends StatelessWidget {
             SizedBox(height: 12.h),
             _buildInfoRow('Device Type', ResponsiveHelper.deviceType),
             _buildInfoRow('Screen Width', '${Get.width.toStringAsFixed(1)}px'),
-            _buildInfoRow('Screen Height', '${Get.height.toStringAsFixed(1)}px'),
-            _buildInfoRow('Is Phone', ResponsiveHelper.isPhoneEnhanced.toString()),
-            _buildInfoRow('Is Tablet', ResponsiveHelper.isTabletEnhanced.toString()),
+            _buildInfoRow(
+                'Screen Height', '${Get.height.toStringAsFixed(1)}px'),
+            _buildInfoRow(
+                'Is Phone', ResponsiveHelper.isPhoneEnhanced.toString()),
+            _buildInfoRow(
+                'Is Tablet', ResponsiveHelper.isTabletEnhanced.toString()),
             _buildInfoRow('Is Laptop', ResponsiveHelper.isLaptop.toString()),
             _buildInfoRow('Is TV', ResponsiveHelper.isTV.toString()),
           ],

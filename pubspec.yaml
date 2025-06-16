@@ -1,6 +1,6 @@
 name: get_x_master
 description: "An independent state management, routing, and dependency injection solution for Flutter, inspired by GetX. Provides enhanced performance and compatibility with the latest Flutter updates."
-version: 0.0.8
+version: 0.0.9
 homepage: "https://github.com/SwanFlutter/get_x_master"
 repository: "https://github.com/SwanFlutter/get_x_master"
 issue_tracker: "https://github.com/SwanFlutter/get_x_master/issues"

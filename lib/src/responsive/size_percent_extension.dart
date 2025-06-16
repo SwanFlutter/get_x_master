@@ -128,9 +128,7 @@ double _getDynamicBaseHeight() {
 /// 3. Percentage-based sizing (wp, hp)
 /// 4. Dynamic calculations
 extension ResponsiveSize on num {
-
-
- /// Smart responsive font size for all devices (Phone, Tablet, Laptop, TV)
+  /// Smart responsive font size for all devices (Phone, Tablet, Laptop, TV)
   /// Automatically adjusts based on device type and screen characteristics
   double get sp {
     final context = Get.context!;
@@ -172,12 +170,15 @@ extension ResponsiveSize on num {
 
     // Device-specific clamping
     final clampRange = _getClampRange(deviceType, 'normal');
-    final clampedScaleFactor = adjustedScaleFactor.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScaleFactor = adjustedScaleFactor.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
   }
-  
+
   /// Enhanced responsive font size for larger text (headings, titles)
   /// Optimized for all device types with better scaling
   double get hsp {
@@ -214,11 +215,14 @@ extension ResponsiveSize on num {
 
     final adjustedScaleFactor = scaleFactor * adjustmentFactor;
     final clampRange = _getClampRange(deviceType, 'large');
-    final clampedScaleFactor = adjustedScaleFactor.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScaleFactor = adjustedScaleFactor.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     return (this * clampedScaleFactor).toDouble();
   }
-  
+
   /// Enhanced responsive font size for smaller text (captions, footnotes)
   /// Optimized for all device types with better scaling
   double get ssp {
@@ -255,7 +259,10 @@ extension ResponsiveSize on num {
 
     final adjustedScaleFactor = scaleFactor * adjustmentFactor;
     final clampRange = _getClampRange(deviceType, 'small');
-    final clampedScaleFactor = adjustedScaleFactor.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScaleFactor = adjustedScaleFactor.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     return (this * clampedScaleFactor).toDouble();
   }
@@ -292,7 +299,10 @@ extension ResponsiveSize on num {
 
     final adjustedScale = widthScale * adjustmentFactor;
     final clampRange = _getClampRange(deviceType, 'widget');
-    final clampedScale = adjustedScale.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     return (this * clampedScale).toDouble();
   }
@@ -329,7 +339,10 @@ extension ResponsiveSize on num {
 
     final adjustedScale = widthScale * adjustmentFactor;
     final clampRange = _getClampRange(deviceType, 'image');
-    final clampedScale = adjustedScale.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     return (this * clampedScale).toDouble();
   }
@@ -378,7 +391,7 @@ extension ResponsiveSize on num {
     return (this / Get.height) * 100;
   }
 
- /// Font size without scaling (original size)
+  /// Font size without scaling (original size)
   double get fs => toDouble();
 
   double get spWithBreakpoints {
@@ -578,7 +591,10 @@ class ResponsiveHelper {
 
     final adjustedScale = widthScale * adjustmentFactor;
     final clampRange = _getClampRange(deviceType, 'widget');
-    final clampedScale = adjustedScale.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     return (size * clampedScale).toDouble();
   }
@@ -611,7 +627,10 @@ class ResponsiveHelper {
 
     final adjustedScale = widthScale * adjustmentFactor;
     final clampRange = _getClampRange(deviceType, 'image');
-    final clampedScale = adjustedScale.clamp(clampRange['min']!, clampRange['max']!);
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
 
     return (size * clampedScale).toDouble();
   }
@@ -624,18 +643,10 @@ Map<String, dynamic> _getDeviceInfo(double width, double height) {
 
   if (width >= 1920 || height >= 1080) {
     // TV / Large Desktop
-    return {
-      'type': 'tv',
-      'baseWidth': 1920.0,
-      'baseHeight': 1080.0,
-    };
+    return {'type': 'tv', 'baseWidth': 1920.0, 'baseHeight': 1080.0};
   } else if (width >= 1200) {
     // Laptop / Desktop
-    return {
-      'type': 'laptop',
-      'baseWidth': 1366.0,
-      'baseHeight': 768.0,
-    };
+    return {'type': 'laptop', 'baseWidth': 1366.0, 'baseHeight': 768.0};
   } else if (width >= 768 || (width >= 600 && aspectRatio > 1.2)) {
     // Tablet
     return {
@@ -647,7 +658,7 @@ Map<String, dynamic> _getDeviceInfo(double width, double height) {
     // Phone
     return {
       'type': 'phone',
-      'baseWidth': 375.0,  // iPhone SE as base
+      'baseWidth': 375.0, // iPhone SE as base
       'baseHeight': 667.0,
     };
   }
