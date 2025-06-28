@@ -96,7 +96,7 @@ extension ObjectExtension on Object {
   /// ```
   String viewFormatDateTimeFor(DateTime dateTime, TimeOfDay time) {
     final formattedTime = convertTimeToStringEnglish(time);
-    final formattedDate = dateTime.formatFullDate();
+    final formattedDate = dateTime.intlFormatFullDate();
     return '$formattedDate - $formattedTime';
   }
 
@@ -140,16 +140,16 @@ extension ObjectExtension on Object {
     return TimeOfDay(hour: hour, minute: minute);
   }
 
-  /// Format date and time to 24-hour format and match with Iran's time zone
+  /// Format date and time to 24-hour format and match with Iran's time zone using intl DateFormat
   ///
   /// Example:
   /// ```dart
   /// Jalali jalaliDate = Jalali.now();
   /// TimeOfDay time = TimeOfDay.now();
-  /// String formattedDateTime = jalaliDate.formatDateTimeForIran(time);
+  /// String formattedDateTime = jalaliDate.intlFormatDateTimeForIran(time);
   /// // Result: "۱۴۰۲/۰۷/۱۸ - ۱۴:۳۰"
   /// ```
-  String formatDateTimeForIran(Jalali jalaliDate, TimeOfDay time) {
+  String intlFormatDateTimeForIran(Jalali jalaliDate, TimeOfDay time) {
     final formattedTime = convertTimeToPersian(time);
     final formattedDate = DateFormat(
       'yyyy/MM/dd',
@@ -157,16 +157,16 @@ extension ObjectExtension on Object {
     return '$formattedDate - $formattedTime';
   }
 
-  /// Format date and time to 24-hour format and match with Iran's time zone
+  /// Format date and time to 24-hour format and match with Iran's time zone using intl DateFormat
   ///
   /// Example:
   /// ```dart
   /// Jalali jalaliDate = Jalali.now();
   /// TimeOfDay time = TimeOfDay.now();
-  /// String formattedDateTime = jalaliDate.formatDateTimeForIranNew(time);
+  /// String formattedDateTime = jalaliDate.intlFormatDateTimeForIranNew(time);
   /// // Result: "۱۴۰۲/۰۷/۱۸ - ۰۲:۳۰ بعد از ظهر"
   /// ```
-  String formatDateTimeForIranNew(Jalali jalaliDate, TimeOfDay time) {
+  String intlFormatDateTimeForIranNew(Jalali jalaliDate, TimeOfDay time) {
     final formattedTime = convertTimeToPersianForNew(time);
     final formattedDate = DateFormat(
       'yyyy/MM/dd',
@@ -281,15 +281,15 @@ extension ObjectExtension on Object {
 }
 
 extension DateTimeExtension on DateTime {
-  /// Format the DateTime to a full date with day name
+  /// Format the DateTime to a full date with day name using intl NumberFormat
   ///
   /// Example:
   /// ```dart
   /// DateTime dateTime = DateTime.now();
-  /// String formattedDate = dateTime.formatFullDateWithDay();
+  /// String formattedDate = dateTime.intlFormatFullDateWithDay();
   /// // Result: "Saturday 10 October 23"
   /// ```
-  String formatFullDateWithDay() {
+  String intlFormatFullDateWithDay() {
     final englishDayNames = [
       'Saturday',
       'Sunday',
@@ -318,28 +318,28 @@ extension DateTimeExtension on DateTime {
     return '${englishDayNames[dayOfWeek]} ${f.format(day)} ${englishMonthNames[month - 1]} ${f.format(year % 100)}';
   }
 
-  /// Format the DateTime to a full date
+  /// Format the DateTime to a full date using intl NumberFormat
   ///
   /// Example:
   /// ```dart
   /// DateTime dateTime = DateTime.now();
-  /// String formattedDate = dateTime.formatFullDate();
+  /// String formattedDate = dateTime.intlFormatFullDate();
   /// // Result: "2023 / 10 / 10"
   /// ```
-  String formatFullDate() {
+  String intlFormatFullDate() {
     final f = NumberFormat("00", "en");
     return '${f.format(year)} / ${f.format(month)} / ${f.format(day)}';
   }
 
-  /// Format the DateTime to a full Persian date with day name
+  /// Format the DateTime to a full Persian date with day name using intl NumberFormat
   ///
   /// Example:
   /// ```dart
   /// DateTime dateTime = DateTime.now();
-  /// String formattedDate = dateTime.formatPersianFullDateWithDay();
+  /// String formattedDate = dateTime.intlFormatPersianFullDateWithDay();
   /// // Result: "شنبه ۱۸ مهر ۱۴۰۲"
   /// ```
-  String formatPersianFullDateWithDay() {
+  String intlFormatPersianFullDateWithDay() {
     final persianDayNames = [
       'شنبه',
       'یک‌شنبه',

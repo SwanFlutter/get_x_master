@@ -421,16 +421,16 @@ extension GetStringUtils on String {
 
 /// Converts a string to a formatted number representation
 extension StringNumberFormatter on String {
-  /// Attempts to parse the string to a number and format it
+  /// Attempts to parse the string to a number and format it using intl NumberFormat
   ///
   /// Example:
   /// ```dart
-  /// String formattedNumber = "1234567".toNumberFormatted();
+  /// String formattedNumber = "1234567".intlToNumberFormatted();
   /// // Result: "1,234,567"
-  /// String originalText = "hello".toNumberFormatted();
+  /// String originalText = "hello".intlToNumberFormatted();
   /// // Result: "hello"
   /// ```
-  String toNumberFormatted() {
+  String intlToNumberFormatted() {
     try {
       final number = int.parse(this);
       final formatter = NumberFormat('#,###');
@@ -440,19 +440,201 @@ extension StringNumberFormatter on String {
     }
   }
 
-  /// Attempts to parse the string to a double and format it with two decimal places
+  /// Attempts to parse the string to a double and format it with two decimal places using intl NumberFormat
   ///
   /// Example:
   /// ```dart
-  /// String formattedNumber = "1234.5678".toDoubleFormatted();
+  /// String formattedNumber = "1234.5678".intlToDoubleFormatted();
   /// // Result: "1,234.57"
-  /// String originalText = "hello".toDoubleFormatted();
+  /// String originalText = "hello".intlToDoubleFormatted();
   /// // Result: "hello"
   /// ```
-  String toDoubleFormatted() {
+  String intlToDoubleFormatted() {
     try {
       final number = double.parse(this);
       final formatter = NumberFormat('#,##0.00');
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a double and format it as simple currency
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "12345.678".intlToDoubleSimpleCurrencyFormatted(2);
+  /// // Result: "$12,345.68"
+  /// String originalText = "hello".intlToDoubleSimpleCurrencyFormatted(2);
+  /// // Result: "hello"
+  /// ```
+  String intlToDoubleSimpleCurrencyFormatted(int? decimalDigits) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.simpleCurrency(
+        decimalDigits: decimalDigits,
+      );
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it as currency with custom locale
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "12345.67".intlToCurrencyFormatted(locale: 'en_US', symbol: '\$');
+  /// // Result: "$12,345.67"
+  /// String formattedNumber = "12345.67".intlToCurrencyFormatted(locale: 'fa_IR', symbol: 'ریال');
+  /// // Result: "۱۲٬۳۴۵٫۶۷ ریال"
+  /// ```
+  String intlToCurrencyFormatted({
+    String? locale,
+    String? symbol,
+    int? decimalDigits,
+    String? name,
+  }) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.currency(
+        locale: locale,
+        symbol: symbol,
+        decimalDigits: decimalDigits,
+        name: name,
+      );
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it as compact currency
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "1234567".intlToCompactCurrencyFormatted();
+  /// // Result: "$1.2M"
+  /// String formattedNumber = "1234".intlToCompactCurrencyFormatted();
+  /// // Result: "$1.2K"
+  /// ```
+  String intlToCompactCurrencyFormatted({
+    String? locale,
+    String? symbol,
+    int? decimalDigits,
+    String? name,
+  }) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.compactCurrency(
+        locale: locale,
+        symbol: symbol,
+        decimalDigits: decimalDigits,
+        name: name,
+      );
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it as percentage
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "0.1234".intlToPercentageFormatted();
+  /// // Result: "12%"
+  /// String formattedNumber = "0.1234".intlToPercentageFormatted(decimalDigits: 2);
+  /// // Result: "12.34%"
+  /// ```
+  String intlToPercentageFormatted({String? locale, int? decimalDigits}) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.percentPattern(locale);
+      if (decimalDigits != null) {
+        formatter.minimumFractionDigits = decimalDigits;
+        formatter.maximumFractionDigits = decimalDigits;
+      }
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it in compact form
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "1234567".intlToCompactFormatted();
+  /// // Result: "1.2M"
+  /// String formattedNumber = "1234".intlToCompactFormatted();
+  /// // Result: "1.2K"
+  /// ```
+  String intlToCompactFormatted({String? locale}) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.compact(locale: locale);
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it in compact long form
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "1234567".intlToCompactLongFormatted();
+  /// // Result: "1.2 million"
+  /// String formattedNumber = "1234".intlToCompactLongFormatted();
+  /// // Result: "1.2 thousand"
+  /// ```
+  String intlToCompactLongFormatted({String? locale}) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.compactLong(locale: locale);
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it with custom decimal digits
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "1234.5678".intlToDecimalFormatted(decimalDigits: 2);
+  /// // Result: "1,234.57"
+  /// String formattedNumber = "1234.5678".intlToDecimalFormatted(decimalDigits: 0);
+  /// // Result: "1,235"
+  /// ```
+  String intlToDecimalFormatted({String? locale, int? decimalDigits}) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.decimalPattern(locale);
+      if (decimalDigits != null) {
+        formatter.minimumFractionDigits = decimalDigits;
+        formatter.maximumFractionDigits = decimalDigits;
+      }
+      return formatter.format(number);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string to a number and format it in scientific notation
+  ///
+  /// Example:
+  /// ```dart
+  /// String formattedNumber = "1234567".intlToScientificFormatted();
+  /// // Result: "1.234567E6"
+  /// String formattedNumber = "0.000123".intlToScientificFormatted();
+  /// // Result: "1.23E-4"
+  /// ```
+  String intlToScientificFormatted({String? locale}) {
+    try {
+      final number = double.parse(this);
+      final formatter = NumberFormat.scientificPattern(locale);
       return formatter.format(number);
     } catch (e) {
       return this;
@@ -572,6 +754,113 @@ extension StringNumberFormatter on String {
     // الگوریتم بررسی شبا (محاسبات پیچیده‌تر مورد نیاز است)
     // این یک بررسی ساده اولیه است
     return true;
+  }
+
+  /// Attempts to parse the string as a date and format it using intl DateFormat
+  ///
+  /// Example:
+  /// ```dart
+  /// String dateString = "2023-12-25";
+  /// String formattedDate = dateString.intlToDateFormatted("yyyy/MM/dd");
+  /// // Result: "2023/12/25"
+  /// String formattedDate = dateString.intlToDateFormatted("EEEE, MMMM d, y");
+  /// // Result: "Monday, December 25, 2023"
+  /// ```
+  String intlToDateFormatted(String pattern, {String? locale}) {
+    try {
+      final date = DateTime.parse(this);
+      final formatter = DateFormat(pattern, locale);
+      return formatter.format(date);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string as a date and format it to a localized date string
+  ///
+  /// Example:
+  /// ```dart
+  /// String dateString = "2023-12-25";
+  /// String formattedDate = dateString.intlToLocalizedDateFormatted();
+  /// // Result: "Dec 25, 2023" (for en_US locale)
+  /// String formattedDate = dateString.intlToLocalizedDateFormatted(locale: 'fa_IR');
+  /// // Result: "۲۵ دسامبر ۲۰۲۳" (for fa_IR locale)
+  /// ```
+  String intlToLocalizedDateFormatted({String? locale}) {
+    try {
+      final date = DateTime.parse(this);
+      final formatter = DateFormat.yMMMd(locale);
+      return formatter.format(date);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string as a date and format it to a full date string
+  ///
+  /// Example:
+  /// ```dart
+  /// String dateString = "2023-12-25";
+  /// String formattedDate = dateString.intlToFullDateFormatted();
+  /// // Result: "Monday, December 25, 2023"
+  /// ```
+  String intlToFullDateFormatted({String? locale}) {
+    try {
+      final date = DateTime.parse(this);
+      final formatter = DateFormat.yMMMMEEEEd(locale);
+      return formatter.format(date);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string as a date and format it to a time string
+  ///
+  /// Example:
+  /// ```dart
+  /// String dateString = "2023-12-25T14:30:00";
+  /// String formattedTime = dateString.intlToTimeFormatted();
+  /// // Result: "2:30 PM"
+  /// String formattedTime = dateString.intlToTimeFormatted(use24Hour: true);
+  /// // Result: "14:30"
+  /// ```
+  String intlToTimeFormatted({String? locale, bool use24Hour = false}) {
+    try {
+      final date = DateTime.parse(this);
+      final formatter =
+          use24Hour ? DateFormat.Hm(locale) : DateFormat.jm(locale);
+      return formatter.format(date);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  /// Attempts to parse the string as a date and format it to a relative time string
+  ///
+  /// Example:
+  /// ```dart
+  /// String dateString = DateTime.now().subtract(Duration(hours: 2)).toIso8601String();
+  /// String relativeTime = dateString.intlToRelativeTimeFormatted();
+  /// // Result: "2 hours ago"
+  /// ```
+  String intlToRelativeTimeFormatted({String? locale}) {
+    try {
+      final date = DateTime.parse(this);
+      final now = DateTime.now();
+      final difference = now.difference(date);
+
+      if (difference.inDays > 0) {
+        return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+      } else if (difference.inHours > 0) {
+        return '${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} ago';
+      } else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} ago';
+      } else {
+        return 'Just now';
+      }
+    } catch (e) {
+      return this;
+    }
   }
 }
 

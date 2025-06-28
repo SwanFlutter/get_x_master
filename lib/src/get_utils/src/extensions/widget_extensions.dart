@@ -169,14 +169,14 @@ extension WidgetExtensions on Widget {
     return Transform.scale(scale: scaleFactor, child: this);
   }
 
-  /// Formats an integer with comma-separated thousands
+  /// Formats an integer with comma-separated thousands using intl NumberFormat
   ///
   /// Example:
   /// ```dart
-  /// String formattedNumber = widget.toNumberFormat(1234567);
+  /// String formattedNumber = widget.intlToNumberFormat(1234567);
   /// // Result: "1,234,567"
   /// ```
-  String toNumberFormat(int number) {
+  String intlToNumberFormat(int number) {
     final formatter = NumberFormat('#,###');
     return formatter.format(number);
   }

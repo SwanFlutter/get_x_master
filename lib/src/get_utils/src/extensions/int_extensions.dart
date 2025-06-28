@@ -65,14 +65,14 @@ extension DurationExt on int {
   /// ```
   Duration get ms => milliseconds;
 
-  /// Formats the integer with comma-separated thousands
+  /// Formats the integer with comma-separated thousands using intl NumberFormat
   ///
   /// Example:
   /// ```dart
-  /// String formattedNumber = 1234567.toFormattedNumber();
+  /// String formattedNumber = 1234567.intlToFormattedNumber();
   /// // Result: "1,234,567"
   /// ```
-  String toFormattedNumber() {
+  String intlToFormattedNumber() {
     final formatter = NumberFormat('#,###');
     return formatter.format(this);
   }

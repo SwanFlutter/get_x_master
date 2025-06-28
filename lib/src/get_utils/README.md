@@ -1,6 +1,6 @@
 # Get_utils AND Extensions
 
-  
+
 ## Equality Mixin
 
 The `Equality` mixin provides a simple way to implement equality checks and hashing for Dart classes. It is particularly useful for value objects where equality is based on a list of properties.
@@ -18,9 +18,9 @@ mixin Equality {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) || 
-           runtimeType == other.runtimeType && 
-           other is Equality && 
+    return identical(this, other) ||
+           runtimeType == other.runtimeType &&
+           other is Equality &&
            const DeepCollectionEquality().equals(props, other.props);
   }
 
@@ -195,7 +195,7 @@ The `ContextExt` extension provides a collection of utility methods and properti
      ```
 
 
-This documentation provides a clear breakdown of each feature with practical examples. 
+This documentation provides a clear breakdown of each feature with practical examples.
 
 
 
@@ -244,7 +244,7 @@ The `DoubleExt` extension provides utility methods for working with `double` val
 
 ---
 
-This extension simplifies working with `double` values, especially when converting them to `Duration` objects or rounding them to a specific precision. 
+This extension simplifies working with `double` values, especially when converting them to `Duration` objects or rounding them to a specific precision.
 
 ---
 
@@ -310,7 +310,7 @@ The `GetDynamicUtils` extension provides utility methods for working with dynami
 
 
 
-This extension simplifies working with dynamic types by providing utilities for checking blank values and logging messages. 
+This extension simplifies working with dynamic types by providing utilities for checking blank values and logging messages.
 
 
 
@@ -397,7 +397,7 @@ The `DurationExt` extension provides utility methods for converting integers to 
 
 ---
 
-This extension simplifies working with integers by providing easy-to-use methods for converting them to `Duration` objects and formatting them for display. 
+This extension simplifies working with integers by providing easy-to-use methods for converting them to `Duration` objects and formatting them for display.
 
 
 
@@ -522,7 +522,7 @@ void main() {
 
 ---
 
-This documentation provides a clear breakdown of the `LocalesIntl` and `Trans` extensions, along with practical examples. 
+This documentation provides a clear breakdown of the `LocalesIntl` and `Trans` extensions, along with practical examples.
 
 
 
@@ -810,12 +810,98 @@ The extension includes methods for case-insensitive string operations:
 
 ### **5. Number Formatting**
 The extension provides methods to format strings as numbers:
-- **`toNumberFormatted`**: Formats the string as a number with commas (e.g., `1,234,567`).
-- **`toDoubleFormatted`**: Formats the string as a double with two decimal places (e.g., `1,234.57`).
+- **`intlToNumberFormatted`**: Formats the string as a number with commas using intl NumberFormat (e.g., `1,234,567`).
+- **`intlToDoubleFormatted`**: Formats the string as a double with two decimal places using intl NumberFormat (e.g., `1,234.57`).
 
 ---
 
-### **6. Additional Utilities**
+### **6. Internationalization (intl) Extensions**
+The extension provides comprehensive internationalization support using the `intl` package:
+
+#### **Currency Formatting**
+- **`intlToDoubleSimpleCurrencyFormatted`**: Formats the string as simple currency.
+  ```dart
+  String formatted = "12345.678".intlToDoubleSimpleCurrencyFormatted(2);
+  // Result: "$12,345.68"
+  ```
+- **`intlToCurrencyFormatted`**: Formats the string as currency with custom locale and symbol.
+  ```dart
+  String formatted = "12345.67".intlToCurrencyFormatted(locale: 'en_US', symbol: '\$');
+  // Result: "$12,345.67"
+  ```
+- **`intlToCompactCurrencyFormatted`**: Formats the string as compact currency.
+  ```dart
+  String formatted = "1234567".intlToCompactCurrencyFormatted();
+  // Result: "$1.2M"
+  ```
+
+#### **Number Formatting**
+- **`intlToPercentageFormatted`**: Formats the string as percentage.
+  ```dart
+  String formatted = "0.1234".intlToPercentageFormatted(decimalDigits: 2);
+  // Result: "12.34%"
+  ```
+- **`intlToCompactFormatted`**: Formats the string in compact form.
+  ```dart
+  String formatted = "1234567".intlToCompactFormatted();
+  // Result: "1.2M"
+  ```
+- **`intlToCompactLongFormatted`**: Formats the string in compact long form.
+  ```dart
+  String formatted = "1234567".intlToCompactLongFormatted();
+  // Result: "1.2 million"
+  ```
+- **`intlToDecimalFormatted`**: Formats the string with custom decimal digits.
+  ```dart
+  String formatted = "1234.5678".intlToDecimalFormatted(decimalDigits: 2);
+  // Result: "1,234.57"
+  ```
+- **`intlToScientificFormatted`**: Formats the string in scientific notation.
+  ```dart
+  String formatted = "1234567".intlToScientificFormatted();
+  // Result: "1.234567E6"
+  ```
+
+#### **Date and Time Formatting**
+- **`intlToDateFormatted`**: Formats the string as a date using custom pattern.
+  ```dart
+  String formatted = "2023-12-25".intlToDateFormatted("yyyy/MM/dd");
+  // Result: "2023/12/25"
+  ```
+- **`intlToLocalizedDateFormatted`**: Formats the string as a localized date.
+  ```dart
+  String formatted = "2023-12-25".intlToLocalizedDateFormatted();
+  // Result: "Dec 25, 2023"
+  ```
+- **`intlToFullDateFormatted`**: Formats the string as a full date.
+  ```dart
+  String formatted = "2023-12-25".intlToFullDateFormatted();
+  // Result: "Monday, December 25, 2023"
+  ```
+- **`intlToTimeFormatted`**: Formats the string as time.
+  ```dart
+  String formatted = "2023-12-25T14:30:00".intlToTimeFormatted();
+  // Result: "2:30 PM"
+  ```
+- **`intlToRelativeTimeFormatted`**: Formats the string as relative time.
+  ```dart
+  String formatted = dateString.intlToRelativeTimeFormatted();
+  // Result: "2 hours ago"
+  ```
+
+---
+
+### **7. Persian Text Processing**
+The extension includes specialized methods for Persian text processing:
+- **`standardizePersianText`**: Standardizes Persian text by fixing spaces and characters.
+- **`convertDigitsToPersian`**: Converts English digits to Persian digits.
+- **`convertDigitsToEnglish`**: Converts Persian digits to English digits.
+- **`isValidIranianNationalCode`**: Validates Iranian national code.
+- **`isValidIranianSheba`**: Validates Iranian SHEBA (IBAN) number.
+
+---
+
+### **8. Additional Utilities**
 - **`isNullOrEmpty`**: Checks if the string is null or empty.
 - **`titleCase`**: Converts the string to title case (capitalizes the first letter of each word).
 
@@ -826,23 +912,39 @@ Here are some examples of how to use the extension:
 
 ```dart
 void main() {
-  // Check if a string is a valid number
+  // Basic validation
   print("123".isNum); // true
-
-  // Extract numeric characters
-  print("abc123".numericOnly()); // "123"
-
-  // Check if a string is a valid email
   print("example@example.com".isEmail); // true
+  print("madam".isPalindrome); // true
 
-  // Capitalize the first letter of a string
+  // String manipulation
+  print("abc123".numericOnly()); // "123"
   print("hello".capitalize); // "Hello"
 
-  // Format a string as a number
-  print("1234567".toNumberFormatted()); // "1,234,567"
+  // Basic number formatting
+  print("1234567".intlToNumberFormatted()); // "1,234,567"
+  print("1234.5678".intlToDoubleFormatted()); // "1,234.57"
 
-  // Check if a string is a palindrome
-  print("madam".isPalindrome); // true
+  // Internationalization (intl) extensions
+  // Currency formatting
+  print("12345.67".intlToDoubleSimpleCurrencyFormatted(2)); // "$12,345.67"
+  print("1234567".intlToCompactCurrencyFormatted()); // "$1.2M"
+
+  // Number formatting
+  print("0.1234".intlToPercentageFormatted(decimalDigits: 2)); // "12.34%"
+  print("1234567".intlToCompactFormatted()); // "1.2M"
+  print("1234567".intlToCompactLongFormatted()); // "1.2 million"
+  print("1234567".intlToScientificFormatted()); // "1.234567E6"
+
+  // Date formatting
+  print("2023-12-25".intlToDateFormatted("yyyy/MM/dd")); // "2023/12/25"
+  print("2023-12-25".intlToLocalizedDateFormatted()); // "Dec 25, 2023"
+  print("2023-12-25T14:30:00".intlToTimeFormatted()); // "2:30 PM"
+
+  // Persian text processing
+  print("سلام  دنيا".standardizePersianText()); // "سلام دنیا"
+  print("قیمت: 12500 تومان".convertDigitsToPersian()); // "قیمت: ۱۲۵۰۰ تومان"
+  print("0123456789".isValidIranianNationalCode()); // true
 }
 ```
 
@@ -1683,9 +1785,9 @@ print(descending); // [5, 4, 3, 1, 1]
 class Person {
   final String name;
   final int age;
-  
+
   Person(this.name, this.age);
-  
+
   @override
   String toString() => '$name ($age)';
 }
@@ -1719,7 +1821,7 @@ final sortedByAgeAndName = people.sortByMultipleFields([
   (a, b) => a.age.compareTo(b.age),
   (a, b) => a.name.compareTo(b.name)
 ]);
-print(sortedByAgeAndName); 
+print(sortedByAgeAndName);
 // [Charlie (25), Alice (30), Bob (30)]
 ```
 
@@ -1768,7 +1870,7 @@ class Product {
   final String name;
   final double price;
   final int stock;
-  
+
   Product(this.name, this.price, this.stock);
 }
 
