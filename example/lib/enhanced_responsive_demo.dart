@@ -64,12 +64,9 @@ class EnhancedResponsiveDemo extends StatelessWidget {
             _buildInfoRow('Screen Width', '${Get.width.toStringAsFixed(1)}px'),
             _buildInfoRow(
                 'Screen Height', '${Get.height.toStringAsFixed(1)}px'),
-            _buildInfoRow(
-                'Is Phone', ResponsiveHelper.isPhoneEnhanced.toString()),
-            _buildInfoRow(
-                'Is Tablet', ResponsiveHelper.isTabletEnhanced.toString()),
             _buildInfoRow('Is Laptop', ResponsiveHelper.isLaptop.toString()),
-            _buildInfoRow('Is TV', ResponsiveHelper.isTV.toString()),
+            _buildInfoRow(
+                'Is TV', ResponsiveHelper.responsiveValue(tv: true).toString()),
           ],
         ),
       ),

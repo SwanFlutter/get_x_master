@@ -552,6 +552,7 @@ class ResponsiveHelper {
     T? tablet,
     T? laptop,
     T? desktop,
+    T? tv,
     T? defaultValue,
   }) {
     final currentDevice = deviceType;
@@ -559,6 +560,8 @@ class ResponsiveHelper {
     switch (currentDevice) {
       case 'desktop':
         return desktop ?? laptop ?? tablet ?? phone ?? defaultValue!;
+      case 'tv':
+        return tv ?? desktop ?? laptop ?? tablet ?? phone ?? defaultValue!;
       case 'laptop':
         return laptop ?? desktop ?? tablet ?? phone ?? defaultValue!;
       case 'tablet':
