@@ -90,7 +90,11 @@ double _getDynamicBaseHeight() {
 extension ResponsiveSize on num {
   /// Smart responsive font size for all devices
   double get sp {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default value or handle the null case
+      return this * 1.0; // or throw an exception, or return 0.0
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -132,7 +136,11 @@ extension ResponsiveSize on num {
 
   /// Enhanced responsive font size for larger text
   double get hsp {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default value or handle the null case
+      return this * 1.0; // or throw an exception, or return 0.0
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -174,7 +182,11 @@ extension ResponsiveSize on num {
 
   /// Enhanced responsive font size for smaller text
   double get ssp {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default value or handle the null case
+      return this * 1.0; // or throw an exception, or return 0.0
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -216,7 +228,11 @@ extension ResponsiveSize on num {
 
   /// Responsive widget size for icons, buttons, and other UI elements
   double get ws {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default value or handle the null case
+      return this * 1.0; // or throw an exception, or return 0.0
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -254,7 +270,11 @@ extension ResponsiveSize on num {
 
   /// Responsive image size for all device types
   double get imgSize {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default value or handle the null case
+      return this * 1.0; // or throw an exception, or return 0.0
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 

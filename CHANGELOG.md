@@ -51,3 +51,7 @@
 
 * Update README .
 * Update responsive .
+
+## 0.0.10
+
+* Fix bug .
