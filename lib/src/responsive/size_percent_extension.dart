@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_this
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../get_x_master.dart';
@@ -373,15 +375,89 @@ extension ResponsiveSize on num {
 
 /// Helper class for responsive calculations without context dependency
 class ResponsiveHelper {
+  // Base dimensions for different device types
+  static const Map<String, Map<String, double>> _deviceBaseDimensions = {
+    'phone': {'width': 375.0, 'height': 812.0},
+    'tablet': {'width': 768.0, 'height': 1024.0},
+    'laptop': {'width': 1366.0, 'height': 768.0},
+    'desktop': {'width': 1920.0, 'height': 1080.0},
+  };
+
+  // Text scaling factors for different device types
+  static const Map<String, double> _textScaleFactors = {
+    'phone': 1.0,
+    'tablet': 1.15,
+    'laptop': 1.25,
+    'desktop': 1.4,
+  };
+
+  // Widget scaling factors for different device types
+  static const Map<String, double> _widgetScaleFactors = {
+    'phone': 1.0,
+    'tablet': 1.2,
+    'laptop': 1.4,
+    'desktop': 1.8,
+  };
+
+  // Image scaling factors for different device types
+  static const Map<String, double> _imageScaleFactors = {
+    'phone': 1.0,
+    'tablet': 1.3,
+    'laptop': 1.6,
+    'desktop': 2.2,
+  };
+
+  // Clamp ranges for different device types and content types
+  static const Map<String, Map<String, Map<String, double>>> _clampRanges = {
+    'phone': {
+      'text': {'min': 0.8, 'max': 1.3},
+      'widget': {'min': 0.8, 'max': 1.3},
+      'image': {'min': 0.8, 'max': 1.3},
+    },
+    'tablet': {
+      'text': {'min': 0.9, 'max': 1.4},
+      'widget': {'min': 0.9, 'max': 1.4},
+      'image': {'min': 0.9, 'max': 1.4},
+    },
+    'laptop': {
+      'text': {'min': 0.9, 'max': 1.5},
+      'widget': {'min': 0.9, 'max': 1.5},
+      'image': {'min': 0.9, 'max': 1.5},
+    },
+    'desktop': {
+      'text': {'min': 1.0, 'max': 2.0},
+      'widget': {'min': 1.0, 'max': 2.0},
+      'image': {'min': 1.0, 'max': 2.0},
+    },
+  };
+
+  /// Get current device type based on screen width
+  static String get deviceType {
+    final width = Get.width;
+    if (width >= 1920) return 'desktop';
+    if (width >= 1200) return 'laptop';
+    if (width >= 768) return 'tablet';
+    return 'phone';
+  }
+
+  /// Get base width for current device type
+  static double get _currentBaseWidth {
+    return _deviceBaseDimensions[deviceType]!['width']!;
+  }
+
+  /// Get base height for current device type
+  static double get _currentBaseHeight {
+    return _deviceBaseDimensions[deviceType]!['height']!;
+  }
+
+  // Basic responsive methods
   static double w(double pixels) {
-    final double baseWidth = _getDynamicBaseWidth();
-    final double percentage = (pixels / baseWidth) * 100;
+    final percentage = (pixels / _currentBaseWidth) * 100;
     return (Get.width * (percentage / 100)).roundToDouble();
   }
 
   static double h(double pixels) {
-    final double baseHeight = _getDynamicBaseHeight();
-    final double percentage = (pixels / baseHeight) * 100;
+    final percentage = (pixels / _currentBaseHeight) * 100;
     return (Get.height * (percentage / 100)).roundToDouble();
   }
 
@@ -395,142 +471,179 @@ class ResponsiveHelper {
     return (Get.height * (percent / 100)).roundToDouble();
   }
 
-  static double widthPercentage(double pixels) {
-    return (pixels / Get.width) * 100;
+  /// Enhanced text scaling with professional responsive behavior
+  static double ssp(double fontSize) {
+    final currentDevice = deviceType;
+    final baseWidth = _currentBaseWidth;
+    final baseHeight = _currentBaseHeight;
+    final screenWidth = Get.width;
+    final screenHeight = Get.height;
+
+    // Calculate base scale factor
+    final widthScale = screenWidth / baseWidth;
+    final heightScale = screenHeight / baseHeight;
+
+    // Use geometric mean for more balanced scaling
+    final baseScale = math.sqrt(widthScale * heightScale);
+
+    // Apply device-specific text scaling factor
+    final deviceTextFactor = _textScaleFactors[currentDevice]!;
+    final adjustedScale = baseScale * deviceTextFactor;
+
+    // Apply clamping based on device type
+    final clampRange = _clampRanges[currentDevice]!['text']!;
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
+
+    return (fontSize * clampedScale).roundToDouble();
   }
 
-  static double heightPercentage(double pixels) {
-    return (pixels / Get.height) * 100;
+  /// Enhanced widget sizing with professional responsive behavior
+  static double ws(double size) {
+    final currentDevice = deviceType;
+    final baseWidth = _currentBaseWidth;
+    final screenWidth = Get.width;
+
+    // Calculate width scale
+    final widthScale = screenWidth / baseWidth;
+
+    // Apply device-specific widget scaling factor
+    final deviceWidgetFactor = _widgetScaleFactors[currentDevice]!;
+    final adjustedScale = widthScale * deviceWidgetFactor;
+
+    // Apply clamping based on device type
+    final clampRange = _clampRanges[currentDevice]!['widget']!;
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
+
+    return (size * clampedScale).roundToDouble();
   }
 
-  static double sp(double fontSize) {
-    double screenWidth = Get.width;
-    double screenHeight = Get.height;
-    double baseWidth = _getDynamicBaseWidth();
-    double baseHeight = _getDynamicBaseHeight();
+  /// Enhanced image sizing with professional responsive behavior
+  static double imgSize(double size) {
+    final currentDevice = deviceType;
+    final baseWidth = _currentBaseWidth;
+    final screenWidth = Get.width;
 
-    double widthScale = screenWidth / baseWidth;
-    double heightScale = screenHeight / baseHeight;
-    double scale = (widthScale + heightScale) / 2;
-    scale = scale.clamp(0.8, 1.3);
+    // Calculate width scale
+    final widthScale = screenWidth / baseWidth;
 
-    return (fontSize * scale).roundToDouble();
+    // Apply device-specific image scaling factor
+    final deviceImageFactor = _imageScaleFactors[currentDevice]!;
+    final adjustedScale = widthScale * deviceImageFactor;
+
+    // Apply clamping based on device type
+    final clampRange = _clampRanges[currentDevice]!['image']!;
+    final clampedScale = adjustedScale.clamp(
+      clampRange['min']!,
+      clampRange['max']!,
+    );
+
+    return (size * clampedScale).roundToDouble();
   }
 
-  static Map<String, dynamic> get screenInfo => {
-    'width': Get.width,
-    'height': Get.height,
-    'aspectRatio': Get.width / Get.height,
-    'baseWidth': _getDynamicBaseWidth(),
-    'baseHeight': _getDynamicBaseHeight(),
-    'isTablet': Get.width > 600,
-    'isPhone': Get.width <= 600,
-    'isLandscape': Get.width > Get.height,
-    'isPortrait': Get.height > Get.width,
-  };
-
-  static double get currentBaseWidth => _getDynamicBaseWidth();
-  static double get currentBaseHeight => _getDynamicBaseHeight();
-  static bool get isTablet => Get.width > 600;
-  static bool get isPhone => Get.width <= 600;
-  static bool get isLandscape => Get.width > Get.height;
-  static bool get isPortrait => Get.height > Get.width;
-
+  /// Get responsive value based on device type
   static T responsiveValue<T>({
     T? phone,
     T? tablet,
     T? laptop,
-    T? tv,
+    T? desktop,
     T? defaultValue,
   }) {
-    final width = Get.width;
-    if (width >= 1920 && tv != null) return tv;
-    if (width >= 1200 && laptop != null) return laptop;
-    if (width >= 768 && tablet != null) return tablet;
-    if (phone != null) return phone;
-    return defaultValue ?? phone ?? tablet ?? laptop ?? tv!;
-  }
+    final currentDevice = deviceType;
 
-  static String get deviceType {
-    final width = Get.width;
-    final height = Get.height;
-    final deviceInfo = _getDeviceInfo(width, height);
-    return deviceInfo['type'] as String;
-  }
-
-  static bool get isTV => Get.width >= 1920 || Get.height >= 1080;
-  static bool get isLaptop => Get.width >= 1200 && Get.width < 1920;
-  static bool get isTabletEnhanced => Get.width >= 768 && Get.width < 1200;
-  static bool get isPhoneEnhanced => Get.width < 768;
-
-  static double ws(double size) {
-    final width = Get.width;
-    final height = Get.height;
-    final deviceInfo = _getDeviceInfo(width, height);
-    final baseWidth = deviceInfo['baseWidth'] as double;
-    final deviceType = deviceInfo['type'] as String;
-
-    final widthScale = width / baseWidth;
-
-    double adjustmentFactor = 1.0;
-    switch (deviceType) {
-      case 'phone':
-        adjustmentFactor = 1.0;
-        break;
-      case 'tablet':
-        adjustmentFactor = 1.2;
-        break;
+    switch (currentDevice) {
+      case 'desktop':
+        return desktop ?? laptop ?? tablet ?? phone ?? defaultValue!;
       case 'laptop':
-        adjustmentFactor = 1.4;
-        break;
-      case 'tv':
-        adjustmentFactor = 1.8;
-        break;
+        return laptop ?? desktop ?? tablet ?? phone ?? defaultValue!;
+      case 'tablet':
+        return tablet ?? laptop ?? desktop ?? phone ?? defaultValue!;
+      case 'phone':
+      default:
+        return phone ?? tablet ?? laptop ?? desktop ?? defaultValue!;
     }
+  }
 
-    final adjustedScale = widthScale * adjustmentFactor;
-    final clampRange = _getClampRange(deviceType, 'widget');
+  /// Get comprehensive screen information
+  static Map<String, dynamic> get screenInfo => {
+    'width': Get.width,
+    'height': Get.height,
+    'aspectRatio': Get.width / Get.height,
+    'deviceType': deviceType,
+    'baseWidth': _currentBaseWidth,
+    'baseHeight': _currentBaseHeight,
+    'isTablet': isTablet,
+    'isPhone': isPhone,
+    'isLaptop': isLaptop,
+    'isDesktop': isDesktop,
+    'isLandscape': isLandscape,
+    'isPortrait': isPortrait,
+    'textScaleFactor': _textScaleFactors[deviceType]!,
+    'widgetScaleFactor': _widgetScaleFactors[deviceType]!,
+    'imageScaleFactor': _imageScaleFactors[deviceType]!,
+  };
+
+  // Device type getters
+  static bool get isPhone => deviceType == 'phone';
+  static bool get isTablet => deviceType == 'tablet';
+  static bool get isLaptop => deviceType == 'laptop';
+  static bool get isDesktop => deviceType == 'desktop';
+
+  // Orientation getters
+  static bool get isLandscape => Get.width > Get.height;
+  static bool get isPortrait => Get.height > Get.width;
+
+  /// Get width percentage of current screen
+  static double widthPercentage(double pixels) {
+    return (pixels / Get.width) * 100;
+  }
+
+  /// Get height percentage of current screen
+  static double heightPercentage(double pixels) {
+    return (pixels / Get.height) * 100;
+  }
+
+  /// Get minimum dimension (useful for square widgets)
+  static double minDimension(double size) {
+    final minScreen = math.min(Get.width, Get.height);
+    final currentDevice = deviceType;
+    final baseMin = math.min(_currentBaseWidth, _currentBaseHeight);
+
+    final scale = minScreen / baseMin;
+    final deviceFactor = _widgetScaleFactors[currentDevice]!;
+    final adjustedScale = scale * deviceFactor;
+
+    final clampRange = _clampRanges[currentDevice]!['widget']!;
     final clampedScale = adjustedScale.clamp(
       clampRange['min']!,
       clampRange['max']!,
     );
 
-    return (size * clampedScale).toDouble();
+    return (size * clampedScale).roundToDouble();
   }
 
-  static double imgSize(double size) {
-    final width = Get.width;
-    final height = Get.height;
-    final deviceInfo = _getDeviceInfo(width, height);
-    final baseWidth = deviceInfo['baseWidth'] as double;
-    final deviceType = deviceInfo['type'] as String;
+  /// Get maximum dimension
+  static double maxDimension(double size) {
+    final maxScreen = math.max(Get.width, Get.height);
+    final currentDevice = deviceType;
+    final baseMax = math.max(_currentBaseWidth, _currentBaseHeight);
 
-    final widthScale = width / baseWidth;
+    final scale = maxScreen / baseMax;
+    final deviceFactor = _widgetScaleFactors[currentDevice]!;
+    final adjustedScale = scale * deviceFactor;
 
-    double adjustmentFactor = 1.0;
-    switch (deviceType) {
-      case 'phone':
-        adjustmentFactor = 1.0;
-        break;
-      case 'tablet':
-        adjustmentFactor = 1.3;
-        break;
-      case 'laptop':
-        adjustmentFactor = 1.6;
-        break;
-      case 'tv':
-        adjustmentFactor = 2.2;
-        break;
-    }
-
-    final adjustedScale = widthScale * adjustmentFactor;
-    final clampRange = _getClampRange(deviceType, 'image');
+    final clampRange = _clampRanges[currentDevice]!['widget']!;
     final clampedScale = adjustedScale.clamp(
       clampRange['min']!,
       clampRange['max']!,
     );
 
-    return (size * clampedScale).toDouble();
+    return (size * clampedScale).roundToDouble();
   }
 }
 

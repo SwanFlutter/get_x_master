@@ -187,7 +187,6 @@ class ResponsiveDemo extends StatelessWidget {
               'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
               'ResponsiveHelper.h(30) = ${ResponsiveHelper.h(30).toStringAsFixed(1)}px',
               'ResponsiveHelper.wp(50) = ${ResponsiveHelper.wp(50).toStringAsFixed(1)}px',
-              'ResponsiveHelper.sp(16) = ${ResponsiveHelper.sp(16).toStringAsFixed(1)}px',
             ],
             Colors.orange,
           ),
