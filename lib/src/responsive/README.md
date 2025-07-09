@@ -407,10 +407,4 @@ print('30.h = ${30.h}px (${30.0.heightPercent.toStringAsFixed(1)}%)');
 - `static bool get isLandscape` - Orientation detection
 - `static T responsiveValue<T>({...})` - Responsive values
 
-## 🤝 Contributing
 
-Contributions are welcome! Please read our contributing guidelines and submit pull requests for any improvements.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.

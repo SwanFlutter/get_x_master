@@ -1,6 +1,6 @@
 import 'package:example/bindings/bindings.dart';
-import 'package:example/cupertino/simple_cupertino_example.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:example/responsive_demo.dart';
+import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() {
@@ -13,15 +13,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetCupertinoApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       initialBinding: MyBinding(),
-      theme: const CupertinoThemeData(
-        primaryColor: CupertinoColors.systemBlue,
-        brightness: Brightness.light,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const SimpleCupertinoExample(),
+      home: const ResponsiveDemo(),
     );
   }
 }

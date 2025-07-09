@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 /// Example demonstrating the enhanced responsive extensions
@@ -390,3 +390,4 @@ class CardInfoView extends StatelessWidget {
     );
   }
 }
+*/

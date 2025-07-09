@@ -46,28 +46,25 @@ class ResponsiveDemo extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.w),
         border: Border.all(color: Colors.blue.shade200),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Screen Information',
-            style: TextStyle(
-              fontSize: 18.sp, // Responsive font size
-              fontWeight: FontWeight.bold,
-              color: Colors.blue.shade800,
-            ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          'Screen Information',
+          style: TextStyle(
+            fontSize: ResponsiveSize(18).ssp, // Responsive font size
+            fontWeight: FontWeight.bold,
+            color: Colors.blue.shade800,
           ),
-          SizedBox(height: 12.h),
-          _buildInfoRow('Width', '${Get.width.toStringAsFixed(1)}px'),
-          _buildInfoRow('Height', '${Get.height.toStringAsFixed(1)}px'),
-          _buildInfoRow(
-              'Aspect Ratio', (Get.width / Get.height).toStringAsFixed(2)),
-          _buildInfoRow(
+        ),
+        SizedBox(height: 12.h),
+        _buildInfoRow('Width', '${Get.width.toStringAsFixed(1)}px'),
+        _buildInfoRow('Height', '${Get.height.toStringAsFixed(1)}px'),
+        _buildInfoRow(
+            'Aspect Ratio', (Get.width / Get.height).toStringAsFixed(2)),
+        /* _buildInfoRow(
               'Device Type', ResponsiveHelper.isTablet ? 'Tablet' : 'Phone'),
           _buildInfoRow('Orientation',
-              ResponsiveHelper.isLandscape ? 'Landscape' : 'Portrait'),
-        ],
-      ),
+              ResponsiveHelper.isLandscape ? 'Landscape' : 'Portrait'),*/
+      ]),
     );
   }
 
@@ -184,9 +181,9 @@ class ResponsiveDemo extends StatelessWidget {
           _buildExampleCard(
             'Static Methods',
             [
-              'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
+              /*   'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
               'ResponsiveHelper.h(30) = ${ResponsiveHelper.h(30).toStringAsFixed(1)}px',
-              'ResponsiveHelper.wp(50) = ${ResponsiveHelper.wp(50).toStringAsFixed(1)}px',
+              'ResponsiveHelper.wp(50) = ${ResponsiveHelper.wp(50).toStringAsFixed(1)}px',*/
             ],
             Colors.orange,
           ),
@@ -194,11 +191,11 @@ class ResponsiveDemo extends StatelessWidget {
           _buildExampleCard(
             'Responsive Values',
             [
-              'ResponsiveHelper.responsiveValue(',
+              /*   'ResponsiveHelper.responsiveValue(',
               '  phone: 14.0,',
               '  tablet: 16.0,',
               '  desktop: 18.0,',
-              ') = ${ResponsiveHelper.responsiveValue(phone: 14.0, tablet: 16.0, laptop: 18.0)}',
+              ') = ${ResponsiveHelper.responsiveValue(phone: 14.0, tablet: 16.0, laptop: 18.0)}',*/
             ],
             Colors.orange,
           ),
@@ -273,7 +270,7 @@ class ResponsiveDemo extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: ResponsiveHelper.isTablet ? 4 : 2,
+            crossAxisCount: 2,
             crossAxisSpacing: 12.w,
             mainAxisSpacing: 12.h,
             childAspectRatio: 1.5,

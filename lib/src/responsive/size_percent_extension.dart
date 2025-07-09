@@ -92,139 +92,85 @@ double _getDynamicBaseHeight() {
 extension ResponsiveSize on num {
   /// Smart responsive font size for all devices
   double get sp {
-    final context = Get.context;
-    if (context == null) {
-      // Return a default value or handle the null case
-      return this * 1.0; // or throw an exception, or return 0.0
-    }
+    final context = Get.context!;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    final deviceInfo = _getDeviceInfo(width, height);
-    final baseWidth = deviceInfo['baseWidth'] as double;
-    final baseHeight = deviceInfo['baseHeight'] as double;
-    final deviceType = deviceInfo['type'] as String;
+    // Base values for different screen sizes
+    const double baseWidth = 375.0; // iPhone SE width as base
+    const double baseHeight = 667.0; // iPhone SE height as base
 
+    // Calculate scale factors
     final widthScale = width / baseWidth;
     final heightScale = height / baseHeight;
+
+    // Use the smaller scale factor to prevent oversized fonts
     final scaleFactor = widthScale < heightScale ? widthScale : heightScale;
 
-    double adjustmentFactor = 1.0;
-    switch (deviceType) {
-      case 'phone':
-        adjustmentFactor = pixelRatio > 2.0 ? 0.85 : 1.0;
-        break;
-      case 'tablet':
-        adjustmentFactor = pixelRatio > 2.0 ? 0.9 : 1.05;
-        break;
-      case 'laptop':
-        adjustmentFactor = 1.1;
-        break;
-      case 'tv':
-        adjustmentFactor = 1.3;
-        break;
-    }
+    // Adjust scale factor based on pixel ratio
+    final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.8 : 1.0);
 
-    final adjustedScaleFactor = scaleFactor * adjustmentFactor;
-    final clampRange = _getClampRange(deviceType, 'normal');
-    final clampedScaleFactor = adjustedScaleFactor.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+    // Clamp the scale factor to prevent extreme sizes
+    final clampedScaleFactor = adjustedScaleFactor.clamp(0.8, 1.4);
 
+    // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
   }
 
-  /// Enhanced responsive font size for larger text
+  /// Enhanced text scaling with professional responsive behavior
   double get hsp {
-    final context = Get.context;
-    if (context == null) {
-      // Return a default value or handle the null case
-      return this * 1.0; // or throw an exception, or return 0.0
-    }
+    final context = Get.context!;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    final deviceInfo = _getDeviceInfo(width, height);
-    final baseWidth = deviceInfo['baseWidth'] as double;
-    final baseHeight = deviceInfo['baseHeight'] as double;
-    final deviceType = deviceInfo['type'] as String;
+    // Base values for different screen sizes
+    const double baseWidth = 375.0;
+    const double baseHeight = 667.0;
 
+    // Calculate scale factors
     final widthScale = width / baseWidth;
     final heightScale = height / baseHeight;
+
+    // Use the smaller scale factor to prevent oversized fonts
     final scaleFactor = widthScale < heightScale ? widthScale : heightScale;
 
-    double adjustmentFactor = 1.0;
-    switch (deviceType) {
-      case 'phone':
-        adjustmentFactor = pixelRatio > 2.0 ? 0.75 : 0.9;
-        break;
-      case 'tablet':
-        adjustmentFactor = pixelRatio > 2.0 ? 0.85 : 1.0;
-        break;
-      case 'laptop':
-        adjustmentFactor = 1.05;
-        break;
-      case 'tv':
-        adjustmentFactor = 1.25;
-        break;
-    }
+    // Adjust scale factor based on pixel ratio
+    final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.7 : 0.9);
 
-    final adjustedScaleFactor = scaleFactor * adjustmentFactor;
-    final clampRange = _getClampRange(deviceType, 'large');
-    final clampedScaleFactor = adjustedScaleFactor.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+    // Clamp the scale factor to prevent extreme sizes
+    final clampedScaleFactor = adjustedScaleFactor.clamp(0.7, 1.2);
 
+    // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
   }
 
   /// Enhanced responsive font size for smaller text
   double get ssp {
-    final context = Get.context;
-    if (context == null) {
-      // Return a default value or handle the null case
-      return this * 1.0; // or throw an exception, or return 0.0
-    }
+    final context = Get.context!;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    final deviceInfo = _getDeviceInfo(width, height);
-    final baseWidth = deviceInfo['baseWidth'] as double;
-    final baseHeight = deviceInfo['baseHeight'] as double;
-    final deviceType = deviceInfo['type'] as String;
+    // Base values for different screen sizes
+    const double baseWidth = 375.0;
+    const double baseHeight = 667.0;
 
+    // Calculate scale factors
     final widthScale = width / baseWidth;
     final heightScale = height / baseHeight;
+
+    // Use the smaller scale factor to prevent oversized fonts
     final scaleFactor = widthScale < heightScale ? widthScale : heightScale;
 
-    double adjustmentFactor = 1.0;
-    switch (deviceType) {
-      case 'phone':
-        adjustmentFactor = pixelRatio > 2.0 ? 0.95 : 1.1;
-        break;
-      case 'tablet':
-        adjustmentFactor = pixelRatio > 2.0 ? 1.0 : 1.15;
-        break;
-      case 'laptop':
-        adjustmentFactor = 1.2;
-        break;
-      case 'tv':
-        adjustmentFactor = 1.4;
-        break;
-    }
+    // Adjust scale factor based on pixel ratio
+    final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.9 : 1.1);
 
-    final adjustedScaleFactor = scaleFactor * adjustmentFactor;
-    final clampRange = _getClampRange(deviceType, 'small');
-    final clampedScaleFactor = adjustedScaleFactor.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+    // Clamp the scale factor to prevent extreme sizes
+    final clampedScaleFactor = adjustedScaleFactor.clamp(0.9, 1.3);
 
+    // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
   }
 
@@ -370,6 +316,93 @@ extension ResponsiveSize on num {
     }
 
     return (this * scale).roundToDouble();
+  }
+}
+
+/// Enhanced device detection and configuration
+Map<String, dynamic> _getDeviceInfo(double width, double height) {
+  final aspectRatio = width / height;
+
+  if (width >= 1920 || height >= 1080) {
+    return {'type': 'tv', 'baseWidth': 1920.0, 'baseHeight': 1080.0};
+  } else if (width >= 1200) {
+    return {'type': 'laptop', 'baseWidth': 1366.0, 'baseHeight': 768.0};
+  } else if (width >= 768 || (width >= 600 && aspectRatio > 1.2)) {
+    return {
+      'type': 'tablet',
+      'baseWidth': aspectRatio > 1.0 ? 1024.0 : 768.0,
+      'baseHeight': aspectRatio > 1.0 ? 768.0 : 1024.0,
+    };
+  } else {
+    return {'type': 'phone', 'baseWidth': 375.0, 'baseHeight': 667.0};
+  }
+}
+
+/// Device-specific clamp ranges for different content types
+Map<String, double> _getClampRange(String deviceType, String contentType) {
+  switch (deviceType) {
+    case 'phone':
+      switch (contentType) {
+        case 'normal':
+          return {'min': 0.8, 'max': 1.4};
+        case 'large':
+          return {'min': 0.7, 'max': 1.2};
+        case 'small':
+          return {'min': 0.9, 'max': 1.3};
+        case 'widget':
+          return {'min': 0.8, 'max': 1.3};
+        case 'image':
+          return {'min': 0.7, 'max': 1.4};
+        default:
+          return {'min': 0.8, 'max': 1.4};
+      }
+    case 'tablet':
+      switch (contentType) {
+        case 'normal':
+          return {'min': 0.9, 'max': 1.6};
+        case 'large':
+          return {'min': 0.8, 'max': 1.4};
+        case 'small':
+          return {'min': 1.0, 'max': 1.5};
+        case 'widget':
+          return {'min': 1.0, 'max': 1.5};
+        case 'image':
+          return {'min': 0.9, 'max': 1.7};
+        default:
+          return {'min': 0.9, 'max': 1.6};
+      }
+    case 'laptop':
+      switch (contentType) {
+        case 'normal':
+          return {'min': 1.0, 'max': 1.8};
+        case 'large':
+          return {'min': 0.9, 'max': 1.6};
+        case 'small':
+          return {'min': 1.1, 'max': 1.7};
+        case 'widget':
+          return {'min': 1.2, 'max': 1.8};
+        case 'image':
+          return {'min': 1.0, 'max': 2.0};
+        default:
+          return {'min': 1.0, 'max': 1.8};
+      }
+    case 'tv':
+      switch (contentType) {
+        case 'normal':
+          return {'min': 1.2, 'max': 2.2};
+        case 'large':
+          return {'min': 1.1, 'max': 2.0};
+        case 'small':
+          return {'min': 1.3, 'max': 2.1};
+        case 'widget':
+          return {'min': 1.5, 'max': 2.5};
+        case 'image':
+          return {'min': 1.4, 'max': 2.8};
+        default:
+          return {'min': 1.2, 'max': 2.2};
+      }
+    default:
+      return {'min': 0.8, 'max': 1.4};
   }
 }
 
@@ -647,92 +680,5 @@ class ResponsiveHelper {
     );
 
     return (size * clampedScale).roundToDouble();
-  }
-}
-
-/// Enhanced device detection and configuration
-Map<String, dynamic> _getDeviceInfo(double width, double height) {
-  final aspectRatio = width / height;
-
-  if (width >= 1920 || height >= 1080) {
-    return {'type': 'tv', 'baseWidth': 1920.0, 'baseHeight': 1080.0};
-  } else if (width >= 1200) {
-    return {'type': 'laptop', 'baseWidth': 1366.0, 'baseHeight': 768.0};
-  } else if (width >= 768 || (width >= 600 && aspectRatio > 1.2)) {
-    return {
-      'type': 'tablet',
-      'baseWidth': aspectRatio > 1.0 ? 1024.0 : 768.0,
-      'baseHeight': aspectRatio > 1.0 ? 768.0 : 1024.0,
-    };
-  } else {
-    return {'type': 'phone', 'baseWidth': 375.0, 'baseHeight': 667.0};
-  }
-}
-
-/// Device-specific clamp ranges for different content types
-Map<String, double> _getClampRange(String deviceType, String contentType) {
-  switch (deviceType) {
-    case 'phone':
-      switch (contentType) {
-        case 'normal':
-          return {'min': 0.8, 'max': 1.4};
-        case 'large':
-          return {'min': 0.7, 'max': 1.2};
-        case 'small':
-          return {'min': 0.9, 'max': 1.3};
-        case 'widget':
-          return {'min': 0.8, 'max': 1.3};
-        case 'image':
-          return {'min': 0.7, 'max': 1.4};
-        default:
-          return {'min': 0.8, 'max': 1.4};
-      }
-    case 'tablet':
-      switch (contentType) {
-        case 'normal':
-          return {'min': 0.9, 'max': 1.6};
-        case 'large':
-          return {'min': 0.8, 'max': 1.4};
-        case 'small':
-          return {'min': 1.0, 'max': 1.5};
-        case 'widget':
-          return {'min': 1.0, 'max': 1.5};
-        case 'image':
-          return {'min': 0.9, 'max': 1.7};
-        default:
-          return {'min': 0.9, 'max': 1.6};
-      }
-    case 'laptop':
-      switch (contentType) {
-        case 'normal':
-          return {'min': 1.0, 'max': 1.8};
-        case 'large':
-          return {'min': 0.9, 'max': 1.6};
-        case 'small':
-          return {'min': 1.1, 'max': 1.7};
-        case 'widget':
-          return {'min': 1.2, 'max': 1.8};
-        case 'image':
-          return {'min': 1.0, 'max': 2.0};
-        default:
-          return {'min': 1.0, 'max': 1.8};
-      }
-    case 'tv':
-      switch (contentType) {
-        case 'normal':
-          return {'min': 1.2, 'max': 2.2};
-        case 'large':
-          return {'min': 1.1, 'max': 2.0};
-        case 'small':
-          return {'min': 1.3, 'max': 2.1};
-        case 'widget':
-          return {'min': 1.5, 'max': 2.5};
-        case 'image':
-          return {'min': 1.4, 'max': 2.8};
-        default:
-          return {'min': 1.2, 'max': 2.2};
-      }
-    default:
-      return {'min': 0.8, 'max': 1.4};
   }
 }

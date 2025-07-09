@@ -60,13 +60,13 @@ class EnhancedResponsiveDemo extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            _buildInfoRow('Device Type', ResponsiveHelper.deviceType),
+            /* _buildInfoRow('Device Type', ResponsiveHelper.deviceType),
             _buildInfoRow('Screen Width', '${Get.width.toStringAsFixed(1)}px'),
             _buildInfoRow(
                 'Screen Height', '${Get.height.toStringAsFixed(1)}px'),
             _buildInfoRow('Is Laptop', ResponsiveHelper.isLaptop.toString()),
             _buildInfoRow(
-                'Is TV', ResponsiveHelper.responsiveValue(tv: true).toString()),
+                'Is TV', ResponsiveHelper.responsiveValue(tv: true).toString()),*/
           ],
         ),
       ),
@@ -278,23 +278,23 @@ class EnhancedResponsiveDemo extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            _buildResponsiveExample(
+            /*  _buildResponsiveExample(
               'Font Size',
-              ResponsiveHelper.responsiveValue(
+             ResponsiveHelper.responsiveValue(
                 phone: 14.0,
                 tablet: 16.0,
                 laptop: 18.0,
                 tv: 22.0,
               ).toString(),
-            ),
-            _buildResponsiveExample(
+            ),*/
+            /*  _buildResponsiveExample(
               'Widget Size',
               ResponsiveHelper.ws(40).toStringAsFixed(1),
-            ),
-            _buildResponsiveExample(
+            ),*/
+            /* _buildResponsiveExample(
               'Image Size',
               ResponsiveHelper.imgSize(80).toStringAsFixed(1),
-            ),
+            ),*/
           ],
         ),
       ),
