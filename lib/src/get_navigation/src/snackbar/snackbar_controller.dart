@@ -118,7 +118,13 @@ class SnackBarController {
 
   /// Configures the overlay entries and inserts them into the overlay.
   void _configureOverlay() {
-    _overlayState = Overlay.of(Get.overlayContext!);
+    final overlayCtx = Get.overlayContext;
+    if (overlayCtx == null) {
+      throw Exception(
+        'GetX overlay context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    _overlayState = Overlay.of(overlayCtx);
     _overlayEntries.clear();
     _overlayEntries.addAll(_createOverlayEntries(_getBodyWidget()));
     _overlayState!.insertAll(_overlayEntries);

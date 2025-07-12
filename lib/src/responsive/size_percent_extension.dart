@@ -11,80 +11,156 @@ extension PercentSized on double {
   /// height: 50.0.hp = 50% of screen height
   double get hp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
-    return (Get.height * (this / 100)).roundToDouble();
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) {
+        return this * 6.67; // Fallback assuming 667px base height
+      }
+      return (screenHeight * (this / 100)).roundToDouble();
+    } catch (e) {
+      return this * 6.67; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// width: 30.0.wp = 30% of screen width
   double get wp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
-    return (Get.width * (this / 100)).roundToDouble();
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) {
+        return this * 3.75; // Fallback assuming 375px base width
+      }
+      return (screenWidth * (this / 100)).roundToDouble();
+    } catch (e) {
+      return this * 3.75; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Convert pixels to responsive width based on dynamic base width
   double get w {
-    final double baseWidth = _getDynamicBaseWidth();
-    final double percentage = (this / baseWidth) * 100;
-    return (Get.width * (percentage / 100)).roundToDouble();
+    try {
+      final double baseWidth = _getDynamicBaseWidth();
+      final double percentage = (this / baseWidth) * 100;
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) {
+        return this * 1.0; // Fallback
+      }
+      return (screenWidth * (percentage / 100)).roundToDouble();
+    } catch (e) {
+      return this * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Convert pixels to responsive height based on dynamic base height
   double get h {
-    final double baseHeight = _getDynamicBaseHeight();
-    final double percentage = (this / baseHeight) * 100;
-    return (Get.height * (percentage / 100)).roundToDouble();
+    try {
+      final double baseHeight = _getDynamicBaseHeight();
+      final double percentage = (this / baseHeight) * 100;
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) {
+        return this * 1.0; // Fallback
+      }
+      return (screenHeight * (percentage / 100)).roundToDouble();
+    } catch (e) {
+      return this * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get the percentage this pixel value represents of screen width
   double get widthPercent {
-    return (this / Get.width) * 100;
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) return 0.0;
+      return (this / screenWidth) * 100;
+    } catch (e) {
+      return 0.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get the percentage this pixel value represents of screen height
   double get heightPercent {
-    return (this / Get.height) * 100;
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) return 0.0;
+      return (this / screenHeight) * 100;
+    } catch (e) {
+      return 0.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Convert this pixel value to actual responsive width
   double get toResponsiveWidth {
-    return Get.width * (this / Get.width);
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) return this * 1.0;
+      return screenWidth * (this / screenWidth);
+    } catch (e) {
+      return this * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Convert this pixel value to actual responsive height
   double get toResponsiveHeight {
-    return Get.height * (this / Get.height);
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) return this * 1.0;
+      return screenHeight * (this / screenHeight);
+    } catch (e) {
+      return this * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 }
 
 /// Helper functions for dynamic base dimensions
 double _getDynamicBaseWidth() {
-  final double currentWidth = Get.width;
-  final double currentHeight = Get.height;
-  final double aspectRatio = currentWidth / currentHeight;
+  try {
+    final double currentWidth = Get.width;
+    final double currentHeight = Get.height;
 
-  if (currentWidth >= 1200) {
-    return currentWidth * 0.3;
-  } else if (currentWidth >= 800) {
-    return aspectRatio > 1.0 ? 600.0 : 400.0;
-  } else if (currentWidth >= 600) {
-    return aspectRatio > 1.0 ? 500.0 : 360.0;
-  } else {
-    return aspectRatio > 1.0 ? 400.0 : 320.0;
+    if (currentWidth <= 0 || currentHeight <= 0) {
+      return 375.0; // Default base width
+    }
+
+    final double aspectRatio = currentWidth / currentHeight;
+
+    if (currentWidth >= 1200) {
+      return currentWidth * 0.3;
+    } else if (currentWidth >= 800) {
+      return aspectRatio > 1.0 ? 600.0 : 400.0;
+    } else if (currentWidth >= 600) {
+      return aspectRatio > 1.0 ? 500.0 : 360.0;
+    } else {
+      return aspectRatio > 1.0 ? 400.0 : 320.0;
+    }
+  } catch (e) {
+    // Fallback if GetX is not properly initialized
+    return 375.0; // Default base width
   }
 }
 
 double _getDynamicBaseHeight() {
-  final double currentWidth = Get.width;
-  final double currentHeight = Get.height;
-  final double aspectRatio = currentWidth / currentHeight;
+  try {
+    final double currentWidth = Get.width;
+    final double currentHeight = Get.height;
 
-  if (currentWidth >= 1200) {
-    return currentHeight * 0.4;
-  } else if (currentWidth >= 800) {
-    return aspectRatio > 1.0 ? 600.0 : 800.0;
-  } else if (currentWidth >= 600) {
-    return aspectRatio > 1.0 ? 400.0 : 640.0;
-  } else {
-    return aspectRatio > 1.0 ? 360.0 : 568.0;
+    if (currentWidth <= 0 || currentHeight <= 0) {
+      return 667.0; // Default base height
+    }
+
+    final double aspectRatio = currentWidth / currentHeight;
+
+    if (currentWidth >= 1200) {
+      return currentHeight * 0.4;
+    } else if (currentWidth >= 800) {
+      return aspectRatio > 1.0 ? 600.0 : 800.0;
+    } else if (currentWidth >= 600) {
+      return aspectRatio > 1.0 ? 400.0 : 640.0;
+    } else {
+      return aspectRatio > 1.0 ? 360.0 : 568.0;
+    }
+  } catch (e) {
+    // Fallback if GetX is not properly initialized
+    return 667.0; // Default base height
   }
 }
 
@@ -92,7 +168,11 @@ double _getDynamicBaseHeight() {
 extension ResponsiveSize on num {
   /// Smart responsive font size for all devices
   double get sp {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default scaled value when context is not available
+      return this * 1.0;
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -120,7 +200,11 @@ extension ResponsiveSize on num {
 
   /// Enhanced text scaling with professional responsive behavior
   double get hsp {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default scaled value when context is not available
+      return this * 1.0;
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -148,7 +232,11 @@ extension ResponsiveSize on num {
 
   /// Enhanced responsive font size for smaller text
   double get ssp {
-    final context = Get.context!;
+    final context = Get.context;
+    if (context == null) {
+      // Return a default scaled value when context is not available
+      return this * 1.0;
+    }
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -260,62 +348,123 @@ extension ResponsiveSize on num {
 
   /// Convert pixels to responsive width using dynamic base dimensions
   double get w {
-    final double baseWidth = _getDynamicBaseWidth();
-    final double percentage = (this / baseWidth) * 100;
-    return (Get.width * (percentage / 100)).roundToDouble();
+    try {
+      final double baseWidth = _getDynamicBaseWidth();
+      final double percentage = (this / baseWidth) * 100;
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) {
+        // Fallback to a default value if screen width is not available
+        return this * 1.0;
+      }
+      return (screenWidth * (percentage / 100)).roundToDouble();
+    } catch (e) {
+      // Fallback if GetX is not properly initialized
+      return this * 1.0;
+    }
   }
 
   /// Convert pixels to responsive height using dynamic base dimensions
   double get h {
-    final double baseHeight = _getDynamicBaseHeight();
-    final double percentage = (this / baseHeight) * 100;
-    return (Get.height * (percentage / 100)).roundToDouble();
+    try {
+      final double baseHeight = _getDynamicBaseHeight();
+      final double percentage = (this / baseHeight) * 100;
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) {
+        // Fallback to a default value if screen height is not available
+        return this * 1.0;
+      }
+      return (screenHeight * (percentage / 100)).roundToDouble();
+    } catch (e) {
+      // Fallback if GetX is not properly initialized
+      return this * 1.0;
+    }
   }
 
   /// width: 30.wp = 30% of screen width
   double get wp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
-    return (Get.width * (this / 100)).roundToDouble();
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) {
+        // Fallback to a default value if screen width is not available
+        return this * 3.75; // Assuming 375px base width
+      }
+      return (screenWidth * (this / 100)).roundToDouble();
+    } catch (e) {
+      // Fallback if GetX is not properly initialized
+      return this * 3.75; // Assuming 375px base width
+    }
   }
 
   /// height: 50.hp = 50% of screen height
   double get hp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
-    return (Get.height * (this / 100)).roundToDouble();
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) {
+        // Fallback to a default value if screen height is not available
+        return this * 6.67; // Assuming 667px base height
+      }
+      return (screenHeight * (this / 100)).roundToDouble();
+    } catch (e) {
+      // Fallback if GetX is not properly initialized
+      return this * 6.67; // Assuming 667px base height
+    }
   }
 
   /// Get the percentage this pixel value represents of screen width
   double get widthPercent {
-    return (this / Get.width) * 100;
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) return 0.0;
+      return (this / screenWidth) * 100;
+    } catch (e) {
+      return 0.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get the percentage this pixel value represents of screen height
   double get heightPercent {
-    return (this / Get.height) * 100;
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) return 0.0;
+      return (this / screenHeight) * 100;
+    } catch (e) {
+      return 0.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Font size without scaling (original size)
   double get fs => toDouble();
 
   double get spWithBreakpoints {
-    double screenWidth = Get.width;
-    double screenHeight = Get.height;
-    double aspectRatio = screenWidth / screenHeight;
+    try {
+      double screenWidth = Get.width;
+      double screenHeight = Get.height;
 
-    double scale;
-    if (screenWidth <= 320) {
-      scale = 0.8;
-    } else if (screenWidth <= 375) {
-      scale = 1.0;
-    } else if (screenWidth <= 414) {
-      scale = 1.1;
-    } else if (aspectRatio < 0.7) {
-      scale = 1.2;
-    } else {
-      scale = 1.3;
+      if (screenWidth <= 0 || screenHeight <= 0) {
+        return this * 1.0; // Fallback
+      }
+
+      double aspectRatio = screenWidth / screenHeight;
+
+      double scale;
+      if (screenWidth <= 320) {
+        scale = 0.8;
+      } else if (screenWidth <= 375) {
+        scale = 1.0;
+      } else if (screenWidth <= 414) {
+        scale = 1.1;
+      } else if (aspectRatio < 0.7) {
+        scale = 1.2;
+      } else {
+        scale = 1.3;
+      }
+
+      return (this * scale).roundToDouble();
+    } catch (e) {
+      return this * 1.0; // Fallback if GetX is not properly initialized
     }
-
-    return (this * scale).roundToDouble();
   }
 }
 
@@ -466,11 +615,16 @@ class ResponsiveHelper {
 
   /// Get current device type based on screen width
   static String get deviceType {
-    final width = Get.width;
-    if (width >= 1920) return 'desktop';
-    if (width >= 1200) return 'laptop';
-    if (width >= 768) return 'tablet';
-    return 'phone';
+    try {
+      final width = Get.width;
+      if (width <= 0) return 'phone'; // Default fallback
+      if (width >= 1920) return 'desktop';
+      if (width >= 1200) return 'laptop';
+      if (width >= 768) return 'tablet';
+      return 'phone';
+    } catch (e) {
+      return 'phone'; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get base width for current device type
@@ -485,98 +639,150 @@ class ResponsiveHelper {
 
   // Basic responsive methods
   static double w(double pixels) {
-    final percentage = (pixels / _currentBaseWidth) * 100;
-    return (Get.width * (percentage / 100)).roundToDouble();
+    try {
+      final percentage = (pixels / _currentBaseWidth) * 100;
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) return pixels * 1.0;
+      return (screenWidth * (percentage / 100)).roundToDouble();
+    } catch (e) {
+      return pixels * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   static double h(double pixels) {
-    final percentage = (pixels / _currentBaseHeight) * 100;
-    return (Get.height * (percentage / 100)).roundToDouble();
+    try {
+      final percentage = (pixels / _currentBaseHeight) * 100;
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) return pixels * 1.0;
+      return (screenHeight * (percentage / 100)).roundToDouble();
+    } catch (e) {
+      return pixels * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   static double wp(double percent) {
     assert(percent >= 0 && percent <= 100, 'Percent must be between 0 and 100');
-    return (Get.width * (percent / 100)).roundToDouble();
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) {
+        return percent * 3.75; // Fallback assuming 375px base
+      }
+      return (screenWidth * (percent / 100)).roundToDouble();
+    } catch (e) {
+      return percent * 3.75; // Fallback if GetX is not properly initialized
+    }
   }
 
   static double hp(double percent) {
     assert(percent >= 0 && percent <= 100, 'Percent must be between 0 and 100');
-    return (Get.height * (percent / 100)).roundToDouble();
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) {
+        return percent * 6.67; // Fallback assuming 667px base
+      }
+      return (screenHeight * (percent / 100)).roundToDouble();
+    } catch (e) {
+      return percent * 6.67; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Enhanced text scaling with professional responsive behavior
   static double ssp(double fontSize) {
-    final currentDevice = deviceType;
-    final baseWidth = _currentBaseWidth;
-    final baseHeight = _currentBaseHeight;
-    final screenWidth = Get.width;
-    final screenHeight = Get.height;
+    try {
+      final currentDevice = deviceType;
+      final baseWidth = _currentBaseWidth;
+      final baseHeight = _currentBaseHeight;
+      final screenWidth = Get.width;
+      final screenHeight = Get.height;
 
-    // Calculate base scale factor
-    final widthScale = screenWidth / baseWidth;
-    final heightScale = screenHeight / baseHeight;
+      if (screenWidth <= 0 || screenHeight <= 0) {
+        return fontSize * 1.0; // Fallback
+      }
 
-    // Use geometric mean for more balanced scaling
-    final baseScale = math.sqrt(widthScale * heightScale);
+      // Calculate base scale factor
+      final widthScale = screenWidth / baseWidth;
+      final heightScale = screenHeight / baseHeight;
 
-    // Apply device-specific text scaling factor
-    final deviceTextFactor = _textScaleFactors[currentDevice]!;
-    final adjustedScale = baseScale * deviceTextFactor;
+      // Use geometric mean for more balanced scaling
+      final baseScale = math.sqrt(widthScale * heightScale);
 
-    // Apply clamping based on device type
-    final clampRange = _clampRanges[currentDevice]!['text']!;
-    final clampedScale = adjustedScale.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+      // Apply device-specific text scaling factor
+      final deviceTextFactor = _textScaleFactors[currentDevice]!;
+      final adjustedScale = baseScale * deviceTextFactor;
 
-    return (fontSize * clampedScale).roundToDouble();
+      // Apply clamping based on device type
+      final clampRange = _clampRanges[currentDevice]!['text']!;
+      final clampedScale = adjustedScale.clamp(
+        clampRange['min']!,
+        clampRange['max']!,
+      );
+
+      return (fontSize * clampedScale).roundToDouble();
+    } catch (e) {
+      return fontSize * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Enhanced widget sizing with professional responsive behavior
   static double ws(double size) {
-    final currentDevice = deviceType;
-    final baseWidth = _currentBaseWidth;
-    final screenWidth = Get.width;
+    try {
+      final currentDevice = deviceType;
+      final baseWidth = _currentBaseWidth;
+      final screenWidth = Get.width;
 
-    // Calculate width scale
-    final widthScale = screenWidth / baseWidth;
+      if (screenWidth <= 0) {
+        return size * 1.0; // Fallback
+      }
 
-    // Apply device-specific widget scaling factor
-    final deviceWidgetFactor = _widgetScaleFactors[currentDevice]!;
-    final adjustedScale = widthScale * deviceWidgetFactor;
+      // Calculate width scale
+      final widthScale = screenWidth / baseWidth;
 
-    // Apply clamping based on device type
-    final clampRange = _clampRanges[currentDevice]!['widget']!;
-    final clampedScale = adjustedScale.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+      // Apply device-specific widget scaling factor
+      final deviceWidgetFactor = _widgetScaleFactors[currentDevice]!;
+      final adjustedScale = widthScale * deviceWidgetFactor;
 
-    return (size * clampedScale).roundToDouble();
+      // Apply clamping based on device type
+      final clampRange = _clampRanges[currentDevice]!['widget']!;
+      final clampedScale = adjustedScale.clamp(
+        clampRange['min']!,
+        clampRange['max']!,
+      );
+
+      return (size * clampedScale).roundToDouble();
+    } catch (e) {
+      return size * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Enhanced image sizing with professional responsive behavior
   static double imgSize(double size) {
-    final currentDevice = deviceType;
-    final baseWidth = _currentBaseWidth;
-    final screenWidth = Get.width;
+    try {
+      final currentDevice = deviceType;
+      final baseWidth = _currentBaseWidth;
+      final screenWidth = Get.width;
 
-    // Calculate width scale
-    final widthScale = screenWidth / baseWidth;
+      if (screenWidth <= 0) {
+        return size * 1.0; // Fallback
+      }
 
-    // Apply device-specific image scaling factor
-    final deviceImageFactor = _imageScaleFactors[currentDevice]!;
-    final adjustedScale = widthScale * deviceImageFactor;
+      // Calculate width scale
+      final widthScale = screenWidth / baseWidth;
 
-    // Apply clamping based on device type
-    final clampRange = _clampRanges[currentDevice]!['image']!;
-    final clampedScale = adjustedScale.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+      // Apply device-specific image scaling factor
+      final deviceImageFactor = _imageScaleFactors[currentDevice]!;
+      final adjustedScale = widthScale * deviceImageFactor;
 
-    return (size * clampedScale).roundToDouble();
+      // Apply clamping based on device type
+      final clampRange = _clampRanges[currentDevice]!['image']!;
+      final clampedScale = adjustedScale.clamp(
+        clampRange['min']!,
+        clampRange['max']!,
+      );
+
+      return (size * clampedScale).roundToDouble();
+    } catch (e) {
+      return size * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get responsive value based on device type
@@ -606,23 +812,52 @@ class ResponsiveHelper {
   }
 
   /// Get comprehensive screen information
-  static Map<String, dynamic> get screenInfo => {
-    'width': Get.width,
-    'height': Get.height,
-    'aspectRatio': Get.width / Get.height,
-    'deviceType': deviceType,
-    'baseWidth': _currentBaseWidth,
-    'baseHeight': _currentBaseHeight,
-    'isTablet': isTablet,
-    'isPhone': isPhone,
-    'isLaptop': isLaptop,
-    'isDesktop': isDesktop,
-    'isLandscape': isLandscape,
-    'isPortrait': isPortrait,
-    'textScaleFactor': _textScaleFactors[deviceType]!,
-    'widgetScaleFactor': _widgetScaleFactors[deviceType]!,
-    'imageScaleFactor': _imageScaleFactors[deviceType]!,
-  };
+  static Map<String, dynamic> get screenInfo {
+    try {
+      final screenWidth = Get.width;
+      final screenHeight = Get.height;
+      final aspectRatio =
+          (screenWidth > 0 && screenHeight > 0)
+              ? screenWidth / screenHeight
+              : 1.0;
+
+      return {
+        'width': screenWidth,
+        'height': screenHeight,
+        'aspectRatio': aspectRatio,
+        'deviceType': deviceType,
+        'baseWidth': _currentBaseWidth,
+        'baseHeight': _currentBaseHeight,
+        'isTablet': isTablet,
+        'isPhone': isPhone,
+        'isLaptop': isLaptop,
+        'isDesktop': isDesktop,
+        'isLandscape': isLandscape,
+        'isPortrait': isPortrait,
+        'textScaleFactor': _textScaleFactors[deviceType]!,
+        'widgetScaleFactor': _widgetScaleFactors[deviceType]!,
+        'imageScaleFactor': _imageScaleFactors[deviceType]!,
+      };
+    } catch (e) {
+      return {
+        'width': 375.0,
+        'height': 667.0,
+        'aspectRatio': 375.0 / 667.0,
+        'deviceType': 'phone',
+        'baseWidth': 375.0,
+        'baseHeight': 667.0,
+        'isTablet': false,
+        'isPhone': true,
+        'isLaptop': false,
+        'isDesktop': false,
+        'isLandscape': false,
+        'isPortrait': true,
+        'textScaleFactor': 1.0,
+        'widgetScaleFactor': 1.0,
+        'imageScaleFactor': 1.0,
+      };
+    }
+  }
 
   // Device type getters
   static bool get isPhone => deviceType == 'phone';
@@ -631,54 +866,107 @@ class ResponsiveHelper {
   static bool get isDesktop => deviceType == 'desktop';
 
   // Orientation getters
-  static bool get isLandscape => Get.width > Get.height;
-  static bool get isPortrait => Get.height > Get.width;
+  static bool get isLandscape {
+    try {
+      final width = Get.width;
+      final height = Get.height;
+      if (width <= 0 || height <= 0) return false;
+      return width > height;
+    } catch (e) {
+      return false; // Fallback if GetX is not properly initialized
+    }
+  }
+
+  static bool get isPortrait {
+    try {
+      final width = Get.width;
+      final height = Get.height;
+      if (width <= 0 || height <= 0) return true; // Default to portrait
+      return height > width;
+    } catch (e) {
+      return true; // Fallback if GetX is not properly initialized
+    }
+  }
 
   /// Get width percentage of current screen
   static double widthPercentage(double pixels) {
-    return (pixels / Get.width) * 100;
+    try {
+      final screenWidth = Get.width;
+      if (screenWidth <= 0) return 0.0;
+      return (pixels / screenWidth) * 100;
+    } catch (e) {
+      return 0.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get height percentage of current screen
   static double heightPercentage(double pixels) {
-    return (pixels / Get.height) * 100;
+    try {
+      final screenHeight = Get.height;
+      if (screenHeight <= 0) return 0.0;
+      return (pixels / screenHeight) * 100;
+    } catch (e) {
+      return 0.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get minimum dimension (useful for square widgets)
   static double minDimension(double size) {
-    final minScreen = math.min(Get.width, Get.height);
-    final currentDevice = deviceType;
-    final baseMin = math.min(_currentBaseWidth, _currentBaseHeight);
+    try {
+      final screenWidth = Get.width;
+      final screenHeight = Get.height;
 
-    final scale = minScreen / baseMin;
-    final deviceFactor = _widgetScaleFactors[currentDevice]!;
-    final adjustedScale = scale * deviceFactor;
+      if (screenWidth <= 0 || screenHeight <= 0) {
+        return size * 1.0; // Fallback
+      }
 
-    final clampRange = _clampRanges[currentDevice]!['widget']!;
-    final clampedScale = adjustedScale.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+      final minScreen = math.min(screenWidth, screenHeight);
+      final currentDevice = deviceType;
+      final baseMin = math.min(_currentBaseWidth, _currentBaseHeight);
 
-    return (size * clampedScale).roundToDouble();
+      final scale = minScreen / baseMin;
+      final deviceFactor = _widgetScaleFactors[currentDevice]!;
+      final adjustedScale = scale * deviceFactor;
+
+      final clampRange = _clampRanges[currentDevice]!['widget']!;
+      final clampedScale = adjustedScale.clamp(
+        clampRange['min']!,
+        clampRange['max']!,
+      );
+
+      return (size * clampedScale).roundToDouble();
+    } catch (e) {
+      return size * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 
   /// Get maximum dimension
   static double maxDimension(double size) {
-    final maxScreen = math.max(Get.width, Get.height);
-    final currentDevice = deviceType;
-    final baseMax = math.max(_currentBaseWidth, _currentBaseHeight);
+    try {
+      final screenWidth = Get.width;
+      final screenHeight = Get.height;
 
-    final scale = maxScreen / baseMax;
-    final deviceFactor = _widgetScaleFactors[currentDevice]!;
-    final adjustedScale = scale * deviceFactor;
+      if (screenWidth <= 0 || screenHeight <= 0) {
+        return size * 1.0; // Fallback
+      }
 
-    final clampRange = _clampRanges[currentDevice]!['widget']!;
-    final clampedScale = adjustedScale.clamp(
-      clampRange['min']!,
-      clampRange['max']!,
-    );
+      final maxScreen = math.max(screenWidth, screenHeight);
+      final currentDevice = deviceType;
+      final baseMax = math.max(_currentBaseWidth, _currentBaseHeight);
 
-    return (size * clampedScale).roundToDouble();
+      final scale = maxScreen / baseMax;
+      final deviceFactor = _widgetScaleFactors[currentDevice]!;
+      final adjustedScale = scale * deviceFactor;
+
+      final clampRange = _clampRanges[currentDevice]!['widget']!;
+      final clampedScale = adjustedScale.clamp(
+        clampRange['min']!,
+        clampRange['max']!,
+      );
+
+      return (size * clampedScale).roundToDouble();
+    } catch (e) {
+      return size * 1.0; // Fallback if GetX is not properly initialized
+    }
   }
 }
