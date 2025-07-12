@@ -234,7 +234,7 @@ Add GetX Master to your pubspec.yaml file:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.12
+  get_x_master: ^0.0.13
 ```
 
 Import GetX Master in files that it will be used:

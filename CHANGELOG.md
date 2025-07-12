@@ -64,3 +64,7 @@
 ## 0.0.12
 
 * Fix bug .
+
+## 0.0.13
+
+* Fix bug null context.
