@@ -83,17 +83,26 @@ extension ExtensionBottomSheet on GetInterface {
     /// The duration of the exit animation.
     Duration? exitBottomSheetDuration,
   }) {
-    return Navigator.of(overlayContext!, rootNavigator: useRootNavigator).push(
+    final overlayCtx = overlayContext;
+    if (overlayCtx == null) {
+      throw Exception(
+        'GetX overlay context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    final keyCtx = key.currentContext;
+    if (keyCtx == null) {
+      throw Exception(
+        'Navigator key context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    return Navigator.of(overlayCtx, rootNavigator: useRootNavigator).push(
       GetModalBottomSheetRoute<T>(
         builder: (_) => bottomsheet,
         isPersistent: persistent,
         // theme: Theme.of(key.currentContext, shadowThemeOnly: true), //Consider removing this or making it optional
-        theme: Theme.of(key.currentContext!),
+        theme: Theme.of(keyCtx),
         isScrollControlled: isScrollControlled,
-        barrierLabel:
-            MaterialLocalizations.of(
-              key.currentContext!,
-            ).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(keyCtx).modalBarrierDismissLabel,
         backgroundColor: backgroundColor ?? Colors.transparent,
         elevation: elevation,
         shape: shape,
@@ -198,7 +207,13 @@ extension ExtensionBottomSheet on GetInterface {
     Color indicatorColor = const Color.fromRGBO(224, 224, 224, 1),
     double? itemPaddingTop = 60.0,
   }) {
-    return Navigator.of(Get.context!).push(
+    final context = Get.context;
+    if (context == null) {
+      throw Exception(
+        'GetX context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    return Navigator.of(context).push(
       CustomExpandableBottomSheetRoute<T>(
         builder: builder,
         initialChildSize: initialChildSize,
@@ -252,10 +267,16 @@ extension ExtensionDialog on GetInterface {
     String? name,
     RouteSettings? routeSettings,
   }) {
-    assert(debugCheckHasMaterialLocalizations(context!));
+    final ctx = Get.context;
+    if (ctx == null) {
+      throw Exception(
+        'GetX context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    assert(debugCheckHasMaterialLocalizations(ctx));
 
     //  final theme = Theme.of(context, shadowThemeOnly: true);
-    final theme = Theme.of(context!);
+    final theme = Theme.of(ctx);
     return generalDialog<T>(
       pageBuilder: (buildContext, animation, secondaryAnimation) {
         final pageChild = widget;
@@ -270,7 +291,7 @@ extension ExtensionDialog on GetInterface {
         return dialog;
       },
       barrierDismissible: barrierDismissible,
-      barrierLabel: MaterialLocalizations.of(context!).modalBarrierDismissLabel,
+      barrierLabel: MaterialLocalizations.of(ctx).modalBarrierDismissLabel,
       barrierColor: barrierColor ?? Colors.black54,
       transitionDuration: transitionDuration ?? defaultDialogTransitionDuration,
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -300,10 +321,16 @@ extension ExtensionDialog on GetInterface {
     RouteSettings? routeSettings,
   }) {
     assert(!barrierDismissible || barrierLabel != null);
+    final overlayCtx = overlayContext;
+    if (overlayCtx == null) {
+      throw Exception(
+        'GetX overlay context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
     final nav =
         navigatorKey?.currentState ??
         Navigator.of(
-          overlayContext!,
+          overlayCtx,
           rootNavigator: true,
         ); //overlay context will always return the root navigator
     return nav.push<T>(
@@ -1376,8 +1403,9 @@ you can only use widgets and widget functions here''';
   /// give access to Theme.of(context)
   ThemeData get theme {
     var theme = ThemeData.fallback();
-    if (context != null) {
-      theme = Theme.of(context!);
+    final ctx = context;
+    if (ctx != null) {
+      theme = Theme.of(ctx);
     }
     return theme;
   }
@@ -1389,8 +1417,9 @@ you can only use widgets and widget functions here''';
 
   /// The window to which this binding is bound.
   FlutterView? get window {
-    if (context == null) return PlatformDispatcher.instance.views.first;
-    return View.of(context!);
+    final ctx = context;
+    if (ctx == null) return PlatformDispatcher.instance.views.first;
+    return View.of(ctx);
   }
 
   Locale? get deviceLocale => PlatformDispatcher.instance.locale;
@@ -1425,7 +1454,15 @@ you can only use widgets and widget functions here''';
   TextTheme get textTheme => theme.textTheme;
 
   /// give access to Mediaquery.of(context)
-  MediaQueryData get mediaQuery => MediaQuery.of(context!);
+  MediaQueryData get mediaQuery {
+    final ctx = context;
+    if (ctx == null) {
+      throw Exception(
+        'GetX context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    return MediaQuery.of(ctx);
+  }
 
   /// Check if dark mode theme is enable
   bool get isDarkMode => (theme.brightness == Brightness.dark);
@@ -1571,10 +1608,13 @@ extension OverlayExt on GetInterface {
     double opacity = 0.5,
   }) async {
     // Get the current navigator and overlay state
-    final navigatorState = Navigator.of(
-      Get.overlayContext!,
-      rootNavigator: false,
-    );
+    final overlayCtx = Get.overlayContext;
+    if (overlayCtx == null) {
+      throw Exception(
+        'GetX overlay context is not available. Make sure you are using GetMaterialApp.',
+      );
+    }
+    final navigatorState = Navigator.of(overlayCtx, rootNavigator: false);
     final overlayState = navigatorState.overlay!;
 
     // Create an overlay entry for the background opacity
