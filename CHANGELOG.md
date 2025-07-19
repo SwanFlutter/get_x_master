@@ -68,3 +68,7 @@
 ## 0.0.13
 
 * Fix bug null context.
+
+## 0.0.14
+
+* Fix document extention size.
