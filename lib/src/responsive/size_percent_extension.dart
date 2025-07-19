@@ -7,8 +7,19 @@ import 'package:flutter/material.dart';
 import '../../get_x_master.dart';
 
 /// Enhanced responsive extension for percentage-based sizing
+///
+/// Example:
+/// ```dart
+/// double fiftyPercentHeight = 50.0.hp; // 50% of screen height
+/// double thirtyPercentWidth = 30.0.wp; // 30% of screen width
+/// ```
 extension PercentSized on double {
-  /// height: 50.0.hp = 50% of screen height
+  /// Returns the value as a percentage of the screen height.
+  ///
+  /// Example:
+  /// ```dart
+  /// double halfScreen = 50.0.hp;
+  /// ```
   double get hp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
     try {
@@ -22,7 +33,12 @@ extension PercentSized on double {
     }
   }
 
-  /// width: 30.0.wp = 30% of screen width
+  /// Returns the value as a percentage of the screen width.
+  ///
+  /// Example:
+  /// ```dart
+  /// double thirdScreen = 33.0.wp;
+  /// ```
   double get wp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
     try {
@@ -36,7 +52,12 @@ extension PercentSized on double {
     }
   }
 
-  /// Convert pixels to responsive width based on dynamic base width
+  /// Converts pixel value to responsive width based on dynamic base width.
+  ///
+  /// Example:
+  /// ```dart
+  /// double responsiveWidth = 120.0.w;
+  /// ```
   double get w {
     try {
       final double baseWidth = _getDynamicBaseWidth();
@@ -51,7 +72,12 @@ extension PercentSized on double {
     }
   }
 
-  /// Convert pixels to responsive height based on dynamic base height
+  /// Converts pixel value to responsive height based on dynamic base height.
+  ///
+  /// Example:
+  /// ```dart
+  /// double responsiveHeight = 80.0.h;
+  /// ```
   double get h {
     try {
       final double baseHeight = _getDynamicBaseHeight();
@@ -66,7 +92,12 @@ extension PercentSized on double {
     }
   }
 
-  /// Get the percentage this pixel value represents of screen width
+  /// Returns the percentage this pixel value represents of screen width.
+  ///
+  /// Example:
+  /// ```dart
+  /// double percent = 100.0.widthPercent;
+  /// ```
   double get widthPercent {
     try {
       final screenWidth = Get.width;
@@ -77,7 +108,12 @@ extension PercentSized on double {
     }
   }
 
-  /// Get the percentage this pixel value represents of screen height
+  /// Returns the percentage this pixel value represents of screen height.
+  ///
+  /// Example:
+  /// ```dart
+  /// double percent = 200.0.heightPercent;
+  /// ```
   double get heightPercent {
     try {
       final screenHeight = Get.height;
@@ -88,7 +124,12 @@ extension PercentSized on double {
     }
   }
 
-  /// Convert this pixel value to actual responsive width
+  /// Converts this pixel value to actual responsive width.
+  ///
+  /// Example:
+  /// ```dart
+  /// double responsive = 100.0.toResponsiveWidth;
+  /// ```
   double get toResponsiveWidth {
     try {
       final screenWidth = Get.width;
@@ -99,7 +140,12 @@ extension PercentSized on double {
     }
   }
 
-  /// Convert this pixel value to actual responsive height
+  /// Converts this pixel value to actual responsive height.
+  ///
+  /// Example:
+  /// ```dart
+  /// double responsive = 100.0.toResponsiveHeight;
+  /// ```
   double get toResponsiveHeight {
     try {
       final screenHeight = Get.height;
@@ -165,8 +211,20 @@ double _getDynamicBaseHeight() {
 }
 
 /// Enhanced extension for num types (int, double) to provide comprehensive responsive utilities
+///
+/// Example:
+/// ```dart
+/// double fontSize = 16.sp;
+/// double iconSize = 24.ws;
+/// double imageSize = 100.imgSize;
+/// ```
 extension ResponsiveSize on num {
-  /// Smart responsive font size for all devices
+  /// Smart responsive font size for all devices.
+  ///
+  /// Example:
+  /// ```dart
+  /// double fontSize = 18.sp;
+  /// ```
   double get sp {
     final context = Get.context;
     if (context == null) {
@@ -198,7 +256,12 @@ extension ResponsiveSize on num {
     return (this * clampedScaleFactor).toDouble();
   }
 
-  /// Enhanced text scaling with professional responsive behavior
+  /// Enhanced text scaling with professional responsive behavior.
+  ///
+  /// Example:
+  /// ```dart
+  /// double fontSize = 18.hsp;
+  /// ```
   double get hsp {
     final context = Get.context;
     if (context == null) {
@@ -230,7 +293,12 @@ extension ResponsiveSize on num {
     return (this * clampedScaleFactor).toDouble();
   }
 
-  /// Enhanced responsive font size for smaller text
+  /// Enhanced responsive font size for smaller text.
+  ///
+  /// Example:
+  /// ```dart
+  /// double smallFont = 12.ssp;
+  /// ```
   double get ssp {
     final context = Get.context;
     if (context == null) {
@@ -262,7 +330,12 @@ extension ResponsiveSize on num {
     return (this * clampedScaleFactor).toDouble();
   }
 
-  /// Responsive widget size for icons, buttons, and other UI elements
+  /// Responsive widget size for icons, buttons, and other UI elements.
+  ///
+  /// Example:
+  /// ```dart
+  /// double iconSize = 24.ws;
+  /// ```
   double get ws {
     final context = Get.context;
     if (context == null) {
@@ -304,7 +377,12 @@ extension ResponsiveSize on num {
     return (this * clampedScale).toDouble();
   }
 
-  /// Responsive image size for all device types
+  /// Responsive image size for all device types.
+  ///
+  /// Example:
+  /// ```dart
+  /// double imageSize = 100.imgSize;
+  /// ```
   double get imgSize {
     final context = Get.context;
     if (context == null) {
@@ -346,7 +424,12 @@ extension ResponsiveSize on num {
     return (this * clampedScale).toDouble();
   }
 
-  /// Convert pixels to responsive width using dynamic base dimensions
+  /// Converts pixels to responsive width using dynamic base dimensions.
+  ///
+  /// Example:
+  /// ```dart
+  /// double responsiveWidth = 120.w;
+  /// ```
   double get w {
     try {
       final double baseWidth = _getDynamicBaseWidth();
@@ -363,7 +446,12 @@ extension ResponsiveSize on num {
     }
   }
 
-  /// Convert pixels to responsive height using dynamic base dimensions
+  /// Converts pixels to responsive height using dynamic base dimensions.
+  ///
+  /// Example:
+  /// ```dart
+  /// double responsiveHeight = 80.h;
+  /// ```
   double get h {
     try {
       final double baseHeight = _getDynamicBaseHeight();
@@ -380,7 +468,12 @@ extension ResponsiveSize on num {
     }
   }
 
-  /// width: 30.wp = 30% of screen width
+  /// width: 30.wp = 30% of screen width.
+  ///
+  /// Example:
+  /// ```dart
+  /// double width = 30.wp;
+  /// ```
   double get wp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
     try {
@@ -396,7 +489,12 @@ extension ResponsiveSize on num {
     }
   }
 
-  /// height: 50.hp = 50% of screen height
+  /// height: 50.hp = 50% of screen height.
+  ///
+  /// Example:
+  /// ```dart
+  /// double height = 50.hp;
+  /// ```
   double get hp {
     assert(this >= 0 && this <= 100, 'Percent must be between 0 and 100');
     try {
@@ -412,7 +510,12 @@ extension ResponsiveSize on num {
     }
   }
 
-  /// Get the percentage this pixel value represents of screen width
+  /// Returns the percentage this pixel value represents of screen width.
+  ///
+  /// Example:
+  /// ```dart
+  /// double percent = 100.widthPercent;
+  /// ```
   double get widthPercent {
     try {
       final screenWidth = Get.width;
@@ -423,7 +526,12 @@ extension ResponsiveSize on num {
     }
   }
 
-  /// Get the percentage this pixel value represents of screen height
+  /// Returns the percentage this pixel value represents of screen height.
+  ///
+  /// Example:
+  /// ```dart
+  /// double percent = 200.heightPercent;
+  /// ```
   double get heightPercent {
     try {
       final screenHeight = Get.height;
@@ -434,9 +542,20 @@ extension ResponsiveSize on num {
     }
   }
 
-  /// Font size without scaling (original size)
+  /// Font size without scaling (original size).
+  ///
+  /// Example:
+  /// ```dart
+  /// double original = 16.fs;
+  /// ```
   double get fs => toDouble();
 
+  /// Responsive font size with breakpoints.
+  ///
+  /// Example:
+  /// ```dart
+  /// double fontSize = 18.spWithBreakpoints;
+  /// ```
   double get spWithBreakpoints {
     try {
       double screenWidth = Get.width;
@@ -968,5 +1087,41 @@ class ResponsiveHelper {
     } catch (e) {
       return size * 1.0; // Fallback if GetX is not properly initialized
     }
+  }
+}
+
+/// Widget extension for responsive sizing and padding
+///
+/// Example:
+/// ```dart
+/// Container()
+///   .responsive(width: 200, height: 100, padding: EdgeInsets.all(16))
+/// ```
+extension ResponsiveWidgetExtension on Widget {
+  /// Wraps the widget in a SizedBox and Padding with responsive width, height, and padding.
+  ///
+  /// [width], [height] and [padding] will be scaled responsively.
+  ///
+  /// Example:
+  /// ```dart
+  /// Text('Hello').responsive(width: 200, height: 50, padding: EdgeInsets.symmetric(horizontal: 16))
+  /// ```
+  Widget responsive({double? width, double? height, EdgeInsets? padding}) {
+    Widget child = this;
+    if (padding != null) {
+      child = Padding(
+        padding: EdgeInsets.only(
+          left: padding.left.w,
+          right: padding.right.w,
+          top: padding.top.h,
+          bottom: padding.bottom.h,
+        ),
+        child: child,
+      );
+    }
+    if (width != null || height != null) {
+      child = SizedBox(width: width?.w, height: height?.h, child: child);
+    }
+    return child;
   }
 }
