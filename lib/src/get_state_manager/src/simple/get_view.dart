@@ -42,6 +42,65 @@ abstract class GetView<T> extends StatelessWidget {
   Widget build(BuildContext context);
 }
 
+/// ReactiveGetView is an enhanced version of GetView that provides automatic
+/// reactive updates when observable variables in the controller change.
+///
+/// Unlike the standard GetView which is a StatelessWidget, ReactiveGetView
+/// extends ObxWidget to automatically rebuild the UI when any observable
+/// variables (.obs) in the controller are modified.
+///
+/// This eliminates the need to wrap parts of your UI in Obx() widgets
+/// when using GetView, making the code cleaner and more intuitive.
+///
+/// Sample:
+/// ```dart
+/// class CounterController extends GetxController {
+///   final count = 0.obs;
+///   final name = 'Counter'.obs;
+///
+///   void increment() => count++;
+///   void changeName(String newName) => name.value = newName;
+/// }
+///
+/// class CounterView extends ReactiveGetView<CounterController> {
+///   @override
+///   Widget build(BuildContext context) {
+///     return Scaffold(
+///       appBar: AppBar(title: Text(controller.name.value)),
+///       body: Center(
+///         child: Text('Count: ${controller.count.value}'),
+///       ),
+///       floatingActionButton: FloatingActionButton(
+///         onPressed: controller.increment,
+///         child: Icon(Icons.add),
+///       ),
+///     );
+///   }
+/// }
+/// ```
+///
+/// Key Benefits:
+/// - Automatic reactive updates without wrapping in Obx()
+/// - Cleaner code structure
+/// - Better performance through intelligent rebuilding
+/// - Maintains all GetView functionality
+/// - Compatible with existing GetX controller patterns
+abstract class ReactiveGetView<T> extends ObxWidget {
+  const ReactiveGetView({super.key});
+
+  /// Optional tag for controller retrieval
+  /// Override this if you need to specify a tag for Get.find<T>(tag: tag)
+  String? get tag => null;
+
+  /// Access to the controller instance
+  /// This getter automatically finds and returns the controller
+  /// while maintaining reactive capabilities
+  T get controller => GetInstance().find<T>(tag: tag)!;
+
+  @override
+  Widget build();
+}
+
 /// GetWidget is a great way of quickly access your individual Controller
 /// without having to call Get.find<AwesomeController>() yourself.
 /// Get save you controller on cache, so, you can to use Get.create() safely

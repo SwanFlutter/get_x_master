@@ -1,4 +1,4 @@
-# GetX Master
+# Get X Master
 
 [![pub package](https://img.shields.io/pub/v/get_x_master.svg)](https://pub.dev/packages/get_x_master)
 [![GitHub](https://img.shields.io/github/license/SwanFlutter/get_x_master)](https://github.com/SwanFlutter/get_x_master/blob/main/LICENSE)
@@ -12,10 +12,12 @@ GetX Master is a completely separate implementation that provides similar functi
 
 ### Why GetX Master?
 - Enhanced Cupertino support with Apple-authentic design elements
+- **ReactiveGetView** - Smart reactive widgets with automatic UI updates
 - Additional utility functions and extensions
 - Improved compatibility with latest Flutter versions
 - Independent development and maintenance
 - Custom features tailored for modern Flutter development
+- Intelligent state management without manual Obx() wrapping
 
 ### Inspiration
 - **Inspired by:** GetX design principles
@@ -24,17 +26,21 @@ GetX Master is a completely separate implementation that provides similar functi
 ## Table of Contents
 
 - [About GetX Master](#about-getx-master)
+- [Key Features Overview](#-key-features-overview)
 - [Enhanced Cupertino Support](#-enhanced-cupertino-support)
 - [Installing](#installing)
 - [Counter App with GetX Master](#counter-app-with-getx-master)
 - [The Three pillars](#the-three-pillars)
   - [State management](#state-management)
     - [Reactive State Manager](#reactive-state-manager)
+    - [ReactiveGetView - Smart Reactive Widget](#reactivegetview---smart-reactive-widget)
     - [More details about state management](#more-details-about-state-management)
   - [Route management](#route-management)
     - [More details about route management](#more-details-about-route-management)
   - [Dependency management](#dependency-management)
     - [More details about dependency management](#more-details-about-dependency-management)
+  - [Animation Extensions](#animation-extensions)
+  - [GetSocket - WebSocket Management](#getsocket---websocket-management)
 - [Utils](#utils)
   - [Internationalization](#internationalization)
     - [Translations](#translations)
@@ -61,6 +67,7 @@ GetX Master is a completely separate implementation that provides similar functi
       - [ObxValue](#obxvalue)
   - [Useful tips](#useful-tips)
     - [GetView](#getview)
+    - [ReactiveGetView](#reactivegetview)
     - [GetResponsiveView](#getresponsiveview)
       - [How to use it](#how-to-use-it)
     - [GetWidget](#getwidget)
@@ -84,6 +91,82 @@ To read the documentation for these sections, you can use the following links to
 - [GetX Instance Management](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_instance/README.md)
 - [GetX Utils AND Extensions](https://github.com/SwanFlutter/get_x_master/blob/main/lib/src/get_utils/README.md)
 - [New Features Get.customExpandableBottomSheet](https://github.com/SwanFlutter/get_x_master/tree/main/lib/src/get_navigation)
+
+## 🚀 Key Features Overview
+
+### 🎨 Animation Extensions
+GetX Master provides powerful animation extensions that make creating beautiful animations effortless:
+
+```dart
+// Fluent animation chaining
+myWidget
+  .fadeIn(duration: Duration(seconds: 1))
+  .scale(begin: 0.5, end: 1.0, isSequential: true)
+  .bounce(begin: 1.0, end: 1.2, isSequential: true);
+
+// Available animations: fadeIn, fadeOut, slide, rotate, scale, bounce,
+// blur, flip, wave, size, color animations and more!
+```
+
+### 🔌 GetSocket - WebSocket Management
+Advanced WebSocket implementation with automatic reconnection and event handling:
+
+```dart
+final socket = GetSocket('ws://localhost:8080');
+
+socket.onOpen(() => print('Connected!'));
+socket.onMessage((data) => print('Received: $data'));
+socket.onError((error) => print('Error: $error'));
+
+socket.emit('chat_message', {'text': 'Hello World!'});
+```
+
+### 🧠 Smart Dependency Injection
+
+#### GetSmartPut - Intelligent Instance Management
+```dart
+// Smart conditional instance creation
+Get.smartPutIf<UserService>(
+  primaryCondition: () => AuthManager.isLoggedIn,
+  builder: () => UserService(),
+  fallbackBuilder: () => GuestUserService(),
+  secondaryValidation: (service) => service.hasValidPermissions(),
+);
+```
+
+#### GetSmartLazyPut - Enhanced Lazy Loading
+```dart
+// Smart lazy initialization with automatic recreation
+Get.smartLazyPut<ApiController>(() => ApiController());
+
+// With advanced options
+Get.smartLazyPut<DatabaseController>(
+  () => DatabaseController(),
+  tag: 'main_db',
+  fenix: true, // automatic recreation when needed
+  autoRemove: true, // automatic cleanup
+);
+```
+
+#### GetSmartIf - Conditional Logic
+```dart
+// Smart conditional dependency management
+Get.smartManage<NotificationService>(
+  condition: () => Platform.isAndroid || Platform.isIOS,
+  validityCheck: (service) => service.isPermissionGranted(),
+  builder: () => NotificationService(),
+  fallback: MockNotificationService(),
+);
+```
+
+### 🎯 Advanced Features
+- **ReactiveGetView**: Automatic reactive UI updates without manual Obx() wrapping
+- **Smart Bindings**: Intelligent dependency injection with BindingsBuilder
+- **Enhanced Controllers**: GetxController with advanced lifecycle management
+- **Animation Extensions**: 15+ built-in animation types with fluent API
+- **WebSocket Support**: Full-featured GetSocket implementation
+- **Event Loop Extensions**: Advanced async operation management
+- **Responsive Utilities**: Built-in responsive design helpers
 
 ## 🆕 Enhanced Cupertino Support
 
@@ -403,6 +486,51 @@ Obx(() => Text("${controller.name}"));
 
 That's all. It's _that_ simple.
 
+### ReactiveGetView - Smart Reactive Widget
+
+GetX Master introduces **ReactiveGetView**, an enhanced version of GetView that provides automatic reactive updates without manual Obx() wrapping:
+
+#### Traditional GetView (requires Obx):
+```dart
+class CounterView extends GetView<CounterController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Obx(() => Text(controller.name.value)), // Need Obx
+      ),
+      body: Center(
+        child: Obx(() => Text('Count: ${controller.count.value}')), // Need Obx
+      ),
+    );
+  }
+}
+```
+
+#### ReactiveGetView (automatic reactivity):
+```dart
+class CounterView extends ReactiveGetView<CounterController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(controller.name.value), // No Obx needed!
+      ),
+      body: Center(
+        child: Text('Count: ${controller.count.value}'), // No Obx needed!
+      ),
+    );
+  }
+}
+```
+
+**Key Benefits:**
+- ✅ **Automatic reactive updates** - No manual Obx() wrapping needed
+- ✅ **Cleaner code** - More readable and maintainable
+- ✅ **Better performance** - Intelligent rebuilding only when necessary
+- ✅ **Full compatibility** - Works with all existing GetX features
+- ✅ **Smart detection** - Automatically tracks observable variables
+
 ### More details about state management
 
 **GetX Master provides comprehensive state management with both simple and reactive approaches.**
@@ -514,6 +642,138 @@ Text(controller.textFromApi);
 ### More details about dependency management
 
 **GetX Master provides comprehensive dependency management capabilities.**
+
+## Animation Extensions
+
+GetX Master includes powerful animation extensions that make creating beautiful animations incredibly simple. These extensions provide a fluent API for chaining multiple animations together.
+
+### Available Animation Types
+
+#### Basic Animations
+```dart
+// Fade animations
+myWidget.fadeIn(duration: Duration(seconds: 1))
+myWidget.fadeOut(duration: Duration(milliseconds: 500))
+
+// Scale animations
+myWidget.scale(begin: 0.5, end: 1.5, duration: Duration(seconds: 1))
+myWidget.size(begin: 0.8, end: 1.2) // Size animation using scale
+
+// Rotation animations
+myWidget.rotate(begin: 0, end: 1) // Full rotation (360 degrees)
+```
+
+#### Advanced Animations
+```dart
+// Slide animations with custom offset
+myWidget.slide(
+  offset: (context, value) => Offset(-value, 0), // Slide from left
+  duration: Duration(milliseconds: 800)
+)
+
+// Bounce effect
+myWidget.bounce(begin: 0.8, end: 1.2, duration: Duration(seconds: 1))
+
+// Blur effect
+myWidget.blur(begin: 0, end: 10, duration: Duration(seconds: 2))
+
+// 3D Flip animation
+myWidget.flip(duration: Duration(milliseconds: 600))
+
+// Wave animation
+myWidget.wave(duration: Duration(seconds: 3))
+```
+
+#### Sequential Animation Chaining
+```dart
+// Chain multiple animations to run one after another
+Text('Animated Text')
+  .fadeIn(duration: Duration(seconds: 1))
+  .scale(begin: 1.0, end: 1.5, duration: Duration(seconds: 1), isSequential: true)
+  .bounce(begin: 1.5, end: 1.0, duration: Duration(milliseconds: 500), isSequential: true)
+  .fadeOut(duration: Duration(seconds: 1), isSequential: true);
+```
+
+#### Color Animations
+```dart
+// Animate colors using the Animate widget
+Animate(
+  duration: Duration(seconds: 2),
+  type: AnimationType.color,
+  begin: Colors.red,
+  end: Colors.blue,
+  child: Container(width: 100, height: 100),
+)
+```
+
+### Animation Features
+- **Fluent API**: Chain animations easily with method chaining
+- **Sequential Support**: Run animations one after another with `isSequential: true`
+- **Customizable**: Full control over duration, delay, and curves
+- **Performance Optimized**: Built on Flutter's animation framework
+- **15+ Animation Types**: Comprehensive set of pre-built animations
+
+## GetSocket - WebSocket Management
+
+GetX Master provides a powerful WebSocket implementation with automatic connection management, event handling, and cross-platform support.
+
+### Basic Usage
+```dart
+// Create a WebSocket connection
+final socket = GetSocket('ws://localhost:8080');
+
+// Set up event listeners
+socket.onOpen(() {
+  print('WebSocket connected!');
+});
+
+socket.onMessage((data) {
+  print('Received message: $data');
+});
+
+socket.onError((error) {
+  print('WebSocket error: $error');
+});
+
+socket.onClose((close) {
+  print('WebSocket closed: ${close.reason}');
+});
+
+// Connect to the server
+await socket.connect();
+```
+
+### Advanced Features
+```dart
+// Send custom events
+socket.emit('chat_message', {
+  'user': 'john_doe',
+  'message': 'Hello everyone!',
+  'timestamp': DateTime.now().toIso8601String(),
+});
+
+// Listen for specific events
+socket.on('user_joined', (data) {
+  print('User ${data['username']} joined the chat');
+});
+
+// Send raw data
+socket.send('Raw message data');
+
+// Configure ping interval for connection health
+final socket = GetSocket(
+  'ws://localhost:8080',
+  ping: Duration(seconds: 30), // Send ping every 30 seconds
+  allowSelfSigned: true, // Allow self-signed certificates
+);
+```
+
+### Key Features
+- **Cross-platform**: Works on Web, Mobile, and Desktop
+- **Automatic Reconnection**: Built-in connection management
+- **Event-based**: Clean event-driven architecture
+- **SSL Support**: Full SSL/TLS support with self-signed certificate option
+- **Ping/Pong**: Automatic connection health monitoring
 
 # Utils
 
@@ -1262,6 +1522,47 @@ Is a `const Stateless` Widget that has a getter `controller` for a registered `C
  }
 
 ```
+
+#### ReactiveGetView
+
+**ReactiveGetView** is the enhanced version of GetView with automatic reactive capabilities:
+
+```dart
+
+ class AwesomeController extends GetxController {
+   final title = 'My Awesome View'.obs;
+   final count = 0.obs;
+
+   void updateTitle() => title.value = 'Updated Title';
+   void increment() => count++;
+ }
+
+ // ReactiveGetView automatically updates when observable variables change
+ class AwesomeView extends ReactiveGetView<AwesomeController> {
+   @override
+   Widget build(BuildContext context) {
+     return Container(
+       padding: EdgeInsets.all(20),
+       child: Column(
+         children: [
+           Text(controller.title.value), // Automatically reactive!
+           Text('Count: ${controller.count.value}'), // No Obx needed!
+           ElevatedButton(
+             onPressed: controller.updateTitle,
+             child: Text('Update Title'),
+           ),
+         ],
+       ),
+     );
+   }
+ }
+
+```
+
+**Choose the right widget for your needs:**
+- Use **GetView** for simple, non-reactive UIs
+- Use **ReactiveGetView** when you need automatic reactive updates
+- Use **Obx()** for fine-grained reactive control in specific parts
 
 
 

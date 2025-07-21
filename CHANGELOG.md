@@ -72,3 +72,13 @@
 ## 0.0.14
 
 * Fix document extention size.
+
+## 0.0.15
+
+* Add ReactiveGetView - Smart reactive widget for automatic UI updates.
+* Enhanced GetView with intelligent state management capabilities.
+* Automatic reactive updates without manual Obx() wrapping.
+* Improved performance through intelligent rebuilding.
+* Better code readability and maintainability.
+* Full compatibility with existing GetX controller patterns.
+* Updated comprehensive documentation with examples.
