@@ -51,7 +51,8 @@ class CounterView extends ReactiveGetView<CounterController> {
       backgroundColor: controller.backgroundColor.value,
       appBar: AppBar(
         title: Text(controller.name.value),
-        backgroundColor: controller.backgroundColor.value.withOpacity(0.8),
+        backgroundColor:
+            controller.backgroundColor.value.withValues(alpha: 0.8),
       ),
       body: Center(
         child: Column(
@@ -123,7 +124,8 @@ class TraditionalCounterView extends GetView<CounterController> {
         appBar: AppBar(
           // Need Obx for reactive title
           title: Obx(() => Text(controller.name.value)),
-          backgroundColor: controller.backgroundColor.value.withOpacity(0.8),
+          backgroundColor:
+              controller.backgroundColor.value.withValues(alpha: 0.8),
         ),
         body: Center(
           child: Column(
