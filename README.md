@@ -96,16 +96,20 @@ flutter pub get
     }
     ```
 
-2.  **Create a Controller**
+**2. Create a Controller**
 
-    ```dart
-    class CounterController extends GetxController {
-      var count = 0.obs; // .obs makes it reactive
-      void increment() => count++;
-    }
-    ```
+> **Note:** The "X" in `GetXController` must be uppercase.
 
-3.  **Use ReactiveGetView for Automatic Updates**
+```dart
+class CounterController extends GetXController {
+  var count = 0.obs; // .obs makes it reactive
+  void increment() => count++;
+}
+```
+
+
+
+4.  **Use ReactiveGetView for Automatic Updates**
 
     ```dart
     class HomePage extends ReactiveGetView<CounterController> {
