@@ -1,5 +1,6 @@
 import 'package:example/bindings/bindings.dart';
 import 'package:example/new_responsive_example.dart';
+import 'package:example/reactive_get_view_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const NewResponsiveExample(),
+      home: const CounterView(),
     );
   }
 }

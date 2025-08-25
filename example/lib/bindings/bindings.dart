@@ -1,7 +1,7 @@
 import 'package:example/controller/login_controller.dart';
 import 'package:example/controller/signup_controller.dart';
 import 'package:example/controller/todos_controller.dart';
-import 'package:example/reactive_get_view_example.dart';
+import 'package:example/reactive_get_view_demo.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyBinding extends Bindings {
@@ -47,5 +47,7 @@ class MyBinding extends Bindings {
     Get.smartLazyPut(
       () => CounterController(),
     );
+
+  
   }
 }

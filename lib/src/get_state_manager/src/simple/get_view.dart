@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../get_x_master.dart';
 import 'get_widget_cache.dart';
@@ -55,84 +55,70 @@ abstract class GetView<T> extends StatelessWidget {
   Widget build(BuildContext context);
 }
 
-/// ReactiveGetView is an enhanced version of GetView that provides automatic
-/// reactive updates when observable variables in the controller change.
-///
-/// Unlike the standard GetView which is a StatelessWidget, ReactiveGetView
-/// extends ObxWidget to automatically rebuild the UI when any observable
-/// variables (.obs) in the controller are modified.
-///
-/// This eliminates the need to wrap parts of your UI in Obx() widgets
-/// when using GetView, making the code cleaner and more intuitive.
-///
-/// Sample:
+/// Simple and clean ReactiveGetView that automatically wraps the entire build method
+/// in reactive behavior without requiring additional methods or complexity.
+/// 
+/// This provides the same functionality as GetView but with automatic reactivity,
+/// eliminating the need for manual Obx wrapping while keeping the API simple.
+/// 
+/// Example:
 /// ```dart
-/// class CounterController extends GetxController {
-///   final count = 0.obs;
-///   final name = 'Counter'.obs;
-///
-///   void increment() => count++;
-///   void changeName(String newName) => name.value = newName;
-/// }
-///
 /// class CounterView extends ReactiveGetView<CounterController> {
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
-///       appBar: AppBar(title: Text(controller.name.value)),
-///       body: Center(
-///         child: Text('Count: ${controller.count.value}'),
+///       appBar: AppBar(
+///         title: Text(controller.name.value), // Automatically reactive
 ///       ),
-///       floatingActionButton: FloatingActionButton(
-///         onPressed: controller.increment,
-///         child: Icon(Icons.add),
+///       body: Column(
+///         children: [
+///           Text('Count: ${controller.count.value}'), // Automatically reactive
+///           if (controller.isLoading.value) // Automatically reactive
+///             CircularProgressIndicator()
+///           else
+///             ElevatedButton(
+///               onPressed: controller.increment,
+///               child: Text('Increment'),
+///             ),
+///         ],
 ///       ),
 ///     );
 ///   }
 /// }
 /// ```
-///
-/// Key Benefits:
-/// - Automatic reactive updates without wrapping in Obx()
-/// - Cleaner code structure
-/// - Better performance through intelligent rebuilding
-/// - Maintains all GetView functionality
-/// - Compatible with existing GetX controller patterns
-abstract class ReactiveGetView<T> extends ObxWidget {
+abstract class ReactiveGetView<T> extends StatelessWidget {
   const ReactiveGetView({super.key});
 
   /// Optional tag for controller retrieval
-  /// Override this if you need to specify a tag for Get.find< T>(tag: tag)
   String? get tag => null;
 
   /// Set to true to use smartFind instead of regular find
-  /// Default is false for backward compatibility
-  bool get useSmartFind => false;
+  /// Default is true for enhanced functionality
+  bool get useSmartFind => true;
 
   /// Access to the controller instance
-  /// This getter automatically finds and returns the controller
-  /// while maintaining reactive capabilities
   T get controller {
     if (useSmartFind) {
       return GetInstance().smartFind<T>(tag: tag)!;
     } else {
-      return GetInstance().find<T>(tag: tag)!;
+      return GetInstance().find<T>(tag: tag);
     }
   }
 
-  /// Override this method to build your reactive UI
-  /// Note: ObxWidget.build() doesn't have BuildContext parameter
+  /// Build method that will be automatically wrapped in reactive behavior
   Widget buildReactive(BuildContext context);
 
   @override
-  Widget build() {
-    // We get the context from the current build context
-    return Builder(builder: (context) => buildReactive(context));
+  Widget build(BuildContext context) {
+    return Obx(() => buildReactive(context));
   }
 }
 
-/// Alternative implementation of ReactiveGetView that ensures proper reactive behavior
-/// by wrapping the build method in an Obx widget internally
+/// SafeReactiveGetView provides additional safety checks and error handling
+/// for reactive behavior, with optional smart finding capabilities.
+/// 
+/// Use this when you need extra safety guarantees or when working with
+/// controllers that might not be properly initialized.
 abstract class SafeReactiveGetView<T> extends StatelessWidget {
   const SafeReactiveGetView({super.key});
 
@@ -140,8 +126,8 @@ abstract class SafeReactiveGetView<T> extends StatelessWidget {
   String? get tag => null;
 
   /// Set to true to use smartFind instead of regular find
-  /// Default is false for backward compatibility
-  bool get useSmartFind => false;
+  /// Default is true for enhanced functionality
+  bool get useSmartFind => true;
 
   /// Access to the controller instance
   T get controller {
@@ -158,6 +144,85 @@ abstract class SafeReactiveGetView<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => buildReactive(context));
+  }
+}
+
+
+/// Enhanced ReactiveGetView with automatic state management integration
+/// 
+/// This version automatically integrates with StateMixin for handling
+/// loading, success, error, and empty states.
+abstract class StateReactiveGetView<T extends GetXController> extends ReactiveGetView<T> {
+  const StateReactiveGetView({super.key});
+
+  /// Build method for success state
+  Widget buildSuccess(BuildContext context, dynamic data);
+
+  /// Build method for loading state
+  Widget buildLoading(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  /// Build method for error state
+  Widget buildError(BuildContext context, String error) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error, color: Colors.red, size: 64),
+          const SizedBox(height: 16),
+          Text('Error: $error', textAlign: TextAlign.center),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: onRetry,
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build method for empty state
+  Widget buildEmpty(BuildContext context) {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.inbox, color: Colors.grey, size: 64),
+          SizedBox(height: 16),
+          Text('No data available'),
+        ],
+      ),
+    );
+  }
+
+  /// Called when retry button is pressed in error state
+  void onRetry() {}
+
+  @override
+  Widget buildReactive(BuildContext context) {
+    // Check if controller implements StateMixin
+    try {
+      final dynamic dynamicController = controller;
+      if (dynamicController is StateMixin) {
+        final stateMixin = dynamicController;
+        
+        if (stateMixin.status.isLoading) {
+          return buildLoading(context);
+        } else if (stateMixin.status.isError) {
+          return buildError(context, stateMixin.status.errorMessage ?? 'Unknown error');
+        } else if (stateMixin.status.isEmpty) {
+          return buildEmpty(context);
+        } else {
+          return buildSuccess(context, stateMixin.state);
+        }
+      }
+    } catch (e) {
+      // Fallback if StateMixin check fails
+    }
+    
+    // Fallback to success state if not using StateMixin
+    return buildSuccess(context, null);
   }
 }
 

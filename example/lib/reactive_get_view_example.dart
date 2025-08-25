@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 /// Example controller with observable variables
-class CounterController extends GetXController {
+class ExampleCounterController extends GetXController {
   // Observable variables that will trigger UI updates
   final count = 0.obs;
   final name = 'Smart Counter'.obs;
@@ -41,7 +41,7 @@ class CounterController extends GetXController {
 }
 
 /// Example using ReactiveGetView - automatically reactive to all observable changes
-class CounterView extends SafeReactiveGetView<CounterController> {
+class CounterView extends SafeReactiveGetView<ExampleCounterController> {
   const CounterView({super.key});
 
   @override
@@ -114,7 +114,7 @@ class CounterView extends SafeReactiveGetView<CounterController> {
 }
 
 /// Comparison: Traditional GetView (requires Obx wrapping)
-class TraditionalCounterView extends GetView<CounterController> {
+class TraditionalCounterView extends GetView<ExampleCounterController> {
   const TraditionalCounterView({super.key});
 
   @override
