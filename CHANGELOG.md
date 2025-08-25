@@ -83,3 +83,10 @@
 * Better code readability and maintainability.
 * Full compatibility with existing GetX controller patterns.
 * Updated comprehensive documentation with examples.
+
+
+## 0.0.16
+
+* Fix document extention size.
+* Fix Animate extention size.
+* Fix Bug ReactiveGetView.

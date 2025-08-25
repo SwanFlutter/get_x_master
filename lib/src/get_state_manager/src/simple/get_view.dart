@@ -1,12 +1,10 @@
-// ignore_for_file: unintended_html_in_doc_comment
-
 import 'package:flutter/widgets.dart';
 
 import '../../../../get_x_master.dart';
 import 'get_widget_cache.dart';
 
 /// GetView is a great way of quickly access your Controller
-/// without having to call Get.find<AwesomeController>() yourself.
+/// without having to call Get.find< AwesomeController>() yourself.
 ///
 /// Sample:
 /// ```
@@ -20,6 +18,10 @@ import 'get_widget_cache.dart';
 ///   @override
 ///   final String tag = "myTag";
 ///
+///   /// Use smartFind instead of regular find
+///   @override
+///   final bool useSmartFind = true;
+///
 ///   AwesomeView({Key key}):super(key:key);
 ///
 ///   @override
@@ -30,13 +32,24 @@ import 'get_widget_cache.dart';
 ///     );
 ///   }
 /// }
-///``
+/// ```
 abstract class GetView<T> extends StatelessWidget {
   const GetView({super.key});
 
-  final String? tag = null;
+  String? get tag => null;
 
-  T get controller => GetInstance().find<T>(tag: tag)!;
+  /// Set to true to use smartFind instead of regular find
+  /// Default is false for backward compatibility
+  bool get useSmartFind => true;
+
+  /// Controller getter that supports both find and smartFind
+  T get controller {
+    if (useSmartFind) {
+      return GetInstance().smartFind<T>(tag: tag)!;
+    } else {
+      return GetInstance().find<T>(tag: tag)!;
+    }
+  }
 
   @override
   Widget build(BuildContext context);
@@ -89,20 +102,67 @@ abstract class ReactiveGetView<T> extends ObxWidget {
   const ReactiveGetView({super.key});
 
   /// Optional tag for controller retrieval
-  /// Override this if you need to specify a tag for Get.find<T>(tag: tag)
+  /// Override this if you need to specify a tag for Get.find< T>(tag: tag)
   String? get tag => null;
+
+  /// Set to true to use smartFind instead of regular find
+  /// Default is false for backward compatibility
+  bool get useSmartFind => false;
 
   /// Access to the controller instance
   /// This getter automatically finds and returns the controller
   /// while maintaining reactive capabilities
-  T get controller => GetInstance().find<T>(tag: tag)!;
+  T get controller {
+    if (useSmartFind) {
+      return GetInstance().smartFind<T>(tag: tag)!;
+    } else {
+      return GetInstance().find<T>(tag: tag)!;
+    }
+  }
+
+  /// Override this method to build your reactive UI
+  /// Note: ObxWidget.build() doesn't have BuildContext parameter
+  Widget buildReactive(BuildContext context);
 
   @override
-  Widget build();
+  Widget build() {
+    // We get the context from the current build context
+    return Builder(builder: (context) => buildReactive(context));
+  }
+}
+
+/// Alternative implementation of ReactiveGetView that ensures proper reactive behavior
+/// by wrapping the build method in an Obx widget internally
+abstract class SafeReactiveGetView<T> extends StatelessWidget {
+  const SafeReactiveGetView({super.key});
+
+  /// Optional tag for controller retrieval
+  String? get tag => null;
+
+  /// Set to true to use smartFind instead of regular find
+  /// Default is false for backward compatibility
+  bool get useSmartFind => false;
+
+  /// Access to the controller instance
+  T get controller {
+    if (useSmartFind) {
+      return GetInstance().smartFind<T>(tag: tag)!;
+    } else {
+      return GetInstance().find<T>(tag: tag)!;
+    }
+  }
+
+  /// Override this method to build your reactive UI
+  Widget buildReactive(BuildContext context);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => buildReactive(context));
+  }
 }
 
 /// GetWidget is a great way of quickly access your individual Controller
-/// without having to call Get.find<AwesomeController>() yourself.
+/// without having to call Get.find< AwesomeController>() yourself.
 /// Get save you controller on cache, so, you can to use Get.create() safely
 /// GetWidget is perfect to multiples instance of a same controller. Each
 /// GetWidget will have your own controller, and will be call events as `onInit`
@@ -111,11 +171,9 @@ abstract class GetWidget<S extends GetLifeCycleBase?> extends GetWidgetCache {
   const GetWidget({super.key});
 
   @protected
-  final String? tag = null;
+  String? get tag => null;
 
   S get controller => GetWidget._cache[this] as S;
-
-  // static final _cache = <GetWidget, GetLifeCycleBase>{};
 
   static final _cache = Expando<GetLifeCycleBase>();
 
@@ -130,6 +188,7 @@ class _GetCache<S extends GetLifeCycleBase?> extends WidgetCache<GetWidget<S>> {
   S? _controller;
   bool _isCreator = false;
   InstanceInfo? info;
+
   @override
   void onInit() {
     info = GetInstance().getInstanceInfo<S>(tag: widget!.tag);

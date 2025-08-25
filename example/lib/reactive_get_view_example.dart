@@ -41,12 +41,14 @@ class CounterController extends GetXController {
 }
 
 /// Example using ReactiveGetView - automatically reactive to all observable changes
-class CounterView extends ReactiveGetView<CounterController> {
+class CounterView extends SafeReactiveGetView<CounterController> {
   const CounterView({super.key});
 
   @override
-  Widget build() {
-    // No need to wrap in Obx() - ReactiveGetView handles it automatically!
+  bool get useSmartFind => false;
+
+  @override
+  Widget buildReactive(BuildContext context) {
     return Scaffold(
       backgroundColor: controller.backgroundColor.value,
       appBar: AppBar(
@@ -185,27 +187,4 @@ class TraditionalCounterView extends GetView<CounterController> {
       ),
     );
   }
-}
-
-/// Example app demonstrating ReactiveGetView
-class ReactiveGetViewExampleApp extends StatelessWidget {
-  const ReactiveGetViewExampleApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ReactiveGetView Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const CounterView(),
-    );
-  }
-}
-
-void main() {
-  // Initialize the controller
-  Get.put(CounterController());
-
-  runApp(const ReactiveGetViewExampleApp());
 }

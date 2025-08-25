@@ -20,8 +20,7 @@ class DemoView extends ReactiveGetView<DemoController> {
   const DemoView({super.key});
 
   @override
-  Widget build() {
-    // No need for Obx() - ReactiveGetView handles it automatically!
+  Widget buildReactive(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(controller.message.value),

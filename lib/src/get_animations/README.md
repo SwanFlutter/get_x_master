@@ -1,305 +1,634 @@
+# 🎨 Flutter Animation Library
 
-# Animation Library Documentation
+A powerful and easy-to-use library for creating beautiful and smooth animations in Flutter with a simple and visual API.
 
-This library provides a set of Flutter widgets and extensions for creating various animations easily. It consists of three main files:
+## 📋 Table of Contents
 
-1.  **`animate.dart`**: Contains the `Animate` widget, a versatile widget for applying different animation types.
-2.  **`animations.dart`**: Provides extension methods on `Widget` for a fluent animation API.
-3.  **`get_animated_builder.dart`**:  A generic animated builder that handles the animation lifecycle (controller, animation, status updates).
+- [Installation and Setup](#installation-and-setup)
+- [Overview](#overview)
+- [GetAnimatedBuilder](#getanimatedbuilder)
+- [Animate Widget](#animate-widget)
+- [Animation Extensions](#animation-extensions)
+- [Practical Examples](#practical-examples)
+- [Optimization Tips](#optimization-tips)
+- [Troubleshooting](#troubleshooting)
 
-## 1. `animate.dart`
+## 🚀 Installation and Setup
 
-This file defines the `Animate` widget and the `AnimationType` enum.
 
-### `Animate` Widget
 
-The `Animate` widget is a general-purpose animation widget that allows you to apply different animation types to its child widget.  It uses `GetAnimatedBuilder` internally to manage the animation.
-
-**Constructor:**
+### 2. Importing
 
 ```dart
-const Animate({
-  super.key,
-  required this.duration,
-  this.delay,
-  required this.child,
-  this.onComplete,
-  required this.type,
-  this.begin = 0.0,
-  this.end = 1.0,
-  this.curve = Curves.linear,
-});
+import 'package:your_app/animations/animate.dart';
+import 'package:your_app/animations/animations.dart';
 ```
 
-**Parameters:**
+## 🎯 Overview
 
-*   **`duration`** (required, `Duration`):  The length of time the animation should take.
-*   **`delay`** (optional, `Duration`):  The amount of time to wait before starting the animation.  Defaults to zero (no delay).
-*   **`child`** (required, `Widget`): The widget to which the animation will be applied.
-*   **`onComplete`** (optional, `ValueSetter<AnimationController>`): A callback function that's called when the animation completes.  It receives the `AnimationController` as an argument.
-*   **`type`** (required, `AnimationType`): The type of animation to apply (see the `AnimationType` enum below).
-*   **`begin`** (optional, `double`): The starting value of the animation. Defaults to 0.0. The type can change based on the animation type
-*   **`end`** (optional, `double`): The ending value of the animation. Defaults to 1.0. The type can change based on the animation type
-*   **`curve`** (optional, `Curve`): The curve to use for the animation. Defaults to `Curves.linear`.
+This library consists of three main parts:
 
-**`AnimationType` Enum:**
+1. **GetAnimatedBuilder**: The core of the animation system
+2. **Animate Widget**: A versatile widget for animations
+3. **Animation Extensions**: Extension methods for a smooth API
 
-Defines the available animation types:
+## ⚙️ GetAnimatedBuilder
 
-*   `fadeIn`:  Fades the child in (from transparent to opaque).
-*   `fadeOut`: Fades the child out (from opaque to transparent).
-*   `rotate`: Rotates the child.
-*   `scale`:  Scales the child.
-*   `bounce`: Applies a bounce effect (similar to scaling with a bounce curve).
-*   `spin`:  Continuously rotates the child (360 degrees).
-*   `size`: Animates the size of the child (effectively a scale animation).
-*   `blur`: Applies a blur effect to the child.
-*   `flip`:  Flips the child (3D rotation around the Y-axis).
-*   `wave`:  Moves the child up and down in a wave-like motion.
-    *   `wobble`:  Applies a wobble effect, a slight rotational distortion.
-*   `slideInLeft`: Slides the child in from the left.
-*   `slideInRight`: Slides the child in from the right.
-*   `slideInUp`: Slides the child in from the bottom.
-*   `slideInDown`: Slides the child in from the top.
-*   `zoom`: Zooms in or out on the child, starting from scale 1.
-    *`color`: colors begin and end
+The core of the animation system that fully manages the animation lifecycle.
 
-**Example Usage:**
+### Features
+
+- ✅ **Automatic AnimationController management**
+- ✅ **Delay support**
+- ✅ **onStart and onComplete callbacks**
+- ✅ **Hot Reload support**
+- ✅ **Full Type Safety**
+- ✅ **Optimized memory management**
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `duration` | `Duration` | ✅ | Animation duration |
+| `delay` | `Duration` | ✅ | Delay before start |
+| `tween` | `Tween<T>` | ✅ | Range of changes |
+| `idleValue` | `T` | ✅ | Value before start |
+| `builder` | `ValueWidgetBuilder<T>` | ✅ | Widget builder |
+| `child` | `Widget` | ✅ | Child widget |
+| `curve` | `Curve` | ❌ | Animation curve |
+| `onStart` | `ValueSetter<AnimationController>?` | ❌ | Start callback |
+| `onComplete` | `ValueSetter<AnimationController>?` | ❌ | End callback |
+
+### Usage Example
 
 ```dart
-// Fade-in animation
-Animate(
-  duration: Duration(seconds: 2),
-  type: AnimationType.fadeIn,
-  child: Text('Hello, world!'),
+GetAnimatedBuilder<double>(
+  duration: Duration(milliseconds: 500),
+  delay: Duration(milliseconds: 200),
+  tween: Tween<double>(begin: 0.0, end: 1.0),
+  idleValue: 0.0,
+  curve: Curves.easeInOut,
+  onStart: (controller) => print('Animation started!'),
+  onComplete: (controller) => print('Animation completed!'),
+  builder: (context, value, child) {
+    return Opacity(
+      opacity: value,
+      child: child,
+    );
+  },
+  child: Text('Hello World!'),
 )
+```
 
-// Rotate animation
-Animate(
+## 🎭 Animate Widget
+
+A versatile widget for applying various predefined animations.
+
+### Animation Types (AnimationType)
+
+#### 🌟 Basic Animations
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `fadeIn` | Fade in | Opacity from 0 to 1 |
+| `fadeOut` | Fade out | Opacity from 1 to 0 |
+| `scale` | Change size | From small to large |
+| `rotate` | Rotation | 360-degree rotation |
+
+#### 🎪 Advanced Animations
+
+| Type | Description | Special Parameters |
+|------|-------------|-------------------|
+| `bounce` | Bounce and jump | curve: `Curves.bounceInOut` |
+| `elastic` | Elastic | Custom elastic calculation |
+| `shake` | Shake | Sinusoidal movement |
+| `wobble` | Wobble | Slight rotation |
+| `wave` | Wave | Vertical wave movement |
+
+#### 📱 Slide Animations
+
+| Type | Direction | Usage |
+|------|-----------|-------|
+| `slideInLeft` | Left to right | Entry from the side |
+| `slideInRight` | Right to left | Entry from the side |
+| `slideInUp` | Bottom to top | Entry from the bottom |
+| `slideInDown` | Top to bottom | Entry from the top |
+| `slideOutLeft` | Exit to the left | Exit from the side |
+| `slideOutRight` | Exit to the right | Exit from the side |
+| `slideOutUp` | Exit to the top | Exit from the top |
+| `slideOutDown` | Exit to the bottom | Exit from the bottom |
+
+#### 🎨 Special Animations
+
+| Type | Description | Requirements |
+|------|-------------|--------------|
+| `blur` | Blur | `BackdropFilter` |
+| `flip` | 3D rotation | Matrix4 transformation |
+| `zoom` | Zoom | Scale change |
+| `color` | Color change | `beginColor`, `endColor` |
+
+### Factory Constructors
+
+```dart
+// Fade In
+Animate.fadeIn(
   duration: Duration(seconds: 1),
-  type: AnimationType.rotate,
-  begin: 0.0, // Start at 0 radians
-  end: 2.0,   // End at 4π radians (two full rotations)
-  child: Icon(Icons.refresh),
+  child: myWidget,
 )
 
-// Slide-in from left animation
+// Slide In
+Animate.slideIn(
+  duration: Duration(milliseconds: 600),
+  direction: SlideDirection.left,
+  customOffset: 200,
+  child: myWidget,
+)
+
+// Scale
+Animate.scale(
+  duration: Duration(milliseconds: 800),
+  begin: 0.5,
+  end: 1.2,
+  curve: Curves.elasticOut,
+  child: myWidget,
+)
+```
+
+### Complete Example
+
+```dart
+class AnimatedCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Animate(
+      duration: Duration(milliseconds: 800),
+      type: AnimationType.slideInLeft,
+      customOffset: 100,
+      curve: Curves.easeOutBack,
+      onStart: (controller) {
+        print('Card animation started');
+      },
+      onComplete: (controller) {
+        print('Card animation completed');
+      },
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Text('Animated Card'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+## 🔗 Animation Extensions
+
+Extension methods for easily applying animations with a smooth and chainable API.
+
+### Common Parameters
+
+```dart
+Duration duration = Duration(seconds: 2) // Animation duration
+Duration delay = Duration.zero // Delay
+ValueSetter<AnimationController>? onComplete // End callback
+bool isSequential = false // Sequential execution
+```
+
+### Basic Animations
+
+```dart
+// Fade
+myWidget.fadeIn(duration: Duration(seconds: 1))
+myWidget.fadeOut(duration: Duration(seconds: 1))
+
+// Scale
+myWidget.scale(
+  begin: 0.8,
+  end: 1.2,
+  duration: Duration(milliseconds: 600),
+)
+
+// Rotate (turns)
+myWidget.rotate(
+  begin: 0.0, // Start
+  end: 1.0, // One full turn
+  duration: Duration(seconds: 2),
+)
+
+// Spin (full rotation)
+myWidget.spin(duration: Duration(seconds: 1))
+```
+
+### Slide with SlideType
+
+```dart
+enum SlideType {
+  left, // From left
+  right, // From right
+  top, // From top
+  bottom, // From bottom
+}
+
+// Usage
+myWidget.slideIn(
+  type: SlideType.left,
+  distance: 100.0,
+  duration: Duration(milliseconds: 500),
+)
+
+myWidget.slideOut(
+  type: SlideType.right,
+  distance: 200.0,
+  duration: Duration(milliseconds: 400),
+)
+```
+
+### Special Animations
+
+```dart
+// Bounce
+myWidget.bounce(
+  begin: 1.0,
+  end: 1.3,
+  duration: Duration(milliseconds: 800),
+)
+
+// Blur
+myWidget.blur(
+  begin: 0.0,
+  end: 10.0,
+  duration: Duration(milliseconds: 1000),
+)
+
+// Flip
+myWidget.flip(duration: Duration(milliseconds: 600))
+
+// Wave
+myWidget.wave(duration: Duration(seconds: 2))
+```
+
+### Sequential Animations
+
+```dart
+myWidget
+  .fadeIn(
+    duration: Duration(milliseconds: 500),
+  )
+  .slideIn(
+    type: SlideType.left,
+    duration: Duration(milliseconds: 600),
+    isSequential: true, // Execute after fadeIn
+  )
+  .bounce(
+    begin: 1.0,
+    end: 1.1,
+    duration: Duration(milliseconds: 300),
+    isSequential: true, // Execute after slideIn
+  );
+```
+
+## 💡 Practical Examples
+
+### 1. Loading Animation
+
+```dart
+class LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.refresh, size: 50)
+            .spin(duration: Duration(seconds: 2)),
+
+          SizedBox(height: 20),
+
+          Text('Loading...')
+            .fadeIn(duration: Duration(milliseconds: 800))
+            .bounce(
+              begin: 1.0,
+              end: 1.1,
+              duration: Duration(milliseconds: 500),
+              isSequential: true,
+            ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+### 2. Card List Animation
+
+```dart
+class AnimatedCardList extends StatelessWidget {
+  final List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return Card(
+          margin: EdgeInsets.all(8),
+          child: ListTile(
+            title: Text(items[index]),
+          ),
+        )
+        .fadeIn(
+          duration: Duration(milliseconds: 600),
+          delay: Duration(milliseconds: index * 100), // Staggered delay
+        )
+        .slideIn(
+          type: SlideType.left,
+          duration: Duration(milliseconds: 500),
+          distance: 50,
+          isSequential: true,
+        );
+      },
+    );
+  }
+}
+```
+
+### 3. Button Interactions
+
+```dart
+class AnimatedButton extends StatefulWidget {
+  @override
+  _AnimatedButtonState createState() => _AnimatedButtonState();
+}
+
+class _AnimatedButtonState extends State<AnimatedButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) => setState(() => _isPressed = false),
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 100),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: _isPressed ? Colors.blue[700] : Colors.blue,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: _isPressed ? [] : [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Text(
+          'Tap Me!',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    )
+    .scale(
+      begin: 1.0,
+      end: _isPressed ? 0.95 : 1.0,
+      duration: Duration(milliseconds: 100),
+    );
+  }
+}
+```
+
+### 4. Page Transitions
+
+```dart
+class PageTransitionExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Welcome!',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            )
+            .slideIn(
+              type: SlideType.top,
+              duration: Duration(milliseconds: 600),
+            ),
+
+            // Content
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text('Content goes here...'),
+                    // ... more content
+                  ],
+                ),
+              )
+              .fadeIn(duration: Duration(milliseconds: 800))
+              .scale(
+                begin: 0.9,
+                end: 1.0,
+                duration: Duration(milliseconds: 600),
+                isSequential: true,
+              ),
+            ),
+
+            // Bottom Button
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text('Get Started'),
+              ),
+            )
+            .slideIn(
+              type: SlideType.bottom,
+              duration: Duration(milliseconds: 500),
+              delay: Duration(milliseconds: 400),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## ⚡ Optimization Tips
+
+### 1. Memory Management
+
+```dart
+// ✅ Correct - Using const
+const Animate(
+  duration: Duration(milliseconds: 500),
+  type: AnimationType.fadeIn,
+  child: Text('Static text'),
+)
+
+// ❌ Incorrect - Creating new object in each build
 Animate(
   duration: Duration(milliseconds: 500),
-);
+  type: AnimationType.fadeIn,
+  child: Text('Dynamic: ${DateTime.now()}'),
+)
 ```
 
---- 
-
-# Flutter Animations Documentation
-
-
-
-## Core Concept: `GetAnimatedBuilder`
-
-All animations in this library extend `GetAnimatedBuilder<T>`, which itself is a generic class that uses flutter `AnimatedBuilder`.  It handles the animation lifecycle, value updates, and rebuilding of the widget tree.  You don't interact with `GetAnimatedBuilder` directly, but understanding its role is important:
-
-*   **`tween`**: Defines the range of values the animation will produce (e.g., from 0.0 to 1.0 for opacity).
-*   **`builder`**: A function that's called every time the animation value changes.  It receives the current animation value and the child widget, and it returns the *transformed* widget (e.g., a widget with adjusted opacity, scale, or position).
-*   **`duration`**:  How long the animation takes to complete.
-*   **`delay`**:  How long to wait before starting the animation.
-*   **`onComplete`**:  A callback function that's executed when the animation finishes.
-*  **`idleValue`**: The value of tween when the animation is not active.
-*   **`curve`**: An optional parameter to specify the animation curve, influencing the rate of change over time (e.g., `Curves.easeOut`, `Curves.bounceIn`).
-
-## Available Animations
-
-The following animation widgets are provided, each with specific parameters and usage examples:
-
-### 1. `OpacityAnimation`
-
-Changes the opacity of a widget.
-
-*   **`begin`**:  Starting opacity (0.0 = transparent, 1.0 = opaque).
-*   **`end`**: Ending opacity.
-* **`idleValue`**: Default value of opacity for the animation.
+### 2. Choosing the Right Curve
 
 ```dart
-OpacityAnimation(
-  duration: const Duration(seconds: 1),
-  delay: const Duration(milliseconds: 500),
-  begin: 0.0,
-  end: 1.0,
-  idleValue: 0,
-  child: Container(
-    width: 100,
-    height: 100,
-    color: Colors.blue,
-    width: 200,
-    height: 200,
-))
+// For UI elements
+curve: Curves.easeInOut
 
-// color animation
-Animate(
-    duration: const Duration(seconds: 1),
-    type: AnimationType.color,
-    begin: Colors.red,
-    end: Colors.green,
-    child: Container(
-    color: Colors.blue,
-    width: 200,
-    height: 200,
-))
+// For attention-seeking animations
+curve: Curves.bounceIn
+
+// For natural movements
+curve: Curves.decelerate
+
+// For playful interactions
+curve: Curves.elasticOut
 ```
 
-
-
----
-
-
-
-
-## 2. `animations.dart`
-
-This file provides extension methods on the `Widget` class, allowing you to apply animations using a fluent style.
-
-**Extension Methods:**
-
-All extension methods return a `GetAnimatedBuilder` instance, allowing for chaining of animations.  They all share similar parameters:
-
-*   **`duration`** (optional, `Duration`):  The duration of the animation. Defaults to 2 seconds (`_defaultDuration`).
-*   **`delay`** (optional, `Duration`):  The delay before the animation starts. Defaults to 0 seconds (`_defaultDelay`).
-*   **`onComplete`** (optional, `ValueSetter<AnimationController>`): A callback called when the animation completes.
-*   **`isSequential`** (optional, `bool`):  If `true`, the animation will start *after* any previous animation on the same widget has finished. Defaults to `false`.
-*   **`begin`** begin value for the animation
-*   **`end`** end value for the animation
-
-**Available Extension Methods:**
-
-*   **`fadeIn(...)`**:  Fades the widget in.
-*   **`fadeOut(...)`**: Fades the widget out.
-*   **`rotate({required double begin, required double end, ...})`**: Rotates the widget.  `begin` and `end` specify the start and end rotation in *turns* (0 to 1 is a full rotation).
-*   **`scale({required double begin, required double end, ...})`**:  Scales the widget. `begin` and `end` specify the start and end scale factors.
-*   **`slide({required OffsetBuilder offset, double begin = 0, double end = 1, ...})`**: Slides the widget.  `offset` is a function that takes the `BuildContext` and the animation value (0.0 to 1.0) and returns an `Offset`.
-*   **`bounce({required double begin, required double end, ...})`**: Applies a bounce effect (scales with a `Curves.bounceInOut` curve).
-*   **`spin(...)`**: Rotates the widget a full 360 degrees.
-*   **`size({required double begin, required double end, ...})`**: Animates the size of the widget (effectively a scale animation).
-*   **`blur({double begin = 0, double end = 15, ...})`**:  Applies a blur effect.
-*   **`flip({double begin = 0, double end = 1, ...})`**: Flips the widget.
-*   **`wave({double begin = 0, double end = 1, ...})`**:  Creates a vertical wave-like motion.
-*   **`wobble(...)`**:  A wobble effect, a slight rotational distortion.
-
-**`_getDelay(bool isSequential, Duration delay)`:**
-
-*   A private helper method to calculate the delay.  If `isSequential` is true, it adds the total duration of any preceding animation (obtained via `_currentAnimation`) to the given `delay`.
-    *   Asserts that if a delay is manually specified, sequential animation is not used
-
-**Example Usage:**
+### 3. Setting Duration
 
 ```dart
-// Fade-in and then scale up
-Text('Animated Text')
-  .fadeIn(duration: Duration(seconds: 1))
-  .scale(begin: 1.0, end: 2.0, duration: Duration(seconds: 1), isSequential: true);
+// Quick micro-interactions
+duration: Duration(milliseconds: 150-300)
 
-// Slide in from the left
-Container(width: 100, height: 100, color: Colors.red)
-  .slide(offset: (context, value) => Offset(-value, 0));
+// Standard UI transitions
+duration: Duration(milliseconds: 300-500)
 
-// Bounce
-Icon(Icons.star)
-  .bounce(begin: 0.5, end: 1.5);
+// Attention-grabbing animations
+duration: Duration(milliseconds: 500-1000)
 
-// Spin, then fade out sequentially
-Icon(Icons.autorenew)
-  .spin(duration: Duration(seconds: 1))
-  .fadeOut(duration: Duration(seconds: 1), isSequential: true);
-  
-//Example of wobble
-
-Text("Wobble")
-    .wobble(begin: 0, end: 2)
+// Background/ambient animations
+duration: Duration(seconds: 2-5)
 ```
 
-
-
----
-
-
-
-## 3. `get_animated_builder.dart`
-
-This file defines the `GetAnimatedBuilder` widget, which is the core of the animation system.  It handles creating and managing the `AnimationController` and `Animation`, and rebuilding the widget tree based on the animation's value.
-
-**`GetAnimatedBuilder<T>` Widget:**
-
-A generic widget that builds its child based on the value of an animation.
-
-**Constructor:**
+### 4. Using isSequential
 
 ```dart
-const GetAnimatedBuilder({
-  super.key,
-  this.curve = Curves.linear,
-  this.onComplete,
-  this.onStart, // Added onStart
-  required this.duration,
-  required this.tween,
-  required this.idleValue, // Now required
-  required this.builder,
-  required this.child,
-  required this.delay,
-});
+// ✅ Correct - For sequential animations
+myWidget
+  .fadeIn(duration: Duration(milliseconds: 300))
+  .slideIn(
+    type: SlideType.left,
+    isSequential: true, // Waits for fadeIn to finish
+    duration: Duration(milliseconds: 400),
+  )
+
+// ❌ Incorrect - Inappropriate simultaneous animations
+myWidget
+  .fadeIn(duration: Duration(milliseconds: 300))
+  .slideIn(
+    type: SlideType.left,
+    isSequential: false, // Executes simultaneously
+    duration: Duration(milliseconds: 400),
+  )
 ```
 
-**Parameters:**
+## 🔧 Troubleshooting
 
-*   **`duration`** (required, `Duration`): The duration of the animation.
-*   **`delay`** (required, `Duration`): The delay before the animation starts.
-*   **`child`** (required, `Widget`): The child widget.
-*   **`onComplete`** (optional, `ValueSetter<AnimationController>`): Callback when the animation completes.
-*    **`onStart`** (optional, `ValueSetter<AnimationController>`): Optional onStart callback
-*   **`tween`** (required, `Tween<T>`): The tween that defines the range of the animation.
-*   **`idleValue`** (required, `T`):  The value to use when the animation hasn't started yet (before the delay).
-*   **`builder`** (required, `ValueWidgetBuilder<T>`): A function that builds the widget tree based on the current animation value. It takes the `BuildContext`, the animation value (`T`), and the `child` widget as arguments.
-*   **`curve`** (optional, `Curve`): The animation curve. Defaults to `Curves.linear`.
+### Common Issues
 
-**`GetAnimatedBuilderState<T>` Class:**
-
-The state class for `GetAnimatedBuilder`.
-
-*   **`_controller`**:  The `AnimationController` that drives the animation.
-*   **`_animation`**: The `Animation<T>` object, created from the `tween` and the `controller`.
-*   **`_wasStarted`**:  A boolean flag indicating whether the animation has started (after the delay).
-*    **`_idleValue`**: The value to use when the animation hasn't started
-*   **`_listener(AnimationStatus status)`**:  A listener attached to the `AnimationController`'s status.  It calls `onComplete` when the animation finishes.
-*   **`initState()`**: Initializes the `AnimationController`, adds the status listener, creates the `Animation`, and starts the animation after the specified `delay`.
-*   **`didUpdateWidget(...)`**:  Handles changes to the widget's properties (duration, delay, tween, curve) during hot reload.  It restarts the animation if any of these change.
-*   **`dispose()`**:  Removes the status listener and disposes of the `AnimationController`.
-*   **`build(...)`**: Builds the widget tree using the provided `builder` function, passing in the current animation value (or the `idleValue` if the animation hasn't started). Uses an `AnimatedBuilder` internally.
-
-**Example (Internal Use):**
-
-`GetAnimatedBuilder` is used internally by `Animate` and the extension methods. Here's a simplified example of how it's used within `fadeIn`:
+#### 1. Animation Not Running
 
 ```dart
-// Inside animations.dart, simplified fadeIn implementation
-GetAnimatedBuilder<double>(
-  duration: duration,
-  delay: delay,
-  tween: Tween<double>(begin: 0.0, end: 1.0),
-  idleValue: 0.0, // Start transparent
-  builder: (context, value, child) => Opacity(opacity: value, child: child),
-  child: this, // 'this' refers to the widget the extension method is called on
-);
+// Ensure the widget is mounted
+if (mounted) {
+  controller.forward();
+}
+
+// Ensure duration > 0
+duration: Duration(milliseconds: 100) // Minimum
 ```
 
-## Key Improvements and Explanations:
+#### 2. Memory Leak
 
-*   **Comprehensive Documentation:**  Provides clear explanations of each class, method, and parameter, including examples.
-*   **`idleValue`:** The `GetAnimatedBuilder` now *requires* an `idleValue`. This is crucial for correctly handling the state *before* the animation starts (after the delay).  Without it, the widget might briefly show the "end" state of the animation before the delay is over.
-*   **Generic Type `T`:**  `GetAnimatedBuilder` is generic (`<T>`), making it type-safe and flexible for different animation types (e.g., `double`, `Offset`, `Color`).
-*    **`onStart` added:** `GetAnimatedBuilder` has onStart callback
-*   **Sequential Animations:**  The `isSequential` flag and the `_getDelay` method in `animations.dart` correctly handle sequential animations.  The delay of a sequential animation is calculated by adding the total duration of the *previous* animation on the same widget.
-* **Error Handling**: Asserts are used to help users of the animation extension to specify correct parameters.
-*   **Hot Reload Support:**  `GetAnimatedBuilder`'s `didUpdateWidget` method correctly handles changes to animation parameters during hot reload, restarting the animation as needed.
-*   **Fluent API:**  The extension methods in `animations.dart` make it very easy to chain animations together.
-*   **`OffsetBuilder` Typedef:** Added type alias for Offset function.
-*  **Internal workings of** `GetAnimatedBuilder` are described.
+```dart
+// Always dispose
+@override
+void dispose() {
+  _controller.dispose();
+  super.dispose();
+}
+```
 
-This comprehensive documentation and the improved code provide a robust and easy-to-use animation library for Flutter developers. The examples demonstrate various animation types and how to combine them. The use of `GetAnimatedBuilder` ensures proper animation management, and the extension methods provide a clean and concise API.
+#### 3. Sequential Animations Not Working
+
+```dart
+// Ensure isSequential: true
+myWidget
+  .fadeIn(duration: Duration(milliseconds: 500))
+  .slideIn(
+    isSequential: true, // Here!
+    type: SlideType.left,
+    duration: Duration(milliseconds: 400),
+  )
+```
+
+#### 4. Poor Performance
+
+```dart
+// Use AnimatedBuilder instead of setState
+// The library automatically does this
+// Make widgets const
+const Text('Static content')
+
+// Use RepaintBoundary
+RepaintBoundary(
+  child: myAnimatedWidget,
+)
+```
+
+### Debug Mode
+
+```dart
+// For debugging animations
+GetAnimatedBuilder(
+  // ... other params
+  onStart: (controller) {
+    debugPrint('Animation started: ${controller.status}');
+  },
+  onComplete: (controller) {
+    debugPrint('Animation completed: ${controller.status}');
+  },
+  // ...
+)
+```
+
+## 🎉 Conclusion
+
+This Flutter Animation Library is a powerful and flexible tool for creating beautiful and professional animations. With a simple API and advanced features, you can easily create visually appealing user experiences.
+
+### Key Features:
+
+- 🎯 **Simple and Visual API**
+- ⚡ **High Performance and Optimized**
+- 🔧 **Customizable and Flexible**
+- 🛡️ **Type Safe and Stable**
+- 🔄 **Full Hot Reload Support**
+- 📱 **Compatible with All Flutter Platforms**
+

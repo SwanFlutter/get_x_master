@@ -1,14 +1,48 @@
 import 'package:flutter/material.dart';
 
 /// A generic animated builder that handles animation setup and disposal.
+///
+/// The `GetAnimatedBuilder` widget provides a flexible way to create custom animations
+/// for a child widget. It supports various animation properties including duration, delay,
+/// tween, and callbacks for animation start and completion.
+///
+/// Example usage:
+/// ```dart
+/// GetAnimatedBuilder<double>(
+///   duration: Duration(seconds: 2),
+///   delay: Duration(seconds: 1),
+///   tween: Tween<double>(begin: 50.0, end: 200.0),
+///   idleValue: 50.0,
+///   builder: (context, value, child) {
+///     return Container(
+///       width: value,
+///       height: value,
+///       color: Colors.blue,
+///       child: Center(
+///         child: Text(
+///           'Animated Box',
+///           style: TextStyle(color: Colors.white),
+///         ),
+///       ),
+///     );
+///   },
+///   child: Container(),
+///   onStart: (controller) {
+///     print('Animation started');
+///   },
+///   onComplete: (controller) {
+///     print('Animation completed');
+///   },
+/// ),
+/// ```
 class GetAnimatedBuilder<T> extends StatefulWidget {
   final Duration duration;
   final Duration delay;
   final Widget child;
   final ValueSetter<AnimationController>? onComplete;
-  final ValueSetter<AnimationController>? onStart; // Optional onStart callback
+  final ValueSetter<AnimationController>? onStart;
   final Tween<T> tween;
-  final T idleValue; // Required idleValue
+  final T idleValue;
   final ValueWidgetBuilder<T> builder;
   final Curve curve;
 
@@ -19,10 +53,10 @@ class GetAnimatedBuilder<T> extends StatefulWidget {
     super.key,
     this.curve = Curves.linear,
     this.onComplete,
-    this.onStart, // Include onStart in the constructor
+    this.onStart,
     required this.duration,
     required this.tween,
-    required this.idleValue, // idleValue is now required
+    required this.idleValue,
     required this.builder,
     required this.child,
     required this.delay,
@@ -35,41 +69,46 @@ class GetAnimatedBuilder<T> extends StatefulWidget {
 /// State class for GetAnimatedBuilder
 class GetAnimatedBuilderState<T> extends State<GetAnimatedBuilder<T>>
     with TickerProviderStateMixin {
-  late AnimationController _controller; // Remove 'final'
-  Animation<T>? _animation; // Make nullable and remove 'late final'
-  late T _idleValue; // Remove the dynamic type
-  final bool _willResetOnDispose = false;
-  bool wasStarted = false; // Define _wasStarted
-  bool get willResetOnDispose => _willResetOnDispose;
+  late AnimationController _controller;
+  late Animation<T> _animation;
+  late T _currentValue;
+  bool _wasStarted = false;
+  bool _isDisposed = false;
 
   /// Handles animation status changes and callbacks
   void _listener(AnimationStatus status) {
+    if (_isDisposed) return;
+
     switch (status) {
-      case AnimationStatus.completed:
-        widget.onComplete?.call(_controller);
-        if (_willResetOnDispose) {
-          _controller.reset();
+      case AnimationStatus.forward:
+        if (!_wasStarted) {
+          _wasStarted = true;
+          widget.onStart?.call(_controller);
         }
         break;
-      case AnimationStatus.forward:
-        widget.onStart?.call(_controller);
+      case AnimationStatus.completed:
+        widget.onComplete?.call(_controller);
         break;
-      default:
+      case AnimationStatus.dismissed:
+      case AnimationStatus.reverse:
         break;
     }
+  }
+
+  /// Animation value listener to update current value
+  void _valueListener() {
+    if (_isDisposed) return;
+    setState(() {
+      _currentValue = _animation.value;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    _idleValue = widget.idleValue; // Assign directly
+    _currentValue = widget.idleValue;
     _initializeAnimation();
-    Future.delayed(widget.delay, () {
-      if (mounted) {
-        _controller.forward();
-        wasStarted = true;
-      }
-    });
+    _startAnimationWithDelay();
   }
 
   void _initializeAnimation() {
@@ -80,45 +119,62 @@ class GetAnimatedBuilderState<T> extends State<GetAnimatedBuilder<T>>
     _animation = widget.tween.animate(
       CurvedAnimation(parent: _controller, curve: widget.curve),
     );
+
+    _animation.addListener(_valueListener);
   }
 
-  @override
-  void didUpdateWidget(covariant GetAnimatedBuilder<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.duration != widget.duration ||
-        oldWidget.tween != widget.tween ||
-        oldWidget.curve != widget.curve ||
-        oldWidget.delay != widget.delay) {
-      _controller.dispose(); // Dispose of the old controller
-      _initializeAnimation(); // Re-initialize the animation
-
+  void _startAnimationWithDelay() {
+    if (widget.delay.inMilliseconds > 0) {
       Future.delayed(widget.delay, () {
-        if (mounted) {
+        if (mounted && !_isDisposed) {
           _controller.forward();
-          wasStarted = true;
+        }
+      });
+    } else {
+      // Start immediately if no delay
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && !_isDisposed) {
+          _controller.forward();
         }
       });
     }
   }
 
   @override
-  void dispose() {
+  void didUpdateWidget(covariant GetAnimatedBuilder<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Check if any critical properties changed
+    final shouldReinitialize =
+        oldWidget.duration != widget.duration ||
+        oldWidget.tween != widget.tween ||
+        oldWidget.curve != widget.curve ||
+        oldWidget.delay != widget.delay;
+
+    if (shouldReinitialize) {
+      _disposeAnimation();
+      _wasStarted = false;
+      _currentValue = widget.idleValue;
+      _initializeAnimation();
+      _startAnimationWithDelay();
+    }
+  }
+
+  void _disposeAnimation() {
+    _animation.removeListener(_valueListener);
     _controller.removeStatusListener(_listener);
     _controller.dispose();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    _disposeAnimation();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _animation == null
-        ? widget.builder(context, _idleValue, widget.child)
-        : AnimatedBuilder(
-          animation: _animation!,
-          builder: (context, child) {
-            final value = _animation!.value;
-            return widget.builder(context, value, child);
-          },
-          child: widget.child,
-        );
+    return widget.builder(context, _currentValue, widget.child);
   }
 }

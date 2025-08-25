@@ -12,4 +12,6 @@ export 'src/get_navigation/get_navigation.dart';
 export 'src/get_rx/get_rx.dart';
 export 'src/get_state_manager/get_state_manager.dart';
 export 'src/get_utils/get_utils.dart';
+export 'src/responsive/realtime_responsive_extension.dart';
+export 'src/responsive/responsive_builder.dart';
 export 'src/responsive/size_percent_extension.dart';

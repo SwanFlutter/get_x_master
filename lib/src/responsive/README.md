@@ -1,6 +1,6 @@
 # Enhanced Responsive Extensions
 
-The enhanced responsive extensions provide a comprehensive solution for creating responsive Flutter applications without the need for `BuildContext`. These extensions automatically calculate percentages from pixel values and provide multiple approaches to responsive design.
+The enhanced responsive extensions provide a comprehensive solution for creating responsive Flutter applications with multiple responsive modes. These extensions support both traditional responsive design and real-time responsive updates.
 
 ## 🚀 Features
 
@@ -11,11 +11,24 @@ The enhanced responsive extensions provide a comprehensive solution for creating
 - ✅ **Context-Free** - No BuildContext required (uses GetX)
 - ✅ **Type Support** - Works with `double`, `num`, and `int`
 
-### Helper Class
+### Responsive Modes
+- ✅ **Global Mode** - Traditional GetX responsive (updates on restart/hot reload)
+- ✅ **LayoutBuilder Mode** - Real-time updates using LayoutBuilder
+- ✅ **SinglePage Mode** - Real-time updates using MediaQuery for single pages
+
+### Helper Classes
 - ✅ **ResponsiveHelper** - Static methods for responsive calculations
-- ✅ **Device Detection** - Automatic tablet/phone detection
+- ✅ **ResponsiveBuilder** - Widget builder for real-time responsive updates
+- ✅ **ResponsiveData** - Data container with responsive calculations
+- ✅ **Device Detection** - Automatic device type detection
 - ✅ **Orientation Support** - Landscape/portrait detection
 - ✅ **Responsive Values** - Different values for different screen sizes
+
+### Pre-built Components
+- ✅ **ResponsiveTextWidget** - Text that updates font size in real-time
+- ✅ **ResponsiveContainer** - Container with real-time dimensions
+- ✅ **ResponsiveIcon** - Icons with real-time sizing
+- ✅ **ResponsiveElevatedButton** - Buttons with real-time dimensions
 
 
 ### 1. Dynamic Pixel to Responsive Conversion
@@ -381,6 +394,204 @@ print('134.w = ${134.w}px (${134.0.widthPercent.toStringAsFixed(1)}%)');
 print('30.h = ${30.h}px (${30.0.heightPercent.toStringAsFixed(1)}%)');
 ```
 
+## 🔄 New Responsive Modes
+
+### 1. Global Mode (Default)
+Traditional GetX responsive that updates only when app restarts or hot reloads:
+
+```dart
+// Traditional approach - updates on restart/hot reload
+Container(
+  width: 300.w,
+  height: 100.h,
+  child: Text('Hello', style: TextStyle(fontSize: 16.sp)),
+)
+```
+
+### 2. LayoutBuilder Mode (Real-time)
+Real-time responsive updates using LayoutBuilder:
+
+```dart
+// Real-time updates with LayoutBuilder
+LayoutBuilderResponsive(
+  builder: (data) {
+    return Container(
+      width: data.w(300),  // Updates instantly!
+      height: data.h(100),
+      child: Text(
+        'Hello',
+        style: TextStyle(fontSize: data.sp(16)),
+      ),
+    );
+  },
+)
+```
+
+### 3. SinglePage Mode (Real-time)
+Real-time responsive updates using MediaQuery for single pages:
+
+```dart
+// Real-time updates with MediaQuery
+SinglePageResponsive(
+  builder: (data) {
+    return Container(
+      width: data.w(300),  // Updates instantly!
+      height: data.h(100),
+      child: Text(
+        'Device: ${data.deviceType}',
+        style: TextStyle(fontSize: data.sp(16)),
+      ),
+    );
+  },
+)
+```
+
+### 4. Real-time Responsive Values
+Get responsive values that update in real-time:
+
+```dart
+// Real-time responsive value
+ResponsiveHelper.responsiveValueRealtime<double>(
+  phone: 14.0,
+  tablet: 16.0,
+  laptop: 18.0,
+  desktop: 20.0,
+  builder: (fontSize) {
+    return Text(
+      'Dynamic Font Size',
+      style: TextStyle(fontSize: fontSize),
+    );
+  },
+)
+```
+
+## 🎨 Pre-built Responsive Components
+
+### ResponsiveTextWidget
+Text that updates font size in real-time:
+
+```dart
+ResponsiveTextWidget(
+  'This text resizes instantly!',
+  fontSize: 18,
+  style: TextStyle(fontWeight: FontWeight.bold),
+)
+```
+
+### ResponsiveContainer
+Container with real-time dimensions:
+
+```dart
+ResponsiveContainer(
+  width: 250,
+  height: 100,
+  padding: EdgeInsets.all(16),
+  decoration: BoxDecoration(
+    color: Colors.blue[100],
+    borderRadius: BorderRadius.circular(8),
+  ),
+  child: Text('Responsive Container'),
+)
+```
+
+### ResponsiveIcon
+Icons with real-time sizing:
+
+```dart
+ResponsiveIcon(
+  Icons.star,
+  size: 32,
+  color: Colors.amber,
+)
+```
+
+### ResponsiveElevatedButton
+Buttons with real-time dimensions:
+
+```dart
+ResponsiveElevatedButton(
+  width: 200,
+  height: 50,
+  onPressed: () {},
+  child: Text('Responsive Button'),
+)
+```
+
+## 🔧 Custom Responsive Widgets
+
+Create custom widgets with real-time responsive behavior:
+
+```dart
+class CustomResponsiveCard extends StatelessWidget with RealtimeResponsiveMixin {
+  final String title;
+  final String subtitle;
+
+  const CustomResponsiveCard({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+  }) : super(key: key);
+
+  @override
+  ResponsiveMode get responsiveMode => ResponsiveMode.layoutBuilder;
+
+  @override
+  Widget buildResponsive(BuildContext context, ResponsiveData data) {
+    return Container(
+      width: data.w(300),
+      height: data.h(120),
+      padding: EdgeInsets.all(data.w(16)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(data.w(12)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: data.w(8),
+            offset: Offset(0, data.h(2)),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: data.sp(16),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: data.h(8)),
+          Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: data.sp(12),
+              color: Colors.grey[600],
+            ),
+          ),
+          Text(
+            'Device: ${data.deviceType} (${data.width.toInt()}x${data.height.toInt()})',
+            style: TextStyle(
+              fontSize: data.sp(10),
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## 🚀 Performance Comparison
+
+| Mode | Update Frequency | Performance | Use Case |
+|------|------------------|-------------|----------|
+| Global | On restart/hot reload | ⭐⭐⭐⭐⭐ | Static layouts |
+| LayoutBuilder | Real-time | ⭐⭐⭐⭐ | Dynamic layouts |
+| SinglePage | Real-time | ⭐⭐⭐⭐ | Single page apps |
+
 ## 📚 API Reference
 
 ### Extensions on `double`
@@ -406,5 +617,36 @@ print('30.h = ${30.h}px (${30.0.heightPercent.toStringAsFixed(1)}%)');
 - `static bool get isPhone` - Device type detection
 - `static bool get isLandscape` - Orientation detection
 - `static T responsiveValue<T>({...})` - Responsive values
+- `static Widget responsiveValueRealtime<T>({...})` - Real-time responsive values
+
+### ResponsiveBuilder Class
+- `ResponsiveBuilder({required builder, mode})` - Widget builder for responsive layouts
+- `ResponsiveMode.global` - Traditional GetX responsive
+- `ResponsiveMode.layoutBuilder` - Real-time with LayoutBuilder
+- `ResponsiveMode.singlePage` - Real-time with MediaQuery
+
+### ResponsiveData Class
+- `double w(double pixels)` - Convert pixels to responsive width
+- `double h(double pixels)` - Convert pixels to responsive height
+- `double wp(double percent)` - Width percentage
+- `double hp(double percent)` - Height percentage
+- `double sp(double fontSize)` - Responsive font size
+- `double ws(double size)` - Widget size
+- `double imgSize(double size)` - Image size
+- `T responsiveValue<T>({...})` - Device-specific values
+- `String get deviceType` - Current device type
+- `bool get isPhone/isTablet/isLaptop/isDesktop` - Device type checks
+- `bool get isLandscape/isPortrait` - Orientation checks
+
+### Pre-built Components
+- `ResponsiveTextWidget` - Text with real-time font sizing
+- `ResponsiveContainer` - Container with real-time dimensions
+- `ResponsiveIcon` - Icon with real-time sizing
+- `ResponsiveElevatedButton` - Button with real-time dimensions
+- `ResponsivePadding` - Padding with real-time values
+- `ResponsiveSizedBox` - SizedBox with real-time dimensions
+
+### Mixins
+- `RealtimeResponsiveMixin` - Mixin for creating custom responsive widgets
 
 

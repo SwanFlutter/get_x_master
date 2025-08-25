@@ -4,7 +4,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../get_x_master.dart';
+import '../get_core/get_core.dart';
+import '../get_navigation/get_navigation.dart';
 
 /// Enhanced responsive extension for percentage-based sizing
 ///
@@ -905,6 +906,7 @@ class ResponsiveHelper {
   }
 
   /// Get responsive value based on device type
+  /// This version updates only when the app is restarted or hot reloaded
   static T responsiveValue<T>({
     T? phone,
     T? tablet,
@@ -928,6 +930,58 @@ class ResponsiveHelper {
       default:
         return phone ?? tablet ?? laptop ?? desktop ?? defaultValue!;
     }
+  }
+
+  /// Get responsive value that updates in real-time when screen size changes
+  /// Use this with ResponsiveBuilder for live updates
+  static Widget responsiveValueRealtime<T>({
+    Widget Function(T value)? builder,
+    T? phone,
+    T? tablet,
+    T? laptop,
+    T? desktop,
+    T? tv,
+    T? defaultValue,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final height = constraints.maxHeight;
+        String currentDevice = 'phone';
+
+        if (width >= 1920 || height >= 1080) {
+          currentDevice = 'tv';
+        } else if (width >= 1200) {
+          currentDevice = 'desktop';
+        } else if (width >= 900) {
+          currentDevice = 'laptop';
+        } else if (width >= 600 || (width >= 500 && width / height > 1.2)) {
+          currentDevice = 'tablet';
+        }
+
+        T value;
+        switch (currentDevice) {
+          case 'desktop':
+            value = desktop ?? laptop ?? tablet ?? phone ?? defaultValue!;
+            break;
+          case 'tv':
+            value = tv ?? desktop ?? laptop ?? tablet ?? phone ?? defaultValue!;
+            break;
+          case 'laptop':
+            value = laptop ?? desktop ?? tablet ?? phone ?? defaultValue!;
+            break;
+          case 'tablet':
+            value = tablet ?? laptop ?? desktop ?? phone ?? defaultValue!;
+            break;
+          case 'phone':
+          default:
+            value = phone ?? tablet ?? laptop ?? desktop ?? defaultValue!;
+            break;
+        }
+
+        return builder!(value);
+      },
+    );
   }
 
   /// Get comprehensive screen information

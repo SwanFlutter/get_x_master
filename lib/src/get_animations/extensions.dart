@@ -9,6 +9,9 @@ import 'get_animated_builder.dart';
 const _defaultDuration = Duration(seconds: 2);
 const _defaultDelay = Duration.zero;
 
+/// Slide animation type
+enum SlideType { left, right, top, bottom }
+
 /// Extension methods for adding animations to any Widget.
 /// These extensions provide a concise and convenient way to apply various
 /// animations to widgets using a fluent API.
@@ -39,7 +42,7 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: 0.0, end: 1.0),
-      idleValue: 0.0, // Add idleValue
+      idleValue: 0.0,
       onComplete: onComplete,
       builder: (context, value, child) => Opacity(opacity: value, child: child),
       child: this,
@@ -66,17 +69,11 @@ extension AnimationExtension on Widget {
     return GetAnimatedBuilder<double>(
       duration: duration,
       delay: _getDelay(isSequential, delay),
-      tween: Tween<double>(
-        begin: 0.0,
-        end: 1.0,
-      ), // Fade from opaque to transparent
-      idleValue: 1.0, // Add idleValue
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      idleValue: 1.0,
       onComplete: onComplete,
       builder:
-          (context, value, child) => Opacity(
-            opacity: 1 - value,
-            child: child,
-          ), // Invert value for fade-out
+          (context, value, child) => Opacity(opacity: 1 - value, child: child),
       child: this,
     );
   }
@@ -99,13 +96,11 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, // Add idleValue
+      idleValue: begin,
       onComplete: onComplete,
       builder:
-          (context, value, child) => Transform.rotate(
-            angle: value * pi * 2, // Convert turns to radians
-            child: child,
-          ),
+          (context, value, child) =>
+              Transform.rotate(angle: value * pi * 2, child: child),
       child: this,
     );
   }
@@ -128,7 +123,7 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, // Add idleValue
+      idleValue: begin,
       onComplete: onComplete,
       builder:
           (context, value, child) =>
@@ -137,26 +132,99 @@ extension AnimationExtension on Widget {
     );
   }
 
-  /// Adds a slide animation to the widget.  The `offset` parameter is a function
-  /// that takes the `BuildContext` and the animation value (0.0 to 1.0) and
-  /// returns an `Offset`.
+  /// Adds a slide animation to the widget with predefined slide types.
   ///
   /// Example:
   /// ```dart
   /// // Slide in from the left
+  /// myWidget.slideIn(type: SlideType.left);
+  ///
+  /// // Slide in from the top with custom distance
+  /// myWidget.slideIn(type: SlideType.top, distance: 200);
+  /// ```
+  GetAnimatedBuilder slideIn({
+    SlideType type = SlideType.left,
+    double distance = 1.0,
+    Duration duration = _defaultDuration,
+    Duration delay = _defaultDelay,
+    ValueSetter<AnimationController>? onComplete,
+    bool isSequential = false,
+  }) {
+    return GetAnimatedBuilder<double>(
+      duration: duration,
+      delay: _getDelay(isSequential, delay),
+      tween: Tween<double>(begin: 1.0, end: 0.0),
+      idleValue: 1.0,
+      onComplete: onComplete,
+      builder: (context, value, child) {
+        late Offset offset;
+        switch (type) {
+          case SlideType.left:
+            offset = Offset(-value * distance, 0);
+            break;
+          case SlideType.right:
+            offset = Offset(value * distance, 0);
+            break;
+          case SlideType.top:
+            offset = Offset(0, -value * distance);
+            break;
+          case SlideType.bottom:
+            offset = Offset(0, value * distance);
+            break;
+        }
+        return Transform.translate(offset: offset, child: child);
+      },
+      child: this,
+    );
+  }
+
+  /// Adds a slide-out animation to the widget.
+  ///
+  /// Example:
+  /// ```dart
+  /// myWidget.slideOut(type: SlideType.right);
+  /// ```
+  GetAnimatedBuilder slideOut({
+    SlideType type = SlideType.left,
+    double distance = 1.0,
+    Duration duration = _defaultDuration,
+    Duration delay = _defaultDelay,
+    ValueSetter<AnimationController>? onComplete,
+    bool isSequential = false,
+  }) {
+    return GetAnimatedBuilder<double>(
+      duration: duration,
+      delay: _getDelay(isSequential, delay),
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      idleValue: 0.0,
+      onComplete: onComplete,
+      builder: (context, value, child) {
+        late Offset offset;
+        switch (type) {
+          case SlideType.left:
+            offset = Offset(-value * distance, 0);
+            break;
+          case SlideType.right:
+            offset = Offset(value * distance, 0);
+            break;
+          case SlideType.top:
+            offset = Offset(0, -value * distance);
+            break;
+          case SlideType.bottom:
+            offset = Offset(0, value * distance);
+            break;
+        }
+        return Transform.translate(offset: offset, child: child);
+      },
+      child: this,
+    );
+  }
+
+  /// Adds a slide animation to the widget (legacy method for backward compatibility).
+  ///
+  /// Example:
+  /// ```dart
   /// myWidget.slide(offset: (context, value) => Offset(-value, 0));
-  ///
-  /// // Slide in from the top, then slide out to the right, sequentially:
-  /// myWidget
-  ///   .slide(
-  ///     offset: (context, value) => Offset(0, -value),
-  ///     isSequential: true,
-  ///   )
-  ///   .slide(
-  ///     offset: (context, value) => Offset(value, 0),
-  ///     isSequential: true, // This one runs *after* the previous one completes.
-  ///   );
-  ///
   /// ```
   GetAnimatedBuilder slide({
     required OffsetBuilder offset,
@@ -167,11 +235,11 @@ extension AnimationExtension on Widget {
     ValueSetter<AnimationController>? onComplete,
     bool isSequential = false,
   }) {
-    return GetAnimatedBuilder(
+    return GetAnimatedBuilder<double>(
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, //Add idle value
+      idleValue: begin,
       onComplete: onComplete,
       builder: (context, value, child) {
         return Transform.translate(
@@ -183,11 +251,9 @@ extension AnimationExtension on Widget {
     );
   }
 
-  /// Adds a bounce animation to the widget.  This is similar to a scale animation,
-  /// but with a bounce effect.
+  /// Adds a bounce animation to the widget.
   ///
   /// Example:
-  ///
   /// ```dart
   /// myWidget.bounce(begin: 0.8, end: 1.2); // Bounces slightly
   /// ```
@@ -203,9 +269,9 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, // Add idleValue
+      idleValue: begin,
       onComplete: onComplete,
-      curve: Curves.bounceInOut, // Use a bounce curve
+      curve: Curves.bounceInOut,
       builder:
           (context, value, child) =>
               Transform.scale(scale: value, child: child),
@@ -213,8 +279,7 @@ extension AnimationExtension on Widget {
     );
   }
 
-  /// Adds a spin animation (rotation) to the widget.  This is a convenience
-  /// method for a full 360-degree rotation.
+  /// Adds a spin animation to the widget.
   ///
   /// Example:
   /// ```dart
@@ -230,7 +295,7 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: 0, end: 1),
-      idleValue: 0.0, // Add idleValue
+      idleValue: 0.0,
       onComplete: onComplete,
       builder:
           (context, value, child) =>
@@ -239,13 +304,10 @@ extension AnimationExtension on Widget {
     );
   }
 
-  /// Adds a size animation to the widget. This effectively animates between two
-  /// different sizes by scaling the widget.
+  /// Adds a size animation to the widget.
   ///
   /// Example:
-  ///
   /// ```dart
-  /// // Animate from half size to full size
   /// myWidget.size(begin: 0.5, end: 1.0);
   /// ```
   GetAnimatedBuilder size({
@@ -260,13 +322,11 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, // Add idleValue
+      idleValue: begin,
       onComplete: onComplete,
       builder:
-          (context, value, child) => Transform.scale(
-            scale: value, // Use scale for size animation
-            child: child,
-          ),
+          (context, value, child) =>
+              Transform.scale(scale: value, child: child),
       child: this,
     );
   }
@@ -289,7 +349,7 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, //add idle value
+      idleValue: begin,
       onComplete: onComplete,
       builder:
           (context, value, child) => BackdropFilter(
@@ -300,10 +360,9 @@ extension AnimationExtension on Widget {
     );
   }
 
-  /// Adds a flip animation to the widget. This creates a 3D flip effect.
+  /// Adds a flip animation to the widget.
   ///
   /// Example:
-  ///
   /// ```dart
   /// myWidget.flip(); // Flips the widget
   /// ```
@@ -319,20 +378,19 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, // Add idleValue
+      idleValue: begin,
       onComplete: onComplete,
       builder:
           (context, value, child) => Transform(
-            transform: Matrix4.rotationY(value * pi), // Rotate around Y-axis
-            alignment: Alignment.center, // Flip from the center
+            transform: Matrix4.rotationY(value * pi),
+            alignment: Alignment.center,
             child: child,
           ),
       child: this,
     );
   }
 
-  /// Adds a wave animation to the widget.  This creates a vertical sinusoidal
-  /// movement, like a wave.
+  /// Adds a wave animation to the widget.
   ///
   /// Example:
   /// ```dart
@@ -350,7 +408,7 @@ extension AnimationExtension on Widget {
       duration: duration,
       delay: _getDelay(isSequential, delay),
       tween: Tween<double>(begin: begin, end: end),
-      idleValue: begin, // Add idleValue
+      idleValue: begin,
       onComplete: onComplete,
       builder:
           (context, value, child) => Transform(
@@ -365,21 +423,12 @@ extension AnimationExtension on Widget {
     );
   }
 
-  /// Calculates the appropriate delay for an animation.  If `isSequential` is
-  /// true, it adds the duration of the previous animation (if any) to the
-  /// provided delay.  If `isSequential` is false, it returns the provided
-  /// delay directly.
-  ///
-  /// This method also asserts that if a delay is manually specified, sequential animation is not used
-  ///
-  ///
-  /// It ensures that animations run one after another when `isSequential` is
-  /// true, and that manually specified delays are respected when
-  /// `isSequential` is false.
+  /// Calculates the appropriate delay for an animation.
   Duration _getDelay(bool isSequential, Duration delay) {
+    // اصلاح assertion - باید delay صفر باشد وقتی isSequential true است
     assert(
       !(isSequential && delay != Duration.zero),
-      "Error: When isSequential is true, delay must be non-zero",
+      "Error: When isSequential is true, delay must be Duration.zero (not specified)",
     );
 
     return isSequential
