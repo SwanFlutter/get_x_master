@@ -676,7 +676,7 @@ Map<String, double> _getClampRange(String deviceType, String contentType) {
 }
 
 /// Helper class for responsive calculations without context dependency
-class ResponsiveHelper {
+class GetResponsiveHelper {
   // Base dimensions for different device types
   static const Map<String, Map<String, double>> _deviceBaseDimensions = {
     'phone': {'width': 375.0, 'height': 812.0},
@@ -756,6 +756,7 @@ class ResponsiveHelper {
   static double get _currentBaseHeight {
     return _deviceBaseDimensions[deviceType]!['height']!;
   }
+
 
   // Basic responsive methods
   static double w(double pixels) {

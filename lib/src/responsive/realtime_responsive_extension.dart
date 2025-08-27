@@ -75,10 +75,10 @@ extension RealtimeResponsiveExtension on num {
 }
 
 /// Single-page responsive widget that updates values in real-time
-class SinglePageResponsive extends StatelessWidget {
+class GetSinglePageResponsive extends StatelessWidget {
   final Widget Function(ResponsiveData data) builder;
 
-  const SinglePageResponsive({super.key, required this.builder});
+  const GetSinglePageResponsive({super.key, required this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +90,10 @@ class SinglePageResponsive extends StatelessWidget {
 }
 
 /// Layout builder responsive widget for real-time updates
-class LayoutBuilderResponsive extends StatelessWidget {
+class GetLayoutBuilderResponsive extends StatelessWidget {
   final Widget Function(ResponsiveData data) builder;
 
-  const LayoutBuilderResponsive({super.key, required this.builder});
+  const GetLayoutBuilderResponsive({super.key, required this.builder});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class LayoutBuilderResponsive extends StatelessWidget {
 }
 
 /// Responsive text that updates font size in real-time
-class ResponsiveTextWidget extends StatelessWidget {
+class GetResponsiveText extends StatelessWidget {
   final String text;
   final double fontSize;
   final TextStyle? style;
@@ -114,7 +114,7 @@ class ResponsiveTextWidget extends StatelessWidget {
   final int? maxLines;
   final TextOverflow? overflow;
 
-  const ResponsiveTextWidget(
+  const GetResponsiveText(
     this.text, {
     super.key,
     required this.fontSize,
@@ -145,7 +145,7 @@ class ResponsiveTextWidget extends StatelessWidget {
 }
 
 /// Responsive container that updates dimensions in real-time
-class ResponsiveContainer extends StatelessWidget {
+class GetResponsiveContainer extends StatelessWidget {
   final Widget? child;
   final double? width;
   final double? height;
@@ -155,7 +155,7 @@ class ResponsiveContainer extends StatelessWidget {
   final ResponsiveMode mode;
   final AlignmentGeometry? alignment;
 
-  const ResponsiveContainer({
+  const GetResponsiveContainer({
     super.key,
     this.child,
     this.width,
@@ -202,13 +202,13 @@ class ResponsiveContainer extends StatelessWidget {
 }
 
 /// Responsive sized box that updates dimensions in real-time
-class ResponsiveSizedBox extends StatelessWidget {
+class GetResponsiveSizedBox extends StatelessWidget {
   final Widget? child;
   final double? width;
   final double? height;
   final ResponsiveMode mode;
 
-  const ResponsiveSizedBox({
+  const GetResponsiveSizedBox({
     super.key,
     this.child,
     this.width,
@@ -232,12 +232,12 @@ class ResponsiveSizedBox extends StatelessWidget {
 }
 
 /// Responsive padding that updates in real-time
-class ResponsivePadding extends StatelessWidget {
+class GetResponsivePadding extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
   final ResponsiveMode mode;
 
-  const ResponsivePadding({
+  const GetResponsivePadding({
     super.key,
     required this.child,
     required this.padding,
@@ -271,13 +271,13 @@ class ResponsivePadding extends StatelessWidget {
 }
 
 /// Responsive icon that updates size in real-time
-class ResponsiveIcon extends StatelessWidget {
+class GetResponsiveIcon extends StatelessWidget {
   final IconData icon;
   final double size;
   final Color? color;
   final ResponsiveMode mode;
 
-  const ResponsiveIcon(
+  const GetResponsiveIcon(
     this.icon, {
     super.key,
     required this.size,
@@ -297,7 +297,7 @@ class ResponsiveIcon extends StatelessWidget {
 }
 
 /// Responsive elevated button that updates dimensions in real-time
-class ResponsiveElevatedButton extends StatelessWidget {
+class GetResponsiveElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
   final double? width;
@@ -306,7 +306,7 @@ class ResponsiveElevatedButton extends StatelessWidget {
   final ResponsiveMode mode;
   final ButtonStyle? style;
 
-  const ResponsiveElevatedButton({
+  const GetResponsiveElevatedButton({
     super.key,
     required this.onPressed,
     required this.child,
@@ -343,7 +343,7 @@ class ResponsiveElevatedButton extends StatelessWidget {
 }
 
 /// Mixin for widgets that need real-time responsive capabilities
-mixin RealtimeResponsiveMixin<T extends StatelessWidget> on StatelessWidget {
+mixin GetRealtimeResponsiveMixin<T extends StatelessWidget> on StatelessWidget {
   ResponsiveMode get responsiveMode => ResponsiveMode.layoutBuilder;
 
   Widget buildResponsive(BuildContext context, ResponsiveData data);
@@ -358,7 +358,7 @@ mixin RealtimeResponsiveMixin<T extends StatelessWidget> on StatelessWidget {
 }
 
 /// Helper class for creating responsive values that update in real-time
-class RealtimeResponsiveHelper {
+class GetRealtimeResponsiveHelper {
   /// Create a responsive value that updates in real-time
   static Widget responsiveValue<T>({
     Widget Function(T? value)? builder,
