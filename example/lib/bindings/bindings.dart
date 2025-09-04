@@ -47,7 +47,5 @@ class MyBinding extends Bindings {
     Get.smartLazyPut(
       () => CounterController(),
     );
-
-  
   }
 }

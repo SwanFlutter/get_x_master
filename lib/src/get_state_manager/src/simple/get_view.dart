@@ -57,10 +57,10 @@ abstract class GetView<T> extends StatelessWidget {
 
 /// Simple and clean ReactiveGetView that automatically wraps the entire build method
 /// in reactive behavior without requiring additional methods or complexity.
-/// 
+///
 /// This provides the same functionality as GetView but with automatic reactivity,
 /// eliminating the need for manual Obx wrapping while keeping the API simple.
-/// 
+///
 /// Example:
 /// ```dart
 /// class CounterView extends ReactiveGetView<CounterController> {
@@ -116,7 +116,7 @@ abstract class ReactiveGetView<T> extends StatelessWidget {
 
 /// SafeReactiveGetView provides additional safety checks and error handling
 /// for reactive behavior, with optional smart finding capabilities.
-/// 
+///
 /// Use this when you need extra safety guarantees or when working with
 /// controllers that might not be properly initialized.
 abstract class SafeReactiveGetView<T> extends StatelessWidget {
@@ -147,12 +147,12 @@ abstract class SafeReactiveGetView<T> extends StatelessWidget {
   }
 }
 
-
 /// Enhanced ReactiveGetView with automatic state management integration
-/// 
+///
 /// This version automatically integrates with StateMixin for handling
 /// loading, success, error, and empty states.
-abstract class StateReactiveGetView<T extends GetXController> extends ReactiveGetView<T> {
+abstract class StateReactiveGetView<T extends GetXController>
+    extends ReactiveGetView<T> {
   const StateReactiveGetView({super.key});
 
   /// Build method for success state
@@ -173,10 +173,7 @@ abstract class StateReactiveGetView<T extends GetXController> extends ReactiveGe
           const SizedBox(height: 16),
           Text('Error: $error', textAlign: TextAlign.center),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: const Text('Retry'),
-          ),
+          ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
     );
@@ -206,11 +203,14 @@ abstract class StateReactiveGetView<T extends GetXController> extends ReactiveGe
       final dynamic dynamicController = controller;
       if (dynamicController is StateMixin) {
         final stateMixin = dynamicController;
-        
+
         if (stateMixin.status.isLoading) {
           return buildLoading(context);
         } else if (stateMixin.status.isError) {
-          return buildError(context, stateMixin.status.errorMessage ?? 'Unknown error');
+          return buildError(
+            context,
+            stateMixin.status.errorMessage ?? 'Unknown error',
+          );
         } else if (stateMixin.status.isEmpty) {
           return buildEmpty(context);
         } else {
@@ -220,7 +220,7 @@ abstract class StateReactiveGetView<T extends GetXController> extends ReactiveGe
     } catch (e) {
       // Fallback if StateMixin check fails
     }
-    
+
     // Fallback to success state if not using StateMixin
     return buildSuccess(context, null);
   }

@@ -757,7 +757,6 @@ class GetResponsiveHelper {
     return _deviceBaseDimensions[deviceType]!['height']!;
   }
 
-
   // Basic responsive methods
   static double w(double pixels) {
     try {

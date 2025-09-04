@@ -8,7 +8,7 @@ class CounterController extends GetXController {
   final name = 'Smart Counter App'.obs;
   final isLoading = false.obs;
   final searchQuery = ''.obs;
-  
+
   // Additional demo properties
   final message = 'Hello ReactiveGetView!'.obs;
   final isVisible = true.obs;
@@ -22,9 +22,9 @@ class CounterController extends GetXController {
       isLoading.value = false;
     });
   }
-  
+
   void changeName(String newName) => name.value = newName;
-  
+
   void updateSearchQuery(String query) {
     searchQuery.value = query;
     // Simulate search results
@@ -38,18 +38,18 @@ class CounterController extends GetXController {
       items.clear();
     }
   }
-  
+
   void toggleMessage() =>
       message.value = message.value == 'Hello ReactiveGetView!'
           ? 'ReactiveGetView is Amazing!'
           : 'Hello ReactiveGetView!';
-          
+
   void toggleVisibility() => isVisible.value = !isVisible.value;
-  
+
   void addItem() {
     items.add('Item ${items.length + 1}');
   }
-  
+
   void removeItem(int index) {
     if (index < items.length) {
       items.removeAt(index);
@@ -89,7 +89,8 @@ class CounterView extends ReactiveGetView<CounterController> {
                     children: [
                       Text(
                         'Count: ${controller.count.value}',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 16),
                       if (controller.isLoading.value)
@@ -110,9 +111,9 @@ class CounterView extends ReactiveGetView<CounterController> {
                   child: Text('Counter is hidden'),
                 ),
               ),
-            
+
             SizedBox(height: 20),
-            
+
             // Control buttons
             Wrap(
               spacing: 8,
@@ -123,9 +124,9 @@ class CounterView extends ReactiveGetView<CounterController> {
                 ),
                 ElevatedButton(
                   onPressed: controller.toggleVisibility,
-                  child: Text(
-                    controller.isVisible.value ? 'Hide Counter' : 'Show Counter'
-                  ),
+                  child: Text(controller.isVisible.value
+                      ? 'Hide Counter'
+                      : 'Show Counter'),
                 ),
                 ElevatedButton(
                   onPressed: controller.addItem,
@@ -133,11 +134,12 @@ class CounterView extends ReactiveGetView<CounterController> {
                 ),
               ],
             ),
-            
+
             SizedBox(height: 20),
-            
+
             // Search section
-            Text('Search Demo:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('Search Demo:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             TextField(
               onChanged: controller.updateSearchQuery,
@@ -151,11 +153,12 @@ class CounterView extends ReactiveGetView<CounterController> {
               'Search Query: "${controller.searchQuery.value}"',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
-            
+
             SizedBox(height: 20),
-            
+
             // List section
-            Text('Dynamic List Demo:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('Dynamic List Demo:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             if (controller.items.isEmpty)
               Card(
@@ -169,17 +172,17 @@ class CounterView extends ReactiveGetView<CounterController> {
                 ),
               )
             else
-              ...controller.items.asMap().entries.map((entry) => 
-                Card(
-                  child: ListTile(
-                    title: Text(entry.value),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () => controller.removeItem(entry.key),
+              ...controller.items.asMap().entries.map(
+                    (entry) => Card(
+                      child: ListTile(
+                        title: Text(entry.value),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => controller.removeItem(entry.key),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
           ],
         ),
       ),

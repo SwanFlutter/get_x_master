@@ -53,10 +53,13 @@ class NewResponsiveExample extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow(responsive, 'Screen Width:', '${responsive.width.toStringAsFixed(0)} px'),
-          _buildInfoRow(responsive, 'Screen Height:', '${responsive.height.toStringAsFixed(0)} px'),
+          _buildInfoRow(responsive, 'Screen Width:',
+              '${responsive.width.toStringAsFixed(0)} px'),
+          _buildInfoRow(responsive, 'Screen Height:',
+              '${responsive.height.toStringAsFixed(0)} px'),
           _buildInfoRow(responsive, 'Device Type:', responsive.deviceType),
-          _buildInfoRow(responsive, 'Orientation:', responsive.isPortrait ? 'Portrait' : 'Landscape'),
+          _buildInfoRow(responsive, 'Orientation:',
+              responsive.isPortrait ? 'Portrait' : 'Landscape'),
         ],
       ),
     );
@@ -69,7 +72,9 @@ class NewResponsiveExample extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title, style: TextStyle(fontSize: responsive.sp(14))),
-          Text(value, style: TextStyle(fontSize: responsive.sp(14), fontWeight: FontWeight.bold)),
+          Text(value,
+              style: TextStyle(
+                  fontSize: responsive.sp(14), fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -81,7 +86,8 @@ class NewResponsiveExample extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 6,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: responsive.responsiveValue(phone: 2, tablet: 3, desktop: 6)!,
+        crossAxisCount:
+            responsive.responsiveValue(phone: 2, tablet: 3, desktop: 6)!,
         crossAxisSpacing: responsive.wp(4),
         mainAxisSpacing: responsive.wp(4),
         childAspectRatio: 1.2,
@@ -132,11 +138,13 @@ class NewResponsiveExample extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.phone_android, size: responsive.ws(50), color: Colors.amber.shade800),
+          Icon(Icons.phone_android,
+              size: responsive.ws(50), color: Colors.amber.shade800),
           SizedBox(height: responsive.hp(2)),
           Text(
             'This is the Mobile Layout',
-            style: TextStyle(fontSize: responsive.sp(18), fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: responsive.sp(18), fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -152,12 +160,14 @@ class NewResponsiveExample extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.tablet_mac, size: responsive.ws(60), color: Colors.purple.shade800),
+          Icon(Icons.tablet_mac,
+              size: responsive.ws(60), color: Colors.purple.shade800),
           SizedBox(width: responsive.wp(4)),
           Expanded(
             child: Text(
               'This is the Tablet Layout',
-              style: TextStyle(fontSize: responsive.sp(20), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: responsive.sp(20), fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -174,12 +184,14 @@ class NewResponsiveExample extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.desktop_windows, size: responsive.ws(70), color: Colors.red.shade800),
+          Icon(Icons.desktop_windows,
+              size: responsive.ws(70), color: Colors.red.shade800),
           SizedBox(width: responsive.wp(3)),
           Expanded(
             child: Text(
               'This is the Desktop Layout. Try resizing the window!',
-              style: TextStyle(fontSize: responsive.sp(22), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: responsive.sp(22), fontWeight: FontWeight.bold),
             ),
           ),
         ],
