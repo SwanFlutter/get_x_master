@@ -87,6 +87,16 @@
 
 ## 0.0.16
 
+* Updated all responsive components and extensions to use new `GetResponsiveBuilder` class.
+* Enhanced responsive system documentation with updated class names.
+* Improved integration with GetX framework naming standards.
+* Fixed all references in examples, documentation, and implementation files.
 * Fix document extention size.
 * Fix Animate extention size.
-* Fix Bug ReactiveGetView.
+* Fix responsive name ResponsiveBuilder detect orientation.
+
+
+## 0.0.17
+
+* **BREAKING CHANGE**: Renamed `ResponsiveBuilder` to `GetResponsiveBuilder` for consistency with GetX naming conventions.
+* Fix responsive name ResponsiveBuilder change to `GetResponsiveBuilder`.

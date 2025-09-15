@@ -18,7 +18,7 @@ The enhanced responsive extensions provide a comprehensive solution for creating
 
 ### Helper Classes
 - ✅ **ResponsiveHelper** - Static methods for responsive calculations
-- ✅ **ResponsiveBuilder** - Widget builder for real-time responsive updates
+- ✅ **GetResponsiveBuilder** - Widget builder for real-time responsive updates
 - ✅ **ResponsiveData** - Data container with responsive calculations
 - ✅ **Device Detection** - Automatic device type detection
 - ✅ **Orientation Support** - Landscape/portrait detection
@@ -619,8 +619,8 @@ class CustomResponsiveCard extends StatelessWidget with RealtimeResponsiveMixin 
 - `static T responsiveValue<T>({...})` - Responsive values
 - `static Widget responsiveValueRealtime<T>({...})` - Real-time responsive values
 
-### ResponsiveBuilder Class
-- `ResponsiveBuilder({required builder, mode})` - Widget builder for responsive layouts
+### GetResponsiveBuilder Class
+- `GetResponsiveBuilder({required builder, mode})` - Widget builder for responsive layouts
 - `ResponsiveMode.global` - Traditional GetX responsive
 - `ResponsiveMode.layoutBuilder` - Real-time with LayoutBuilder
 - `ResponsiveMode.singlePage` - Real-time with MediaQuery

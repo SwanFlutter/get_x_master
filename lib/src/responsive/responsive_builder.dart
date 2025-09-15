@@ -18,11 +18,11 @@ enum ResponsiveMode {
 }
 
 /// Real-time responsive builder that updates values instantly when screen size changes
-class ResponsiveBuilder extends StatelessWidget {
+class GetResponsiveBuilder extends StatelessWidget {
   final Widget Function(BuildContext context, ResponsiveData data) builder;
   final ResponsiveMode mode;
 
-  const ResponsiveBuilder({
+  const GetResponsiveBuilder({
     super.key,
     required this.builder,
     this.mode = ResponsiveMode.layoutBuilder,
@@ -334,14 +334,14 @@ Map<String, double> _getBaseDimensions(String deviceType) {
 }
 
 /// Extension for easy responsive building
-extension ResponsiveBuilderExtension on Widget {
-  /// Wrap widget with ResponsiveBuilder
+extension GetResponsiveBuilderExtension on Widget {
+  /// Wrap widget with GetResponsiveBuilder
   Widget responsiveBuilder({
     ResponsiveMode mode = ResponsiveMode.layoutBuilder,
     Widget Function(BuildContext context, ResponsiveData data, Widget child)?
     builder,
   }) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         if (builder != null) {

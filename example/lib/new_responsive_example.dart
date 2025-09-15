@@ -10,7 +10,7 @@ class NewResponsiveExample extends StatelessWidget {
       appBar: AppBar(
         title: const Text('New Responsive Example'),
       ),
-      body: ResponsiveBuilder(
+      body: GetResponsiveBuilder(
         builder: (context, responsive) {
           return SingleChildScrollView(
             padding: EdgeInsets.all(responsive.wp(5)),

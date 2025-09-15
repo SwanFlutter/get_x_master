@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'responsive_builder.dart';
 
 /// Real-time responsive extensions that update instantly when screen size changes
-/// These extensions work with ResponsiveBuilder to provide live updates
+/// These extensions work with GetResponsiveBuilder to provide live updates
 
-/// Extension for real-time responsive values within ResponsiveBuilder context
+/// Extension for real-time responsive values within GetResponsiveBuilder context
 extension RealtimeResponsiveExtension on num {
   /// Real-time responsive width - updates instantly when screen size changes
-  /// Must be used within ResponsiveBuilder context
+  /// Must be used within GetResponsiveBuilder context
   Widget rw(Widget Function(double width) builder) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) {
         return builder(data.w(toDouble()));
@@ -19,9 +19,9 @@ extension RealtimeResponsiveExtension on num {
   }
 
   /// Real-time responsive height - updates instantly when screen size changes
-  /// Must be used within ResponsiveBuilder context
+  /// Must be used within GetResponsiveBuilder context
   Widget rh(Widget Function(double height) builder) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) {
         return builder(data.h(toDouble()));
@@ -30,9 +30,9 @@ extension RealtimeResponsiveExtension on num {
   }
 
   /// Real-time responsive font size - updates instantly when screen size changes
-  /// Must be used within ResponsiveBuilder context
+  /// Must be used within GetResponsiveBuilder context
   Widget rsp(Widget Function(double fontSize) builder) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) {
         return builder(data.sp(toDouble()));
@@ -41,9 +41,9 @@ extension RealtimeResponsiveExtension on num {
   }
 
   /// Real-time responsive widget size - updates instantly when screen size changes
-  /// Must be used within ResponsiveBuilder context
+  /// Must be used within GetResponsiveBuilder context
   Widget rws(Widget Function(double size) builder) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) {
         return builder(data.ws(toDouble()));
@@ -52,9 +52,9 @@ extension RealtimeResponsiveExtension on num {
   }
 
   /// Real-time width percentage - updates instantly when screen size changes
-  /// Must be used within ResponsiveBuilder context
+  /// Must be used within GetResponsiveBuilder context
   Widget rwp(Widget Function(double width) builder) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) {
         return builder(data.wp(toDouble()));
@@ -63,9 +63,9 @@ extension RealtimeResponsiveExtension on num {
   }
 
   /// Real-time height percentage - updates instantly when screen size changes
-  /// Must be used within ResponsiveBuilder context
+  /// Must be used within GetResponsiveBuilder context
   Widget rhp(Widget Function(double height) builder) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) {
         return builder(data.hp(toDouble()));
@@ -82,7 +82,7 @@ class GetSinglePageResponsive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.singlePage,
       builder: (context, data) => builder(data),
     );
@@ -97,7 +97,7 @@ class GetLayoutBuilderResponsive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: ResponsiveMode.layoutBuilder,
       builder: (context, data) => builder(data),
     );
@@ -127,7 +127,7 @@ class GetResponsiveText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         return Text(
@@ -169,7 +169,7 @@ class GetResponsiveContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         return Container(
@@ -218,7 +218,7 @@ class GetResponsiveSizedBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         return SizedBox(
@@ -246,7 +246,7 @@ class GetResponsivePadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         return Padding(padding: _scaleEdgeInsets(padding, data), child: child);
@@ -287,7 +287,7 @@ class GetResponsiveIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         return Icon(icon, size: data.ws(size), color: color);
@@ -319,7 +319,7 @@ class GetResponsiveElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         Widget button = ElevatedButton(
@@ -350,7 +350,7 @@ mixin GetRealtimeResponsiveMixin<T extends StatelessWidget> on StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: responsiveMode,
       builder: (context, data) => buildResponsive(context, data),
     );
@@ -370,7 +370,7 @@ class GetRealtimeResponsiveHelper {
     T? defaultValue,
     ResponsiveMode mode = ResponsiveMode.layoutBuilder,
   }) {
-    return ResponsiveBuilder(
+    return GetResponsiveBuilder(
       mode: mode,
       builder: (context, data) {
         final value = data.responsiveValue<T>(

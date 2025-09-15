@@ -110,7 +110,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.16
+  get_x_master: ^0.0.17
 ```
 
 Then run:
@@ -410,7 +410,7 @@ A rich set of helper functions and extensions:
 GetX Master provides the most comprehensive responsive design system for Flutter:
 
 #### Core Responsive Components
-- **`ResponsiveBuilder`** - Real-time responsive widget builder with multiple modes
+- **`GetResponsiveBuilder`** - Real-time responsive widget builder with multiple modes
 - **`GetResponsiveContainer`** - Smart container that adapts to screen changes
 - **`GetResponsiveText`** - Text widget with automatic font scaling
 - **`GetResponsiveIcon`** - Icons that scale perfectly across devices
@@ -437,7 +437,7 @@ double imageSize = 100.imgSize;   // Responsive image size
 #### Real-time Responsive Updates
 ```dart
 // Real-time responsive builder
-ResponsiveBuilder(
+GetResponsiveBuilder(
   mode: ResponsiveMode.layoutBuilder, // Updates instantly on resize
   builder: (context, data) {
     return Container(
@@ -452,7 +452,7 @@ ResponsiveBuilder(
 )
 
 // Device-specific values
-Widget responsiveWidget = ResponsiveBuilder(
+Widget responsiveWidget = GetResponsiveBuilder(
   builder: (context, data) {
     return data.responsiveValue<Widget>(
       phone: SmallWidget(),
@@ -716,7 +716,7 @@ class UserProfileView extends ReactiveGetView<UserController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Profile')),
-      body: ResponsiveBuilder(
+      body: GetResponsiveBuilder(
         builder: (context, responsive) {
           return controller.obx(
             (user) => SingleChildScrollView(
