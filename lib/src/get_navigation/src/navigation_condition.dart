@@ -1,7 +1,7 @@
 class ConditionalNavigation {
   final dynamic Function() condition;
-  final dynamic truePage;
-  final dynamic falsePage;
+  final dynamic Function() truePage;
+  final dynamic Function() falsePage;
 
   ConditionalNavigation({
     required this.condition,
@@ -9,7 +9,7 @@ class ConditionalNavigation {
     required this.falsePage,
   });
 
-  dynamic evaluate() {
+  dynamic Function() evaluate() {
     return condition() ? truePage : falsePage;
   }
 }

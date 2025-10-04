@@ -100,3 +100,8 @@
 
 * **BREAKING CHANGE**: Renamed `ResponsiveBuilder` to `GetResponsiveBuilder` for consistency with GetX naming conventions.
 * Fix responsive name ResponsiveBuilder change to `GetResponsiveBuilder`.
+
+
+## 0.0.18
+
+* Fix ConditionalNavigation navigation issue.
