@@ -197,17 +197,9 @@ extension SmartLazyPut on GetInterface {
     bool? fenix,
     bool autoRemove = true,
   }) {
-    // If it is not registered previously or has been removed
-    if (!isRegistered<S>(tag: tag)) {
-      // Check if the builder has been prepared before
-      if (!isPrepared<S>(tag: tag)) {
-        lazyPut<S>(
-          builder,
-          tag: tag,
-          // If fenix is not specified, default to true
-          fenix: fenix ?? true,
-        );
-      }
+    // Only register if not already registered or prepared
+    if (!isRegistered<S>(tag: tag) && !isPrepared<S>(tag: tag)) {
+      lazyPut<S>(builder, tag: tag, fenix: fenix ?? true);
     }
   }
 
@@ -231,16 +223,19 @@ extension SmartLazyPut on GetInterface {
   /// Throws:
   ///   - An exception if the controller is not found and its builder is not prepared.
   S smartFind<S>({String? tag}) {
-    try {
+    // First check if instance is already registered
+    if (isRegistered<S>(tag: tag)) {
       return find<S>(tag: tag);
-    } catch (e) {
-      // If the controller was not found and its builder is prepared
-      if (isPrepared<S>(tag: tag)) {
-        // Create a new instance
-        return find<S>(tag: tag);
-      }
-      throw '"$S" not found. You need to call "Get.smartLazyPut(()=>$S())" ';
     }
+
+    // If not registered, check if builder is prepared
+    if (isPrepared<S>(tag: tag)) {
+      // The builder exists, so calling find will trigger the lazy creation
+      return find<S>(tag: tag);
+    }
+
+    // Neither registered nor prepared
+    throw '"$S" not found. You need to call "Get.smartLazyPut(()=>$S())" or "Get.lazyPut(()=>$S())" first.';
   }
 }
 

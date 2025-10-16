@@ -4,6 +4,8 @@ import 'package:example/controller/todos_controller.dart';
 import 'package:example/reactive_get_view_demo.dart';
 import 'package:get_x_master/get_x_master.dart';
 
+import '../controller/theme_controller.dart';
+
 class MyBinding extends Bindings {
   @override
   void dependencies() {
@@ -46,6 +48,10 @@ class MyBinding extends Bindings {
 
     Get.smartLazyPut(
       () => CounterController(),
+    );
+
+    Get.smartLazyPut(
+      () => ThemeController(),
     );
   }
 }

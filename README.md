@@ -110,7 +110,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.18
+  get_x_master: ^0.0.19
 ```
 
 Then run:
@@ -285,6 +285,71 @@ Manage your controllers and services effortlessly with a smart and flexible depe
   // With advanced options
   Get.smartLazyPut(() => ChatController(), fenix: true, autoRemove: true);
   ```
+  
+  **⚠️ Important Usage Notes:**
+  
+  When using `smartLazyPut` with `Bindings`, make sure to access controllers **after** bindings are initialized:
+  
+  ```dart
+  // ❌ WRONG - Field initialization happens before bindings
+  class HomeScreen extends StatelessWidget {
+    final controller = Get.smartFind<MyController>(); // Error!
+    
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(...);
+    }
+  }
+  
+  // ✅ CORRECT - Access inside build method
+  class HomeScreen extends StatelessWidget {
+    const HomeScreen({super.key});
+    
+    @override
+    Widget build(BuildContext context) {
+      final controller = Get.smartFind<MyController>(); // Works!
+      return Scaffold(...);
+    }
+  }
+  
+  // ✅ CORRECT - Using GetBuilder (recommended)
+  class HomeScreen extends StatelessWidget {
+    const HomeScreen({super.key});
+    
+    @override
+    Widget build(BuildContext context) {
+      return GetBuilder<MyController>(
+        init: null, // Finds from bindings automatically
+        builder: (controller) {
+          return Scaffold(...);
+        },
+      );
+    }
+  }
+  
+  // ✅ CORRECT - Using late keyword with StatefulWidget
+  class HomeScreen extends StatefulWidget {
+    const HomeScreen({super.key});
+    
+    @override
+    State<HomeScreen> createState() => _HomeScreenState();
+  }
+  
+  class _HomeScreenState extends State<HomeScreen> {
+    late final controller = Get.smartFind<MyController>();
+    
+    @override
+    void initState() {
+      super.initState();
+      // Controller is accessed here, after bindings are ready
+    }
+    
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(...);
+    }
+  }
+  ```
 
 - **`Get.putAsync()`**: Injects a dependency that requires an asynchronous operation to be created.
   ```dart
@@ -335,30 +400,177 @@ Manage your controllers and services effortlessly with a smart and flexible depe
   // Automatically creates if prepared but not instantiated
   final controller = Get.smartFind<MyController>();
   ```
+  
+  **How `smartFind` works:**
+  - First checks if the instance is already registered and returns it
+  - If not registered, checks if a lazy builder is prepared
+  - If prepared, triggers the lazy creation and returns the instance
+  - If neither registered nor prepared, throws a helpful error message
+  
+  **Best Practices:**
+  ```dart
+  // Use smartFind when you're sure the controller is registered via Bindings
+  final controller = Get.smartFind<MyController>();
+  
+  // Use find for immediate access (throws error if not found)
+  final controller = Get.find<MyController>();
+  
+  // Use isRegistered to check before accessing
+  if (Get.isRegistered<MyController>()) {
+    final controller = Get.find<MyController>();
+  }
+  ```
 
 - **Bindings**: Decouple dependency injection from the UI by declaring all dependencies for a specific route in a `Bindings` class. This ensures that when a route is removed, all its related dependencies are also removed from memory.
   ```dart
-  // Traditional Binding
+  // Traditional Binding with smartLazyPut
   class HomeBinding extends Bindings {
     @override
     void dependencies() {
       Get.smartLazyPut(() => HomeController());
+      Get.smartLazyPut(() => ThemeController());
       Get.lazyPut(() => ApiService());
     }
   }
   
-  // BindingsBuilder for simple cases
+  // Use in GetMaterialApp
+  GetMaterialApp(
+    initialBinding: HomeBinding(),
+    home: HomeScreen(),
+  )
+  
+  // Or with named routes
   GetPage(
     name: '/home',
     page: () => HomeView(),
-    binding: BindingsBuilder.smartLazyPut(() => HomeController()),
+    binding: HomeBinding(),
   )
+  
+  // BindingsBuilder for simple cases
+  GetPage(
+    name: '/profile',
+    page: () => ProfileView(),
+    binding: BindingsBuilder(() {
+      Get.smartLazyPut(() => ProfileController());
+    }),
+  )
+  ```
+  
+  **Complete Working Example:**
+  ```dart
+  // 1. Create your controller
+  class ThemeController extends GetXController {
+    final Rx<ThemeMode> themeMode = ThemeMode.light.obs;
+    
+    bool get isDarkMode => themeMode.value == ThemeMode.dark;
+    
+    void toggleTheme() {
+      themeMode.value = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+      Get.changeThemeMode(themeMode.value);
+    }
+  }
+  
+  // 2. Create your binding
+  class MyBinding extends Bindings {
+    @override
+    void dependencies() {
+      Get.smartLazyPut(() => ThemeController());
+    }
+  }
+  
+  // 3. Setup your app
+  void main() {
+    runApp(MyApp());
+  }
+  
+  class MyApp extends StatelessWidget {
+    @override
+    Widget build(BuildContext context) {
+      return GetMaterialApp(
+        initialBinding: MyBinding(),
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        home: HomeScreen(),
+      );
+    }
+  }
+  
+  // 4. Use in your screen (Method 1: GetBuilder - Recommended)
+  class HomeScreen extends StatelessWidget {
+    const HomeScreen({super.key});
+    
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Home')),
+        body: GetBuilder<ThemeController>(
+          builder: (controller) {
+            return Center(
+              child: Obx(() => Switch(
+                value: controller.isDarkMode,
+                onChanged: (_) => controller.toggleTheme(),
+              )),
+            );
+          },
+        ),
+      );
+    }
+  }
+  
+  // 4. Alternative: Use smartFind inside build
+  class HomeScreenAlt extends StatelessWidget {
+    const HomeScreenAlt({super.key});
+    
+    @override
+    Widget build(BuildContext context) {
+      final controller = Get.smartFind<ThemeController>();
+      
+      return Scaffold(
+        appBar: AppBar(title: Text('Home')),
+        body: Center(
+          child: Obx(() => Switch(
+            value: controller.isDarkMode,
+            onChanged: (_) => controller.toggleTheme(),
+          )),
+        ),
+      );
+    }
+  }
   ```
 
 - **`GetxService`**: A special controller that persists in memory. It's never removed and is ideal for services that need to be available throughout the entire app lifecycle, like `AuthService` or `StorageService`.
   ```dart
   class AuthService extends GetxService {
-    // This service will persist throughout the app lifecycle
+    final RxBool isLoggedIn = false.obs;
+    
+    @override
+    void onInit() {
+      super.onInit();
+      // Initialize service
+    }
+    
+    Future<void> login(String email, String password) async {
+      // Login logic
+      isLoggedIn.value = true;
+    }
+    
+    void logout() {
+      isLoggedIn.value = false;
+    }
+  }
+  
+  // Register as permanent service in InitialBinding
+  class InitialBinding extends Bindings {
+    @override
+    void dependencies() {
+      Get.put(AuthService(), permanent: true);
+    }
+  }
+  
+  // Use anywhere in your app
+  final authService = Get.find<AuthService>();
+  if (authService.isLoggedIn.value) {
+    // User is logged in
   }
   ```
 
@@ -627,6 +839,7 @@ GetX Master provides extensive documentation for every component:
 - **[Responsive Design System](lib/src/responsive/README.md)** - Complete responsive design guide
 
 #### 🎯 Feature Guides
+- **[Smart Lazy Put & Smart Find Guide](SMART_LAZY_PUT_GUIDE.md)** ⭐ - Complete guide for smartLazyPut and smartFind usage
 - **[Enhanced GetBuilder Widgets Guide](ENHANCED_GETBUILDER_GUIDE.md)** - Advanced widget patterns
 - **[Cupertino Features Guide](CUPERTINO_FEATURES_GUIDE.md)** - iOS-specific features and widgets
 - **[Material/Cupertino Mixing Guide](MATERIAL_CUPERTINO_MIXING_GUIDE.md)** - Cross-platform design patterns

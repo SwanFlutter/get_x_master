@@ -148,17 +148,20 @@ class GetInstance {
     bool? fenix,
     bool autoRemove = true,
   }) {
-    // If it is not registered previously or has been removed
-    if (!isRegistered<S>(tag: tag)) {
-      // Check if the builder has been prepared before
-      if (!isPrepared<S>(tag: tag)) {
-        lazyPut<S>(
-          builder,
-          tag: tag,
-          // If fenix is not specified, default to true
-          fenix: fenix ?? true,
-        );
+    final key = _getKey(S, tag);
+
+    // Check if already exists in _singl map
+    if (!_singl.containsKey(key)) {
+      // Not registered at all, so register it
+      lazyPut<S>(builder, tag: tag, fenix: fenix ?? true);
+    } else {
+      // Already registered, check if it's initialized
+      final existingBuilder = _singl[key];
+      if (existingBuilder != null && !existingBuilder.isInit) {
+        // Builder exists but not initialized yet, skip re-registration
+        return;
       }
+      // If initialized and we want to re-register, we could add logic here
     }
   }
 
@@ -332,17 +335,19 @@ class GetInstance {
   /// Throws:
   ///   - An exception if the controller is not found and its builder is not prepared.
   S smartFind<S>({String? tag}) {
-    try {
+    // First check if instance is already registered
+    if (isRegistered<S>(tag: tag)) {
       return find<S>(tag: tag);
-    } catch (e) {
-      // If the controller was not found and its builder is prepared
-      if (isPrepared<S>(tag: tag)) {
-        // Create a new instance
-        return find<S>(tag: tag);
-      }
-      // Modified error message for smartFind when instance is not found
-      throw '"$S" not found. You need to call "Get.smartLazyPut(()=>$S())" ';
     }
+
+    // If not registered, check if builder is prepared
+    if (isPrepared<S>(tag: tag)) {
+      // The builder exists, so calling find will trigger the lazy creation
+      return find<S>(tag: tag);
+    }
+
+    // Neither registered nor prepared
+    throw '"$S" not found. You need to call "Get.smartLazyPut(()=>$S())" or "Get.lazyPut(()=>$S())" first.';
   }
 
   /// Finds the registered type <[S]> (or [tag])

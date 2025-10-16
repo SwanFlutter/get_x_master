@@ -102,3 +102,34 @@ abstract class GetLifeCycle with GetLifeCycleBase {
 
 /// Allow track difference between GetxServices and GetxControllers
 mixin GetxServiceMixin {}
+
+/// GetxService is a special type of GetxController that persists in memory.
+/// It's never removed and is ideal for services that need to be available
+/// throughout the entire app lifecycle.
+///
+/// Example:
+/// ```dart
+/// class AuthService extends GetxService {
+///   final isLoggedIn = false.obs;
+///
+///   Future<void> login(String email, String password) async {
+///     // Login logic
+///     isLoggedIn.value = true;
+///   }
+///
+///   void logout() {
+///     isLoggedIn.value = false;
+///   }
+/// }
+///
+/// // Register in InitialBinding
+/// class InitialBinding extends Bindings {
+///   @override
+///   void dependencies() {
+///     Get.put(AuthService(), permanent: true);
+///   }
+/// }
+/// ```
+abstract class GetxService extends GetLifeCycle with GetxServiceMixin {
+  GetxService() : super();
+}

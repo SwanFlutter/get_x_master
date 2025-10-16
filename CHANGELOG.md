@@ -105,3 +105,8 @@
 ## 0.0.18
 
 * Fix ConditionalNavigation navigation issue.
+
+
+## 0.0.19
+
+* Fix initialize dependency injection
