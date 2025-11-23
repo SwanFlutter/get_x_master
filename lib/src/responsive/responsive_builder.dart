@@ -322,7 +322,7 @@ class ResponsiveData {
     final minScreen = width < height ? width : height;
     final baseMin = baseWidth < baseHeight ? baseWidth : baseHeight;
     final scale = minScreen / baseMin;
-
+    
     double deviceFactor = 1.0;
     switch (deviceType) {
       case 'phone':
@@ -338,7 +338,7 @@ class ResponsiveData {
         deviceFactor = 1.8;
         break;
     }
-
+    
     final adjustedScale = scale * deviceFactor;
     final clampedScale = adjustedScale.clamp(0.8, 2.0);
     return size * clampedScale;
@@ -349,7 +349,7 @@ class ResponsiveData {
     final maxScreen = width > height ? width : height;
     final baseMax = baseWidth > baseHeight ? baseWidth : baseHeight;
     final scale = maxScreen / baseMax;
-
+    
     double deviceFactor = 1.0;
     switch (deviceType) {
       case 'phone':
@@ -365,7 +365,7 @@ class ResponsiveData {
         deviceFactor = 1.8;
         break;
     }
-
+    
     final adjustedScale = scale * deviceFactor;
     final clampedScale = adjustedScale.clamp(0.8, 2.0);
     return size * clampedScale;
