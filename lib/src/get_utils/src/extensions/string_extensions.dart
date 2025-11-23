@@ -827,8 +827,9 @@ extension StringNumberFormatter on String {
   String intlToTimeFormatted({String? locale, bool use24Hour = false}) {
     try {
       final date = DateTime.parse(this);
-      final formatter =
-          use24Hour ? DateFormat.Hm(locale) : DateFormat.jm(locale);
+      final formatter = use24Hour
+          ? DateFormat.Hm(locale)
+          : DateFormat.jm(locale);
       return formatter.format(date);
     } catch (e) {
       return this;

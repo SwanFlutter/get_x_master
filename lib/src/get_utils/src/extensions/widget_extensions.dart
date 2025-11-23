@@ -189,7 +189,9 @@ extension WidgetExtensions on Widget {
   /// ```
   Widget withBorder({Color color = Colors.black, double width = 1.0}) {
     return Container(
-      decoration: BoxDecoration(border: Border.all(color: color, width: width)),
+      decoration: BoxDecoration(
+        border: Border.all(color: color, width: width),
+      ),
       child: this,
     );
   }

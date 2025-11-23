@@ -302,17 +302,15 @@ class GetSnackBarState extends State<GetSnackBar>
     return Align(
       heightFactor: 1.0,
       child: Material(
-        color:
-            widget.snackStyle == SnackStyle.FLOATING
-                ? Colors.transparent
-                : widget.backgroundColor,
+        color: widget.snackStyle == SnackStyle.FLOATING
+            ? Colors.transparent
+            : widget.backgroundColor,
         child: SafeArea(
-          minimum:
-              widget.snackPosition == SnackPosition.BOTTOM
-                  ? EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  )
-                  : EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          minimum: widget.snackPosition == SnackPosition.BOTTOM
+              ? EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                )
+              : EdgeInsets.only(top: MediaQuery.of(context).padding.top),
           bottom: widget.snackPosition == SnackPosition.BOTTOM,
           top: widget.snackPosition == SnackPosition.TOP,
           left: false,
@@ -467,22 +465,17 @@ You need to either use message[String], or messageText[Widget] or define a userI
   Widget _containerWithForm() {
     return Container(
       key: _backgroundBoxKey,
-      constraints:
-          widget.maxWidth != null
-              ? BoxConstraints(maxWidth: widget.maxWidth!)
-              : null,
+      constraints: widget.maxWidth != null
+          ? BoxConstraints(maxWidth: widget.maxWidth!)
+          : null,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border:
-            widget.borderColor != null
-                ? Border.all(
-                  color: widget.borderColor!,
-                  width: widget.borderWidth!,
-                )
-                : null,
+        border: widget.borderColor != null
+            ? Border.all(color: widget.borderColor!, width: widget.borderWidth!)
+            : null,
       ),
       child: Padding(
         padding: const EdgeInsets.only(
@@ -502,45 +495,37 @@ You need to either use message[String], or messageText[Widget] or define a userI
 
   Widget _containerWithoutForm() {
     final iconPadding = widget.padding.left > 16.0 ? widget.padding.left : 0.0;
-    final left =
-        _rowStyle == RowStyle.icon || _rowStyle == RowStyle.all
-            ? 4.0
-            : widget.padding.left;
-    final right =
-        _rowStyle == RowStyle.action || _rowStyle == RowStyle.all
-            ? 8.0
-            : widget.padding.right;
+    final left = _rowStyle == RowStyle.icon || _rowStyle == RowStyle.all
+        ? 4.0
+        : widget.padding.left;
+    final right = _rowStyle == RowStyle.action || _rowStyle == RowStyle.all
+        ? 8.0
+        : widget.padding.right;
     return Container(
       key: _backgroundBoxKey,
-      constraints:
-          widget.maxWidth != null
-              ? BoxConstraints(maxWidth: widget.maxWidth!)
-              : null,
+      constraints: widget.maxWidth != null
+          ? BoxConstraints(maxWidth: widget.maxWidth!)
+          : null,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border:
-            widget.borderColor != null
-                ? Border.all(
-                  color: widget.borderColor!,
-                  width: widget.borderWidth!,
-                )
-                : null,
+        border: widget.borderColor != null
+            ? Border.all(color: widget.borderColor!, width: widget.borderWidth!)
+            : null,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           widget.showProgressIndicator
               ? LinearProgressIndicator(
-                value:
-                    widget.progressIndicatorController != null
-                        ? _progressAnimation.value
-                        : null,
-                backgroundColor: widget.progressIndicatorBackgroundColor,
-                valueColor: widget.progressIndicatorValueColor,
-              )
+                  value: widget.progressIndicatorController != null
+                      ? _progressAnimation.value
+                      : null,
+                  backgroundColor: widget.progressIndicatorBackgroundColor,
+                  valueColor: widget.progressIndicatorValueColor,
+                )
               : _emptyWidget,
           Row(
             mainAxisSize: MainAxisSize.max,

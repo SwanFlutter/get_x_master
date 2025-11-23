@@ -45,21 +45,21 @@ class LoginScreen extends StatelessWidget {
     final authService = Get.find<AuthService>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Show auth status
-            Obx(() => Text(
-                  authService.isLoggedIn.value
-                      ? 'Logged in as: ${authService.username.value}'
-                      : 'Not logged in',
-                  style: Theme.of(context).textTheme.titleMedium,
-                )),
+            Obx(
+              () => Text(
+                authService.isLoggedIn.value
+                    ? 'Logged in as: ${authService.username.value}'
+                    : 'Not logged in',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
             const SizedBox(height: 32),
 
             // Email field
@@ -85,65 +85,71 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Login/Logout button
-            Obx(() => authService.isLoggedIn.value
-                ? Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () => Get.to(() => const DashboardScreen()),
-                        child: const Text('Go to Dashboard'),
-                      ),
-                      const SizedBox(height: 8),
-                      OutlinedButton(
-                        onPressed: () async {
-                          await authService.logout();
+            Obx(
+              () => authService.isLoggedIn.value
+                  ? Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () =>
+                              Get.to(() => const DashboardScreen()),
+                          child: const Text('Go to Dashboard'),
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton(
+                          onPressed: () async {
+                            await authService.logout();
+                            Get.snackbar(
+                              'Success',
+                              'Logged out successfully',
+                              snackPosition: SnackPosition.BOTTOM,
+                            );
+                          },
+                          child: const Text('Logout'),
+                        ),
+                      ],
+                    )
+                  : ElevatedButton(
+                      onPressed: () async {
+                        final email = emailController.text;
+                        final password = passwordController.text;
+
+                        if (email.isEmpty || password.isEmpty) {
+                          Get.snackbar(
+                            'Error',
+                            'Please enter email and password',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                          return;
+                        }
+
+                        final success = await authService.login(
+                          email,
+                          password,
+                        );
+
+                        if (success) {
                           Get.snackbar(
                             'Success',
-                            'Logged out successfully',
+                            'Logged in successfully',
                             snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white,
                           );
-                        },
-                        child: const Text('Logout'),
-                      ),
-                    ],
-                  )
-                : ElevatedButton(
-                    onPressed: () async {
-                      final email = emailController.text;
-                      final password = passwordController.text;
-
-                      if (email.isEmpty || password.isEmpty) {
-                        Get.snackbar(
-                          'Error',
-                          'Please enter email and password',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
-                        return;
-                      }
-
-                      final success = await authService.login(email, password);
-
-                      if (success) {
-                        Get.snackbar(
-                          'Success',
-                          'Logged in successfully',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.green,
-                          colorText: Colors.white,
-                        );
-                      } else {
-                        Get.snackbar(
-                          'Error',
-                          'Invalid credentials',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
-                      }
-                    },
-                    child: const Text('Login'),
-                  )),
+                        } else {
+                          Get.snackbar(
+                            'Error',
+                            'Invalid credentials',
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      },
+                      child: const Text('Login'),
+                    ),
+            ),
           ],
         ),
       ),
@@ -181,21 +187,21 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.dashboard,
-              size: 100,
-              color: Colors.blue,
-            ),
+            const Icon(Icons.dashboard, size: 100, color: Colors.blue),
             const SizedBox(height: 24),
-            Obx(() => Text(
-                  'Welcome, ${authService.username.value}!',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )),
+            Obx(
+              () => Text(
+                'Welcome, ${authService.username.value}!',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
             const SizedBox(height: 16),
-            Obx(() => Text(
-                  'Token: ${authService.token.value.substring(0, 20)}...',
-                  style: Theme.of(context).textTheme.bodySmall,
-                )),
+            Obx(
+              () => Text(
+                'Token: ${authService.token.value.substring(0, 20)}...',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () => Get.back(),

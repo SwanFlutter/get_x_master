@@ -28,8 +28,9 @@ class ExampleCounterController extends GetXController {
   }
 
   void changeBackgroundColor() {
-    backgroundColor.value =
-        backgroundColor.value == Colors.blue ? Colors.green : Colors.blue;
+    backgroundColor.value = backgroundColor.value == Colors.blue
+        ? Colors.green
+        : Colors.blue;
   }
 
   void reset() {
@@ -53,8 +54,9 @@ class CounterView extends SafeReactiveGetView<ExampleCounterController> {
       backgroundColor: controller.backgroundColor.value,
       appBar: AppBar(
         title: Text(controller.name.value),
-        backgroundColor:
-            controller.backgroundColor.value.withValues(alpha: 0.8),
+        backgroundColor: controller.backgroundColor.value.withValues(
+          alpha: 0.8,
+        ),
       ),
       body: Center(
         child: Column(
@@ -65,8 +67,10 @@ class CounterView extends SafeReactiveGetView<ExampleCounterController> {
             else
               Text(
                 'Count: ${controller.count.value}',
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             const SizedBox(height: 20),
             Row(
@@ -85,16 +89,18 @@ class CounterView extends SafeReactiveGetView<ExampleCounterController> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => controller.changeName(
-                  controller.name.value == 'Smart Counter'
-                      ? 'Reactive Counter'
-                      : 'Smart Counter'),
+                controller.name.value == 'Smart Counter'
+                    ? 'Reactive Counter'
+                    : 'Smart Counter',
+              ),
               child: const Text('Toggle Name'),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: controller.toggleLoading,
               child: Text(
-                  controller.isLoading.value ? 'Hide Loading' : 'Show Loading'),
+                controller.isLoading.value ? 'Hide Loading' : 'Show Loading',
+              ),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
@@ -126,21 +132,26 @@ class TraditionalCounterView extends GetView<ExampleCounterController> {
         appBar: AppBar(
           // Need Obx for reactive title
           title: Obx(() => Text(controller.name.value)),
-          backgroundColor:
-              controller.backgroundColor.value.withValues(alpha: 0.8),
+          backgroundColor: controller.backgroundColor.value.withValues(
+            alpha: 0.8,
+          ),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Need Obx for reactive loading state
-              Obx(() => controller.isLoading.value
-                  ? const CircularProgressIndicator()
-                  : Text(
-                      'Count: ${controller.count.value}',
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
-                    )),
+              Obx(
+                () => controller.isLoading.value
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        'Count: ${controller.count.value}',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,19 +169,24 @@ class TraditionalCounterView extends GetView<ExampleCounterController> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => controller.changeName(
-                    controller.name.value == 'Smart Counter'
-                        ? 'Reactive Counter'
-                        : 'Smart Counter'),
+                  controller.name.value == 'Smart Counter'
+                      ? 'Reactive Counter'
+                      : 'Smart Counter',
+                ),
                 child: const Text('Toggle Name'),
               ),
               const SizedBox(height: 10),
               // Need Obx for reactive button text
-              Obx(() => ElevatedButton(
-                    onPressed: controller.toggleLoading,
-                    child: Text(controller.isLoading.value
+              Obx(
+                () => ElevatedButton(
+                  onPressed: controller.toggleLoading,
+                  child: Text(
+                    controller.isLoading.value
                         ? 'Hide Loading'
-                        : 'Show Loading'),
-                  )),
+                        : 'Show Loading',
+                  ),
+                ),
+              ),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: controller.changeBackgroundColor,

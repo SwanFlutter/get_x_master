@@ -989,10 +989,9 @@ class GetResponsiveHelper {
     try {
       final screenWidth = Get.width;
       final screenHeight = Get.height;
-      final aspectRatio =
-          (screenWidth > 0 && screenHeight > 0)
-              ? screenWidth / screenHeight
-              : 1.0;
+      final aspectRatio = (screenWidth > 0 && screenHeight > 0)
+          ? screenWidth / screenHeight
+          : 1.0;
 
       return {
         'width': screenWidth,

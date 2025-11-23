@@ -156,8 +156,9 @@ extension ListSortExtension<T> on List<T> {
     if (chunks.length == 1) return chunks.first;
 
     List<T> result = [];
-    List<Iterator<T>> iterators =
-        chunks.map((chunk) => chunk.iterator).toList();
+    List<Iterator<T>> iterators = chunks
+        .map((chunk) => chunk.iterator)
+        .toList();
     List<bool> hasNext = List.filled(chunks.length, false);
     List<T> current = List.filled(chunks.length, null as T);
 

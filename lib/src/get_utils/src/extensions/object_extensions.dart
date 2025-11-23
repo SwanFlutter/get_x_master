@@ -26,8 +26,9 @@ extension ObjectExtension on Object {
   /// // Result: "۰۲:۳۰ بعد از ظهر"
   /// ```
   String convertTimeToPersianForNew(TimeOfDay time) {
-    final hour =
-        time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
+    final hour = time.hour == 0
+        ? 12
+        : (time.hour > 12 ? time.hour - 12 : time.hour);
     final period = time.hour < 12 ? 'صبح' : 'بعد از ظهر';
     final persianHour = convertToPersianDigitsForNew(
       hour.toString().padLeft(2, '0'),
@@ -77,8 +78,9 @@ extension ObjectExtension on Object {
   /// // Result: "02:30 PM"
   /// ```
   String convertTimeToStringEnglish(TimeOfDay time) {
-    final hour =
-        time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
+    final hour = time.hour == 0
+        ? 12
+        : (time.hour > 12 ? time.hour - 12 : time.hour);
     final period = time.hour < 12 ? 'AM' : 'PM';
     final englishHour = hour.toString().padLeft(2, '0');
     final englishMinute = time.minute.toString().padLeft(2, '0');

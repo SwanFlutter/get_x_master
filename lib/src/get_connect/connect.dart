@@ -147,20 +147,19 @@ class GetConnect extends GetConnectInterface {
   List<GetSocket> get sockets => _sockets ??= <GetSocket>[];
 
   @override
-  GetHttpClient get httpClient =>
-      _httpClient ??= GetHttpClient(
-        userAgent: userAgent,
-        sendUserAgent: sendUserAgent,
-        timeout: timeout,
-        followRedirects: followRedirects,
-        maxRedirects: maxRedirects,
-        maxAuthRetries: maxAuthRetries,
-        allowAutoSignedCert: allowAutoSignedCert,
-        baseUrl: baseUrl,
-        trustedCertificates: trustedCertificates,
-        withCredentials: withCredentials,
-        findProxy: findProxy,
-      );
+  GetHttpClient get httpClient => _httpClient ??= GetHttpClient(
+    userAgent: userAgent,
+    sendUserAgent: sendUserAgent,
+    timeout: timeout,
+    followRedirects: followRedirects,
+    maxRedirects: maxRedirects,
+    maxAuthRetries: maxAuthRetries,
+    allowAutoSignedCert: allowAutoSignedCert,
+    baseUrl: baseUrl,
+    trustedCertificates: trustedCertificates,
+    withCredentials: withCredentials,
+    findProxy: findProxy,
+  );
 
   /// Performs a GET request to the specified URL.
   ///
@@ -444,19 +443,18 @@ class GetConnect extends GetConnectInterface {
       final listError = res.body['errors'];
       if ((listError is List) && listError.isNotEmpty) {
         return GraphQLResponse<T>(
-          graphQLErrors:
-              listError
-                  .map(
-                    (e) => GraphQLError(
-                      code:
-                          (e['extensions'] != null
-                                  ? e['extensions']['code'] ?? ''
-                                  : '')
-                              .toString(),
-                      message: (e['message'] ?? '').toString(),
-                    ),
-                  )
-                  .toList(),
+          graphQLErrors: listError
+              .map(
+                (e) => GraphQLError(
+                  code:
+                      (e['extensions'] != null
+                              ? e['extensions']['code'] ?? ''
+                              : '')
+                          .toString(),
+                  message: (e['message'] ?? '').toString(),
+                ),
+              )
+              .toList(),
         );
       }
       return GraphQLResponse<T>.fromResponse(res);
@@ -483,15 +481,14 @@ class GetConnect extends GetConnectInterface {
       final listError = res.body['errors'];
       if ((listError is List) && listError.isNotEmpty) {
         return GraphQLResponse<T>(
-          graphQLErrors:
-              listError
-                  .map(
-                    (e) => GraphQLError(
-                      code: e['extensions']['code']?.toString(),
-                      message: e['message']?.toString(),
-                    ),
-                  )
-                  .toList(),
+          graphQLErrors: listError
+              .map(
+                (e) => GraphQLError(
+                  code: e['extensions']['code']?.toString(),
+                  message: e['message']?.toString(),
+                ),
+              )
+              .toList(),
         );
       }
       return GraphQLResponse<T>.fromResponse(res);
@@ -545,8 +542,8 @@ class GetConnect extends GetConnectInterface {
   String _generateCacheKey(String url, Map<String, dynamic>? query) {
     final uri = Uri.parse(url);
     final queryParams = {...uri.queryParameters, ...?query};
-    final sortedQuery =
-        queryParams.entries.toList()..sort((a, b) => a.key.compareTo(b.key));
+    final sortedQuery = queryParams.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
 
     return '${uri.path}?${sortedQuery.map((e) => '${e.key}=${e.value}').join('&')}';
   }
@@ -620,24 +617,23 @@ class GetConnect extends GetConnectInterface {
       }
     }
 
-    final response =
-        enableRetry
-            ? await _retryRequest(
-              () => httpClient.get<T>(
-                url,
-                headers: headers,
-                contentType: contentType,
-                query: query,
-                decoder: decoder,
-              ),
-            )
-            : await httpClient.get<T>(
+    final response = enableRetry
+        ? await _retryRequest(
+            () => httpClient.get<T>(
               url,
               headers: headers,
               contentType: contentType,
               query: query,
               decoder: decoder,
-            );
+            ),
+          )
+        : await httpClient.get<T>(
+            url,
+            headers: headers,
+            contentType: contentType,
+            query: query,
+            decoder: decoder,
+          );
 
     if (useCache && enableCaching && response.isOk) {
       final cacheKey = _generateCacheKey(url, query);

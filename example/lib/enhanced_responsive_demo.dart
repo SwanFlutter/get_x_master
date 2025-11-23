@@ -83,17 +83,11 @@ class EnhancedResponsiveDemo extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -190,11 +184,7 @@ class EnhancedResponsiveDemo extends StatelessWidget {
   Widget _buildIconExample(IconData icon, double size, String label) {
     return Column(
       children: [
-        Icon(
-          icon,
-          size: size,
-          color: Colors.blue,
-        ),
+        Icon(icon, size: size, color: Colors.blue),
         SizedBox(height: 8.h),
         Text(
           label,
@@ -247,11 +237,7 @@ class EnhancedResponsiveDemo extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.ws),
             border: Border.all(color: Colors.grey),
           ),
-          child: Icon(
-            Icons.image,
-            size: size * 0.6,
-            color: Colors.grey[600],
-          ),
+          child: Icon(Icons.image, size: size * 0.6, color: Colors.grey[600]),
         ),
         SizedBox(height: 8.h),
         Text(
@@ -311,10 +297,7 @@ class EnhancedResponsiveDemo extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
           ),
           Text(
             value,

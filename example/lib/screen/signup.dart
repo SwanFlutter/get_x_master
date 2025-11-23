@@ -8,9 +8,7 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SignUp'),
-      ),
+      appBar: AppBar(title: Text('SignUp')),
       body: SizedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,14 +41,20 @@ class SignUp extends StatelessWidget {
                 height: 56,
                 color: context.theme.colorScheme.inversePrimary,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 onPressed: () {
                   SignupController.to.chackSignup();
                 },
-                child: AnimationExtension(Text('SignUp',
-                        style: TextStyle(
-                            color: Colors.deepPurpleAccent, fontSize: 14.sp)))
-                    .rotate(begin: 0, end: 1),
+                child: AnimationExtension(
+                  Text(
+                    'SignUp',
+                    style: TextStyle(
+                      color: Colors.deepPurpleAccent,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ).rotate(begin: 0, end: 1),
               ),
             ).wave(),
             SizedBox(height: 5),
@@ -81,9 +85,7 @@ class SignUp extends StatelessWidget {
                       ),
                     ],
                   ),
-                ).paddingOnly(
-                  left: context.mediaQuery.size.width * 0.24,
-                ),
+                ).paddingOnly(left: context.mediaQuery.size.width * 0.24),
               ],
             ),
           ],

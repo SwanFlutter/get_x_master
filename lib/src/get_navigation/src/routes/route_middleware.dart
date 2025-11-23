@@ -198,10 +198,9 @@ class PageRedirect {
     return GetPageRoute<T>(
       page: r.page,
       parameter: r.parameters,
-      settings:
-          isUnknown
-              ? RouteSettings(name: r.name, arguments: settings!.arguments)
-              : settings,
+      settings: isUnknown
+          ? RouteSettings(name: r.name, arguments: settings!.arguments)
+          : settings,
       curve: r.curve,
       opaque: r.opaque,
       showCupertinoParallax: r.showCupertinoParallax,

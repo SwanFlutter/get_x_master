@@ -10,19 +10,11 @@ class User {
   User({required this.id, required this.name, required this.email});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-    );
+    return User(id: json['id'], name: json['name'], email: json['email']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-    };
+    return {'id': id, 'name': name, 'email': email};
   }
 }
 
@@ -353,12 +345,7 @@ class GetConnectExample extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
-          children: [
-            HttpClientTab(),
-            WebSocketTab(),
-          ],
-        ),
+        body: const TabBarView(children: [HttpClientTab(), WebSocketTab()]),
       ),
     );
   }
@@ -437,30 +424,34 @@ class WebSocketTab extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Obx(() => ElevatedButton(
-                      onPressed: controller.isConnected.value
-                          ? controller.disconnect
-                          : controller.connect,
-                      child: Text(controller.isConnected.value
-                          ? 'Disconnect'
-                          : 'Connect'),
-                    )),
+                child: Obx(
+                  () => ElevatedButton(
+                    onPressed: controller.isConnected.value
+                        ? controller.disconnect
+                        : controller.connect,
+                    child: Text(
+                      controller.isConnected.value ? 'Disconnect' : 'Connect',
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 16),
           Expanded(
-            child: Obx(() => ListView.builder(
-                  itemCount: controller.messages.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(controller.messages[index]),
-                      ),
-                    );
-                  },
-                )),
+            child: Obx(
+              () => ListView.builder(
+                itemCount: controller.messages.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(controller.messages[index]),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
           const SizedBox(height: 16),
           Row(

@@ -11,10 +11,7 @@ class UnifiedResponsiveApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Unified Responsive Access',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: const UnifiedResponsiveHome(),
       debugShowCheckedModeBanner: false,
     );
@@ -35,14 +32,13 @@ class UnifiedResponsiveHome extends StatelessWidget {
         builder: (context, data) {
           // 🎉 حالا به تمام متدها دسترسی مستقیم دارید!
           // Now you have direct access to all methods!
-          
+
           return ListView(
             padding: data.responsiveInsetsAll(16), // ✨ EdgeInsets واکنش‌گرا
             children: [
               // مثال ۱: استفاده از متدهای پایه
               _buildBasicMethodsCard(data),
               SizedBox(height: data.h(20)), // ✨ Height واکنش‌گرا
-
               // مثال ۲: Font Sizes مختلف
               _buildFontSizesCard(data),
               SizedBox(height: data.h(20)),
@@ -120,10 +116,7 @@ class UnifiedResponsiveHome extends StatelessWidget {
   Widget _buildFontSizesCard(ResponsiveData data) {
     return Card(
       child: Padding(
-        padding: data.responsiveInsetsSymmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
+        padding: data.responsiveInsetsSymmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -135,13 +128,49 @@ class UnifiedResponsiveHome extends StatelessWidget {
               ),
             ),
             SizedBox(height: data.h(12)),
-            Text('data.sp(14) - Standard', style: TextStyle(fontSize: data.responsiveValue(phone: data.sp(14) , tablet: data.sp(16), desktop: data.sp(18)))),
+            Text(
+              'data.sp(14) - Standard',
+              style: TextStyle(
+                fontSize: data.responsiveValue(
+                  phone: data.sp(14),
+                  tablet: data.sp(16),
+                  desktop: data.sp(18),
+                ),
+              ),
+            ),
             SizedBox(height: data.h(8)),
-            Text('data.sp(16) - Regular', style: TextStyle(fontSize: data.responsiveValue(phone: data.sp(16) , tablet: data.sp(18), desktop: data.sp(20)))),
+            Text(
+              'data.sp(16) - Regular',
+              style: TextStyle(
+                fontSize: data.responsiveValue(
+                  phone: data.sp(16),
+                  tablet: data.sp(18),
+                  desktop: data.sp(20),
+                ),
+              ),
+            ),
             SizedBox(height: data.h(8)),
-            Text('data.hsp(18) - Header Small', style: TextStyle(fontSize: data.responsiveValue(phone: data.hsp(18) , tablet: data.hsp(20), desktop: data.hsp(22)))),
+            Text(
+              'data.hsp(18) - Header Small',
+              style: TextStyle(
+                fontSize: data.responsiveValue(
+                  phone: data.hsp(18),
+                  tablet: data.hsp(20),
+                  desktop: data.hsp(22),
+                ),
+              ),
+            ),
             SizedBox(height: data.h(8)),
-            Text('data.ssp(12) - Small Text', style: TextStyle(fontSize: data.responsiveValue(phone: data.ssp(12) , tablet: data.ssp(14), desktop: data.ssp(16)))),
+            Text(
+              'data.ssp(12) - Small Text',
+              style: TextStyle(
+                fontSize: data.responsiveValue(
+                  phone: data.ssp(12),
+                  tablet: data.ssp(14),
+                  desktop: data.ssp(16),
+                ),
+              ),
+            ),
             SizedBox(height: data.h(12)),
             _infoRow(data, 'data.sp(16)', data.sp(16)),
             _infoRow(data, 'data.hsp(18)', data.hsp(18)),
@@ -200,10 +229,7 @@ class UnifiedResponsiveHome extends StatelessWidget {
                   bottomLeft: 10,
                   bottomRight: 20,
                 ),
-                border: Border.all(
-                  color: Colors.blue,
-                  width: data.w(3),
-                ),
+                border: Border.all(color: Colors.blue, width: data.w(3)),
               ),
               child: Center(
                 child: Icon(
@@ -308,13 +334,11 @@ class UnifiedResponsiveHome extends StatelessWidget {
               width: data.wp(80),
               height: data.h(50),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.purple, Colors.blue],
-                ),
+                gradient: LinearGradient(colors: [Colors.purple, Colors.blue]),
                 borderRadius: data.responsiveBorderRadiusCircular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.purple.withOpacity(0.3),
+                    color: Colors.purple.withValues(alpha: 0.3),
                     blurRadius: data.w(10),
                     offset: Offset(0, data.h(4)),
                   ),
@@ -340,10 +364,7 @@ class UnifiedResponsiveHome extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: Colors.teal.shade50,
-                border: Border.all(
-                  color: Colors.teal,
-                  width: data.w(2),
-                ),
+                border: Border.all(color: Colors.teal, width: data.w(2)),
                 borderRadius: data.responsiveBorderRadius(
                   topLeft: 16,
                   topRight: 4,

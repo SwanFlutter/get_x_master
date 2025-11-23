@@ -191,20 +191,19 @@ class GetHttpClient {
     var total = 0;
     var length = bodyBytes.length;
 
-    var byteStream = Stream.fromIterable(
-      bodyBytes.map((i) => [i]),
-    ).transform<List<int>>(
-      StreamTransformer.fromHandlers(
-        handleData: (data, sink) {
-          total += data.length;
-          if (uploadProgress != null) {
-            var percent = total / length * 100;
-            uploadProgress(percent);
-          }
-          sink.add(data);
-        },
-      ),
-    );
+    var byteStream = Stream.fromIterable(bodyBytes.map((i) => [i]))
+        .transform<List<int>>(
+          StreamTransformer.fromHandlers(
+            handleData: (data, sink) {
+              total += data.length;
+              if (uploadProgress != null) {
+                var percent = total / length * 100;
+                uploadProgress(percent);
+              }
+              sink.add(data);
+            },
+          ),
+        );
     return byteStream;
   }
 
@@ -312,8 +311,8 @@ class GetHttpClient {
     final defaultInterceptor = defaultResponseInterceptor;
     return defaultInterceptor != null
         ? (request, targetType, response) async =>
-            await defaultInterceptor(request, targetType, response)
-                as Response<T>?
+              await defaultInterceptor(request, targetType, response)
+                  as Response<T>?
         : null;
   }
 

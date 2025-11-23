@@ -27,10 +27,7 @@ class CupertinoHomePage extends StatelessWidget {
             const SizedBox(height: 20),
             const Text(
               'New Flutter Cupertino Features',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
@@ -85,11 +82,7 @@ class CupertinoHomePage extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 32,
-              color: CupertinoColors.systemBlue,
-            ),
+            Icon(icon, size: 32, color: CupertinoColors.systemBlue),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -143,10 +136,7 @@ class SquircleExamplePage extends StatelessWidget {
             children: [
               const Text(
                 'Rounded Superellipse (Apple Squircle)',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -281,10 +271,7 @@ class SheetExamplePage extends StatelessWidget {
             children: [
               const Text(
                 'Enhanced Cupertino Sheet',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -366,10 +353,7 @@ class NavigationExamplePage extends StatelessWidget {
             children: [
               Text(
                 'Improved Navigation',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
               Text(
@@ -379,10 +363,7 @@ class NavigationExamplePage extends StatelessWidget {
               SizedBox(height: 30),
               Text(
                 'Features:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 16),
               Text('• Smoother transition animations'),

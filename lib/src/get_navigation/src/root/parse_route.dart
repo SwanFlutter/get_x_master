@@ -97,12 +97,11 @@ class ParseRouteTree {
     }
 
     // Find matching routes in the tree.
-    final treeBranch =
-        cumulativePaths
-            .map((e) => MapEntry(e, _findRoute(e)))
-            .where((element) => element.value != null)
-            .map((e) => MapEntry(e.key, e.value!))
-            .toList();
+    final treeBranch = cumulativePaths
+        .map((e) => MapEntry(e, _findRoute(e)))
+        .where((element) => element.value != null)
+        .map((e) => MapEntry(e.key, e.value!))
+        .toList();
 
     // Extract URL parameters.
     final params = Map<String, String>.from(uri.queryParameters);
@@ -115,18 +114,17 @@ class ParseRouteTree {
       }
 
       // Apply parameters to all pages in the route.
-      final mappedTreeBranch =
-          treeBranch
-              .map(
-                (e) => e.value.copy(
-                  parameters: {
-                    if (e.value.parameters != null) ...e.value.parameters!,
-                    ...params,
-                  },
-                  name: e.key,
-                ),
-              )
-              .toList();
+      final mappedTreeBranch = treeBranch
+          .map(
+            (e) => e.value.copy(
+              parameters: {
+                if (e.value.parameters != null) ...e.value.parameters!,
+                ...params,
+              },
+              name: e.key,
+            ),
+          )
+          .toList();
 
       return RouteDecoder(mappedTreeBranch, params, arguments);
     }

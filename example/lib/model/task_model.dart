@@ -5,17 +5,9 @@ class TaskModel {
   String title;
   String description;
   bool? status;
-  TaskModel({
-    required this.title,
-    required this.description,
-    this.status,
-  });
+  TaskModel({required this.title, required this.description, this.status});
 
-  TaskModel copyWith({
-    String? title,
-    String? description,
-    bool? status,
-  }) {
+  TaskModel copyWith({String? title, String? description, bool? status}) {
     return TaskModel(
       title: title ?? this.title,
       description: description ?? this.description,

@@ -179,27 +179,25 @@ extension ContextExt on BuildContext {
     );
 
     final deviceWidth = width;
-    final strictValues =
-        [
-          if (deviceWidth >= _tvBreakpoint) tv,
-          if (deviceWidth >= _largeDesktopBreakpoint) largeDesktop,
-          if (deviceWidth >= _desktopBreakpoint) desktop,
-          if (deviceWidth >= _largeTabletBreakpoint) largeTablet,
-          if (deviceWidth >= _smallTabletBreakpoint) smallTablet,
-          if (deviceWidth >= 300) phone,
-          watch,
-        ].whereType<T>();
+    final strictValues = [
+      if (deviceWidth >= _tvBreakpoint) tv,
+      if (deviceWidth >= _largeDesktopBreakpoint) largeDesktop,
+      if (deviceWidth >= _desktopBreakpoint) desktop,
+      if (deviceWidth >= _largeTabletBreakpoint) largeTablet,
+      if (deviceWidth >= _smallTabletBreakpoint) smallTablet,
+      if (deviceWidth >= 300) phone,
+      watch,
+    ].whereType<T>();
 
-    final looseValues =
-        [
-          watch,
-          phone,
-          smallTablet,
-          largeTablet,
-          desktop,
-          largeDesktop,
-          tv,
-        ].whereType<T>();
+    final looseValues = [
+      watch,
+      phone,
+      smallTablet,
+      largeTablet,
+      desktop,
+      largeDesktop,
+      tv,
+    ].whereType<T>();
 
     return strictValues.firstOrNull ?? looseValues.first;
   }

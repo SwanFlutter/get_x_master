@@ -35,17 +35,20 @@ class CoursesController extends GetXController {
       // Mock data
       courses.value = [
         Course(
-            id: 1,
-            title: 'Flutter Development',
-            description: 'Learn Flutter from scratch'),
+          id: 1,
+          title: 'Flutter Development',
+          description: 'Learn Flutter from scratch',
+        ),
         Course(
-            id: 2,
-            title: 'Dart Programming',
-            description: 'Master Dart language'),
+          id: 2,
+          title: 'Dart Programming',
+          description: 'Master Dart language',
+        ),
         Course(
-            id: 3,
-            title: 'State Management',
-            description: 'GetX, Provider, Bloc'),
+          id: 3,
+          title: 'State Management',
+          description: 'GetX, Provider, Bloc',
+        ),
       ];
 
       isLoading.value = false;
@@ -99,11 +102,7 @@ class Course {
   final String title;
   final String description;
 
-  Course({
-    required this.id,
-    required this.title,
-    required this.description,
-  });
+  Course({required this.id, required this.title, required this.description});
 
   @override
   String toString() =>

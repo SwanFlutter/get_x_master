@@ -15,7 +15,6 @@ class MyBinding extends Bindings {
       builder: () => TodosController(),
       // Optional condition for when you want the controller to be built only under certain conditions
       condition: () => true, // You can add a specific condition
-
       // Check the controller validity (optional)
       validityCheck: (controller) => true, // You can add validation logic
 
@@ -46,12 +45,8 @@ class MyBinding extends Bindings {
       validityCheck: (controller) => true,
     );*/
 
-    Get.smartLazyPut(
-      () => CounterController(),
-    );
+    Get.smartLazyPut(() => CounterController());
 
-    Get.smartLazyPut(
-      () => ThemeController(),
-    );
+    Get.smartLazyPut(() => ThemeController());
   }
 }

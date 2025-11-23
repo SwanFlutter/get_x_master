@@ -17,9 +17,7 @@ class _CupertinoLoginPageState extends State<CupertinoLoginPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Login Page'),
-      ),
+      navigationBar: const CupertinoNavigationBar(middle: Text('Login Page')),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

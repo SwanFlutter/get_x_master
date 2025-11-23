@@ -20,7 +20,6 @@ class ResponsiveDemo extends StatelessWidget {
             // Screen Info Card
             _buildScreenInfoCard(),
             SizedBox(height: 20.h), // 20px responsive height
-
             // Extension Methods Examples
             _buildExtensionExamples(),
             SizedBox(height: 20.h),
@@ -46,25 +45,30 @@ class ResponsiveDemo extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.w),
         border: Border.all(color: Colors.blue.shade200),
       ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          'Screen Information',
-          style: TextStyle(
-            fontSize: ResponsiveSize(18).ssp, // Responsive font size
-            fontWeight: FontWeight.bold,
-            color: Colors.blue.shade800,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Screen Information',
+            style: TextStyle(
+              fontSize: ResponsiveSize(18).ssp, // Responsive font size
+              fontWeight: FontWeight.bold,
+              color: Colors.blue.shade800,
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        _buildInfoRow('Width', '${Get.width.toStringAsFixed(1)}px'),
-        _buildInfoRow('Height', '${Get.height.toStringAsFixed(1)}px'),
-        _buildInfoRow(
-            'Aspect Ratio', (Get.width / Get.height).toStringAsFixed(2)),
-        /* _buildInfoRow(
+          SizedBox(height: 12.h),
+          _buildInfoRow('Width', '${Get.width.toStringAsFixed(1)}px'),
+          _buildInfoRow('Height', '${Get.height.toStringAsFixed(1)}px'),
+          _buildInfoRow(
+            'Aspect Ratio',
+            (Get.width / Get.height).toStringAsFixed(2),
+          ),
+          /* _buildInfoRow(
               'Device Type', ResponsiveHelper.isTablet ? 'Tablet' : 'Phone'),
           _buildInfoRow('Orientation',
               ResponsiveHelper.isLandscape ? 'Landscape' : 'Portrait'),*/
-      ]),
+        ],
+      ),
     );
   }
 
@@ -76,10 +80,7 @@ class ResponsiveDemo extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey.shade700,
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
           ),
           Text(
             value,
@@ -117,41 +118,29 @@ class ResponsiveDemo extends StatelessWidget {
           SizedBox(height: 12.h),
 
           // Pixel to Responsive Examples
-          _buildExampleCard(
-            'Pixel to Responsive',
-            [
-              'Container(width: 134.w) // 134px responsive width',
-              'Container(height: 30.h) // 30px responsive height',
-              'Text("Hello", style: TextStyle(fontSize: 16.sp))',
-            ],
-            Colors.green,
-          ),
+          _buildExampleCard('Pixel to Responsive', [
+            'Container(width: 134.w) // 134px responsive width',
+            'Container(height: 30.h) // 30px responsive height',
+            'Text("Hello", style: TextStyle(fontSize: 16.sp))',
+          ], Colors.green),
 
           SizedBox(height: 12.h),
 
           // Percentage Examples
-          _buildExampleCard(
-            'Percentage Based',
-            [
-              'Container(width: 50.wp) // 50% screen width',
-              'Container(height: 25.hp) // 25% screen height',
-              'Padding: EdgeInsets.all(5.wp)',
-            ],
-            Colors.green,
-          ),
+          _buildExampleCard('Percentage Based', [
+            'Container(width: 50.wp) // 50% screen width',
+            'Container(height: 25.hp) // 25% screen height',
+            'Padding: EdgeInsets.all(5.wp)',
+          ], Colors.green),
 
           SizedBox(height: 12.h),
 
           // Dynamic Calculation Examples
-          _buildExampleCard(
-            'Dynamic Calculations',
-            [
-              '134.widthPercent = ${134.0.widthPercent.toStringAsFixed(1)}%',
-              '30.heightPercent = ${30.0.heightPercent.toStringAsFixed(1)}%',
-              'Current calculations based on screen size',
-            ],
-            Colors.green,
-          ),
+          _buildExampleCard('Dynamic Calculations', [
+            '134.widthPercent = ${134.0.widthPercent.toStringAsFixed(1)}%',
+            '30.heightPercent = ${30.0.heightPercent.toStringAsFixed(1)}%',
+            'Current calculations based on screen size',
+          ], Colors.green),
         ],
       ),
     );
@@ -178,27 +167,19 @@ class ResponsiveDemo extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-          _buildExampleCard(
-            'Static Methods',
-            [
-              /*   'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
+          _buildExampleCard('Static Methods', [
+            /*   'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
               'ResponsiveHelper.h(30) = ${ResponsiveHelper.h(30).toStringAsFixed(1)}px',
               'ResponsiveHelper.wp(50) = ${ResponsiveHelper.wp(50).toStringAsFixed(1)}px',*/
-            ],
-            Colors.orange,
-          ),
+          ], Colors.orange),
           SizedBox(height: 12.h),
-          _buildExampleCard(
-            'Responsive Values',
-            [
-              /*   'ResponsiveHelper.responsiveValue(',
+          _buildExampleCard('Responsive Values', [
+            /*   'ResponsiveHelper.responsiveValue(',
               '  phone: 14.0,',
               '  tablet: 16.0,',
               '  desktop: 18.0,',
               ') = ${ResponsiveHelper.responsiveValue(phone: 14.0, tablet: 16.0, laptop: 18.0)}',*/
-            ],
-            Colors.orange,
-          ),
+          ], Colors.orange),
         ],
       ),
     );
@@ -219,10 +200,7 @@ class ResponsiveDemo extends StatelessWidget {
         SizedBox(height: 16.h),
 
         // Card Example
-        CardInfoView(
-          icon: Icons.star,
-          text: 'Responsive Card',
-        ),
+        CardInfoView(icon: Icons.star, text: 'Responsive Card'),
 
         SizedBox(height: 16.h),
 
@@ -238,10 +216,7 @@ class ResponsiveDemo extends StatelessWidget {
                     vertical: 12.h,
                   ),
                 ),
-                child: Text(
-                  'Button 1',
-                  style: TextStyle(fontSize: 14.sp),
-                ),
+                child: Text('Button 1', style: TextStyle(fontSize: 14.sp)),
               ),
             ),
             SizedBox(width: 12.w),
@@ -254,10 +229,7 @@ class ResponsiveDemo extends StatelessWidget {
                     vertical: 12.h,
                   ),
                 ),
-                child: Text(
-                  'Button 2',
-                  style: TextStyle(fontSize: 14.sp),
-                ),
+                child: Text('Button 2', style: TextStyle(fontSize: 14.sp)),
               ),
             ),
           ],
@@ -301,7 +273,10 @@ class ResponsiveDemo extends StatelessWidget {
   }
 
   Widget _buildExampleCard(
-      String title, List<String> examples, MaterialColor color) {
+    String title,
+    List<String> examples,
+    MaterialColor color,
+  ) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(12.w),
@@ -322,17 +297,19 @@ class ResponsiveDemo extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          ...examples.map((example) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.h),
-                child: Text(
-                  example,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: 'monospace',
-                    color: color.shade700,
-                  ),
+          ...examples.map(
+            (example) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 2.h),
+              child: Text(
+                example,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontFamily: 'monospace',
+                  color: color.shade700,
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -344,11 +321,7 @@ class CardInfoView extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const CardInfoView({
-    super.key,
-    required this.icon,
-    required this.text,
-  });
+  const CardInfoView({super.key, required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {

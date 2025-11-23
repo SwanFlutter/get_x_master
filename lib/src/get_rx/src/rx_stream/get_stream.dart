@@ -207,11 +207,10 @@ class GetStreamTransformation<T> extends Stream<T> {
     void Function()? onDone,
     bool? cancelOnError,
   }) {
-    final subs =
-        LightSubscription<T>(_removeSubscription)
-          ..onData(onData)
-          ..onError(onError)
-          ..onDone(onDone);
+    final subs = LightSubscription<T>(_removeSubscription)
+      ..onData(onData)
+      ..onError(onError)
+      ..onDone(onDone);
     _addSubscription(subs);
     return subs;
   }

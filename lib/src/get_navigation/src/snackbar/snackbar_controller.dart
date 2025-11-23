@@ -222,51 +222,48 @@ class SnackBarController {
       // Overlay entry for the backdrop blur and color filter.
       if (snackbar.overlayBlur > 0.0) ...[
         OverlayEntry(
-          builder:
-              (context) => GestureDetector(
-                onTap: () {
-                  // If the snackbar is dismissible and hasn't already been tapped,
-                  // close it on tap.
-                  if (snackbar.isDismissible && !_onTappedDismiss) {
-                    _onTappedDismiss = true;
-                    close();
-                  }
-                },
-                child: AnimatedBuilder(
-                  animation: _filterBlurAnimation,
-                  builder: (context, child) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: max(0.001, _filterBlurAnimation.value),
-                        sigmaY: max(0.001, _filterBlurAnimation.value),
-                      ),
-                      child: Container(
-                        constraints: const BoxConstraints.expand(),
-                        color: _filterColorAnimation.value,
-                      ),
-                    );
-                  },
-                ),
-              ),
+          builder: (context) => GestureDetector(
+            onTap: () {
+              // If the snackbar is dismissible and hasn't already been tapped,
+              // close it on tap.
+              if (snackbar.isDismissible && !_onTappedDismiss) {
+                _onTappedDismiss = true;
+                close();
+              }
+            },
+            child: AnimatedBuilder(
+              animation: _filterBlurAnimation,
+              builder: (context, child) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: max(0.001, _filterBlurAnimation.value),
+                    sigmaY: max(0.001, _filterBlurAnimation.value),
+                  ),
+                  child: Container(
+                    constraints: const BoxConstraints.expand(),
+                    color: _filterColorAnimation.value,
+                  ),
+                );
+              },
+            ),
+          ),
           maintainState: false,
           opaque: false,
         ),
       ],
       // Overlay entry for the snackbar content.
       OverlayEntry(
-        builder:
-            (context) => Semantics(
-              focused: false,
-              container: true,
-              explicitChildNodes: true,
-              child: AlignTransition(
-                alignment: _animation,
-                child:
-                    snackbar.isDismissible
-                        ? _getDismissibleSnack(child)
-                        : _getSnackbarContainer(child),
-              ),
-            ),
+        builder: (context) => Semantics(
+          focused: false,
+          container: true,
+          explicitChildNodes: true,
+          child: AlignTransition(
+            alignment: _animation,
+            child: snackbar.isDismissible
+                ? _getDismissibleSnack(child)
+                : _getSnackbarContainer(child),
+          ),
+        ),
         maintainState: false,
         opaque: false,
       ),
@@ -278,10 +275,9 @@ class SnackBarController {
     return Builder(
       builder: (_) {
         return GestureDetector(
-          onTap:
-              snackbar.onTap != null
-                  ? () => snackbar.onTap?.call(snackbar)
-                  : null,
+          onTap: snackbar.onTap != null
+              ? () => snackbar.onTap?.call(snackbar)
+              : null,
           child: snackbar,
         );
       },

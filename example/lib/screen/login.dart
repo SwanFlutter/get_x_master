@@ -62,10 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: AnimationExtension(
                     Text(
                       'Login',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     ),
                   ).rotate(begin: 0, end: 1),
                 ),

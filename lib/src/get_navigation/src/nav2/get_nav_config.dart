@@ -105,7 +105,8 @@ class GetNavConfig extends RouteInformation {
   ///
   /// Useful for debugging and logging purposes.
   @override
-  String toString() => '''
+  String toString() =>
+      '''
 ======GetNavConfig=====
 currentTreeBranch: $currentTreeBranch
 currentPage: $currentPage

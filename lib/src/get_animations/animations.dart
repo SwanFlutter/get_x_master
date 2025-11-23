@@ -180,8 +180,8 @@ class Animate extends StatelessWidget {
       tween: Tween<double>(begin: begin, end: end),
       curve: curve,
       idleValue: begin,
-      builder:
-          (context, value, child) => _buildAnimation(context, value, child),
+      builder: (context, value, child) =>
+          _buildAnimation(context, value, child),
       onComplete: onComplete,
       child: child,
     );
@@ -242,10 +242,9 @@ class Animate extends StatelessWidget {
 
       case AnimationType.wobble:
         return Transform(
-          transform:
-              Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateZ(sin(value * pi * 2) * 0.1),
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.001)
+            ..rotateZ(sin(value * pi * 2) * 0.1),
           alignment: Alignment.center,
           child: child,
         );

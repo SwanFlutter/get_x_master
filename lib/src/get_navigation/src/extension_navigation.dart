@@ -1620,7 +1620,10 @@ extension OverlayExt on GetInterface {
     // Create an overlay entry for the background opacity
     final overlayEntryOpacity = OverlayEntry(
       builder: (context) {
-        return Opacity(opacity: opacity, child: Container(color: opacityColor));
+        return Opacity(
+          opacity: opacity,
+          child: Container(color: opacityColor),
+        );
       },
     );
 

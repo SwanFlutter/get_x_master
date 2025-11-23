@@ -151,10 +151,9 @@ class GetRouterOutlet extends RouterOutlet<GetDelegate, GetNavConfig> {
            }
            return ret;
          },
-         emptyPage:
-             (delegate) =>
-                 Get.routeTree.matchRoute(initialRoute).route ??
-                 delegate.notFoundRoute,
+         emptyPage: (delegate) =>
+             Get.routeTree.matchRoute(initialRoute).route ??
+             delegate.notFoundRoute,
          key: key,
          navigatorKey: navigatorKey,
          delegate: delegate,
@@ -171,11 +170,10 @@ class GetRouterOutlet extends RouterOutlet<GetDelegate, GetNavConfig> {
     GetDelegate? delegate,
   }) : super(
          pageBuilder: (context, rDelegate, pages) {
-           final pageRes =
-               <GetPage?>[
-                 ...?pages,
-                 if (pages == null || pages.isEmpty) emptyPage?.call(rDelegate),
-               ].whereType<GetPage>();
+           final pageRes = <GetPage?>[
+             ...?pages,
+             if (pages == null || pages.isEmpty) emptyPage?.call(rDelegate),
+           ].whereType<GetPage>();
 
            if (pageRes.isNotEmpty) {
              return GetNavigator(

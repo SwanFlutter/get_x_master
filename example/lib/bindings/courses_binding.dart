@@ -33,14 +33,14 @@ class CoursesBinding extends Bindings {
 /// Alternative binding using BindingsBuilder for simpler cases
 class CoursesBindingBuilder {
   static Bindings get binding => BindingsBuilder(() {
-        Get.smartLazyPut<CoursesController>(() => CoursesController());
-      });
+    Get.smartLazyPut<CoursesController>(() => CoursesController());
+  });
 
   // Or using the put factory method
   static Bindings get putBinding => BindingsBuilder.put(
-        () => CoursesController(),
-        permanent: false, // Will be removed when not needed
-      );
+    () => CoursesController(),
+    permanent: false, // Will be removed when not needed
+  );
 }
 
 /// Example of how to use these bindings in your routes

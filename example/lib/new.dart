@@ -7,9 +7,7 @@ class Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Screen'),
-      ),
+      appBar: AppBar(title: Text('Screen')),
       body: SizedBox(
         width: Get.width,
         height: Get.height,
@@ -23,9 +21,10 @@ class Screen extends StatelessWidget {
                 Get.to(
                   () => Screen2(),
                   condition: ConditionalNavigation(
-                      condition: isPlatform,
-                      truePage: () => ResponsiveDemo(),
-                      falsePage: () => Screen2()),
+                    condition: isPlatform,
+                    truePage: () => ResponsiveDemo(),
+                    falsePage: () => Screen2(),
+                  ),
                 );
               },
               child: Text('Screen2'),
@@ -54,12 +53,8 @@ class Screen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Screen2'),
-      ),
-      body: Center(
-        child: Text('ConditionFalsePage'),
-      ),
+      appBar: AppBar(title: Text('Screen2')),
+      body: Center(child: Text('ConditionFalsePage')),
     );
   }
 }

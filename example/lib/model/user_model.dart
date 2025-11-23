@@ -4,15 +4,9 @@ import 'dart:convert';
 class UserModel {
   String? email;
   String? pasword;
-  UserModel({
-    this.email,
-    this.pasword,
-  });
+  UserModel({this.email, this.pasword});
 
-  UserModel copyWith({
-    String? email,
-    String? pasword,
-  }) {
+  UserModel copyWith({String? email, String? pasword}) {
     return UserModel(
       email: email ?? this.email,
       pasword: pasword ?? this.pasword,
@@ -20,10 +14,7 @@ class UserModel {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'email': email,
-      'pasword': pasword,
-    };
+    return <String, dynamic>{'email': email, 'pasword': pasword};
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {

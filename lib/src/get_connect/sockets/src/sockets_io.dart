@@ -32,10 +32,9 @@ class BaseWebSocket {
     }
     try {
       connectionStatus = ConnectionStatus.connecting;
-      socket =
-          allowSelfSigned
-              ? await _connectForSelfSignedCert(url)
-              : await WebSocket.connect(url);
+      socket = allowSelfSigned
+          ? await _connectForSelfSignedCert(url)
+          : await WebSocket.connect(url);
 
       socket!.pingInterval = ping;
       socketNotifier?.open();
@@ -119,13 +118,12 @@ class BaseWebSocket {
         return true;
       };
 
-      var request =
-          await client.getUrl(Uri.parse(url))
-            ..headers.add('Connection', 'Upgrade')
-            ..headers.add('Upgrade', 'websocket')
-            ..headers.add('Cache-Control', 'no-cache')
-            ..headers.add('Sec-WebSocket-Version', '13')
-            ..headers.add('Sec-WebSocket-Key', key.toLowerCase());
+      var request = await client.getUrl(Uri.parse(url))
+        ..headers.add('Connection', 'Upgrade')
+        ..headers.add('Upgrade', 'websocket')
+        ..headers.add('Cache-Control', 'no-cache')
+        ..headers.add('Sec-WebSocket-Version', '13')
+        ..headers.add('Sec-WebSocket-Key', key.toLowerCase());
 
       var response = await request.close();
       // ignore: close_sinks

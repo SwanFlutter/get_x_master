@@ -19,10 +19,7 @@ class SimpleCupertinoExample extends StatelessWidget {
             children: [
               const Text(
                 'Welcome to GetX Cupertino!',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
 
@@ -153,9 +150,7 @@ class SecondPage extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: const Text('Second Page'),
-        leading: CupertinoNavigationBarBackButton(
-          onPressed: () => Get.back(),
-        ),
+        leading: CupertinoNavigationBarBackButton(onPressed: () => Get.back()),
       ),
       child: const SafeArea(
         child: Center(
@@ -164,10 +159,7 @@ class SecondPage extends StatelessWidget {
             children: [
               Text(
                 'This is the second page!',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
               Text(

@@ -276,10 +276,9 @@ class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
           animation: animation,
           builder: (context, child) {
             return Align(
-              alignment:
-                  startFromTop
-                      ? Alignment.topCenter
-                      : Alignment.bottomCenter, // Align to top or bottom
+              alignment: startFromTop
+                  ? Alignment.topCenter
+                  : Alignment.bottomCenter, // Align to top or bottom
               child: Container(
                 decoration: BoxDecoration(
                   // Box decoration for background color
@@ -287,30 +286,27 @@ class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
                       backgroundColor ??
                       sheetTheme.modalBackgroundColor ??
                       sheetTheme.backgroundColor,
-                  boxShadow:
-                      elevation != null
-                          ? [
-                            BoxShadow(
-                              blurRadius: elevation!,
-                              color: Colors.black26,
-                            ),
-                          ]
-                          : null,
+                  boxShadow: elevation != null
+                      ? [
+                          BoxShadow(
+                            blurRadius: elevation!,
+                            color: Colors.black26,
+                          ),
+                        ]
+                      : null,
                   borderRadius: BorderRadius.vertical(
-                    top:
-                        startFromTop
-                            ? Radius.zero
-                            : Radius.circular(
-                              borderRadius,
-                            ), // No BorderRadius at the top when startFromTop is true.
-                    bottom:
-                        startFromTop
-                            ? Radius.circular(borderRadius)
-                            : Radius.zero,
+                    top: startFromTop
+                        ? Radius.zero
+                        : Radius.circular(
+                            borderRadius,
+                          ), // No BorderRadius at the top when startFromTop is true.
+                    bottom: startFromTop
+                        ? Radius.circular(borderRadius)
+                        : Radius.zero,
                   ), // No BorderRadius at the bottom when startFromTop is false
                 ),
-                clipBehavior:
-                    Clip.antiAlias, // Use clipBehavior to properly apply borderRadius.
+                clipBehavior: Clip
+                    .antiAlias, // Use clipBehavior to properly apply borderRadius.
                 child: DraggableScrollableSheet(
                   snap: snap,
                   snapAnimationDuration: const Duration(milliseconds: 200),
@@ -322,11 +318,10 @@ class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
                     return SingleChildScrollView(
                       controller: scrollController,
                       child: Stack(
-                        alignment:
-                            startFromTop
-                                ? Alignment.bottomCenter
-                                : Alignment
-                                    .topCenter, // تغییر alignment بر اساس startFromTop
+                        alignment: startFromTop
+                            ? Alignment.bottomCenter
+                            : Alignment
+                                  .topCenter, // تغییر alignment بر اساس startFromTop
                         children: [
                           builder(context).paddingOnly(top: itemPaddingTop!),
                           // Container handle

@@ -6,9 +6,7 @@ class BottomSheetTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'),
-      ),
+      appBar: AppBar(title: Text('Login Page')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -16,16 +14,14 @@ class BottomSheetTest extends StatelessWidget {
             minWidth: Get.width / 2,
             height: 56,
             color: context.theme.colorScheme.inversePrimary,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             onPressed: () {
               Get.bottomSheet(
-                  isDismissible: true,
-                  Container(
-                    height: 850,
-                    width: Get.width,
-                    color: Colors.blue,
-                  ));
+                isDismissible: true,
+                Container(height: 850, width: Get.width, color: Colors.blue),
+              );
             },
             child: Text('bottomSheet'),
           ),
@@ -34,8 +30,9 @@ class BottomSheetTest extends StatelessWidget {
             minWidth: Get.width / 2,
             height: 56,
             color: context.theme.colorScheme.inversePrimary,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             onPressed: _showExpandableBottomSheet,
             child: Text('ExpandableBottomSheet'),
           ),
@@ -56,10 +53,7 @@ class BottomSheetTest extends StatelessWidget {
             children: [
               const Text(
                 'Expandable Bottom Sheet',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(

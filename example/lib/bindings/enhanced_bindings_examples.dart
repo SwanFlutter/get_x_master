@@ -42,12 +42,12 @@ class SmartBindingsExamples {
 
   /// Custom binding with multiple dependencies
   static Bindings get multipleBinding => BindingsBuilder(() {
-        // Register multiple controllers
-        Get.smartLazyPut<CoursesController>(() => CoursesController());
-        // Add more controllers as needed
-        // Get.smartLazyPut<AuthController>(() => AuthController());
-        // Get.smartLazyPut<UserController>(() => UserController());
-      });
+    // Register multiple controllers
+    Get.smartLazyPut<CoursesController>(() => CoursesController());
+    // Add more controllers as needed
+    // Get.smartLazyPut<AuthController>(() => AuthController());
+    // Get.smartLazyPut<UserController>(() => UserController());
+  });
 }
 
 /// 3. Route definitions with different binding approaches
@@ -57,27 +57,27 @@ class AppRoutes {
   static const String coursesSmart = '/courses-smart';
 
   static List<GetPage> get pages => [
-        // Using traditional Bindings class
-        GetPage(
-          name: courses,
-          page: () => const CoursesPage(),
-          binding: CoursesBinding(),
-        ),
+    // Using traditional Bindings class
+    GetPage(
+      name: courses,
+      page: () => const CoursesPage(),
+      binding: CoursesBinding(),
+    ),
 
-        // Using BindingsBuilder.smartLazyPut (Recommended)
-        GetPage(
-          name: coursesSmart,
-          page: () => const CoursesPage(),
-          binding: SmartBindingsExamples.coursesSmartBinding,
-        ),
+    // Using BindingsBuilder.smartLazyPut (Recommended)
+    GetPage(
+      name: coursesSmart,
+      page: () => const CoursesPage(),
+      binding: SmartBindingsExamples.coursesSmartBinding,
+    ),
 
-        // Using BindingsBuilder.lazyPut
-        GetPage(
-          name: coursesLazy,
-          page: () => const CoursesPage(),
-          binding: SmartBindingsExamples.coursesLazyBinding,
-        ),
-      ];
+    // Using BindingsBuilder.lazyPut
+    GetPage(
+      name: coursesLazy,
+      page: () => const CoursesPage(),
+      binding: SmartBindingsExamples.coursesLazyBinding,
+    ),
+  ];
 }
 
 /// 4. Advanced binding patterns for different scenarios
@@ -106,7 +106,8 @@ class ConditionalBindings extends Bindings {
     // Register with different configurations based on conditions
     if (isUserLoggedIn()) {
       Get.smartLazyPut<UserDashboardController>(
-          () => UserDashboardController());
+        () => UserDashboardController(),
+      );
     } else {
       Get.smartLazyPut<GuestController>(() => GuestController());
     }
@@ -192,9 +193,7 @@ class CoursesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Courses Page')),
-    );
+    return const Scaffold(body: Center(child: Text('Courses Page')));
   }
 }
 

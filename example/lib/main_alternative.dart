@@ -47,17 +47,17 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.smartFind<ThemeController>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('تغییر تم'),
-      ),
+      appBar: AppBar(title: const Text('تغییر تم')),
       body: Center(
-        child: Obx(() => Switch(
-              value: controller.isDarkMode,
-              onChanged: (value) {
-                controller.toggleTheme();
-              },
-              activeThumbColor: Colors.deepOrange,
-            )),
+        child: Obx(
+          () => Switch(
+            value: controller.isDarkMode,
+            onChanged: (value) {
+              controller.toggleTheme();
+            },
+            activeThumbColor: Colors.deepOrange,
+          ),
+        ),
       ),
     );
   }
@@ -83,17 +83,17 @@ class _HomeScreenStatefulState extends State<HomeScreenStateful> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('تغییر تم'),
-      ),
+      appBar: AppBar(title: const Text('تغییر تم')),
       body: Center(
-        child: Obx(() => Switch(
-              value: controller.isDarkMode,
-              onChanged: (value) {
-                controller.toggleTheme();
-              },
-              activeThumbColor: Colors.deepOrange,
-            )),
+        child: Obx(
+          () => Switch(
+            value: controller.isDarkMode,
+            onChanged: (value) {
+              controller.toggleTheme();
+            },
+            activeThumbColor: Colors.deepOrange,
+          ),
+        ),
       ),
     );
   }

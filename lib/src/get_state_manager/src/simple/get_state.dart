@@ -484,15 +484,12 @@ class GetBuilderState<T extends GetXController> extends State<GetBuilder<T>>
     _remove?.call();
 
     try {
-      _remove =
-          (widget.id == null)
-              ? controller?.addListener(
-                _filter != null ? _filterUpdate : getUpdate,
-              )
-              : controller?.addListenerId(
-                widget.id,
-                _filter != null ? _filterUpdate : getUpdate,
-              );
+      _remove = (widget.id == null)
+          ? controller?.addListener(_filter != null ? _filterUpdate : getUpdate)
+          : controller?.addListenerId(
+              widget.id,
+              _filter != null ? _filterUpdate : getUpdate,
+            );
     } catch (e) {
       debugPrint('Error subscribing to controller: $e');
     }
@@ -741,15 +738,12 @@ class GetBuilderObsState<T extends GetXController>
     _remove?.call();
 
     try {
-      _remove =
-          (widget.id == null)
-              ? controller?.addListener(
-                _filter != null ? _filterUpdate : getUpdate,
-              )
-              : controller?.addListenerId(
-                widget.id,
-                _filter != null ? _filterUpdate : getUpdate,
-              );
+      _remove = (widget.id == null)
+          ? controller?.addListener(_filter != null ? _filterUpdate : getUpdate)
+          : controller?.addListenerId(
+              widget.id,
+              _filter != null ? _filterUpdate : getUpdate,
+            );
     } catch (e) {
       debugPrint('Error subscribing to controller: $e');
     }

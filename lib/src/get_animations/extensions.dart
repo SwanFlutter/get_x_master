@@ -72,8 +72,8 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: 0.0, end: 1.0),
       idleValue: 1.0,
       onComplete: onComplete,
-      builder:
-          (context, value, child) => Opacity(opacity: 1 - value, child: child),
+      builder: (context, value, child) =>
+          Opacity(opacity: 1 - value, child: child),
       child: this,
     );
   }
@@ -98,9 +98,8 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin,
       onComplete: onComplete,
-      builder:
-          (context, value, child) =>
-              Transform.rotate(angle: value * pi * 2, child: child),
+      builder: (context, value, child) =>
+          Transform.rotate(angle: value * pi * 2, child: child),
       child: this,
     );
   }
@@ -125,9 +124,8 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin,
       onComplete: onComplete,
-      builder:
-          (context, value, child) =>
-              Transform.scale(scale: value, child: child),
+      builder: (context, value, child) =>
+          Transform.scale(scale: value, child: child),
       child: this,
     );
   }
@@ -272,9 +270,8 @@ extension AnimationExtension on Widget {
       idleValue: begin,
       onComplete: onComplete,
       curve: Curves.bounceInOut,
-      builder:
-          (context, value, child) =>
-              Transform.scale(scale: value, child: child),
+      builder: (context, value, child) =>
+          Transform.scale(scale: value, child: child),
       child: this,
     );
   }
@@ -297,9 +294,8 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: 0, end: 1),
       idleValue: 0.0,
       onComplete: onComplete,
-      builder:
-          (context, value, child) =>
-              Transform.rotate(angle: value * pi * 2, child: child),
+      builder: (context, value, child) =>
+          Transform.rotate(angle: value * pi * 2, child: child),
       child: this,
     );
   }
@@ -324,9 +320,8 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin,
       onComplete: onComplete,
-      builder:
-          (context, value, child) =>
-              Transform.scale(scale: value, child: child),
+      builder: (context, value, child) =>
+          Transform.scale(scale: value, child: child),
       child: this,
     );
   }
@@ -351,11 +346,10 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin,
       onComplete: onComplete,
-      builder:
-          (context, value, child) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: value, sigmaY: value),
-            child: child,
-          ),
+      builder: (context, value, child) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: value, sigmaY: value),
+        child: child,
+      ),
       child: this,
     );
   }
@@ -380,12 +374,11 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin,
       onComplete: onComplete,
-      builder:
-          (context, value, child) => Transform(
-            transform: Matrix4.rotationY(value * pi),
-            alignment: Alignment.center,
-            child: child,
-          ),
+      builder: (context, value, child) => Transform(
+        transform: Matrix4.rotationY(value * pi),
+        alignment: Alignment.center,
+        child: child,
+      ),
       child: this,
     );
   }
@@ -410,15 +403,14 @@ extension AnimationExtension on Widget {
       tween: Tween<double>(begin: begin, end: end),
       idleValue: begin,
       onComplete: onComplete,
-      builder:
-          (context, value, child) => Transform(
-            transform: Matrix4.translationValues(
-              0.0,
-              20.0 * sin(value * pi * 2),
-              0.0,
-            ),
-            child: child,
-          ),
+      builder: (context, value, child) => Transform(
+        transform: Matrix4.translationValues(
+          0.0,
+          20.0 * sin(value * pi * 2),
+          0.0,
+        ),
+        child: child,
+      ),
       child: this,
     );
   }

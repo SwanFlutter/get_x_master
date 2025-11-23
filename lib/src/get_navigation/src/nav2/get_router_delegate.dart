@@ -285,8 +285,9 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     if (currentBranch != null && currentBranch.length > 1) {
       //remove last part only
       final remaining = currentBranch.take(currentBranch.length - 1);
-      final prevHistoryEntry =
-          history.length > 1 ? history[history.length - 2] : null;
+      final prevHistoryEntry = history.length > 1
+          ? history[history.length - 2]
+          : null;
 
       //check if current route is the same as the previous route
       if (prevHistoryEntry != null) {

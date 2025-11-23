@@ -169,10 +169,11 @@ class GetCupertinoApp extends StatelessWidget {
     this.scrollBehavior,
     this.restorationScopeId,
     this.restorationId,
-  }) : routerDelegate =
-           routerDelegate ??= Get.createDelegate(notFoundRoute: unknownRoute),
-       routeInformationParser =
-           routeInformationParser ??= Get.createInformationParser(
+  }) : routerDelegate = routerDelegate ??= Get.createDelegate(
+         notFoundRoute: unknownRoute,
+       ),
+       routeInformationParser = routeInformationParser ??=
+           Get.createInformationParser(
              initialRoute: getPages?.first.name ?? '/',
            ),
        navigatorObservers = null,
@@ -354,10 +355,9 @@ class GetCupertinoApp extends StatelessWidget {
       routes: routes ?? const <String, WidgetBuilder>{},
       initialRoute: initialRoute,
       onGenerateRoute: getPages != null ? generator : onGenerateRoute,
-      onGenerateInitialRoutes:
-          (getPages == null || home != null)
-              ? onGenerateInitialRoutes
-              : initialRoutesGenerate,
+      onGenerateInitialRoutes: (getPages == null || home != null)
+          ? onGenerateInitialRoutes
+          : initialRoutesGenerate,
       onUnknownRoute: onUnknownRoute,
       navigatorObservers: _buildNavigatorObservers(),
       builder: defaultBuilder,
@@ -394,10 +394,9 @@ class GetCupertinoApp extends StatelessWidget {
   Widget defaultBuilder(BuildContext context, Widget? child) {
     return Directionality(
       textDirection: _getTextDirection(),
-      child:
-          builder == null
-              ? (child ?? const Material())
-              : builder!(context, child ?? const Material()),
+      child: builder == null
+          ? (child ?? const Material())
+          : builder!(context, child ?? const Material()),
     );
   }
 

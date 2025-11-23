@@ -41,8 +41,8 @@ class CounterController extends GetXController {
 
   void toggleMessage() =>
       message.value = message.value == 'Hello ReactiveGetView!'
-          ? 'ReactiveGetView is Amazing!'
-          : 'Hello ReactiveGetView!';
+      ? 'ReactiveGetView is Amazing!'
+      : 'Hello ReactiveGetView!';
 
   void toggleVisibility() => isVisible.value = !isVisible.value;
 
@@ -90,7 +90,9 @@ class CounterView extends ReactiveGetView<CounterController> {
                       Text(
                         'Count: ${controller.count.value}',
                         style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: 16),
                       if (controller.isLoading.value)
@@ -124,9 +126,11 @@ class CounterView extends ReactiveGetView<CounterController> {
                 ),
                 ElevatedButton(
                   onPressed: controller.toggleVisibility,
-                  child: Text(controller.isVisible.value
-                      ? 'Hide Counter'
-                      : 'Show Counter'),
+                  child: Text(
+                    controller.isVisible.value
+                        ? 'Hide Counter'
+                        : 'Show Counter',
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: controller.addItem,
@@ -138,8 +142,10 @@ class CounterView extends ReactiveGetView<CounterController> {
             SizedBox(height: 20),
 
             // Search section
-            Text('Search Demo:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              'Search Demo:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 8),
             TextField(
               onChanged: controller.updateSearchQuery,
@@ -157,8 +163,10 @@ class CounterView extends ReactiveGetView<CounterController> {
             SizedBox(height: 20),
 
             // List section
-            Text('Dynamic List Demo:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              'Dynamic List Demo:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 8),
             if (controller.items.isEmpty)
               Card(
@@ -173,16 +181,16 @@ class CounterView extends ReactiveGetView<CounterController> {
               )
             else
               ...controller.items.asMap().entries.map(
-                    (entry) => Card(
-                      child: ListTile(
-                        title: Text(entry.value),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => controller.removeItem(entry.key),
-                        ),
-                      ),
+                (entry) => Card(
+                  child: ListTile(
+                    title: Text(entry.value),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => controller.removeItem(entry.key),
                     ),
                   ),
+                ),
+              ),
           ],
         ),
       ),
@@ -198,10 +206,7 @@ class ReactiveGetViewDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Enhanced ReactiveGetView Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: const CounterView(),
       debugShowCheckedModeBanner: false,
     );

@@ -1148,20 +1148,19 @@ class GetUtils {
     }
 
     List<String> stringWordsList = stringWithoutExtraSpaces.split(" ");
-    List<String> capitalizedWordsFirstLetter =
-        stringWordsList
-            .map((word) {
-              if (word.trim().isEmpty) return "";
-              return word.trim();
-            })
-            .where((word) => word != "")
-            .map((word) {
-              if (word.startsWith(RegExp(r'[\n\t\r]'))) {
-                return word;
-              }
-              return word[0].toUpperCase() + word.substring(1).toLowerCase();
-            })
-            .toList();
+    List<String> capitalizedWordsFirstLetter = stringWordsList
+        .map((word) {
+          if (word.trim().isEmpty) return "";
+          return word.trim();
+        })
+        .where((word) => word != "")
+        .map((word) {
+          if (word.startsWith(RegExp(r'[\n\t\r]'))) {
+            return word;
+          }
+          return word[0].toUpperCase() + word.substring(1).toLowerCase();
+        })
+        .toList();
     String finalResult = capitalizedWordsFirstLetter.join(" ");
     return finalResult;
   }

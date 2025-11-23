@@ -26,11 +26,7 @@ class Home extends StatelessWidget {
               : ListView.builder(
                   itemCount: TodosController.to.todos.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text('Todo $index'),
-                      ),
-                    );
+                    return Card(child: ListTile(title: Text('Todo $index')));
                   },
                 ),
         ),
@@ -59,9 +55,7 @@ class Home extends StatelessWidget {
 }
 
 class LoginWidget extends StatelessWidget {
-  const LoginWidget({
-    super.key,
-  });
+  const LoginWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +91,7 @@ class LoginWidget extends StatelessWidget {
             minWidth: context.width,
             color: Colors.deepPurpleAccent,
             height: 56,
-            child: Text(
-              "Add",
-              style: TextStyle(color: Colors.white),
-            ),
+            child: Text("Add", style: TextStyle(color: Colors.white)),
           ),
         ],
       ).paddingAll(15.0),

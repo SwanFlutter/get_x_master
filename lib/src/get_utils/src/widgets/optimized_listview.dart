@@ -67,8 +67,9 @@ class OptimizedListView<T> extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (context, i) {
               final item = list[i];
-              final key =
-                  keyGenerator != null ? keyGenerator!(item) : ValueKey(item);
+              final key = keyGenerator != null
+                  ? keyGenerator!(item)
+                  : ValueKey(item);
               return builder(context, key as ValueKey, item);
             },
             childCount: list.length,

@@ -18,9 +18,7 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Login Page'),
-      ),
+      navigationBar: const CupertinoNavigationBar(middle: Text('Login Page')),
       child: SafeArea(
         child: Material(
           // This provides MaterialLocalizations for Material widgets
@@ -114,10 +112,7 @@ class _HybridLoginPageState extends State<HybridLoginPage> {
                         GetSnackBar(
                           title: 'Error',
                           message: 'Internet connection failed.',
-                          icon: const Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ),
+                          icon: const Icon(Icons.error, color: Colors.red),
                           padding: const EdgeInsets.all(20.0),
                           margin: const EdgeInsets.all(20.0),
                           mainButton: TextButton(

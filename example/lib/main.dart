@@ -68,20 +68,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('تغییر تم'),
-      ),
+      appBar: AppBar(title: const Text('تغییر تم')),
       body: Center(
         child: GetBuilder<ThemeController>(
           init: null, // Let GetX find the controller from bindings
           builder: (controller) {
-            return Obx(() => Switch(
-                  value: controller.isDarkMode,
-                  onChanged: (value) {
-                    controller.toggleTheme();
-                  },
-                  activeThumbColor: Colors.deepOrange,
-                ));
+            return Obx(
+              () => Switch(
+                value: controller.isDarkMode,
+                onChanged: (value) {
+                  controller.toggleTheme();
+                },
+                activeThumbColor: Colors.deepOrange,
+              ),
+            );
           },
         ),
       ),

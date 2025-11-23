@@ -50,8 +50,9 @@ class HttpRequestImpl implements IClient {
 
     unawaited(
       xhr.onLoad.first.then((_) async {
-        final bodyBytes =
-            (xhr.response as JSArrayBuffer).toDart.asUint8List().toStream();
+        final bodyBytes = (xhr.response as JSArrayBuffer).toDart
+            .asUint8List()
+            .toStream();
 
         if (request.responseInterceptor != null) {
           throw GetHttpException(

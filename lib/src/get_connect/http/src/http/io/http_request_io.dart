@@ -310,10 +310,9 @@ class IOHttpResponse implements HttpClientResponse {
   }
 
   @override
-  List<RedirectInfo> get redirects =>
-      _response.redirects
-          .map((item) => IoRedirectInfo(redirectInfo: item))
-          .toList();
+  List<RedirectInfo> get redirects => _response.redirects
+      .map((item) => IoRedirectInfo(redirectInfo: item))
+      .toList();
 
   @override
   Future<List<int>> reduce(
@@ -407,7 +406,7 @@ class HttpRequestImpl extends IClient {
     }
 
     _httpClient = io.HttpClient(context: _securityContext);
-    _httpClient!.badCertificateCallback = (_, __, ___) => allowAutoSignedCert;
+    _httpClient!.badCertificateCallback = (_, _, _) => allowAutoSignedCert;
     _httpClient!.findProxy = findProxy;
   }
 
@@ -417,19 +416,17 @@ class HttpRequestImpl extends IClient {
     io.HttpClientRequest? ioRequest;
     try {
       _httpClient!.connectionTimeout = timeout;
-      ioRequest =
-          (await _httpClient!.openUrl(request.method, request.url))
-            ..followRedirects = request.followRedirects
-            ..persistentConnection = request.persistentConnection
-            ..maxRedirects = request.maxRedirects
-            ..contentLength = request.contentLength ?? -1;
+      ioRequest = (await _httpClient!.openUrl(request.method, request.url))
+        ..followRedirects = request.followRedirects
+        ..persistentConnection = request.persistentConnection
+        ..maxRedirects = request.maxRedirects
+        ..contentLength = request.contentLength ?? -1;
       request.headers.forEach(ioRequest.headers.set);
 
-      var response =
-          timeout == null
-              ? await stream.pipe(ioRequest) as io.HttpClientResponse
-              : await stream.pipe(ioRequest).timeout(timeout!)
-                  as io.HttpClientResponse;
+      var response = timeout == null
+          ? await stream.pipe(ioRequest) as io.HttpClientResponse
+          : await stream.pipe(ioRequest).timeout(timeout!)
+                as io.HttpClientResponse;
 
       var headers = <String, String>{};
       response.headers.forEach((key, values) {

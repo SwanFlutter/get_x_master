@@ -14,10 +14,7 @@ class ResponsiveTestApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'GetX Responsive Test',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: const ResponsiveTestHome(),
       debugShowCheckedModeBanner: false,
     );
@@ -78,10 +75,7 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '📱 اطلاعات صفحه نمایش',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             _infoRow('Width', '${Get.width.toStringAsFixed(1)} px'),
@@ -108,23 +102,26 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '📐 تست Number Extensions',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             _infoRow('50% Width (50.wp)', '${50.0.wp.toStringAsFixed(1)} px'),
             _infoRow('30% Height (30.hp)', '${30.0.hp.toStringAsFixed(1)} px'),
-            _infoRow('100 pixels width (100.w)', '${100.0.w.toStringAsFixed(1)} px'),
-            _infoRow('80 pixels height (80.h)', '${80.0.h.toStringAsFixed(1)} px'),
+            _infoRow(
+              '100 pixels width (100.w)',
+              '${100.0.w.toStringAsFixed(1)} px',
+            ),
+            _infoRow(
+              '80 pixels height (80.h)',
+              '${80.0.h.toStringAsFixed(1)} px',
+            ),
             SizedBox(height: 12.h),
             // نمایش بصری
             Container(
               width: 50.0.wp,
               height: 30.0.hp,
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.3),
+                color: Colors.blue.withValues(alpha: 0.3),
                 border: Border.all(color: Colors.blue, width: 2),
                 borderRadius: BorderRadius.circular(8.w),
               ),
@@ -154,16 +151,16 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '✨ تست ResponsiveSize Extension',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             _infoRow('Font 16.sp', '${16.sp.toStringAsFixed(1)} px'),
             _infoRow('Font 20.sp', '${20.sp.toStringAsFixed(1)} px'),
             _infoRow('Widget Size 24.ws', '${24.ws.toStringAsFixed(1)} px'),
-            _infoRow('Image Size 100.imgSize', '${100.imgSize.toStringAsFixed(1)} px'),
+            _infoRow(
+              'Image Size 100.imgSize',
+              '${100.imgSize.toStringAsFixed(1)} px',
+            ),
             SizedBox(height: 12.h),
             // نمایش متن با اندازه‌های مختلف
             Text('Text with 14.sp', style: TextStyle(fontSize: 14.sp)),
@@ -199,10 +196,7 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '🔄 تست GetResponsiveBuilder',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             GetResponsiveBuilder(
@@ -210,7 +204,7 @@ class ResponsiveTestHome extends StatelessWidget {
                 return Container(
                   padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: Colors.green.withValues(alpha: 0.1),
                     border: Border.all(color: Colors.green, width: 2),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
@@ -225,12 +219,15 @@ class ResponsiveTestHome extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8.h),
-                      _infoRow('Width', '${data.width.toStringAsFixed(1)}'),
-                      _infoRow('Height', '${data.height.toStringAsFixed(1)}'),
+                      _infoRow('Width', data.width.toStringAsFixed(1)),
+                      _infoRow('Height', data.height.toStringAsFixed(1)),
                       _infoRow('Device Type', data.deviceType),
                       _infoRow('Is Landscape', data.isLandscape.toString()),
                       _infoRow('Base Width', data.baseWidth.toStringAsFixed(0)),
-                      _infoRow('Base Height', data.baseHeight.toStringAsFixed(0)),
+                      _infoRow(
+                        'Base Height',
+                        data.baseHeight.toStringAsFixed(0),
+                      ),
                     ],
                   ),
                 );
@@ -252,10 +249,7 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '📱 تشخیص نوع دستگاه',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             _infoRow('Device Type', GetResponsiveHelper.deviceType),
@@ -268,11 +262,7 @@ class ResponsiveTestHome extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  Icon(
-                    _getDeviceIcon(),
-                    size: 48.ws,
-                    color: Colors.blue,
-                  ),
+                  Icon(_getDeviceIcon(), size: 48.ws, color: Colors.blue),
                   SizedBox(height: 8.h),
                   Text(
                     'شما از ${_getDeviceName()} استفاده می‌کنید',
@@ -297,16 +287,13 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '👁️ تست Responsive Visibility',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.purple.withOpacity(0.1),
+                color: Colors.purple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.w),
               ),
               child: Text(
@@ -323,7 +310,7 @@ class ResponsiveTestHome extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.w),
               ),
               child: Text(
@@ -340,7 +327,7 @@ class ResponsiveTestHome extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.w),
               ),
               child: Text(
@@ -369,24 +356,39 @@ class ResponsiveTestHome extends StatelessWidget {
           children: [
             Text(
               '🛠️ تست GetResponsiveHelper',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12.h),
-            _infoRow('Helper.w(100)', GetResponsiveHelper.w(100).toStringAsFixed(1)),
-            _infoRow('Helper.h(80)', GetResponsiveHelper.h(80).toStringAsFixed(1)),
-            _infoRow('Helper.wp(25)', GetResponsiveHelper.wp(25).toStringAsFixed(1)),
-            _infoRow('Helper.hp(15)', GetResponsiveHelper.hp(15).toStringAsFixed(1)),
-            _infoRow('Helper.ws(24)', GetResponsiveHelper.ws(24).toStringAsFixed(1)),
-            _infoRow('Helper.imgSize(100)', GetResponsiveHelper.imgSize(100).toStringAsFixed(1)),
+            _infoRow(
+              'Helper.w(100)',
+              GetResponsiveHelper.w(100).toStringAsFixed(1),
+            ),
+            _infoRow(
+              'Helper.h(80)',
+              GetResponsiveHelper.h(80).toStringAsFixed(1),
+            ),
+            _infoRow(
+              'Helper.wp(25)',
+              GetResponsiveHelper.wp(25).toStringAsFixed(1),
+            ),
+            _infoRow(
+              'Helper.hp(15)',
+              GetResponsiveHelper.hp(15).toStringAsFixed(1),
+            ),
+            _infoRow(
+              'Helper.ws(24)',
+              GetResponsiveHelper.ws(24).toStringAsFixed(1),
+            ),
+            _infoRow(
+              'Helper.imgSize(100)',
+              GetResponsiveHelper.imgSize(100).toStringAsFixed(1),
+            ),
             SizedBox(height: 12.h),
             // تست responsiveValue
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.teal.withOpacity(0.1),
+                color: Colors.teal.withValues(alpha: 0.1),
                 border: Border.all(
                   color: GetResponsiveHelper.responsiveValue<Color>(
                     phone: Colors.blue,
@@ -437,10 +439,7 @@ class ResponsiveTestHome extends StatelessWidget {
         children: [
           Text(
             '$label:',
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
           ),
           Text(
             value,

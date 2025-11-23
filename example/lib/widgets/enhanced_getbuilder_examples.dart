@@ -271,9 +271,11 @@ class ContextExtensionsExample extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                            'Controller found: ${context.findOrNull<EnhancedController>() != null}'),
+                          'Controller found: ${context.findOrNull<EnhancedController>() != null}',
+                        ),
                         Text(
-                            'Controller registered: ${context.isControllerRegistered<EnhancedController>()}'),
+                          'Controller registered: ${context.isControllerRegistered<EnhancedController>()}',
+                        ),
                       ],
                     ),
                   ),

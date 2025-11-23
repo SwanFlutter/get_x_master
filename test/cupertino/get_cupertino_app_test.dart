@@ -165,17 +165,16 @@ class TestAlertPage extends StatelessWidget {
           onPressed: () {
             showCupertinoDialog(
               context: context,
-              builder:
-                  (context) => CupertinoAlertDialog(
-                    title: const Text('Test Alert'),
-                    content: const Text('This alert uses enhanced features'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: const Text('OK'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
+              builder: (context) => CupertinoAlertDialog(
+                title: const Text('Test Alert'),
+                content: const Text('This alert uses enhanced features'),
+                actions: [
+                  CupertinoDialogAction(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
+                ],
+              ),
             );
           },
         ),
