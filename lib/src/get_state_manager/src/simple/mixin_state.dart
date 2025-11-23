@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../get_state_manager.dart';
 
 class MixinBuilder<T extends GetXController> extends StatelessWidget {
-  @required
   final Widget Function(T) builder;
   final bool global;
   final String? id;
