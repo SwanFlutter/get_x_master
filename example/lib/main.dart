@@ -1,5 +1,4 @@
 import 'package:example/bindings/bindings.dart';
-import 'package:example/unified_responsive_example.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const UnifiedResponsiveApp());
+  runApp(const ColorStudioApp());
 }
 
 class ColorStudioApp extends StatelessWidget {
