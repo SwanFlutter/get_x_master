@@ -2026,31 +2026,220 @@ String yearString = dateTime.getPersianYear();
 // نتیجه: "۱۴۰۲"
 ```
 
+---
 
+# PasswordValidator
 
+The `PasswordValidator` class provides a highly configurable password validation system. It allows you to enable or disable specific validation rules such as minimum length, uppercase letters, lowercase letters, digits, and special characters.
 
+---
 
+## Features
 
+- **Configurable Rules**: Enable or disable each validation rule independently
+- **Custom Special Characters**: Define your own set of allowed special characters
+- **Error Messages**: Get detailed error messages in English or Persian
+- **Password Strength**: Calculate password strength score (0.0 to 1.0)
+- **Strength Labels**: Get human-readable strength labels
 
+---
 
+## Basic Usage
 
+### Simple Validation
+```dart
+// Create a validator with default settings (8 chars, all rules enabled)
+final validator = PasswordValidator();
+bool isValid = validator.validate('MyPass123!'); // true
+bool isWeak = validator.validate('weak'); // false
 
+// Or use the static method
+bool isValid = PasswordValidator.isValidPassword('MyPass123!');
+```
 
+### Custom Configuration
+```dart
+// Only require minimum length and digits (no uppercase, lowercase, or special chars)
+final validator = PasswordValidator(
+  minLength: 6,
+  requireUppercase: false,
+  requireLowercase: false,
+  requireDigit: true,
+  requireSpecialChar: false,
+);
 
+validator.validate('123456'); // true
+validator.validate('12345');  // false (too short)
+```
 
+### With Maximum Length
+```dart
+final validator = PasswordValidator(
+  minLength: 8,
+  maxLength: 20,
+);
 
+validator.validate('MyPass123!'); // true
+validator.validate('ThisPasswordIsWayTooLongToBeValid123!'); // false
+```
 
+### Custom Special Characters
+```dart
+// Only allow specific special characters
+final validator = PasswordValidator(
+  specialChars: '@#\$%',
+);
 
+validator.validate('MyPass123@'); // true
+validator.validate('MyPass123!'); // false (! is not in allowed special chars)
+```
 
+---
 
+## Getting Error Messages
 
+### English Errors
+```dart
+final validator = PasswordValidator();
+final errors = validator.getErrors('weak');
+// Returns:
+// ['Password must be at least 8 characters',
+//  'Password must contain at least one uppercase letter',
+//  'Password must contain at least one digit',
+//  'Password must contain at least one special character']
 
+// Get only the first error
+String? firstError = validator.getFirstError('weak');
+// 'Password must be at least 8 characters'
+```
 
+### Persian (Farsi) Errors
+```dart
+final validator = PasswordValidator();
+final errors = validator.getErrorsPersian('weak');
+// Returns:
+// ['رمز عبور باید حداقل ۸ کاراکتر باشد',
+//  'رمز عبور باید حداقل یک حرف بزرگ داشته باشد',
+//  'رمز عبور باید حداقل یک عدد داشته باشد',
+//  'رمز عبور باید حداقل یک کاراکتر خاص داشته باشد']
 
+// Get only the first Persian error
+String? firstError = validator.getFirstErrorPersian('weak');
+// 'رمز عبور باید حداقل ۸ کاراکتر باشد'
+```
 
+---
 
+## Password Strength
 
+### Get Strength Score
+```dart
+final validator = PasswordValidator();
 
+validator.getStrength('weak');        // ~0.2
+validator.getStrength('Weak123');     // ~0.6
+validator.getStrength('StrongPass123!'); // ~0.9
+```
 
+### Get Strength Label
+```dart
+final validator = PasswordValidator();
 
+validator.getStrengthLabel('weak');           // "Very Weak"
+validator.getStrengthLabel('Weak123');        // "Fair"
+validator.getStrengthLabel('StrongPass123!'); // "Very Strong"
 
+// Persian labels
+validator.getStrengthLabelPersian('weak');           // "خیلی ضعیف"
+validator.getStrengthLabelPersian('StrongPass123!'); // "خیلی قوی"
+```
+
+---
+
+## Static Methods
+
+For quick one-off validations without creating an instance:
+
+```dart
+// Validate with default settings
+bool isValid = PasswordValidator.isValidPassword('MyPass123!');
+
+// Validate with custom settings
+bool isValid = PasswordValidator.isValidPassword(
+  'mypass123',
+  minLength: 6,
+  requireUppercase: false,
+  requireSpecialChar: false,
+);
+
+// Get errors with custom settings
+List<String> errors = PasswordValidator.getPasswordErrors(
+  'weak',
+  minLength: 6,
+  requireUppercase: true,
+);
+```
+
+---
+
+## Complete Example (Login Form)
+
+```dart
+class LoginController extends GetxController {
+  final loginEmail = TextEditingController();
+  final loginPassword = TextEditingController();
+  
+  // Configure your password validator
+  final passwordValidator = PasswordValidator(
+    minLength: 8,
+    requireUppercase: true,
+    requireLowercase: true,
+    requireDigit: true,
+    requireSpecialChar: true,
+  );
+
+  Future<void> checkLogin() async {
+    // Email validation
+    if (loginEmail.text.isEmpty) {
+      _toast(false, 'لطفا ایمیل خود را وارد کنید');
+      return;
+    }
+    if (!GetUtils.isEmail(loginEmail.text)) {
+      _toast(false, 'لطفا یک ایمیل معتبر وارد کنید');
+      return;
+    }
+    
+    // Password validation
+    if (loginPassword.text.isEmpty) {
+      _toast(false, 'لطفا رمز عبور خود را وارد کنید');
+      return;
+    }
+    if (!passwordValidator.validate(loginPassword.text)) {
+      // Show first error in Persian
+      final error = passwordValidator.getFirstErrorPersian(loginPassword.text);
+      _toast(false, error ?? 'رمز عبور نامعتبر است');
+      return;
+    }
+    
+    // Continue with login...
+  }
+}
+```
+
+---
+
+## Configuration Options
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `minLength` | `int` | `8` | Minimum required password length |
+| `maxLength` | `int?` | `null` | Maximum allowed password length (null = no limit) |
+| `requireUppercase` | `bool` | `true` | Require at least one uppercase letter (A-Z) |
+| `requireLowercase` | `bool` | `true` | Require at least one lowercase letter (a-z) |
+| `requireDigit` | `bool` | `true` | Require at least one digit (0-9) |
+| `requireSpecialChar` | `bool` | `true` | Require at least one special character |
+| `specialChars` | `String` | `!@#$&*~%^()-_=+[]{}|;:,.<>?` | Set of allowed special characters |
+
+---
+
+This class provides a flexible and powerful way to validate passwords with full control over the validation rules.

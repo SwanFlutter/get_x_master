@@ -110,7 +110,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.21
+  get_x_master: ^0.0.22
 ```
 
 Then run:
@@ -1021,6 +1021,7 @@ Massive collection of utilities for common tasks:
 - ✅ **Date/Time Extensions** - Persian/Gregorian formatting
 - ✅ **Context Extensions** - Screen size, theme access, device detection
 - ✅ **Validation** - Email, phone, URL, passport, CPF, CNPJ, Iranian National Code
+- ✅ **Password Validator** - Configurable password validation with strength meter ⭐ NEW
 - ✅ **File Type Detection** - Image, audio, video, document checks
 - ✅ **Internationalization (intl)** - Currency, percentage, date formatting
 - ✅ **Persian Text Processing** - Digit conversion, text standardization
@@ -1032,6 +1033,18 @@ Massive collection of utilities for common tasks:
 'example@email.com'.isEmail; // true
 '09123456789'.isPhoneNumber; // true
 'https://example.com'.isURL; // true
+
+// Password Validation (NEW!)
+final validator = PasswordValidator(
+  minLength: 8,
+  requireUppercase: true,
+  requireLowercase: true,
+  requireDigit: true,
+  requireSpecialChar: true,
+);
+validator.validate('MyPass123!'); // true
+validator.getFirstErrorPersian('weak'); // 'رمز عبور باید حداقل ۸ کاراکتر باشد'
+validator.getStrengthLabel('StrongPass123!'); // 'Very Strong'
 
 // Number Formatting
 '12345.67'.intlToCurrencyFormatted(); // "$12,345.67"

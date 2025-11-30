@@ -127,4 +127,7 @@
 * Update documentation for Conditional Navigation.
 * Add example for Conditional Navigation.
 
- 
+ ## 0.0.21
+
+* Add `PasswordValidator` Utils.
+
