@@ -41,8 +41,8 @@ class CounterController extends GetXController {
 
   void toggleMessage() =>
       message.value = message.value == 'Hello ReactiveGetView!'
-      ? 'ReactiveGetView is Amazing!'
-      : 'Hello ReactiveGetView!';
+          ? 'ReactiveGetView is Amazing!'
+          : 'Hello ReactiveGetView!';
 
   void toggleVisibility() => isVisible.value = !isVisible.value;
 
@@ -181,16 +181,16 @@ class CounterView extends ReactiveGetView<CounterController> {
               )
             else
               ...controller.items.asMap().entries.map(
-                (entry) => Card(
-                  child: ListTile(
-                    title: Text(entry.value),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () => controller.removeItem(entry.key),
+                    (entry) => Card(
+                      child: ListTile(
+                        title: Text(entry.value),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => controller.removeItem(entry.key),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
           ],
         ),
       ),

@@ -121,3 +121,10 @@
 * Fix pub point .
 
 
+## 0.0.21
+
+* Add `ConditionalNavigation` support to `off()` and `offAll()` methods.
+* Update documentation for Conditional Navigation.
+* Add example for Conditional Navigation.
+
+ 

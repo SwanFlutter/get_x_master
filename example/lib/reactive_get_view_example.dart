@@ -28,9 +28,8 @@ class ExampleCounterController extends GetXController {
   }
 
   void changeBackgroundColor() {
-    backgroundColor.value = backgroundColor.value == Colors.blue
-        ? Colors.green
-        : Colors.blue;
+    backgroundColor.value =
+        backgroundColor.value == Colors.blue ? Colors.green : Colors.blue;
   }
 
   void reset() {

@@ -1133,6 +1133,22 @@ you can only use widgets and widget functions here''';
   ///
   /// By default, GetX will prevent you from push a route that you already in,
   /// if you want to push anyway, set [preventDuplicates] to false
+  ///
+  /// Example:
+  /// ```dart
+  /// // Basic replacement navigation
+  /// Get.off(() => HomePage());
+  ///
+  /// // Conditional replacement navigation
+  /// Get.off(
+  ///   () => HomePage(),
+  ///   condition: ConditionalNavigation(
+  ///     condition: () => AuthService.isLoggedIn,
+  ///     truePage: () => HomePage(),
+  ///     falsePage: () => LoginPage(),
+  ///   ),
+  /// );
+  /// ```
   Future<T?>? off<T>(
     dynamic page, {
     bool opaque = false,
@@ -1147,7 +1163,12 @@ you can only use widgets and widget functions here''';
     bool preventDuplicates = true,
     Duration? duration,
     double Function(BuildContext context)? gestureWidth,
+    ConditionalNavigation? condition,
   }) {
+    if (condition != null) {
+      page = condition.evaluate();
+    }
+
     routeName ??= "/${page.runtimeType.toString()}";
     routeName = _cleanRouteName(routeName);
     if (preventDuplicates && routeName == currentRoute) {
@@ -1200,6 +1221,22 @@ you can only use widgets and widget functions here''';
   ///
   /// By default, GetX will prevent you from push a route that you already in,
   /// if you want to push anyway, set [preventDuplicates] to false
+  ///
+  /// Example:
+  /// ```dart
+  /// // Basic navigation removing all previous routes
+  /// Get.offAll(() => HomePage());
+  ///
+  /// // Conditional navigation
+  /// Get.offAll(
+  ///   () => HomePage(),
+  ///   condition: ConditionalNavigation(
+  ///     condition: () => UserService.isFirstTime,
+  ///     truePage: () => OnboardingPage(),
+  ///     falsePage: () => HomePage(),
+  ///   ),
+  /// );
+  /// ```
   Future<T?>? offAll<T>(
     dynamic page, {
     RoutePredicate? predicate,
@@ -1214,7 +1251,12 @@ you can only use widgets and widget functions here''';
     Curve? curve,
     Duration? duration,
     double Function(BuildContext context)? gestureWidth,
+    ConditionalNavigation? condition,
   }) {
+    if (condition != null) {
+      page = condition.evaluate();
+    }
+
     routeName ??= "/${page.runtimeType.toString()}";
     routeName = _cleanRouteName(routeName);
     return global(id).currentState?.pushAndRemoveUntil<T>(

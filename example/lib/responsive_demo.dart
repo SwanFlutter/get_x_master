@@ -118,29 +118,38 @@ class ResponsiveDemo extends StatelessWidget {
           SizedBox(height: 12.h),
 
           // Pixel to Responsive Examples
-          _buildExampleCard('Pixel to Responsive', [
-            'Container(width: 134.w) // 134px responsive width',
-            'Container(height: 30.h) // 30px responsive height',
-            'Text("Hello", style: TextStyle(fontSize: 16.sp))',
-          ], Colors.green),
+          _buildExampleCard(
+              'Pixel to Responsive',
+              [
+                'Container(width: 134.w) // 134px responsive width',
+                'Container(height: 30.h) // 30px responsive height',
+                'Text("Hello", style: TextStyle(fontSize: 16.sp))',
+              ],
+              Colors.green),
 
           SizedBox(height: 12.h),
 
           // Percentage Examples
-          _buildExampleCard('Percentage Based', [
-            'Container(width: 50.wp) // 50% screen width',
-            'Container(height: 25.hp) // 25% screen height',
-            'Padding: EdgeInsets.all(5.wp)',
-          ], Colors.green),
+          _buildExampleCard(
+              'Percentage Based',
+              [
+                'Container(width: 50.wp) // 50% screen width',
+                'Container(height: 25.hp) // 25% screen height',
+                'Padding: EdgeInsets.all(5.wp)',
+              ],
+              Colors.green),
 
           SizedBox(height: 12.h),
 
           // Dynamic Calculation Examples
-          _buildExampleCard('Dynamic Calculations', [
-            '134.widthPercent = ${134.0.widthPercent.toStringAsFixed(1)}%',
-            '30.heightPercent = ${30.0.heightPercent.toStringAsFixed(1)}%',
-            'Current calculations based on screen size',
-          ], Colors.green),
+          _buildExampleCard(
+              'Dynamic Calculations',
+              [
+                '134.widthPercent = ${134.0.widthPercent.toStringAsFixed(1)}%',
+                '30.heightPercent = ${30.0.heightPercent.toStringAsFixed(1)}%',
+                'Current calculations based on screen size',
+              ],
+              Colors.green),
         ],
       ),
     );
@@ -167,19 +176,25 @@ class ResponsiveDemo extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
-          _buildExampleCard('Static Methods', [
-            /*   'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
+          _buildExampleCard(
+              'Static Methods',
+              [
+                /*   'ResponsiveHelper.w(134) = ${ResponsiveHelper.w(134).toStringAsFixed(1)}px',
               'ResponsiveHelper.h(30) = ${ResponsiveHelper.h(30).toStringAsFixed(1)}px',
               'ResponsiveHelper.wp(50) = ${ResponsiveHelper.wp(50).toStringAsFixed(1)}px',*/
-          ], Colors.orange),
+              ],
+              Colors.orange),
           SizedBox(height: 12.h),
-          _buildExampleCard('Responsive Values', [
-            /*   'ResponsiveHelper.responsiveValue(',
+          _buildExampleCard(
+              'Responsive Values',
+              [
+                /*   'ResponsiveHelper.responsiveValue(',
               '  phone: 14.0,',
               '  tablet: 16.0,',
               '  desktop: 18.0,',
               ') = ${ResponsiveHelper.responsiveValue(phone: 14.0, tablet: 16.0, laptop: 18.0)}',*/
-          ], Colors.orange),
+              ],
+              Colors.orange),
         ],
       ),
     );

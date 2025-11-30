@@ -110,7 +110,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.20
+  get_x_master: ^0.0.21
 ```
 
 Then run:
@@ -241,7 +241,7 @@ Navigate anywhere in your app without `BuildContext`:
 - **`Get.back()`**: Go back to the previous screen.
 - **`Get.off(NextScreen())`**: Go to the next screen and remove the previous one.
 - **`Get.offAll(NextScreen())`**: Go to the next screen and remove all previous screens.
-- **Conditional Navigation:** Navigate based on conditions using `ConditionalNavigation`:
+- **Conditional Navigation:** Navigate based on conditions using `ConditionalNavigation`. Supported in `to`, `off`, and `offAll`:
   ```dart
   Get.to( 
     () => Send(), 
@@ -252,6 +252,7 @@ Navigate anywhere in your app without `BuildContext`:
     ), 
   );
   ```
+  [Read more about Conditional Navigation](lib/src/get_navigation/README.md#conditional-navigation-support---implementation-walkthrough)
 - **Dialogs, BottomSheets, and Snackbars:** Show overlays from anywhere in your code.
 
 ### Dependency Injection
