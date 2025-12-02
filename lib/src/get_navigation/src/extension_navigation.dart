@@ -1436,9 +1436,24 @@ you can only use widgets and widget functions here''';
   /// give access to current Overlay Context
   BuildContext? get overlayContext {
     BuildContext? overlay;
-    key.currentState?.overlay?.context.visitChildElements((element) {
-      overlay = element;
-    });
+
+    // First try to get overlay from navigator key
+    final navigatorState = key.currentState;
+    if (navigatorState != null) {
+      final overlayState = navigatorState.overlay;
+      if (overlayState != null) {
+        overlayState.context.visitChildElements((element) {
+          overlay = element;
+        });
+      }
+    }
+
+    // If overlay is still null, try to use the navigator context directly
+    // This handles cases where the overlay hasn't been built yet
+    if (overlay == null) {
+      overlay = key.currentContext;
+    }
+
     return overlay;
   }
 

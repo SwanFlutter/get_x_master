@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_conditional_assignment
+
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../../../get_x_master.dart';
 
@@ -118,13 +121,34 @@ class SnackBarController {
 
   /// Configures the overlay entries and inserts them into the overlay.
   void _configureOverlay() {
-    final overlayCtx = Get.overlayContext;
+    BuildContext? overlayCtx = Get.overlayContext;
+
+    // Fallback: try to get context from navigator key
+    overlayCtx ??= Get.key.currentContext;
+
     if (overlayCtx == null) {
       throw Exception(
-        'GetX overlay context is not available. Make sure you are using GetMaterialApp.',
+        'GetX overlay context is not available. Make sure you are using GetMaterialApp and the widget tree is fully built.',
       );
     }
-    _overlayState = Overlay.of(overlayCtx);
+
+    // Try to get overlay using rootNavigator to ensure we get the root overlay
+    OverlayState? overlay;
+    try {
+      final navigator = Navigator.of(overlayCtx, rootNavigator: true);
+      overlay = navigator.overlay;
+    } catch (e) {
+      // If Navigator.of fails, try Overlay.maybeOf
+      overlay = Overlay.maybeOf(overlayCtx, rootOverlay: true);
+    }
+
+    if (overlay == null) {
+      throw Exception(
+        'No Overlay widget found. Make sure you are using GetMaterialApp or MaterialApp with a Navigator.',
+      );
+    }
+
+    _overlayState = overlay;
     _overlayEntries.clear();
     _overlayEntries.addAll(_createOverlayEntries(_getBodyWidget()));
     _overlayState!.insertAll(_overlayEntries);
@@ -381,7 +405,22 @@ class SnackBarController {
 
   /// Shows the snackbar by configuring the overlay and returning the future.
   Future<void> _show() {
-    _configureOverlay();
+    // Check if we can configure overlay immediately
+    if (Get.overlayContext != null || Get.key.currentContext != null) {
+      _configureOverlay();
+    } else {
+      // Use addPostFrameCallback only if context is not available yet
+      ambiguate(SchedulerBinding.instance)?.addPostFrameCallback((_) {
+        try {
+          _configureOverlay();
+        } catch (e) {
+          // If overlay still not available, complete with error
+          if (!_transitionCompleter.isCompleted) {
+            _transitionCompleter.completeError(e);
+          }
+        }
+      });
+    }
     return future;
   }
 

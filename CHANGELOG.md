@@ -127,7 +127,28 @@
 * Update documentation for Conditional Navigation.
 * Add example for Conditional Navigation.
 
- ## 0.0.22
+## 0.0.22
 
 * Add `PasswordValidator` Utils.
+
+
+## 0.0.23
+
+### 🐛 Bug Fixes
+
+* **Snackbar Overlay Fix**: Fixed "No Overlay widget found" error when using `Get.snackbar()` or `Get.showSnackbar()`.
+  - Improved `overlayContext` getter with fallback to navigator context.
+  - Enhanced overlay detection using `rootNavigator` for better reliability.
+  - Added smart context checking before showing snackbar.
+
+* **Smart Dependency Injection Fix**: Fixed `smartLazyPut` and `smartFind` not working correctly with `Bindings`.
+  - Fixed registration logic in `smartLazyPut` to properly register controllers.
+  - Improved `smartFind` to correctly check if instance is registered or prepared.
+  - Better error messages for debugging.
+
+### 📚 Documentation
+
+* Added comprehensive `SMART_LAZY_PUT_GUIDE.md` with Persian documentation.
+* Updated `README.md` with detailed usage examples for `smartLazyPut` and `smartFind`.
+* Added troubleshooting section for common issues with Bindings.
 

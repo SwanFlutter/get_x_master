@@ -425,6 +425,12 @@ class HomePage extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
             ),
+            ElevatedButton(
+              child: Text("data"),
+              onPressed: () {
+                Get.snackbar("title", "message");
+              },
+            )
           ],
         ),
       ),
