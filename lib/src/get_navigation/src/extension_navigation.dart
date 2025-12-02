@@ -1,4 +1,4 @@
-// ignore_for_file: unused_catch_clause
+// ignore_for_file: unused_catch_clause, prefer_conditional_assignment
 
 import 'dart:ui';
 
