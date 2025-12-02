@@ -232,6 +232,8 @@ GetX Master offers multiple state management solutions:
 - **`GetBuilder`:** A lightweight widget for manual state updates via `update()`, ideal for simple use cases.
 - **`StateMixin`:** Handle UI states (loading, success, error, empty) with ease.
 
+📖 [View Full State Management Documentation →](lib/src/get_state_manager/README.md)
+
 ### Navigation Management
 
 Navigate anywhere in your app without `BuildContext`:
@@ -252,8 +254,9 @@ Navigate anywhere in your app without `BuildContext`:
     ), 
   );
   ```
-  [Read more about Conditional Navigation](lib/src/get_navigation/README.md#conditional-navigation-support---implementation-walkthrough)
 - **Dialogs, BottomSheets, and Snackbars:** Show overlays from anywhere in your code.
+
+📖 [View Full Navigation Documentation →](lib/src/get_navigation/README.md)
 
 ### Dependency Injection
 
@@ -597,7 +600,9 @@ Manage your controllers and services effortlessly with a smart and flexible depe
   Get.lazyReplace<MyService>(() => NewServiceInstance());
   ```
 
-For more detailed information, check out the [Dependency Injection Documentation](lib/src/get_instance/README.md).
+📖 [View Full Dependency Injection Documentation →](lib/src/get_instance/README.md)
+
+📖 [View Smart Lazy Put Guide (فارسی) →](SMART_LAZY_PUT_GUIDE.md)
 
 ### HTTP Client & WebSocket (GetConnect)
 
@@ -606,6 +611,8 @@ A powerful networking library built into GetX Master:
 - **RESTful Client:** Make `get`, `post`, `put`, `delete` requests with a simple API.
 - **Customization:** Configure base URL, timeout, interceptors, and authenticators.
 - **WebSocket (`GetSocket`):** Easily connect to WebSocket servers, send and receive messages, and handle events.
+
+📖 [View Full HTTP Client & WebSocket Documentation →](lib/src/get_connect/README.md)
 
 ### Animations
 
@@ -619,6 +626,8 @@ Text('Hello World')
   .scaleIn(delay: Duration(milliseconds: 400));
 ```
 
+📖 [View Full Animation Documentation →](lib/src/get_animations/README.md)
+
 ### Utilities & Extensions
 
 A rich set of helper functions and extensions:
@@ -628,6 +637,8 @@ A rich set of helper functions and extensions:
 - **Platform Detection:** `GetPlatform.isAndroid`, `GetPlatform.isIOS`, `GetPlatform.isWeb`.
 - **Internationalization (i18n):** Built-in support for multiple languages.
 - **Theme Management:** `Get.changeTheme()` to switch between light and dark themes.
+
+📖 [View Full Utilities Documentation →](lib/src/get_utils/README.md)
 
 ### 📱 Advanced Responsive Design
 
@@ -715,7 +726,7 @@ Map<String, dynamic> screenInfo = GetResponsiveHelper.screenInfo;
 - **Context-Free Design** - No BuildContext required for responsive calculations
 - **Performance Optimized** - Efficient calculations with minimal rebuilds
 
-For more detailed information, check out the [Responsive Design Documentation](lib/src/responsive/README.md).
+📖 [View Full Responsive Design Documentation →](lib/src/responsive/README.md)
 
 ## 🆕 Enhanced Cupertino Support
 

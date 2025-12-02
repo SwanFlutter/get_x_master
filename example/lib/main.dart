@@ -1,3 +1,4 @@
+import 'package:example/reactive_get_view_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 /*
@@ -29,7 +30,10 @@ class MyApp extends StatelessWidget {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const GetMaterialApp(home: MyWidget()));
+  // Initialize CounterController before running the app
+  Get.put(CounterController());
+
+  runApp(const GetMaterialApp(home: CounterView()));
 }
 
 class MyWidget extends StatelessWidget {
