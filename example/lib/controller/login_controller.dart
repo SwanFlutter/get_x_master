@@ -129,7 +129,7 @@ class LoginController extends GetXController {
       barBlur: 0.8,
       borderRadius: 12.0,
       colorText: Colors.white,
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.bottom,
       icon: Icon(icon, color: iconColor),
       padding: EdgeInsets.all(20.0),
       margin: EdgeInsets.all(20.0),

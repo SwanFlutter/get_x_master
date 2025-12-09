@@ -152,10 +152,34 @@
 * Updated `README.md` with detailed usage examples for `smartLazyPut` and `smartFind`.
 * Added troubleshooting section for common issues with Bindings.
 
-## 0.0.23
+## 0.0.24
 
- 
-* Fix bug PasswordValidator .
+### 🔄 Breaking Changes
+
+* **Enum Naming Convention**: Changed enum values to lowercase for consistency with Dart conventions:
+  - `SnackbarStatus`: `OPEN` → `open`, `CLOSED` → `closed`, `OPENING` → `opening`, `CLOSING` → `closing`
+  - `SnackStyle`: `FLOATING` → `floating`, `GROUNDED` → `grounded`
+  - `SnackPosition`: Already lowercase (`top`, `bottom`)
+
+* **Class Renamed**: `CustomExpandableBottomSheetRoute` → `BottomSheetExpandableRoute`
+  - Better naming convention starting with `BottomSheet` prefix for easier discovery
+* **Method Renamed**: `Get.customExpandableBottomSheet()` → `Get.bottomSheetExpandable()`
+
+### ✨ New Features
+
+* **PasswordValidator Improvements**:
+  - Renamed `specialChars` → `specialCharacters`
+  - Renamed `requireSpecialChar` → `requireSpecialCharacter`
+  - Changed `specialCharacters` type from `String` to `List<String>` for easier customization
+  - Example: `specialCharacters: ['@', '#', '\$', '%', '&', '*', '!']`
+
+* **BottomSheetExpandableRoute**: Added `BottomSheetExpandableRoute` export to main package
+
+### 🐛 Bug Fixes
+
+* Fix bug PasswordValidator
+* Fix close button in `BottomSheetExpandableRoute` now uses custom `closeIcon` parameter
+* Added `canPop()` check before closing bottom sheet to prevent errors
 
 
 

@@ -1,8 +1,7 @@
 import 'package:example/reactive_get_view_demo.dart';
+import 'package:example/test_expandable_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
-
-import 'test_validate_passsword.dart';
 /*
 void main() {
   runApp(const MyApp());
@@ -35,7 +34,7 @@ void main() async {
   // Initialize CounterController before running the app
   Get.put(CounterController());
 
-  runApp(const GetMaterialApp(home: TestValidatePasssword()));
+  runApp(const GetMaterialApp(home: TestExpandableBottomSheet()));
 }
 
 class MyWidget extends StatelessWidget {
@@ -56,7 +55,7 @@ class MyWidget extends StatelessWidget {
               child: Text("snackbar"),
               onPressed: () {
                 Get.snackbar("title", "message",
-                    snackPosition: SnackPosition.BOTTOM,
+                    snackPosition: SnackPosition.bottom,
                     margin: EdgeInsets.all(15.0));
               },
             ),
@@ -69,7 +68,7 @@ class MyWidget extends StatelessWidget {
                   backgroundColor: Colors.amber,
                   margin: EdgeInsets.all(15.0),
                   duration: Duration(seconds: 2),
-                  snackPosition: SnackPosition.TOP,
+                  snackPosition: SnackPosition.top,
                 ));
               },
             ),

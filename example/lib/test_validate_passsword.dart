@@ -182,8 +182,8 @@ class _TestValidatePassswordState extends State<TestValidatePasssword> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: validator.validate(_currentPassword)
-                      ? Colors.green.withOpacity(0.1)
-                      : Colors.red.withOpacity(0.1),
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : Colors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: validator.validate(_currentPassword)

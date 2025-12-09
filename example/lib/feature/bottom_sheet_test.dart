@@ -42,7 +42,7 @@ class BottomSheetTest extends StatelessWidget {
   }
 
   void _showExpandableBottomSheet() {
-    Get.customExpandableBottomSheet(
+    Get.bottomSheetExpandable(
       builder: (context) => InkWell(
         onDoubleTap: () {
           Get.back();

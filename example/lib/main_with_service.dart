@@ -101,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                             Get.snackbar(
                               'Success',
                               'Logged out successfully',
-                              snackPosition: SnackPosition.BOTTOM,
+                              snackPosition: SnackPosition.bottom,
                             );
                           },
                           child: const Text('Logout'),
@@ -117,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                           Get.snackbar(
                             'Error',
                             'Please enter email and password',
-                            snackPosition: SnackPosition.BOTTOM,
+                            snackPosition: SnackPosition.bottom,
                             backgroundColor: Colors.red,
                             colorText: Colors.white,
                           );
@@ -133,7 +133,7 @@ class LoginScreen extends StatelessWidget {
                           Get.snackbar(
                             'Success',
                             'Logged in successfully',
-                            snackPosition: SnackPosition.BOTTOM,
+                            snackPosition: SnackPosition.bottom,
                             backgroundColor: Colors.green,
                             colorText: Colors.white,
                           );
@@ -141,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                           Get.snackbar(
                             'Error',
                             'Invalid credentials',
-                            snackPosition: SnackPosition.BOTTOM,
+                            snackPosition: SnackPosition.bottom,
                             backgroundColor: Colors.red,
                             colorText: Colors.white,
                           );
@@ -177,7 +177,7 @@ class DashboardScreen extends StatelessWidget {
               Get.snackbar(
                 'Success',
                 'Logged out successfully',
-                snackPosition: SnackPosition.BOTTOM,
+                snackPosition: SnackPosition.bottom,
               );
             },
           ),

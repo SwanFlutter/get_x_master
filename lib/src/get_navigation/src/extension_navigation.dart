@@ -9,7 +9,6 @@ import '../../get_core/get_core.dart';
 import '../../get_instance/src/bindings_interface.dart';
 import '../../get_utils/get_utils.dart';
 import '../get_navigation.dart';
-import 'bottomsheet/custom_expandable_bottomsheet.dart';
 import 'dialog/dialog_route.dart';
 import 'root/parse_route.dart';
 
@@ -122,9 +121,9 @@ extension ExtensionBottomSheet on GetInterface {
 
   /// Shows a custom expandable bottom sheet that can open from the top or bottom.
   ///
-  /// This method uses the [CustomExpandableBottomSheetRoute] to display a highly customizable
+  /// This method uses the [BottomSheetExpandableRoute] to display a highly customizable
   /// bottom sheet.
-  Future<T?>? customExpandableBottomSheet<T>({
+  Future<T?>? bottomSheetExpandable<T>({
     /// Required. A builder function that returns the widget tree for the bottom sheet content.
     required WidgetBuilder builder,
 
@@ -214,7 +213,7 @@ extension ExtensionBottomSheet on GetInterface {
       );
     }
     return Navigator.of(context).push(
-      CustomExpandableBottomSheetRoute<T>(
+      BottomSheetExpandableRoute<T>(
         builder: builder,
         initialChildSize: initialChildSize,
         minChildSize: minChildSize,
@@ -516,8 +515,8 @@ extension ExtensionSnackbar on GetInterface {
     AnimationController? progressIndicatorController,
     Color? progressIndicatorBackgroundColor,
     Animation<Color>? progressIndicatorValueColor,
-    SnackPosition snackPosition = SnackPosition.BOTTOM,
-    SnackStyle snackStyle = SnackStyle.FLOATING,
+    SnackPosition snackPosition = SnackPosition.bottom,
+    SnackStyle snackStyle = SnackStyle.floating,
     Curve forwardAnimationCurve = Curves.easeOutCirc,
     Curve reverseAnimationCurve = Curves.easeOutCirc,
     Duration animationDuration = const Duration(seconds: 1),
@@ -646,7 +645,7 @@ extension ExtensionSnackbar on GetInterface {
               fontSize: 14,
             ),
           ),
-      snackPosition: snackPosition ?? SnackPosition.TOP,
+      snackPosition: snackPosition ?? SnackPosition.top,
       borderRadius: borderRadius ?? 15,
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 10),
       duration: duration,
@@ -669,7 +668,7 @@ extension ExtensionSnackbar on GetInterface {
       progressIndicatorController: progressIndicatorController,
       progressIndicatorBackgroundColor: progressIndicatorBackgroundColor,
       progressIndicatorValueColor: progressIndicatorValueColor,
-      snackStyle: snackStyle ?? SnackStyle.FLOATING,
+      snackStyle: snackStyle ?? SnackStyle.floating,
       forwardAnimationCurve: forwardAnimationCurve ?? Curves.easeOutCirc,
       reverseAnimationCurve: reverseAnimationCurve ?? Curves.easeOutCirc,
       animationDuration: animationDuration ?? const Duration(seconds: 1),

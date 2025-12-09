@@ -65,8 +65,8 @@ class GetSnackBar extends StatefulWidget {
   /// The direction in which the SnackBar can be dismissed.
   ///
   /// Default is [DismissDirection.down] when
-  /// [snackPosition] == [SnackPosition.BOTTOM] and [DismissDirection.up]
-  /// when [snackPosition] == [SnackPosition.TOP]
+  /// [snackPosition] == [SnackPosition.bottom] and [DismissDirection.up]
+  /// when [snackPosition] == [SnackPosition.top]
   final DismissDirection? dismissDirection;
 
   /// The message displayed to the user.
@@ -163,9 +163,9 @@ class GetSnackBar extends StatefulWidget {
   /// Changes the width of the border if [borderColor] is specified
   final double? borderWidth;
 
-  /// Snack can be based on [SnackPosition.TOP] or on [SnackPosition.BOTTOM]
+  /// Snack can be based on [SnackPosition.top] or on [SnackPosition.bottom]
   /// of your screen.
-  /// [SnackPosition.BOTTOM] is the default.
+  /// [SnackPosition.bottom] is the default.
   final SnackPosition snackPosition;
 
   /// Snack can be floating or be grounded to the edge of the screen.
@@ -232,8 +232,8 @@ class GetSnackBar extends StatefulWidget {
     this.progressIndicatorController,
     this.progressIndicatorBackgroundColor,
     this.progressIndicatorValueColor,
-    this.snackPosition = SnackPosition.BOTTOM,
-    this.snackStyle = SnackStyle.FLOATING,
+    this.snackPosition = SnackPosition.bottom,
+    this.snackStyle = SnackStyle.floating,
     this.forwardAnimationCurve = Curves.easeOutCirc,
     this.reverseAnimationCurve = Curves.easeOutCirc,
     this.animationDuration = const Duration(seconds: 1),
@@ -302,17 +302,17 @@ class GetSnackBarState extends State<GetSnackBar>
     return Align(
       heightFactor: 1.0,
       child: Material(
-        color: widget.snackStyle == SnackStyle.FLOATING
+        color: widget.snackStyle == SnackStyle.floating
             ? Colors.transparent
             : widget.backgroundColor,
         child: SafeArea(
-          minimum: widget.snackPosition == SnackPosition.BOTTOM
+          minimum: widget.snackPosition == SnackPosition.bottom
               ? EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 )
               : EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          bottom: widget.snackPosition == SnackPosition.BOTTOM,
-          top: widget.snackPosition == SnackPosition.TOP,
+          bottom: widget.snackPosition == SnackPosition.bottom,
+          top: widget.snackPosition == SnackPosition.top,
           left: false,
           right: false,
           child: Stack(
@@ -612,17 +612,17 @@ You need to either use message[String], or messageText[Widget] or define a userI
 enum RowStyle { icon, action, all, none }
 
 /// Indicates Status of snackbar
-/// [SnackbarStatus.OPEN] Snack is fully open, [SnackbarStatus.CLOSED] Snackbar
+/// [SnackbarStatus.open] Snack is fully open, [SnackbarStatus.closed] Snackbar
 /// has closed,
-/// [SnackbarStatus.OPENING] Starts with the opening animation and ends
+/// [SnackbarStatus.opening] Starts with the opening animation and ends
 /// with the full
-/// snackbar display, [SnackbarStatus.CLOSING] Starts with the closing animation
+/// snackbar display, [SnackbarStatus.closing] Starts with the closing animation
 /// and ends
 /// with the full snackbar dispose
-enum SnackbarStatus { OPEN, CLOSED, OPENING, CLOSING }
+enum SnackbarStatus { open, closed, opening, closing }
 
-/// Indicates if snack is going to start at the [TOP] or at the [BOTTOM]
-enum SnackPosition { TOP, BOTTOM }
+/// Indicates if snack is going to start at the [top] or at the [bottom]
+enum SnackPosition { top, bottom }
 
 /// Indicates if snack will be attached to the edge of the screen or not
-enum SnackStyle { FLOATING, GROUNDED }
+enum SnackStyle { floating, grounded }

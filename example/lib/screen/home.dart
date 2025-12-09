@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.customExpandableBottomSheet(
+          Get.bottomSheetExpandable(
             initialChildSize: 0.5,
             minChildSize: 0.25,
             maxChildSize: 0.75,

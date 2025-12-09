@@ -8,11 +8,23 @@ import '../router_report.dart'; // Make sure this import is correct for your pro
 /// This class provides a `PopupRoute` that displays a bottom sheet which can expand and contract
 /// based on user interaction or programmatic control.  It supports opening from both the top
 /// and the bottom of the screen, and offers extensive customization options for appearance and behavior.
-class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
+///
+/// Example:
+/// ```dart
+/// Navigator.of(context).push(
+///   BottomSheetExpandableRoute(
+///     builder: (context) => YourContent(),
+///     initialChildSize: 0.5,
+///     minChildSize: 0.25,
+///     maxChildSize: 0.9,
+///   ),
+/// );
+/// ```
+class BottomSheetExpandableRoute<T> extends PopupRoute<T> {
   /// Creates a customizable expandable bottom sheet route.
   ///
   /// The [builder] argument is required and must return the content of the bottom sheet.
-  CustomExpandableBottomSheetRoute({
+  BottomSheetExpandableRoute({
     required this.builder,
     this.theme,
     this.barrierLabel,
@@ -39,6 +51,7 @@ class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
     this.snap = false,
     this.isShowCloseBottom = true,
     this.closeIcon = Icons.close,
+    this.closeIconColor,
     this.indicatorColor = const Color.fromRGBO(224, 224, 224, 1),
     this.itemPaddingTop = 60,
   }) {
@@ -235,6 +248,9 @@ class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
   /// [closeIcon] - The icon to use for the close button.
   final IconData closeIcon;
 
+  /// [closeIconColor] - The color of the close button icon.
+  final Color? closeIconColor;
+
   /// [indicatorColor] - The color of the indicator.
   final Color indicatorColor;
 
@@ -348,9 +364,11 @@ class CustomExpandableBottomSheetRoute<T> extends PopupRoute<T> {
                               bottom: startFromTop ? 10 : null,
                               right: 10,
                               child: IconButton(
-                                icon: Icon(Icons.close),
+                                icon: Icon(closeIcon, color: closeIconColor),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  if (Navigator.of(context).canPop()) {
+                                    Navigator.of(context).pop();
+                                  }
                                 },
                               ),
                             ),
