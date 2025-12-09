@@ -152,3 +152,10 @@
 * Updated `README.md` with detailed usage examples for `smartLazyPut` and `smartFind`.
 * Added troubleshooting section for common issues with Bindings.
 
+## 0.0.23
+
+ 
+* Fix bug PasswordValidator .
+
+
+

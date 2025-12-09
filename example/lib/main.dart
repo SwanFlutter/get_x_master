@@ -1,6 +1,8 @@
 import 'package:example/reactive_get_view_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
+
+import 'test_validate_passsword.dart';
 /*
 void main() {
   runApp(const MyApp());
@@ -33,7 +35,7 @@ void main() async {
   // Initialize CounterController before running the app
   Get.put(CounterController());
 
-  runApp(const GetMaterialApp(home: CounterView()));
+  runApp(const GetMaterialApp(home: TestValidatePasssword()));
 }
 
 class MyWidget extends StatelessWidget {

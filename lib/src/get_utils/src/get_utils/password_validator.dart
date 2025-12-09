@@ -22,14 +22,14 @@
 ///   requireUppercase: false,
 ///   requireLowercase: false,
 ///   requireDigit: true,
-///   requireSpecialChar: false,
+///   requireSpecialCharacter: false,
 /// );
 /// ```
 ///
 /// ## With Custom Special Characters:
 /// ```dart
 /// final validator = PasswordValidator(
-///   specialChars: '@#\$%', // Only allow these special characters
+///   specialCharacters: ['@', '#', '\$', '%', '&', '*'],
 /// );
 /// ```
 ///
@@ -62,11 +62,11 @@ class PasswordValidator {
 
   /// Whether the password must contain at least one special character.
   /// Default: true
-  final bool requireSpecialChar;
+  final bool requireSpecialCharacter;
 
-  /// Custom set of special characters to check for.
-  /// Default: '!@#\$&*~%^()-_=+[]{}|;:,.<>?'
-  final String specialChars;
+  /// Custom list of special characters to check for.
+  /// Default: ['!', '@', '#', '\$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+']
+  final List<String> specialCharacters;
 
   /// Creates a new [PasswordValidator] with the specified configuration.
   ///
@@ -76,16 +76,46 @@ class PasswordValidator {
   /// - [requireUppercase]: true
   /// - [requireLowercase]: true
   /// - [requireDigit]: true
-  /// - [requireSpecialChar]: true
-  /// - [specialChars]: '!@#\$&*~%^()-_=+[]{}|;:,.<>?'
+  /// - [requireSpecialCharacter]: true
+  /// - [specialCharacters]: ['!', '@', '#', '\$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+']
   const PasswordValidator({
     this.minLength = 8,
     this.maxLength,
     this.requireUppercase = true,
     this.requireLowercase = true,
     this.requireDigit = true,
-    this.requireSpecialChar = true,
-    this.specialChars = r'!@#$&*~%^()-_=+[]{}|;:,.<>?',
+    this.requireSpecialCharacter = true,
+    this.specialCharacters = const [
+      '!',
+      '@',
+      '#',
+      '\$',
+      '%',
+      '^',
+      '&',
+      '*',
+      '(',
+      ')',
+      '-',
+      '_',
+      '=',
+      '+',
+      '[',
+      ']',
+      '{',
+      '}',
+      '|',
+      ';',
+      ':',
+      ',',
+      '.',
+      '<',
+      '>',
+      '?',
+      '/',
+      '~',
+      '`',
+    ],
   });
 
   /// Validates the given [password] against all configured rules.
@@ -105,7 +135,7 @@ class PasswordValidator {
     if (requireUppercase && !_hasUppercase(password)) return false;
     if (requireLowercase && !_hasLowercase(password)) return false;
     if (requireDigit && !_hasDigit(password)) return false;
-    if (requireSpecialChar && !_hasSpecialChar(password)) return false;
+    if (requireSpecialCharacter && !_hasSpecialChar(password)) return false;
     return true;
   }
 
@@ -141,8 +171,10 @@ class PasswordValidator {
     if (requireDigit && !_hasDigit(password)) {
       errors.add('Password must contain at least one digit');
     }
-    if (requireSpecialChar && !_hasSpecialChar(password)) {
-      errors.add('Password must contain at least one special character');
+    if (requireSpecialCharacter && !_hasSpecialChar(password)) {
+      errors.add(
+        'Password must contain at least one special character (${specialCharacters.join(", ")})',
+      );
     }
 
     return errors;
@@ -175,8 +207,10 @@ class PasswordValidator {
     if (requireDigit && !_hasDigit(password)) {
       errors.add('رمز عبور باید حداقل یک عدد داشته باشد');
     }
-    if (requireSpecialChar && !_hasSpecialChar(password)) {
-      errors.add('رمز عبور باید حداقل یک کاراکتر خاص داشته باشد');
+    if (requireSpecialCharacter && !_hasSpecialChar(password)) {
+      errors.add(
+        'رمز عبور باید حداقل یک کاراکتر خاص داشته باشد (${specialCharacters.join("، ")})',
+      );
     }
 
     return errors;
@@ -268,8 +302,10 @@ class PasswordValidator {
   bool _hasLowercase(String s) => s.contains(RegExp(r'[a-z]'));
   bool _hasDigit(String s) => s.contains(RegExp(r'[0-9]'));
   bool _hasSpecialChar(String s) {
-    final escapedChars = RegExp.escape(specialChars);
-    return s.contains(RegExp('[$escapedChars]'));
+    for (final char in specialCharacters) {
+      if (s.contains(char)) return true;
+    }
+    return false;
   }
 
   // ============== Static Methods ==============
@@ -287,8 +323,38 @@ class PasswordValidator {
     bool requireUppercase = true,
     bool requireLowercase = true,
     bool requireDigit = true,
-    bool requireSpecialChar = true,
-    String specialChars = r'!@#$&*~%^()-_=+[]{}|;:,.<>?',
+    bool requireSpecialCharacter = true,
+    List<String> specialCharacters = const [
+      '!',
+      '@',
+      '#',
+      '\$',
+      '%',
+      '^',
+      '&',
+      '*',
+      '(',
+      ')',
+      '-',
+      '_',
+      '=',
+      '+',
+      '[',
+      ']',
+      '{',
+      '}',
+      '|',
+      ';',
+      ':',
+      ',',
+      '.',
+      '<',
+      '>',
+      '?',
+      '/',
+      '~',
+      '`',
+    ],
   }) {
     return PasswordValidator(
       minLength: minLength,
@@ -296,8 +362,8 @@ class PasswordValidator {
       requireUppercase: requireUppercase,
       requireLowercase: requireLowercase,
       requireDigit: requireDigit,
-      requireSpecialChar: requireSpecialChar,
-      specialChars: specialChars,
+      requireSpecialCharacter: requireSpecialCharacter,
+      specialCharacters: specialCharacters,
     ).validate(password);
   }
 
@@ -314,8 +380,38 @@ class PasswordValidator {
     bool requireUppercase = true,
     bool requireLowercase = true,
     bool requireDigit = true,
-    bool requireSpecialChar = true,
-    String specialChars = r'!@#$&*~%^()-_=+[]{}|;:,.<>?',
+    bool requireSpecialCharacter = true,
+    List<String> specialCharacters = const [
+      '!',
+      '@',
+      '#',
+      '\$',
+      '%',
+      '^',
+      '&',
+      '*',
+      '(',
+      ')',
+      '-',
+      '_',
+      '=',
+      '+',
+      '[',
+      ']',
+      '{',
+      '}',
+      '|',
+      ';',
+      ':',
+      ',',
+      '.',
+      '<',
+      '>',
+      '?',
+      '/',
+      '~',
+      '`',
+    ],
   }) {
     return PasswordValidator(
       minLength: minLength,
@@ -323,8 +419,8 @@ class PasswordValidator {
       requireUppercase: requireUppercase,
       requireLowercase: requireLowercase,
       requireDigit: requireDigit,
-      requireSpecialChar: requireSpecialChar,
-      specialChars: specialChars,
+      requireSpecialCharacter: requireSpecialCharacter,
+      specialCharacters: specialCharacters,
     ).getErrors(password);
   }
 }
