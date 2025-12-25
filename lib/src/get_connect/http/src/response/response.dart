@@ -19,8 +19,21 @@ class GraphQLResponse<T> extends Response<T> {
         bodyString: res.bodyString,
         statusText: res.statusText,
         headers: res.headers,
-        body: res.body['data'] as T?,
+        body: _extractData<T>(res.body),
       );
+
+  /// Safely extract 'data' from response body
+  static T? _extractData<T>(dynamic body) {
+    if (body == null) return null;
+    if (body is Map) {
+      final data = body['data'];
+      if (data == null) return null;
+      return data as T?;
+    }
+    // If body is not a Map, try to cast it directly
+    if (body is T) return body;
+    return null;
+  }
 }
 
 class Response<T> {

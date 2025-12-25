@@ -94,10 +94,24 @@ class GetHttpClient {
   }
 
   Uri createUri(String? url, Map<String, dynamic>? query) {
+    String finalUrl;
     if (baseUrl != null) {
-      url = baseUrl! + url!;
+      // If url is null or empty, use baseUrl directly
+      if (url == null || url.isEmpty) {
+        finalUrl = baseUrl!;
+      } else {
+        finalUrl = baseUrl! + url;
+      }
+    } else {
+      // No baseUrl, url must be provided
+      if (url == null || url.isEmpty) {
+        throw ArgumentError(
+          'URL cannot be null or empty when baseUrl is not set',
+        );
+      }
+      finalUrl = url;
     }
-    final uri = Uri.parse(url!);
+    final uri = Uri.parse(finalUrl);
     if (query != null) {
       return uri.replace(queryParameters: query);
     }

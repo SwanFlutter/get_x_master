@@ -16,9 +16,12 @@ GetConnect is a powerful HTTP client and WebSocket implementation for Flutter ap
 
 ### Enhanced Features (New!)
 - 🆕 **HTTP Caching** - Automatic response caching with TTL
-- 🆕 **Smart Retry Logic** - Configurable retry mechanism
+- 🆕 **Smart Retry Logic** - Configurable retry mechanism with exponential backoff
 - 🆕 **Request Logging** - Detailed request/response logging
 - 🆕 **Connection Pooling** - Optimized connection management
+- 🆕 **Advanced Error Handling** - 15+ specific exception types for all HTTP errors
+- 🆕 **Result Pattern** - Functional error handling inspired by Rust
+- 🆕 **ExceptionHandler** - Utility class for error conversion and retry logic
 
 ### WebSocket (GetSocket)
 - ✅ **Real-time Communication** - Bidirectional messaging
@@ -328,6 +331,8 @@ class ApiService extends GetConnect {
 
 ## 🛡️ Error Handling
 
+### Basic Error Handling
+
 ```dart
 try {
   final response = await apiService.get<User>('/users/123');
@@ -344,6 +349,192 @@ try {
   print('Unexpected error: $e');
 }
 ```
+
+### Enhanced Error Handling (New!)
+
+GetConnect now provides a comprehensive error handling system with specific exception types and a Result pattern for functional error handling.
+
+#### Specific Exception Types
+
+```dart
+import 'package:get_x_master/get_x_master.dart';
+
+try {
+  final response = await apiService.get<User>('/users/123');
+  response.throwIfError(); // Throws appropriate exception if error
+  return response.body!;
+} on UnauthorizedException catch (e) {
+  // Handle 401 errors
+  print('Auth failed: ${e.message}');
+  await refreshToken();
+} on NotFoundException catch (e) {
+  // Handle 404 errors
+  print('Resource not found: ${e.uri}');
+} on TooManyRequestsException catch (e) {
+  // Handle 429 rate limiting
+  print('Rate limited. Retry after: ${e.retryAfter?.inSeconds}s');
+  await Future.delayed(e.retryAfter ?? Duration(seconds: 60));
+} on NetworkException catch (e) {
+  // Handle network errors
+  switch (e.errorType) {
+    case NetworkErrorType.noInternet:
+      showNoInternetDialog();
+      break;
+    case NetworkErrorType.connectionRefused:
+      showServerDownDialog();
+      break;
+    default:
+      showGenericNetworkError();
+  }
+} on TimeoutException catch (e) {
+  // Handle timeout
+  print('Request timed out after ${e.duration?.inSeconds}s');
+} on GetHttpException catch (e) {
+  // Handle other HTTP errors
+  print('HTTP Error [${e.statusCode}]: ${e.message}');
+  print(e.toDetailedString()); // Get full error report
+}
+```
+
+#### Available Exception Types
+
+| Exception | Status Code | Description |
+|-----------|-------------|-------------|
+| `BadRequestException` | 400 | Invalid request data |
+| `UnauthorizedException` | 401 | Authentication required |
+| `ForbiddenException` | 403 | Access denied |
+| `NotFoundException` | 404 | Resource not found |
+| `MethodNotAllowedException` | 405 | HTTP method not allowed |
+| `RequestTimeoutException` | 408 | Request timeout |
+| `ConflictException` | 409 | Resource conflict |
+| `UnprocessableEntityException` | 422 | Validation errors |
+| `TooManyRequestsException` | 429 | Rate limit exceeded |
+| `InternalServerException` | 500 | Server error |
+| `BadGatewayException` | 502 | Bad gateway |
+| `ServiceUnavailableException` | 503 | Service unavailable |
+| `GatewayTimeoutException` | 504 | Gateway timeout |
+| `NetworkException` | - | Network/connection errors |
+| `TimeoutException` | - | Request timeout |
+
+#### Result Pattern (Functional Error Handling)
+
+For a more functional approach, use the `Result` type:
+
+```dart
+import 'package:get_x_master/get_x_master.dart';
+
+// Convert response to Result
+final result = await apiService.get<User>('/users/123').toResult();
+
+// Pattern matching
+result.when(
+  success: (user) => print('User: ${user.name}'),
+  failure: (error) => print('Error: ${error.message}'),
+);
+
+// Get value or default
+final user = result.getOrElse(User.empty());
+
+// Get value or throw
+try {
+  final user = result.getOrThrow();
+} on GetHttpException catch (e) {
+  handleError(e);
+}
+
+// Map success value
+final userName = result.map((user) => user.name);
+
+// Chain operations
+final result = await apiService.get<User>('/users/123')
+    .toResult()
+    .mapAsync((user) => user.name)
+    .flatMapAsync((name) => fetchUserPosts(name));
+
+// Recover from errors
+final result = await apiService.get<User>('/users/123')
+    .toResult()
+    .recoverAsync((error) async {
+      if (error is NotFoundException) {
+        return Result.success(User.guest());
+      }
+      return Result.failure(error);
+    });
+```
+
+#### Using ExceptionHandler
+
+```dart
+import 'package:get_x_master/get_x_master.dart';
+
+// Guard async operations
+final result = await ExceptionHandler.guard(() async {
+  final response = await apiService.get<User>('/users/123');
+  return response.body!;
+});
+
+// Retry with exponential backoff
+final user = await ExceptionHandler.withRetry(
+  () => apiService.get<User>('/users/123').then((r) => r.body!),
+  maxRetries: 3,
+  initialDelay: Duration(seconds: 1),
+  backoffMultiplier: 2.0,
+  shouldRetry: (error) {
+    // Custom retry logic
+    if (error is NetworkException) return true;
+    if (error is GetHttpException && error.isServerError) return true;
+    return false;
+  },
+);
+```
+
+#### GraphQL Error Handling
+
+```dart
+final response = await apiService.query<Country>(
+  r'''
+  query GetCountry($code: String!) {
+    country(code: $code) { name }
+  }
+  ''',
+  variables: {'code': 'XX'},
+);
+
+if (response.graphQLErrors != null && response.graphQLErrors!.isNotEmpty) {
+  for (final error in response.graphQLErrors!) {
+    print('GraphQL Error:');
+    print('  Code: ${error.code}');
+    print('  Message: ${error.message}');
+    print('  Path: ${error.path?.join(' -> ')}');
+    if (error.locations != null) {
+      for (final loc in error.locations!) {
+        print('  Location: Line ${loc.line}, Column ${loc.column}');
+      }
+    }
+  }
+}
+```
+
+#### Error Logging and Debugging
+
+```dart
+try {
+  final response = await apiService.get<User>('/users/123');
+  response.throwIfError();
+} on GetHttpException catch (e) {
+  // Get detailed error report
+  print(e.toDetailedString());
+  
+  // Convert to Map for logging services
+  final errorMap = e.toMap();
+  analyticsService.logError(errorMap);
+  
+  // Access specific properties
+  print('Timestamp: ${e.timestamp}');
+  print('Is Server Error: ${e.isServerError}');
+  print('Is Client Error: ${e.isClientError}');
+  print('Is Network Error: ${e.isNetworkError}');
+}
 
 ## 🔒 Security Features
 

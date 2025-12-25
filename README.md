@@ -82,6 +82,9 @@ GetX Master is a comprehensive Flutter framework that provides everything you ne
 - ✅ **File Upload** - MultipartFile and FormData support
 - ✅ **Request Caching** - Automatic response caching with TTL
 - ✅ **Authentication** - Built-in retry mechanism for auth
+- ✅ **Advanced Error Handling** - Specific exception types for all HTTP errors ⭐ NEW
+- ✅ **Result Pattern** - Functional error handling with Result type ⭐ NEW
+- ✅ **Smart Retry** - Configurable retry with exponential backoff ⭐ NEW
 
 ### 🎨 Animations
 - ✅ **Fluent Animation API** - Easy-to-use animation extensions
@@ -611,6 +614,38 @@ A powerful networking library built into GetX Master:
 - **RESTful Client:** Make `get`, `post`, `put`, `delete` requests with a simple API.
 - **Customization:** Configure base URL, timeout, interceptors, and authenticators.
 - **WebSocket (`GetSocket`):** Easily connect to WebSocket servers, send and receive messages, and handle events.
+- **Advanced Error Handling:** Specific exception types for all HTTP status codes with Result pattern support.
+
+#### Quick Error Handling Example:
+
+```dart
+class ApiService extends GetConnect {
+  Future<Result<User>> getUser(int id) async {
+    return get<Map<String, dynamic>>('/users/$id')
+        .toResult()
+        .mapAsync((body) => User.fromJson(body!));
+  }
+}
+
+// Usage with pattern matching
+final result = await apiService.getUser(1);
+result.when(
+  success: (user) => print('User: ${user.name}'),
+  failure: (error) => handleError(error),
+);
+
+// Or with specific exception handling
+try {
+  final response = await get('/users/1');
+  response.throwIfError();
+} on NotFoundException catch (e) {
+  print('User not found: ${e.uri}');
+} on UnauthorizedException catch (e) {
+  redirectToLogin();
+} on NetworkException catch (e) {
+  showNoInternetDialog();
+}
+```
 
 📖 [View Full HTTP Client & WebSocket Documentation →](lib/src/get_connect/README.md)
 

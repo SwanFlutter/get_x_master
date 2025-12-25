@@ -26,7 +26,7 @@ class HttpRequestImpl implements IClient {
     if (_isClosed) {
       throw GetHttpException(
         'HTTP request failed. Client is already closed.',
-        request.url,
+        uri: request.url,
       );
     }
 
@@ -57,7 +57,7 @@ class HttpRequestImpl implements IClient {
         if (request.responseInterceptor != null) {
           throw GetHttpException(
             'Response interception not implemented for web yet!',
-            request.url,
+            uri: request.url,
           );
         }
 
@@ -87,7 +87,7 @@ class HttpRequestImpl implements IClient {
     unawaited(
       xhr.onError.first.then((_) {
         completer.completeError(
-          GetHttpException('XMLHttpRequest error.', request.url),
+          GetHttpException('XMLHttpRequest error.', uri: request.url),
           StackTrace.current,
         );
       }),

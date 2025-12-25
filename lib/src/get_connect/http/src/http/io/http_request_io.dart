@@ -463,7 +463,7 @@ class HttpRequestImpl extends IClient {
       ioRequest?.abort();
       rethrow;
     } on io.HttpException catch (error) {
-      throw GetHttpException(error.message, error.uri);
+      throw GetHttpException(error.message, uri: error.uri);
     }
   }
 

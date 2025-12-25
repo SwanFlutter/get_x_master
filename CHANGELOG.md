@@ -181,5 +181,65 @@
 * Fix close button in `BottomSheetExpandableRoute` now uses custom `closeIcon` parameter
 * Added `canPop()` check before closing bottom sheet to prevent errors
 
+## 0.0.25
+
+### ✨ New Features - Advanced Error Handling System
+
+* **GetHttpException Enhanced**: Base exception class now includes:
+  - `statusCode`, `responseBody`, `headers`, `stackTrace`, `timestamp`
+  - `isClientError`, `isServerError`, `isNetworkError` getters
+  - `toDetailedString()` for comprehensive error reports
+  - `toMap()` for logging and serialization
+
+* **15+ Specific Exception Types**:
+  - `BadRequestException` (400)
+  - `UnauthorizedException` (401)
+  - `ForbiddenException` (403)
+  - `NotFoundException` (404)
+  - `MethodNotAllowedException` (405)
+  - `RequestTimeoutException` (408)
+  - `ConflictException` (409)
+  - `UnprocessableEntityException` (422)
+  - `TooManyRequestsException` (429)
+  - `InternalServerException` (500)
+  - `BadGatewayException` (502)
+  - `ServiceUnavailableException` (503)
+  - `GatewayTimeoutException` (504)
+  - `NetworkException` with `NetworkErrorType` enum
+  - `TimeoutException` with duration info
+  - `RequestCancelledException`
+
+* **Result Pattern** (Functional Error Handling):
+  - `Result<T>` sealed class with `Success` and `Failure`
+  - Pattern matching with `when()` and `whenOrNull()`
+  - Value extraction: `getOrElse()`, `getOrThrow()`, `valueOrNull`
+  - Transformations: `map()`, `flatMap()`, `mapError()`
+  - Recovery: `recover()`, `recoverWith()`
+  - Side effects: `onSuccess()`, `onFailure()`
+  - Future extensions: `mapAsync()`, `flatMapAsync()`, `recoverAsync()`
+
+* **ExceptionHandler Utility**:
+  - `fromResponse()` - Convert Response to appropriate exception
+  - `fromException()` - Convert any exception to GetHttpException
+  - `guard()` - Wrap async operations in Result
+  - `withRetry()` - Retry with exponential backoff
+
+* **Response Extensions**:
+  - `response.toResult()` - Convert Response to Result
+  - `response.throwIfError()` - Throw if response has error
+  - `Future<Response>.toResult()` - Async conversion
+
+* **GraphQL Error Improvements**:
+  - `GraphQLErrorLocation` class for error locations
+  - `path` and `extensions` support in `GraphQLError`
+  - `fromJson()` factory constructor
+
+### 📚 Documentation
+
+* Updated `lib/src/get_connect/README.md` with comprehensive error handling guide
+* Added error handling section to main `README.md`
+* Created `example/lib/test_error_handling.dart` with complete examples
+* Updated `example/lib/main.dart` with demo navigation
+
 
 

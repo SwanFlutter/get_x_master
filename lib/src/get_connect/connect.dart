@@ -10,6 +10,9 @@ import 'http/src/response/response.dart';
 import 'sockets/sockets.dart';
 
 export 'http/src/certificates/certificates.dart';
+export 'http/src/exceptions/exception_handler.dart';
+export 'http/src/exceptions/exceptions.dart';
+export 'http/src/exceptions/result.dart';
 export 'http/src/http.dart';
 export 'http/src/multipart/form_data.dart';
 export 'http/src/multipart/multipart_file.dart';
@@ -435,23 +438,43 @@ class GetConnect extends GetConnectInterface {
     Map<String, String>? headers,
   }) async {
     try {
-      final res = await post(url, {
+      // Use empty string if url is null to use baseUrl
+      final targetUrl = url ?? '';
+      final res = await post(targetUrl, {
         'query': query,
         'variables': variables,
       }, headers: headers);
 
-      final listError = res.body['errors'];
+      // Check if body is null or not a Map
+      final body = res.body;
+      if (body == null) {
+        return GraphQLResponse<T>(
+          graphQLErrors: [
+            GraphQLError(
+              code: 'NULL_RESPONSE',
+              message: res.statusText ?? 'Server returned null response',
+            ),
+          ],
+        );
+      }
+
+      // Handle case where body is not a Map
+      if (body is! Map) {
+        return GraphQLResponse<T>.fromResponse(res);
+      }
+
+      final listError = body['errors'];
       if ((listError is List) && listError.isNotEmpty) {
         return GraphQLResponse<T>(
           graphQLErrors: listError
               .map(
                 (e) => GraphQLError(
                   code:
-                      (e['extensions'] != null
+                      (e is Map && e['extensions'] != null
                               ? e['extensions']['code'] ?? ''
                               : '')
                           .toString(),
-                  message: (e['message'] ?? '').toString(),
+                  message: (e is Map ? e['message'] ?? '' : '').toString(),
                 ),
               )
               .toList(),
@@ -473,19 +496,41 @@ class GetConnect extends GetConnectInterface {
     Map<String, String>? headers,
   }) async {
     try {
-      final res = await post(url, {
+      // Use empty string if url is null to use baseUrl
+      final targetUrl = url ?? '';
+      final res = await post(targetUrl, {
         'query': mutation,
         'variables': variables,
       }, headers: headers);
 
-      final listError = res.body['errors'];
+      // Check if body is null or not a Map
+      final body = res.body;
+      if (body == null) {
+        return GraphQLResponse<T>(
+          graphQLErrors: [
+            GraphQLError(
+              code: 'NULL_RESPONSE',
+              message: res.statusText ?? 'Server returned null response',
+            ),
+          ],
+        );
+      }
+
+      // Handle case where body is not a Map
+      if (body is! Map) {
+        return GraphQLResponse<T>.fromResponse(res);
+      }
+
+      final listError = body['errors'];
       if ((listError is List) && listError.isNotEmpty) {
         return GraphQLResponse<T>(
           graphQLErrors: listError
               .map(
                 (e) => GraphQLError(
-                  code: e['extensions']['code']?.toString(),
-                  message: e['message']?.toString(),
+                  code: (e is Map && e['extensions'] != null)
+                      ? e['extensions']['code']?.toString()
+                      : null,
+                  message: (e is Map) ? e['message']?.toString() : null,
                 ),
               )
               .toList(),

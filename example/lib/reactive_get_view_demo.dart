@@ -17,7 +17,7 @@ class CounterController extends GetXController {
   void increment() {
     isLoading.value = true;
     // Simulate async operation
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       count.value++;
       isLoading.value = false;
     });
@@ -57,165 +57,195 @@ class CounterController extends GetXController {
   }
 }
 
-/// Enhanced ReactiveGetView demo showing intelligent selective rebuilding
-class CounterView extends ReactiveGetView<CounterController> {
-  const CounterView({super.key});
-
-  @override
-  Widget buildReactive(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(controller.name.value),
-        backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.info),
-            onPressed: controller.toggleMessage,
-            tooltip: controller.message.value,
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Counter section
-            if (controller.isVisible.value)
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Count: ${controller.count.value}',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      if (controller.isLoading.value)
-                        CircularProgressIndicator()
-                      else
-                        ElevatedButton(
-                          onPressed: controller.increment,
-                          child: Text('Increment Counter'),
-                        ),
-                    ],
-                  ),
-                ),
-              )
-            else
-              Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text('Counter is hidden'),
-                ),
-              ),
-
-            SizedBox(height: 20),
-
-            // Control buttons
-            Wrap(
-              spacing: 8,
-              children: [
-                ElevatedButton(
-                  onPressed: controller.toggleMessage,
-                  child: Text('Toggle Message'),
-                ),
-                ElevatedButton(
-                  onPressed: controller.toggleVisibility,
-                  child: Text(
-                    controller.isVisible.value
-                        ? 'Hide Counter'
-                        : 'Show Counter',
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: controller.addItem,
-                  child: Text('Add Item'),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 20),
-
-            // Search section
-            Text(
-              'Search Demo:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            TextField(
-              onChanged: controller.updateSearchQuery,
-              decoration: InputDecoration(
-                hintText: 'Type to search...',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Search Query: "${controller.searchQuery.value}"',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-
-            SizedBox(height: 20),
-
-            // List section
-            Text(
-              'Dynamic List Demo:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            if (controller.items.isEmpty)
-              Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'No items yet. Add some items or search to see results.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                ),
-              )
-            else
-              ...controller.items.asMap().entries.map(
-                    (entry) => Card(
-                      child: ListTile(
-                        title: Text(entry.value),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => controller.removeItem(entry.key),
-                        ),
-                      ),
-                    ),
-                  ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 /// Demo app showcasing enhanced ReactiveGetView capabilities
+/// این صفحه به صورت مستقل کار می‌کند و نیازی به GetMaterialApp جداگانه ندارد
 class ReactiveGetViewDemo extends StatelessWidget {
   const ReactiveGetViewDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Enhanced ReactiveGetView Demo',
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-      home: const CounterView(),
-      debugShowCheckedModeBanner: false,
-    );
+    // Ensure controller is available
+    if (!Get.isRegistered<CounterController>()) {
+      Get.put(CounterController());
+    }
+
+    return const CounterViewPage();
   }
 }
 
-void main() {
-  // Initialize controller
-  Get.put(CounterController());
+/// Counter view using GetBuilder with Obx for reactive updates
+class CounterViewPage extends StatelessWidget {
+  const CounterViewPage({super.key});
 
-  runApp(const ReactiveGetViewDemo());
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<CounterController>(
+      init: Get.isRegistered<CounterController>() ? null : CounterController(),
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Obx(() => Text(controller.name.value)),
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            actions: [
+              Obx(() => IconButton(
+                    icon: const Icon(Icons.info),
+                    onPressed: controller.toggleMessage,
+                    tooltip: controller.message.value,
+                  )),
+            ],
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Counter section
+                Obx(() => controller.isVisible.value
+                    ? Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Obx(() => Text(
+                                    'Count: ${controller.count.value}',
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                              const SizedBox(height: 16),
+                              Obx(() => controller.isLoading.value
+                                  ? const CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: controller.increment,
+                                      child: const Text('Increment Counter'),
+                                    )),
+                            ],
+                          ),
+                        ),
+                      )
+                    : const Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Text('Counter is hidden'),
+                        ),
+                      )),
+
+                const SizedBox(height: 20),
+
+                // Control buttons
+                Obx(() => Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        ElevatedButton(
+                          onPressed: controller.toggleMessage,
+                          child: const Text('Toggle Message'),
+                        ),
+                        ElevatedButton(
+                          onPressed: controller.toggleVisibility,
+                          child: Text(
+                            controller.isVisible.value
+                                ? 'Hide Counter'
+                                : 'Show Counter',
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: controller.addItem,
+                          child: const Text('Add Item'),
+                        ),
+                      ],
+                    )),
+
+                const SizedBox(height: 20),
+
+                // Search section
+                const Text(
+                  'Search Demo:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  onChanged: controller.updateSearchQuery,
+                  decoration: const InputDecoration(
+                    hintText: 'Type to search...',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Obx(() => Text(
+                      'Search Query: "${controller.searchQuery.value}"',
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    )),
+
+                const SizedBox(height: 20),
+
+                // List section
+                const Text(
+                  'Dynamic List Demo:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Obx(() => controller.items.isEmpty
+                    ? Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text(
+                            'No items yet. Add some items or search to see results.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                        ),
+                      )
+                    : Column(
+                        children: controller.items.asMap().entries.map(
+                          (entry) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(entry.value),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red),
+                                  onPressed: () =>
+                                      controller.removeItem(entry.key),
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      )),
+
+                const SizedBox(height: 20),
+
+                // Message display
+                Obx(() => Card(
+                      color: Colors.blue.shade50,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.message, color: Colors.blue),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                controller.message.value,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
