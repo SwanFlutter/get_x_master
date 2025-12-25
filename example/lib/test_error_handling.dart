@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 /// Example demonstrating the enhanced error handling system in GetConnect
-/// این مثال سیستم مدیریت خطای پیشرفته GetConnect را نشان می‌دهد
 
 // =============================================================================
 // API Service with Error Handling
@@ -45,7 +44,6 @@ class UserApiService extends GetConnect {
 
   // ---------------------------------------------------------------------------
   // Method 1: Traditional try-catch with specific exceptions
-  // روش ۱: استفاده از try-catch با exception های اختصاصی
   // ---------------------------------------------------------------------------
   Future<User?> getUserTraditional(int id) async {
     _ensureInitialized();
@@ -82,18 +80,18 @@ class UserApiService extends GetConnect {
 
       switch (e.errorType) {
         case NetworkErrorType.noInternet:
-          Get.snackbar('خطا', 'اتصال اینترنت برقرار نیست');
+          Get.snackbar('Error', 'No internet connection');
           break;
         case NetworkErrorType.connectionRefused:
-          Get.snackbar('خطا', 'سرور در دسترس نیست');
+          Get.snackbar('Error', 'Server unavailable');
           break;
         default:
-          Get.snackbar('خطا', 'مشکل در اتصال به شبکه');
+          Get.snackbar('Error', 'Network connection issue');
       }
       return null;
     } on TimeoutException catch (e) {
       debugPrint('Request timed out: ${e.message}');
-      Get.snackbar('خطا', 'زمان درخواست به پایان رسید');
+      Get.snackbar('Error', 'Request timed out');
       return null;
     } on GetHttpException catch (e) {
       debugPrint('HTTP Error: ${e.message}');
@@ -105,7 +103,6 @@ class UserApiService extends GetConnect {
 
   // ---------------------------------------------------------------------------
   // Method 2: Using Result pattern (Functional approach)
-  // روش ۲: استفاده از الگوی Result (رویکرد تابعی)
   // ---------------------------------------------------------------------------
   Future<Result<User>> getUserWithResult(int id) async {
     _ensureInitialized();
@@ -117,7 +114,6 @@ class UserApiService extends GetConnect {
 
   // ---------------------------------------------------------------------------
   // Method 3: Using ExceptionHandler.guard
-  // روش ۳: استفاده از ExceptionHandler.guard
   // ---------------------------------------------------------------------------
   Future<Result<User>> getUserGuarded(int id) async {
     _ensureInitialized();
@@ -133,7 +129,6 @@ class UserApiService extends GetConnect {
 
   // ---------------------------------------------------------------------------
   // Method 4: Using retry with exponential backoff
-  // روش ۴: استفاده از retry با backoff نمایی
   // ---------------------------------------------------------------------------
   Future<User> getUserWithRetry(int id) async {
     _ensureInitialized();
@@ -161,7 +156,6 @@ class UserApiService extends GetConnect {
 
   // ---------------------------------------------------------------------------
   // Get all users with caching
-  // دریافت همه کاربران با کش
   // ---------------------------------------------------------------------------
   Future<Result<List<User>>> getAllUsers() async {
     _ensureInitialized();
@@ -178,7 +172,6 @@ class UserApiService extends GetConnect {
 
   // ---------------------------------------------------------------------------
   // Create user with validation error handling
-  // ایجاد کاربر با مدیریت خطای اعتبارسنجی
   // ---------------------------------------------------------------------------
   Future<Result<User>> createUser(User user) async {
     _ensureInitialized();
@@ -508,7 +501,7 @@ class ErrorHandlingController extends GetXController {
     result.when(
       success: (loadedUser) {
         user.value = loadedUser;
-        Get.snackbar('موفق', 'کاربر با موفقیت بارگذاری شد');
+        Get.snackbar('Success', 'User loaded successfully');
       },
       failure: (error) {
         errorMessage.value = error.message;
@@ -549,7 +542,7 @@ class ErrorHandlingController extends GetXController {
     try {
       final loadedUser = await _api.getUserWithRetry(id);
       user.value = loadedUser;
-      Get.snackbar('موفق', 'کاربر با موفقیت بارگذاری شد');
+      Get.snackbar('Success', 'User loaded successfully');
     } on GetHttpException catch (e) {
       errorMessage.value = e.message;
       _handleError(e);
@@ -572,8 +565,8 @@ class ErrorHandlingController extends GetXController {
       success: (loadedCountry) {
         country.value = loadedCountry;
         Get.snackbar(
-          'موفق',
-          'اطلاعات کشور ${loadedCountry.name} بارگذاری شد',
+          'Success',
+          'Country ${loadedCountry.name} loaded',
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
@@ -601,8 +594,8 @@ class ErrorHandlingController extends GetXController {
     switch (error) {
       case UnauthorizedException():
         Get.snackbar(
-          'خطای احراز هویت',
-          'لطفاً دوباره وارد شوید',
+          'Authentication Error',
+          'Please log in again',
           backgroundColor: Colors.orange,
           colorText: Colors.white,
         );
@@ -611,8 +604,8 @@ class ErrorHandlingController extends GetXController {
 
       case NotFoundException():
         Get.snackbar(
-          'یافت نشد',
-          'منبع مورد نظر یافت نشد',
+          'Not Found',
+          'Resource not found',
           backgroundColor: Colors.grey,
           colorText: Colors.white,
         );
@@ -620,13 +613,13 @@ class ErrorHandlingController extends GetXController {
 
       case NetworkException(:final errorType):
         String message = switch (errorType) {
-          NetworkErrorType.noInternet => 'اتصال اینترنت برقرار نیست',
-          NetworkErrorType.connectionRefused => 'سرور در دسترس نیست',
-          NetworkErrorType.dnsLookupFailed => 'آدرس سرور یافت نشد',
-          _ => 'خطا در اتصال به شبکه',
+          NetworkErrorType.noInternet => 'No internet connection',
+          NetworkErrorType.connectionRefused => 'Server unavailable',
+          NetworkErrorType.dnsLookupFailed => 'Server address not found',
+          _ => 'Network connection issue',
         };
         Get.snackbar(
-          'خطای شبکه',
+          'Network Error',
           message,
           backgroundColor: Colors.red,
           colorText: Colors.white,
@@ -635,8 +628,8 @@ class ErrorHandlingController extends GetXController {
 
       case TooManyRequestsException(:final retryAfter):
         Get.snackbar(
-          'محدودیت درخواست',
-          'لطفاً ${retryAfter?.inSeconds ?? 60} ثانیه صبر کنید',
+          'Rate Limit',
+          'Please wait ${retryAfter?.inSeconds ?? 60} seconds',
           backgroundColor: Colors.amber,
           colorText: Colors.black,
         );
@@ -644,8 +637,8 @@ class ErrorHandlingController extends GetXController {
 
       case TimeoutException():
         Get.snackbar(
-          'زمان پایان یافت',
-          'درخواست بیش از حد طول کشید',
+          'Timeout',
+          'Request took too long',
           backgroundColor: Colors.purple,
           colorText: Colors.white,
         );
@@ -654,14 +647,14 @@ class ErrorHandlingController extends GetXController {
       default:
         if (error.isServerError) {
           Get.snackbar(
-            'خطای سرور',
-            'مشکلی در سرور رخ داده است',
+            'Server Error',
+            'A server error occurred',
             backgroundColor: Colors.red.shade900,
             colorText: Colors.white,
           );
         } else {
           Get.snackbar(
-            'خطا',
+            'Error',
             error.message,
             backgroundColor: Colors.red,
             colorText: Colors.white,
@@ -910,7 +903,7 @@ class TestErrorHandling extends StatelessWidget {
               Colors.red,
               () {
                 controller.clearApiCache();
-                Get.snackbar('موفق', 'کش پاک شد');
+                Get.snackbar('Success', 'Cache cleared');
               },
             ),
           ],
