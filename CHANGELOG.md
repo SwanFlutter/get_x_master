@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.0.26
+
+### 🐛 Bug Fixes - Responsive System
+
+* **Fixed Oversized UI Elements on Desktop/Laptop**: Resolved issue where all UI elements (text, icons, images) appeared too large on desktop and laptop screens.
+* **Responsive Scaling Improvements**:
+  - Reduced aggressive device-specific scaling factors from 1.15-2.2x to 1.0x for all device types
+  - Fixed `sp()`, `ws()`, `imgSize()` methods in `ResponsiveData` class
+  - Updated clamp ranges from 0.8-3.0 to conservative 0.8-1.2 across all methods
+  - Fixed `_getDynamicBaseWidth()` and `_getDynamicBaseHeight()` to use proper fixed base dimensions instead of percentage-based calculations
+  - Updated `ResponsiveSize` extension methods (`sp`, `hsp`, `ssp`, `ws`, `imgSize`) with proper scaling
+  - Fixed `GetResponsiveHelper` class scaling factors and clamp ranges
+  - Improved `_getClampRange()` function with consistent conservative ranges
+
+* **Files Modified**:
+  - `lib/src/responsive/responsive_builder.dart`
+  - `lib/src/responsive/size_percent_extension.dart`
+
+### 📝 Notes
+
+* The responsive system now scales proportionally based on screen size without additional aggressive multipliers
+* UI elements will maintain consistent sizing across phone, tablet, laptop, and desktop devices
+* Breaking change: If you relied on the previous aggressive scaling behavior, you may need to adjust your design values
+
+---
+
 ## 0.0.25
 
 ### ✨ New Features - Advanced Error Handling System

@@ -177,25 +177,25 @@ class ResponsiveData {
     final heightScale = height / baseHeight;
     final scaleFactor = (widthScale + heightScale) / 2;
 
-    // Device-specific adjustments
+    // Device-specific adjustments - reduced for better scaling
     double deviceFactor = 1.0;
     switch (deviceType) {
       case 'phone':
         deviceFactor = 1.0;
         break;
       case 'tablet':
-        deviceFactor = 1.15;
+        deviceFactor = 1.0;
         break;
       case 'laptop':
-        deviceFactor = 1.25;
+        deviceFactor = 1.0;
         break;
       case 'desktop':
-        deviceFactor = 1.4;
+        deviceFactor = 1.0;
         break;
     }
 
     final adjustedScale = scaleFactor * deviceFactor;
-    final clampedScale = adjustedScale.clamp(0.8, 2.0);
+    final clampedScale = adjustedScale.clamp(0.8, 1.2);
 
     return fontSize * clampedScale;
   }
@@ -210,18 +210,18 @@ class ResponsiveData {
         deviceFactor = 1.0;
         break;
       case 'tablet':
-        deviceFactor = 1.2;
+        deviceFactor = 1.0;
         break;
       case 'laptop':
-        deviceFactor = 1.4;
+        deviceFactor = 1.0;
         break;
       case 'desktop':
-        deviceFactor = 1.8;
+        deviceFactor = 1.0;
         break;
     }
 
     final adjustedScale = widthScale * deviceFactor;
-    final clampedScale = adjustedScale.clamp(0.8, 2.5);
+    final clampedScale = adjustedScale.clamp(0.8, 1.2);
 
     return size * clampedScale;
   }
@@ -236,18 +236,18 @@ class ResponsiveData {
         deviceFactor = 1.0;
         break;
       case 'tablet':
-        deviceFactor = 1.3;
+        deviceFactor = 1.0;
         break;
       case 'laptop':
-        deviceFactor = 1.6;
+        deviceFactor = 1.0;
         break;
       case 'desktop':
-        deviceFactor = 2.2;
+        deviceFactor = 1.0;
         break;
     }
 
     final adjustedScale = widthScale * deviceFactor;
-    final clampedScale = adjustedScale.clamp(0.8, 3.0);
+    final clampedScale = adjustedScale.clamp(0.8, 1.3);
 
     return size * clampedScale;
   }
@@ -329,18 +329,18 @@ class ResponsiveData {
         deviceFactor = 1.0;
         break;
       case 'tablet':
-        deviceFactor = 1.2;
+        deviceFactor = 1.0;
         break;
       case 'laptop':
-        deviceFactor = 1.4;
+        deviceFactor = 1.0;
         break;
       case 'desktop':
-        deviceFactor = 1.8;
+        deviceFactor = 1.0;
         break;
     }
 
     final adjustedScale = scale * deviceFactor;
-    final clampedScale = adjustedScale.clamp(0.8, 2.0);
+    final clampedScale = adjustedScale.clamp(0.8, 1.2);
     return size * clampedScale;
   }
 
@@ -356,18 +356,18 @@ class ResponsiveData {
         deviceFactor = 1.0;
         break;
       case 'tablet':
-        deviceFactor = 1.2;
+        deviceFactor = 1.0;
         break;
       case 'laptop':
-        deviceFactor = 1.4;
+        deviceFactor = 1.0;
         break;
       case 'desktop':
-        deviceFactor = 1.8;
+        deviceFactor = 1.0;
         break;
     }
 
     final adjustedScale = scale * deviceFactor;
-    final clampedScale = adjustedScale.clamp(0.8, 2.0);
+    final clampedScale = adjustedScale.clamp(0.8, 1.2);
     return size * clampedScale;
   }
 

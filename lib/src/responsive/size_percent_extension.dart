@@ -168,16 +168,17 @@ double _getDynamicBaseWidth() {
       return 375.0; // Default base width
     }
 
-    final double aspectRatio = currentWidth / currentHeight;
-
-    if (currentWidth >= 1200) {
-      return currentWidth * 0.3;
+    // Use fixed base dimensions for each device type
+    if (currentWidth >= 1920) {
+      return 1920.0;
+    } else if (currentWidth >= 1200) {
+      return 1366.0;
     } else if (currentWidth >= 800) {
-      return aspectRatio > 1.0 ? 600.0 : 400.0;
+      return 1024.0;
     } else if (currentWidth >= 600) {
-      return aspectRatio > 1.0 ? 500.0 : 360.0;
+      return 768.0;
     } else {
-      return aspectRatio > 1.0 ? 400.0 : 320.0;
+      return 375.0;
     }
   } catch (e) {
     // Fallback if GetX is not properly initialized
@@ -191,23 +192,24 @@ double _getDynamicBaseHeight() {
     final double currentHeight = Get.height;
 
     if (currentWidth <= 0 || currentHeight <= 0) {
-      return 667.0; // Default base height
+      return 812.0; // Default base height
     }
 
-    final double aspectRatio = currentWidth / currentHeight;
-
-    if (currentWidth >= 1200) {
-      return currentHeight * 0.4;
+    // Use fixed base dimensions for each device type
+    if (currentWidth >= 1920) {
+      return 1080.0;
+    } else if (currentWidth >= 1200) {
+      return 768.0;
     } else if (currentWidth >= 800) {
-      return aspectRatio > 1.0 ? 600.0 : 800.0;
+      return 768.0;
     } else if (currentWidth >= 600) {
-      return aspectRatio > 1.0 ? 400.0 : 640.0;
+      return 1024.0;
     } else {
-      return aspectRatio > 1.0 ? 360.0 : 568.0;
+      return 812.0;
     }
   } catch (e) {
     // Fallback if GetX is not properly initialized
-    return 667.0; // Default base height
+    return 812.0; // Default base height
   }
 }
 
@@ -251,7 +253,7 @@ extension ResponsiveSize on num {
     final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.8 : 1.0);
 
     // Clamp the scale factor to prevent extreme sizes
-    final clampedScaleFactor = adjustedScaleFactor.clamp(0.8, 1.4);
+    final clampedScaleFactor = adjustedScaleFactor.clamp(0.8, 1.2);
 
     // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
@@ -288,7 +290,7 @@ extension ResponsiveSize on num {
     final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.7 : 0.9);
 
     // Clamp the scale factor to prevent extreme sizes
-    final clampedScaleFactor = adjustedScaleFactor.clamp(0.7, 1.2);
+    final clampedScaleFactor = adjustedScaleFactor.clamp(0.7, 1.1);
 
     // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
@@ -322,10 +324,10 @@ extension ResponsiveSize on num {
     final scaleFactor = widthScale < heightScale ? widthScale : heightScale;
 
     // Adjust scale factor based on pixel ratio
-    final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.9 : 1.1);
+    final adjustedScaleFactor = scaleFactor * (pixelRatio > 2.0 ? 0.9 : 1.0);
 
     // Clamp the scale factor to prevent extreme sizes
-    final clampedScaleFactor = adjustedScaleFactor.clamp(0.9, 1.3);
+    final clampedScaleFactor = adjustedScaleFactor.clamp(0.9, 1.2);
 
     // Calculate final font size
     return (this * clampedScaleFactor).toDouble();
@@ -358,13 +360,13 @@ extension ResponsiveSize on num {
         adjustmentFactor = 1.0;
         break;
       case 'tablet':
-        adjustmentFactor = 1.2;
+        adjustmentFactor = 1.0;
         break;
       case 'laptop':
-        adjustmentFactor = 1.4;
+        adjustmentFactor = 1.0;
         break;
       case 'tv':
-        adjustmentFactor = 1.8;
+        adjustmentFactor = 1.0;
         break;
     }
 
@@ -405,13 +407,13 @@ extension ResponsiveSize on num {
         adjustmentFactor = 1.0;
         break;
       case 'tablet':
-        adjustmentFactor = 1.3;
+        adjustmentFactor = 1.0;
         break;
       case 'laptop':
-        adjustmentFactor = 1.6;
+        adjustmentFactor = 1.0;
         break;
       case 'tv':
-        adjustmentFactor = 2.2;
+        adjustmentFactor = 1.0;
         break;
     }
 
@@ -613,65 +615,65 @@ Map<String, double> _getClampRange(String deviceType, String contentType) {
     case 'phone':
       switch (contentType) {
         case 'normal':
-          return {'min': 0.8, 'max': 1.4};
+          return {'min': 0.8, 'max': 1.2};
         case 'large':
-          return {'min': 0.7, 'max': 1.2};
+          return {'min': 0.7, 'max': 1.1};
         case 'small':
-          return {'min': 0.9, 'max': 1.3};
+          return {'min': 0.9, 'max': 1.2};
         case 'widget':
-          return {'min': 0.8, 'max': 1.3};
+          return {'min': 0.8, 'max': 1.2};
         case 'image':
-          return {'min': 0.7, 'max': 1.4};
+          return {'min': 0.7, 'max': 1.2};
         default:
-          return {'min': 0.8, 'max': 1.4};
+          return {'min': 0.8, 'max': 1.2};
       }
     case 'tablet':
       switch (contentType) {
         case 'normal':
-          return {'min': 0.9, 'max': 1.6};
+          return {'min': 0.8, 'max': 1.2};
         case 'large':
-          return {'min': 0.8, 'max': 1.4};
+          return {'min': 0.8, 'max': 1.1};
         case 'small':
-          return {'min': 1.0, 'max': 1.5};
+          return {'min': 0.9, 'max': 1.2};
         case 'widget':
-          return {'min': 1.0, 'max': 1.5};
+          return {'min': 0.8, 'max': 1.2};
         case 'image':
-          return {'min': 0.9, 'max': 1.7};
+          return {'min': 0.8, 'max': 1.2};
         default:
-          return {'min': 0.9, 'max': 1.6};
+          return {'min': 0.8, 'max': 1.2};
       }
     case 'laptop':
       switch (contentType) {
         case 'normal':
-          return {'min': 1.0, 'max': 1.8};
+          return {'min': 0.8, 'max': 1.2};
         case 'large':
-          return {'min': 0.9, 'max': 1.6};
+          return {'min': 0.8, 'max': 1.1};
         case 'small':
-          return {'min': 1.1, 'max': 1.7};
+          return {'min': 0.9, 'max': 1.2};
         case 'widget':
-          return {'min': 1.2, 'max': 1.8};
+          return {'min': 0.8, 'max': 1.2};
         case 'image':
-          return {'min': 1.0, 'max': 2.0};
+          return {'min': 0.8, 'max': 1.2};
         default:
-          return {'min': 1.0, 'max': 1.8};
+          return {'min': 0.8, 'max': 1.2};
       }
     case 'tv':
       switch (contentType) {
         case 'normal':
-          return {'min': 1.2, 'max': 2.2};
+          return {'min': 0.8, 'max': 1.2};
         case 'large':
-          return {'min': 1.1, 'max': 2.0};
+          return {'min': 0.8, 'max': 1.1};
         case 'small':
-          return {'min': 1.3, 'max': 2.1};
+          return {'min': 0.9, 'max': 1.2};
         case 'widget':
-          return {'min': 1.5, 'max': 2.5};
+          return {'min': 0.8, 'max': 1.2};
         case 'image':
-          return {'min': 1.4, 'max': 2.8};
+          return {'min': 0.8, 'max': 1.2};
         default:
-          return {'min': 1.2, 'max': 2.2};
+          return {'min': 0.8, 'max': 1.2};
       }
     default:
-      return {'min': 0.8, 'max': 1.4};
+      return {'min': 0.8, 'max': 1.2};
   }
 }
 
@@ -688,48 +690,48 @@ class GetResponsiveHelper {
   // Text scaling factors for different device types
   static const Map<String, double> _textScaleFactors = {
     'phone': 1.0,
-    'tablet': 1.15,
-    'laptop': 1.25,
-    'desktop': 1.4,
+    'tablet': 1.0,
+    'laptop': 1.0,
+    'desktop': 1.0,
   };
 
   // Widget scaling factors for different device types
   static const Map<String, double> _widgetScaleFactors = {
     'phone': 1.0,
-    'tablet': 1.2,
-    'laptop': 1.4,
-    'desktop': 1.8,
+    'tablet': 1.0,
+    'laptop': 1.0,
+    'desktop': 1.0,
   };
 
   // Image scaling factors for different device types
   static const Map<String, double> _imageScaleFactors = {
     'phone': 1.0,
-    'tablet': 1.3,
-    'laptop': 1.6,
-    'desktop': 2.2,
+    'tablet': 1.0,
+    'laptop': 1.0,
+    'desktop': 1.0,
   };
 
   // Clamp ranges for different device types and content types
   static const Map<String, Map<String, Map<String, double>>> _clampRanges = {
     'phone': {
-      'text': {'min': 0.8, 'max': 1.3},
-      'widget': {'min': 0.8, 'max': 1.3},
-      'image': {'min': 0.8, 'max': 1.3},
+      'text': {'min': 0.8, 'max': 1.2},
+      'widget': {'min': 0.8, 'max': 1.2},
+      'image': {'min': 0.8, 'max': 1.2},
     },
     'tablet': {
-      'text': {'min': 0.9, 'max': 1.4},
-      'widget': {'min': 0.9, 'max': 1.4},
-      'image': {'min': 0.9, 'max': 1.4},
+      'text': {'min': 0.8, 'max': 1.2},
+      'widget': {'min': 0.8, 'max': 1.2},
+      'image': {'min': 0.8, 'max': 1.2},
     },
     'laptop': {
-      'text': {'min': 0.9, 'max': 1.5},
-      'widget': {'min': 0.9, 'max': 1.5},
-      'image': {'min': 0.9, 'max': 1.5},
+      'text': {'min': 0.8, 'max': 1.2},
+      'widget': {'min': 0.8, 'max': 1.2},
+      'image': {'min': 0.8, 'max': 1.2},
     },
     'desktop': {
-      'text': {'min': 1.0, 'max': 2.0},
-      'widget': {'min': 1.0, 'max': 2.0},
-      'image': {'min': 1.0, 'max': 2.0},
+      'text': {'min': 0.8, 'max': 1.2},
+      'widget': {'min': 0.8, 'max': 1.2},
+      'image': {'min': 0.8, 'max': 1.2},
     },
   };
 
