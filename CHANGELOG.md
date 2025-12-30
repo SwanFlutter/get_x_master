@@ -1,5 +1,13 @@
 # Changelog
 
+
+## 0.0.27
+
+### 🐛 Bug Fixes - Responsive System
+
+* Fix bug responsive system.
+
+
 ## 0.0.26
 
 ### 🐛 Bug Fixes - Responsive System

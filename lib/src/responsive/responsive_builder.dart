@@ -86,7 +86,12 @@ class ResponsiveData {
   /// Create ResponsiveData from LayoutBuilder constraints
   factory ResponsiveData.fromConstraints(BoxConstraints constraints) {
     final width = constraints.maxWidth;
-    final height = constraints.maxHeight;
+    // Handle infinite height from LayoutBuilder
+    final height = constraints.maxHeight.isFinite
+        ? constraints.maxHeight
+        : constraints.minHeight > 0
+        ? constraints.minHeight
+        : width * 1.78; // Default to 16:9 aspect ratio if height is infinite
     final aspectRatio = width / height;
     final deviceType = _getDeviceType(width, height);
     final baseDimensions = _getBaseDimensions(deviceType);
@@ -449,7 +454,9 @@ String _getDeviceType(double width, double height) {
     return 'desktop';
   } else if (width >= 900) {
     return 'laptop';
-  } else if (width >= 600 || (width >= 500 && width / height > 1.2)) {
+  } else if (width >= 600) {
+    return 'tablet';
+  } else if (width >= 500) {
     return 'tablet';
   } else {
     return 'phone';

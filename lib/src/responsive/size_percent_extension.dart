@@ -598,12 +598,15 @@ Map<String, dynamic> _getDeviceInfo(double width, double height) {
     return {'type': 'tv', 'baseWidth': 1920.0, 'baseHeight': 1080.0};
   } else if (width >= 1200) {
     return {'type': 'laptop', 'baseWidth': 1366.0, 'baseHeight': 768.0};
-  } else if (width >= 768 || (width >= 600 && aspectRatio > 1.2)) {
+  } else if (width >= 768) {
     return {
       'type': 'tablet',
       'baseWidth': aspectRatio > 1.0 ? 1024.0 : 768.0,
       'baseHeight': aspectRatio > 1.0 ? 768.0 : 1024.0,
     };
+  } else if (width >= 600 && aspectRatio > 1.2) {
+    // Landscape tablet (small tablet in landscape)
+    return {'type': 'tablet', 'baseWidth': 1024.0, 'baseHeight': 768.0};
   } else {
     return {'type': 'phone', 'baseWidth': 375.0, 'baseHeight': 667.0};
   }
