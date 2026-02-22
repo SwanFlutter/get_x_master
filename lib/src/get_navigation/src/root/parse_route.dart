@@ -193,10 +193,11 @@ class ParseRouteTree {
     GetPage origin,
     String parentPath,
     List<GetMiddleware> middlewares,
-  ) => origin.copy(
-    middlewares: middlewares,
-    name: (parentPath + origin.name).replaceAll(r'//', '/'),
-  );
+  ) =>
+      origin.copy(
+        middlewares: middlewares,
+        name: (parentPath + origin.name).replaceAll(r'//', '/'),
+      );
 
   /// Finds a route that matches the given name.
   GetPage? _findRoute(String name) {

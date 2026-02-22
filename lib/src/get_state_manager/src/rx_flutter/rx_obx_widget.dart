@@ -38,7 +38,7 @@ class ObxState extends State<ObxWidget> {
     subs = _observer.listen(_updateTree, cancelOnError: false);
   }
 
-  void _updateTree(_) {
+  void _updateTree(dynamic _) {
     if (mounted) {
       setState(() {});
     }

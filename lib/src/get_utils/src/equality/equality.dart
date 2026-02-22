@@ -161,8 +161,8 @@ class MapEquality<K, V> implements IEquality<Map<K, V>> {
   const MapEquality({
     IEquality<K> keys = const DefaultEquality<Never>(),
     IEquality<V> values = const DefaultEquality<Never>(),
-  }) : _keyEquality = keys,
-       _valueEquality = values;
+  })  : _keyEquality = keys,
+        _valueEquality = values;
 
   @override
   bool equals(Map<K, V>? map1, Map<K, V>? map2) {

@@ -28,12 +28,11 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     this.backButtonPopMode = PopMode.History,
     this.preventDuplicateHandlingMode =
         PreventDuplicateHandlingMode.ReorderRoutes,
-  }) : notFoundRoute =
-           notFoundRoute ??
-           GetPage(
-             name: '/404',
-             page: () => const Scaffold(body: Text('Route not found')),
-           ) {
+  }) : notFoundRoute = notFoundRoute ??
+            GetPage(
+              name: '/404',
+              page: () => const Scaffold(body: Text('Route not found')),
+            ) {
     Get.log('GetDelegate is created !');
   }
 
@@ -285,9 +284,8 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     if (currentBranch != null && currentBranch.length > 1) {
       //remove last part only
       final remaining = currentBranch.take(currentBranch.length - 1);
-      final prevHistoryEntry = history.length > 1
-          ? history[history.length - 2]
-          : null;
+      final prevHistoryEntry =
+          history.length > 1 ? history[history.length - 2] : null;
 
       //check if current route is the same as the previous route
       if (prevHistoryEntry != null) {
@@ -324,9 +322,9 @@ class GetDelegate extends RouterDelegate<GetNavConfig>
     final settings = route.settings;
     if (settings is GetPage) {
       final config = history.cast<GetNavConfig?>().firstWhere(
-        (element) => element?.currentPage == settings,
-        orElse: () => null,
-      );
+            (element) => element?.currentPage == settings,
+            orElse: () => null,
+          );
       if (config != null) {
         _removeHistoryEntry(config);
       }
@@ -420,23 +418,22 @@ class GetNavigator extends Navigator {
     super.reportsRouteUpdateToEngine,
     TransitionDelegate? transitionDelegate,
   }) : super(
-         //keys should be optional
-         onPopPage:
-             onPopPage ??
-             (route, result) {
-               final didPop = route.didPop(result);
-               if (!didPop) {
-                 return false;
-               }
-               return true;
-             },
-         observers: [
-           // GetObserver(),
-           if (observers != null) ...observers,
-         ],
-         transitionDelegate:
-             transitionDelegate ?? const DefaultTransitionDelegate<dynamic>(),
-       );
+          //keys should be optional
+          onPopPage: onPopPage ??
+              (route, result) {
+                final didPop = route.didPop(result);
+                if (!didPop) {
+                  return false;
+                }
+                return true;
+              },
+          observers: [
+            // GetObserver(),
+            if (observers != null) ...observers,
+          ],
+          transitionDelegate:
+              transitionDelegate ?? const DefaultTransitionDelegate<dynamic>(),
+        );
 }
 
 /// Enables the user to customize the intended pop behavior

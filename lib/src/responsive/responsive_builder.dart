@@ -90,8 +90,9 @@ class ResponsiveData {
     final height = constraints.maxHeight.isFinite
         ? constraints.maxHeight
         : constraints.minHeight > 0
-        ? constraints.minHeight
-        : width * 1.78; // Default to 16:9 aspect ratio if height is infinite
+            ? constraints.minHeight
+            : width *
+                1.78; // Default to 16:9 aspect ratio if height is infinite
     final aspectRatio = width / height;
     final deviceType = _getDeviceType(width, height);
     final baseDimensions = _getBaseDimensions(deviceType);
@@ -429,21 +430,21 @@ class ResponsiveData {
 
   /// Get screen information
   Map<String, dynamic> get screenInfo => {
-    'width': width,
-    'height': height,
-    'aspectRatio': aspectRatio,
-    'deviceType': deviceType,
-    'baseWidth': baseWidth,
-    'baseHeight': baseHeight,
-    'pixelRatio': pixelRatio,
-    'isTablet': isTablet,
-    'isPhone': isPhone,
-    'isLaptop': isLaptop,
-    'isDesktop': isDesktop,
-    'isTv': isTv,
-    'isLandscape': isLandscape,
-    'isPortrait': isPortrait,
-  };
+        'width': width,
+        'height': height,
+        'aspectRatio': aspectRatio,
+        'deviceType': deviceType,
+        'baseWidth': baseWidth,
+        'baseHeight': baseHeight,
+        'pixelRatio': pixelRatio,
+        'isTablet': isTablet,
+        'isPhone': isPhone,
+        'isLaptop': isLaptop,
+        'isDesktop': isDesktop,
+        'isTv': isTv,
+        'isLandscape': isLandscape,
+        'isPortrait': isPortrait,
+      };
 }
 
 /// Helper functions
@@ -485,7 +486,7 @@ extension GetResponsiveBuilderExtension on Widget {
   Widget responsiveBuilder({
     ResponsiveMode mode = ResponsiveMode.layoutBuilder,
     Widget Function(BuildContext context, ResponsiveData data, Widget child)?
-    builder,
+        builder,
   }) {
     return GetResponsiveBuilder(
       mode: mode,

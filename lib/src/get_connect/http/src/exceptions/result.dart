@@ -28,21 +28,21 @@ sealed class Result<T> {
 
   /// Returns the value if successful, otherwise returns null.
   T? get valueOrNull => switch (this) {
-    Success<T>(:final value) => value,
-    Failure<T>() => null,
-  };
+        Success<T>(:final value) => value,
+        Failure<T>() => null,
+      };
 
   /// Returns the error if failed, otherwise returns null.
   GetHttpException? get errorOrNull => switch (this) {
-    Success<T>() => null,
-    Failure<T>(:final error) => error,
-  };
+        Success<T>() => null,
+        Failure<T>(:final error) => error,
+      };
 
   /// Returns the value if successful, otherwise returns the provided default.
   T getOrElse(T defaultValue) => switch (this) {
-    Success<T>(:final value) => value,
-    Failure<T>() => defaultValue,
-  };
+        Success<T>(:final value) => value,
+        Failure<T>() => defaultValue,
+      };
 
   /// Returns the value if successful, otherwise computes a default from the error.
   T getOrElseCompute(T Function(GetHttpException error) compute) =>
@@ -53,47 +53,50 @@ sealed class Result<T> {
 
   /// Returns the value if successful, otherwise throws the error.
   T getOrThrow() => switch (this) {
-    Success<T>(:final value) => value,
-    Failure<T>(:final error) => throw error,
-  };
+        Success<T>(:final value) => value,
+        Failure<T>(:final error) => throw error,
+      };
 
   /// Pattern matching for Result.
   R when<R>({
     required R Function(T value) success,
     required R Function(GetHttpException error) failure,
-  }) => switch (this) {
-    Success<T>(:final value) => success(value),
-    Failure<T>(:final error) => failure(error),
-  };
+  }) =>
+      switch (this) {
+        Success<T>(:final value) => success(value),
+        Failure<T>(:final error) => failure(error),
+      };
 
   /// Pattern matching with nullable return.
   R? whenOrNull<R>({
     R Function(T value)? success,
     R Function(GetHttpException error)? failure,
-  }) => switch (this) {
-    Success<T>(:final value) => success?.call(value),
-    Failure<T>(:final error) => failure?.call(error),
-  };
+  }) =>
+      switch (this) {
+        Success<T>(:final value) => success?.call(value),
+        Failure<T>(:final error) => failure?.call(error),
+      };
 
   /// Maps the success value to a new type.
   Result<R> map<R>(R Function(T value) transform) => switch (this) {
-    Success<T>(:final value) => Result.success(transform(value)),
-    Failure<T>(:final error) => Result.failure(error),
-  };
+        Success<T>(:final value) => Result.success(transform(value)),
+        Failure<T>(:final error) => Result.failure(error),
+      };
 
   /// Maps the success value to a new Result.
   Result<R> flatMap<R>(Result<R> Function(T value) transform) => switch (this) {
-    Success<T>(:final value) => transform(value),
-    Failure<T>(:final error) => Result.failure(error),
-  };
+        Success<T>(:final value) => transform(value),
+        Failure<T>(:final error) => Result.failure(error),
+      };
 
   /// Maps the error to a new error.
   Result<T> mapError(
     GetHttpException Function(GetHttpException error) transform,
-  ) => switch (this) {
-    Success<T>() => this,
-    Failure<T>(:final error) => Result.failure(transform(error)),
-  };
+  ) =>
+      switch (this) {
+        Success<T>() => this,
+        Failure<T>(:final error) => Result.failure(transform(error)),
+      };
 
   /// Recovers from an error by providing an alternative value.
   Result<T> recover(T Function(GetHttpException error) recovery) =>
@@ -183,7 +186,7 @@ extension FutureResultExtension<T> on Future<Result<T>> {
   ) async {
     final result = await this;
     return switch (result) {
-      Success<T>(:final value) => transform(value),
+      Success<T>(:final value) => await transform(value),
       Failure<T>(:final error) => Result.failure(error),
     };
   }
@@ -195,7 +198,7 @@ extension FutureResultExtension<T> on Future<Result<T>> {
     final result = await this;
     return switch (result) {
       Success<T>() => result,
-      Failure<T>(:final error) => recovery(error),
+      Failure<T>(:final error) => await recovery(error),
     };
   }
 

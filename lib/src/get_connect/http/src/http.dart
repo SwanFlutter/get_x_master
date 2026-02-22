@@ -16,12 +16,11 @@ typedef Decoder<T> = T Function(dynamic data);
 
 typedef Progress = Function(double percent);
 
-typedef ResponseInterceptor<T> =
-    Future<Response<T>?> Function(
-      Request<T> request,
-      Type targetType,
-      HttpClientResponse response,
-    );
+typedef ResponseInterceptor<T> = Future<Response<T>?> Function(
+  Request<T> request,
+  Type targetType,
+  HttpClientResponse response,
+);
 
 class GetHttpClient {
   String userAgent;
@@ -63,15 +62,14 @@ class GetHttpClient {
     bool withCredentials = false,
     String Function(Uri url)? findProxy,
     IClient? customClient,
-  }) : _httpClient =
-           customClient ??
-           createHttp(
-             allowAutoSignedCert: allowAutoSignedCert,
-             trustedCertificates: trustedCertificates,
-             withCredentials: withCredentials,
-             findProxy: findProxy,
-           ),
-       _modifier = GetModifier();
+  })  : _httpClient = customClient ??
+            createHttp(
+              allowAutoSignedCert: allowAutoSignedCert,
+              trustedCertificates: trustedCertificates,
+              withCredentials: withCredentials,
+              findProxy: findProxy,
+            ),
+        _modifier = GetModifier();
 
   void addAuthenticator<T>(RequestModifier<T> auth) {
     _modifier.authenticator = auth as RequestModifier;
@@ -205,19 +203,19 @@ class GetHttpClient {
     var total = 0;
     var length = bodyBytes.length;
 
-    var byteStream = Stream.fromIterable(bodyBytes.map((i) => [i]))
-        .transform<List<int>>(
-          StreamTransformer.fromHandlers(
-            handleData: (data, sink) {
-              total += data.length;
-              if (uploadProgress != null) {
-                var percent = total / length * 100;
-                uploadProgress(percent);
-              }
-              sink.add(data);
-            },
-          ),
-        );
+    var byteStream =
+        Stream.fromIterable(bodyBytes.map((i) => [i])).transform<List<int>>(
+      StreamTransformer.fromHandlers(
+        handleData: (data, sink) {
+          total += data.length;
+          if (uploadProgress != null) {
+            var percent = total / length * 100;
+            uploadProgress(percent);
+          }
+          sink.add(data);
+        },
+      ),
+    );
     return byteStream;
   }
 
@@ -325,8 +323,8 @@ class GetHttpClient {
     final defaultInterceptor = defaultResponseInterceptor;
     return defaultInterceptor != null
         ? (request, targetType, response) async =>
-              await defaultInterceptor(request, targetType, response)
-                  as Response<T>?
+            await defaultInterceptor(request, targetType, response)
+                as Response<T>?
         : null;
   }
 

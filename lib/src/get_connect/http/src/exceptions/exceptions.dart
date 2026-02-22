@@ -65,13 +65,13 @@ class GetHttpException implements Exception {
 
   /// Convert exception to Map for logging or serialization
   Map<String, dynamic> toMap() => {
-    'type': runtimeType.toString(),
-    'message': message,
-    'statusCode': statusCode,
-    'uri': uri?.toString(),
-    'timestamp': timestamp.toIso8601String(),
-    'responseBody': responseBody?.toString(),
-  };
+        'type': runtimeType.toString(),
+        'message': message,
+        'statusCode': statusCode,
+        'uri': uri?.toString(),
+        'timestamp': timestamp.toIso8601String(),
+        'responseBody': responseBody?.toString(),
+      };
 }
 
 /// Exception thrown when a request times out.
@@ -82,9 +82,8 @@ class TimeoutException extends GetHttpException {
 
   @override
   String toString() {
-    final durationStr = duration != null
-        ? ' after ${duration!.inSeconds}s'
-        : '';
+    final durationStr =
+        duration != null ? ' after ${duration!.inSeconds}s' : '';
     return 'TimeoutException: $message$durationStr${uri != null ? ' [URI: $uri]' : ''}';
   }
 }
@@ -262,9 +261,8 @@ class TooManyRequestsException extends GetHttpException {
 
   @override
   String toString() {
-    final retry = retryAfter != null
-        ? ' [Retry after: ${retryAfter!.inSeconds}s]'
-        : '';
+    final retry =
+        retryAfter != null ? ' [Retry after: ${retryAfter!.inSeconds}s]' : '';
     return 'TooManyRequestsException: $message$retry';
   }
 }
@@ -306,9 +304,8 @@ class ServiceUnavailableException extends GetHttpException {
 
   @override
   String toString() {
-    final retry = retryAfter != null
-        ? ' [Retry after: ${retryAfter!.inSeconds}s]'
-        : '';
+    final retry =
+        retryAfter != null ? ' [Retry after: ${retryAfter!.inSeconds}s]' : '';
     return 'ServiceUnavailableException: $message$retry';
   }
 }
@@ -399,12 +396,12 @@ class GraphQLError {
   }
 
   Map<String, dynamic> toMap() => {
-    'code': code,
-    'message': message,
-    'path': path,
-    'extensions': extensions,
-    'locations': locations?.map((l) => l.toMap()).toList(),
-  };
+        'code': code,
+        'message': message,
+        'path': path,
+        'extensions': extensions,
+        'locations': locations?.map((l) => l.toMap()).toList(),
+      };
 }
 
 /// GraphQL error location

@@ -11,16 +11,16 @@ class GraphQLResponse<T> extends Response<T> {
   GraphQLResponse({super.body, this.graphQLErrors});
 
   GraphQLResponse.fromResponse(Response res)
-    : graphQLErrors = null,
-      super(
-        request: res.request,
-        statusCode: res.statusCode,
-        bodyBytes: res.bodyBytes,
-        bodyString: res.bodyString,
-        statusText: res.statusText,
-        headers: res.headers,
-        body: _extractData<T>(res.body),
-      );
+      : graphQLErrors = null,
+        super(
+          request: res.request,
+          statusCode: res.statusCode,
+          bodyBytes: res.bodyBytes,
+          bodyString: res.bodyString,
+          statusText: res.statusText,
+          headers: res.headers,
+          body: _extractData<T>(res.body),
+        );
 
   /// Safely extract 'data' from response body
   static T? _extractData<T>(dynamic body) {

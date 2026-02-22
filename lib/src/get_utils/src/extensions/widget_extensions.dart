@@ -212,8 +212,8 @@ extension WidgetResponsiveX on Widget {
 
   // Center widget with optional dimension control
   Widget centered({bool horizontal = true, bool vertical = true}) => Center(
-    widthFactor: horizontal ? null : 1.0,
-    heightFactor: vertical ? null : 1.0,
-    child: this,
-  );
+        widthFactor: horizontal ? null : 1.0,
+        heightFactor: vertical ? null : 1.0,
+        child: this,
+      );
 }

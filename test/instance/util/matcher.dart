@@ -31,7 +31,7 @@ class FunctionMatcher<T> extends CustomMatcher {
   final Object Function(T value) _feature;
 
   FunctionMatcher(String name, this._feature, matcher)
-    : super('`$name`:', '`$name`', matcher);
+      : super('`$name`:', '`$name`', matcher);
 
   @override
   Object featureValueOf(covariant T actual) => _feature(actual);
@@ -47,18 +47,19 @@ class HavingMatcher<T> implements TypeMatcher<T> {
     Object Function(T) feature,
     dynamic matcher, [
     Iterable<FunctionMatcher<T>>? existing,
-  ]) : _parent = parent,
-       functionMatchers = [
-         ...?existing,
-         FunctionMatcher<T>(description, feature, matcher),
-       ];
+  ])  : _parent = parent,
+        functionMatchers = [
+          ...?existing,
+          FunctionMatcher<T>(description, feature, matcher),
+        ];
 
   @override
   TypeMatcher<T> having(
     Object Function(T) feature,
     String description,
     dynamic matcher,
-  ) => HavingMatcher(_parent, description, feature, matcher, functionMatchers);
+  ) =>
+      HavingMatcher(_parent, description, feature, matcher, functionMatchers);
 
   @override
   bool matches(dynamic item, Map matchState) {
@@ -103,7 +104,8 @@ class TypeMatcher<T> extends Matcher {
     Object Function(T) feature,
     String description,
     dynamic matcher,
-  ) => HavingMatcher(this, description, feature, matcher);
+  ) =>
+      HavingMatcher(this, description, feature, matcher);
 
   @override
   Description describe(Description description) {

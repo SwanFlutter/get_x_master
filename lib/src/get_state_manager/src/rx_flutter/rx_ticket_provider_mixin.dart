@@ -184,6 +184,7 @@ class _WidgetTicker extends Ticker {
 }
 
 @Deprecated('use GetSingleTickerProviderStateMixin')
+
 /// Used like `SingleTickerProviderMixin` but only with Get Controllers.
 /// Simplifies AnimationController creation inside GetxController.
 ///

@@ -12,7 +12,7 @@ import '../utils/body_decoder.dart';
 class IoRedirectInfo implements RedirectInfo {
   final io.RedirectInfo _redirectInfo;
   IoRedirectInfo({required io.RedirectInfo redirectInfo})
-    : _redirectInfo = redirectInfo;
+      : _redirectInfo = redirectInfo;
 
   @override
   int get statusCode => _redirectInfo.statusCode;
@@ -140,7 +140,7 @@ class IoHttpHeaders implements HttpHeaders {
 
 class IOHttpResponse implements HttpClientResponse {
   IOHttpResponse({required io.HttpClientResponse response})
-    : _response = response;
+      : _response = response;
   final io.HttpClientResponse _response;
   @override
   Future<bool> any(bool Function(List<int> element) test) {
@@ -406,7 +406,8 @@ class HttpRequestImpl extends IClient {
     }
 
     _httpClient = io.HttpClient(context: _securityContext);
-    _httpClient!.badCertificateCallback = (_, _, _) => allowAutoSignedCert;
+    _httpClient!.badCertificateCallback =
+        (cert, host, port) => allowAutoSignedCert;
     _httpClient!.findProxy = findProxy;
   }
 
@@ -426,7 +427,7 @@ class HttpRequestImpl extends IClient {
       var response = timeout == null
           ? await stream.pipe(ioRequest) as io.HttpClientResponse
           : await stream.pipe(ioRequest).timeout(timeout!)
-                as io.HttpClientResponse;
+              as io.HttpClientResponse;
 
       var headers = <String, String>{};
       response.headers.forEach((key, values) {

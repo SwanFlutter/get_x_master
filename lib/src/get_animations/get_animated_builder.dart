@@ -145,8 +145,7 @@ class GetAnimatedBuilderState<T> extends State<GetAnimatedBuilder<T>>
     super.didUpdateWidget(oldWidget);
 
     // Check if any critical properties changed
-    final shouldReinitialize =
-        oldWidget.duration != widget.duration ||
+    final shouldReinitialize = oldWidget.duration != widget.duration ||
         oldWidget.tween != widget.tween ||
         oldWidget.curve != widget.curve ||
         oldWidget.delay != widget.delay;

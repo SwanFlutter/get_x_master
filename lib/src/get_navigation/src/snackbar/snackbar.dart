@@ -551,8 +551,7 @@ You need to either use message[String], or messageText[Widget] or define a userI
                           left: left,
                           right: right,
                         ),
-                        child:
-                            widget.titleText ??
+                        child: widget.titleText ??
                             Text(
                               widget.title ?? "",
                               style: const TextStyle(
@@ -571,8 +570,7 @@ You need to either use message[String], or messageText[Widget] or define a userI
                         right: right,
                         bottom: widget.padding.bottom,
                       ),
-                      child:
-                          widget.messageText ??
+                      child: widget.messageText ??
                           Text(
                             widget.message ?? "",
                             style: const TextStyle(

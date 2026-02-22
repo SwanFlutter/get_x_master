@@ -40,8 +40,7 @@ class HttpRequestImpl implements IClient {
     _xhrs.add(xhr);
 
     xhr
-      ..responseType =
-          'arraybuffer' // Changed from 'blob' to 'arraybuffer'
+      ..responseType = 'arraybuffer' // Changed from 'blob' to 'arraybuffer'
       ..withCredentials = withCredentials;
 
     request.headers.forEach((key, value) => xhr.setRequestHeader(key, value));
@@ -50,9 +49,8 @@ class HttpRequestImpl implements IClient {
 
     unawaited(
       xhr.onLoad.first.then((_) async {
-        final bodyBytes = (xhr.response as JSArrayBuffer).toDart
-            .asUint8List()
-            .toStream();
+        final bodyBytes =
+            (xhr.response as JSArrayBuffer).toDart.asUint8List().toStream();
 
         if (request.responseInterceptor != null) {
           throw GetHttpException(

@@ -112,10 +112,10 @@ class GetCupertinoApp extends StatelessWidget {
     this.scrollBehavior,
     this.restorationScopeId,
     this.restorationId,
-  }) : routeInformationProvider = null,
-       routeInformationParser = null,
-       routerDelegate = null,
-       backButtonDispatcher = null;
+  })  : routeInformationProvider = null,
+        routeInformationParser = null,
+        routerDelegate = null,
+        backButtonDispatcher = null;
 
   /// Creates a GetCupertinoApp using the Router API for navigation.
   ///
@@ -169,21 +169,21 @@ class GetCupertinoApp extends StatelessWidget {
     this.scrollBehavior,
     this.restorationScopeId,
     this.restorationId,
-  }) : routerDelegate = routerDelegate ??= Get.createDelegate(
-         notFoundRoute: unknownRoute,
-       ),
-       routeInformationParser = routeInformationParser ??=
-           Get.createInformationParser(
-             initialRoute: getPages?.first.name ?? '/',
-           ),
-       navigatorObservers = null,
-       navigatorKey = null,
-       onGenerateRoute = null,
-       home = null,
-       onGenerateInitialRoutes = null,
-       onUnknownRoute = null,
-       routes = null,
-       initialRoute = null {
+  })  : routerDelegate = routerDelegate ??= Get.createDelegate(
+          notFoundRoute: unknownRoute,
+        ),
+        routeInformationParser =
+            routeInformationParser ??= Get.createInformationParser(
+          initialRoute: getPages?.first.name ?? '/',
+        ),
+        navigatorObservers = null,
+        navigatorKey = null,
+        onGenerateRoute = null,
+        home = null,
+        onGenerateInitialRoutes = null,
+        onUnknownRoute = null,
+        routes = null,
+        initialRoute = null {
     Get.routerDelegate = routerDelegate;
     Get.routeInformationParser = routeInformationParser;
   }
@@ -265,11 +265,11 @@ class GetCupertinoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GetBuilder<GetMaterialController>(
-    init: Get.rootController,
-    dispose: (d) => onDispose?.call(),
-    initState: _initState,
-    builder: _buildApp,
-  );
+        init: Get.rootController,
+        dispose: (d) => onDispose?.call(),
+        initState: _initState,
+        builder: _buildApp,
+      );
 
   void _initState(GetBuilderState<GetMaterialController> state) {
     Get.engine.addPostFrameCallback((_) => onReady?.call());

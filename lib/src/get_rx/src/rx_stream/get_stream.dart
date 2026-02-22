@@ -118,17 +118,16 @@ class GetStream<T> {
     void Function()? onDone,
     bool? cancelOnError,
   }) {
-    final subs =
-        LightSubscription<T>(
-            removeSubscription,
-            onPause: onPause,
-            onResume: onResume,
-            onCancel: onCancel,
-          )
-          ..onData(onData)
-          ..onError(onError)
-          ..onDone(onDone)
-          ..cancelOnError = cancelOnError;
+    final subs = LightSubscription<T>(
+      removeSubscription,
+      onPause: onPause,
+      onResume: onResume,
+      onCancel: onCancel,
+    )
+      ..onData(onData)
+      ..onError(onError)
+      ..onDone(onDone)
+      ..cancelOnError = cancelOnError;
     addSubscription(subs);
     onListen?.call();
     return subs;
@@ -216,7 +215,7 @@ class GetStreamTransformation<T> extends Stream<T> {
   }
 }
 
-typedef RemoveSubscription<T> =
-    FutureOr<bool?> Function(LightSubscription<T> subs);
+typedef RemoveSubscription<T> = FutureOr<bool?> Function(
+    LightSubscription<T> subs);
 
 typedef AddSubscription<T> = FutureOr<void> Function(LightSubscription<T> subs);

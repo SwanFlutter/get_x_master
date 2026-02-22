@@ -298,8 +298,7 @@ class BottomSheetExpandableRoute<T> extends PopupRoute<T> {
               child: Container(
                 decoration: BoxDecoration(
                   // Box decoration for background color
-                  color:
-                      backgroundColor ??
+                  color: backgroundColor ??
                       sheetTheme.modalBackgroundColor ??
                       sheetTheme.backgroundColor,
                   boxShadow: elevation != null
@@ -337,7 +336,7 @@ class BottomSheetExpandableRoute<T> extends PopupRoute<T> {
                         alignment: startFromTop
                             ? Alignment.bottomCenter
                             : Alignment
-                                  .topCenter, // تغییر alignment بر اساس startFromTop
+                                .topCenter, // تغییر alignment بر اساس startFromTop
                         children: [
                           builder(context).paddingOnly(top: itemPaddingTop!),
                           // Container handle

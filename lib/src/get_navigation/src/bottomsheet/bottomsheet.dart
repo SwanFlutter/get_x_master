@@ -91,8 +91,7 @@ class GetModalBottomSheetRoute<T> extends PopupRoute<T> {
         ),
         child: _GetModalBottomSheet<T>(
           route: this,
-          backgroundColor:
-              backgroundColor ??
+          backgroundColor: backgroundColor ??
               sheetTheme.modalBackgroundColor ??
               sheetTheme.backgroundColor,
           elevation:

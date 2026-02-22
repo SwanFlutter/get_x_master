@@ -59,7 +59,8 @@ extension Trans on String {
     return Get.translations.containsKey(
           "${Get.locale!.languageCode}_${Get.locale!.countryCode}",
         ) &&
-        Get.translations["${Get.locale!.languageCode}_${Get.locale!.countryCode}"]!
+        Get.translations[
+                "${Get.locale!.languageCode}_${Get.locale!.countryCode}"]!
             .containsKey(this);
   }
 
@@ -90,8 +91,8 @@ extension Trans on String {
     if (Get.locale?.languageCode == null) return this;
 
     if (_fullLocaleAndKey) {
-      return Get
-          .translations["${Get.locale!.languageCode}_${Get.locale!.countryCode}"]![this]!;
+      return Get.translations[
+          "${Get.locale!.languageCode}_${Get.locale!.countryCode}"]![this]!;
     }
     final similarTranslation = _getSimilarLanguageTranslation;
     if (similarTranslation != null && similarTranslation.containsKey(this)) {

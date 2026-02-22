@@ -39,7 +39,6 @@ extension ExtensionBottomSheet on GetInterface {
   ///  * [exitBottomSheetDuration]: The duration of the exit animation.
   Future<T?> bottomSheet<T>(
     Widget bottomsheet, {
-
     /// The background color of the bottom sheet.
     Color? backgroundColor,
 
@@ -326,8 +325,7 @@ extension ExtensionDialog on GetInterface {
         'GetX overlay context is not available. Make sure you are using GetMaterialApp.',
       );
     }
-    final nav =
-        navigatorKey?.currentState ??
+    final nav = navigatorKey?.currentState ??
         Navigator.of(
           overlayCtx,
           rootNavigator: true,
@@ -625,8 +623,7 @@ extension ExtensionSnackbar on GetInterface {
   }) {
     final getSnackBar = GetSnackBar(
       snackbarStatus: snackbarStatus,
-      titleText:
-          titleText ??
+      titleText: titleText ??
           Text(
             title,
             style: TextStyle(
@@ -635,8 +632,7 @@ extension ExtensionSnackbar on GetInterface {
               fontSize: 16,
             ),
           ),
-      messageText:
-          messageText ??
+      messageText: messageText ??
           Text(
             message,
             style: TextStyle(
@@ -781,20 +777,20 @@ extension GetNavigation on GetInterface {
       return null;
     }
     return global(id).currentState?.push<T>(
-      GetPageRoute<T>(
-        opaque: opaque ?? true,
-        page: _resolvePage(page, 'to'),
-        routeName: routeName,
-        gestureWidth: gestureWidth,
-        settings: RouteSettings(name: routeName, arguments: arguments),
-        popGesture: popGesture ?? defaultPopGesture,
-        transition: transition ?? defaultTransition,
-        curve: curve ?? defaultTransitionCurve,
-        fullscreenDialog: fullscreenDialog,
-        binding: binding,
-        transitionDuration: duration ?? defaultTransitionDuration,
-      ),
-    );
+          GetPageRoute<T>(
+            opaque: opaque ?? true,
+            page: _resolvePage(page, 'to'),
+            routeName: routeName,
+            gestureWidth: gestureWidth,
+            settings: RouteSettings(name: routeName, arguments: arguments),
+            popGesture: popGesture ?? defaultPopGesture,
+            transition: transition ?? defaultTransition,
+            curve: curve ?? defaultTransitionCurve,
+            fullscreenDialog: fullscreenDialog,
+            binding: binding,
+            transitionDuration: duration ?? defaultTransitionDuration,
+          ),
+        );
   }
 
   GetPageBuilder _resolvePage(dynamic page, String method) {
@@ -961,10 +957,10 @@ you can only use widgets and widget functions here''';
     }
 
     return global(id).currentState?.pushNamedAndRemoveUntil<T>(
-      page,
-      predicate,
-      arguments: arguments,
-    );
+          page,
+          predicate,
+          arguments: arguments,
+        );
   }
 
   /// **Navigation.popAndPushNamed()** shortcut.<br><br>
@@ -1037,10 +1033,10 @@ you can only use widgets and widget functions here''';
     }
 
     return global(id).currentState?.pushNamedAndRemoveUntil<T>(
-      newRouteName,
-      predicate ?? (_) => false,
-      arguments: arguments,
-    );
+          newRouteName,
+          predicate ?? (_) => false,
+          arguments: arguments,
+        );
   }
 
   /// Returns true if a Snackbar, Dialog or BottomSheet is currently OPEN
@@ -1174,20 +1170,20 @@ you can only use widgets and widget functions here''';
       return null;
     }
     return global(id).currentState?.pushReplacement(
-      GetPageRoute(
-        opaque: opaque,
-        gestureWidth: gestureWidth,
-        page: _resolvePage(page, 'off'),
-        binding: binding,
-        settings: RouteSettings(arguments: arguments, name: routeName),
-        routeName: routeName,
-        fullscreenDialog: fullscreenDialog,
-        popGesture: popGesture ?? defaultPopGesture,
-        transition: transition ?? defaultTransition,
-        curve: curve ?? defaultTransitionCurve,
-        transitionDuration: duration ?? defaultTransitionDuration,
-      ),
-    );
+          GetPageRoute(
+            opaque: opaque,
+            gestureWidth: gestureWidth,
+            page: _resolvePage(page, 'off'),
+            binding: binding,
+            settings: RouteSettings(arguments: arguments, name: routeName),
+            routeName: routeName,
+            fullscreenDialog: fullscreenDialog,
+            popGesture: popGesture ?? defaultPopGesture,
+            transition: transition ?? defaultTransition,
+            curve: curve ?? defaultTransitionCurve,
+            transitionDuration: duration ?? defaultTransitionDuration,
+          ),
+        );
   }
 
   ///
@@ -1259,21 +1255,21 @@ you can only use widgets and widget functions here''';
     routeName ??= "/${page.runtimeType.toString()}";
     routeName = _cleanRouteName(routeName);
     return global(id).currentState?.pushAndRemoveUntil<T>(
-      GetPageRoute<T>(
-        opaque: opaque,
-        popGesture: popGesture ?? defaultPopGesture,
-        page: _resolvePage(page, 'offAll'),
-        binding: binding,
-        gestureWidth: gestureWidth,
-        settings: RouteSettings(name: routeName, arguments: arguments),
-        fullscreenDialog: fullscreenDialog,
-        routeName: routeName,
-        transition: transition ?? defaultTransition,
-        curve: curve ?? defaultTransitionCurve,
-        transitionDuration: duration ?? defaultTransitionDuration,
-      ),
-      predicate ?? (route) => false,
-    );
+          GetPageRoute<T>(
+            opaque: opaque,
+            popGesture: popGesture ?? defaultPopGesture,
+            page: _resolvePage(page, 'offAll'),
+            binding: binding,
+            gestureWidth: gestureWidth,
+            settings: RouteSettings(name: routeName, arguments: arguments),
+            fullscreenDialog: fullscreenDialog,
+            routeName: routeName,
+            transition: transition ?? defaultTransition,
+            curve: curve ?? defaultTransitionCurve,
+            transitionDuration: duration ?? defaultTransitionDuration,
+          ),
+          predicate ?? (route) => false,
+        );
   }
 
   /// Takes a route [name] String generated by [to], [off], [offAll]

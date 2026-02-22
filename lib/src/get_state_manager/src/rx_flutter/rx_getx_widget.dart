@@ -8,8 +8,8 @@ import '../../../get_instance/src/get_instance.dart';
 import '../../../get_rx/src/rx_types/rx_types.dart';
 import 'rx_disposable.dart';
 
-typedef GetXControllerBuilder<T extends DisposableInterface> =
-    Widget Function(T controller);
+typedef GetXControllerBuilder<T extends DisposableInterface> = Widget Function(
+    T controller);
 
 class GetX<T extends DisposableInterface> extends StatefulWidget {
   final GetXControllerBuilder<T> builder;

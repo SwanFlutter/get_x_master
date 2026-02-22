@@ -48,8 +48,7 @@ class FormData {
     var header =
         'content-disposition: form-data; name="${browserEncode(name)}"';
     if (!isPlainAscii(value)) {
-      header =
-          '$header\r\n'
+      header = '$header\r\n'
           'content-type: text/plain; charset=utf-8\r\n'
           'content-transfer-encoding: binary';
     }
@@ -62,8 +61,7 @@ class FormData {
     var header =
         'content-disposition: form-data; name="${browserEncode(file.key)}"';
     header = '$header; filename="${browserEncode(file.value.filename)}"';
-    header =
-        '$header\r\n'
+    header = '$header\r\n'
         'content-type: ${file.value.contentType}';
     return '$header\r\n\r\n';
   }
@@ -73,8 +71,7 @@ class FormData {
     var length = 0;
 
     for (final item in fields) {
-      length +=
-          '--'.length +
+      length += '--'.length +
           _maxBoundaryLength +
           '\r\n'.length +
           utf8.encode(_fieldHeader(item.key, item.value)).length +
@@ -83,8 +80,7 @@ class FormData {
     }
 
     for (var file in files) {
-      length +=
-          '--'.length +
+      length += '--'.length +
           _maxBoundaryLength +
           '\r\n'.length +
           utf8.encode(_fileHeader(file)).length +

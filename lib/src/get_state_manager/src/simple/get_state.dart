@@ -258,8 +258,8 @@ mixin GetStateUpdaterMixin<T extends StatefulWidget> on State<T> {
   }
 }
 
-typedef GetControllerBuilder<T extends DisposableInterface> =
-    Widget Function(T controller);
+typedef GetControllerBuilder<T extends DisposableInterface> = Widget Function(
+    T controller);
 
 class GetBuilder<T extends GetXController> extends StatefulWidget {
   final GetControllerBuilder<T> builder;
@@ -273,7 +273,7 @@ class GetBuilder<T extends GetXController> extends StatefulWidget {
       dispose,
       didChangeDependencies;
   final void Function(GetBuilder oldWidget, GetBuilderState<T> state)?
-  didUpdateWidget;
+      didUpdateWidget;
   final T? init;
 
   const GetBuilder({
@@ -657,8 +657,7 @@ class GetBuilderObs<T extends GetXController> extends StatefulWidget {
 }
 
 class GetBuilderObsState<T extends GetXController>
-    extends State<GetBuilderObs<T>>
-    with GetStateUpdaterMixin {
+    extends State<GetBuilderObs<T>> with GetStateUpdaterMixin {
   T? controller;
   bool? _isCreator = false;
   VoidCallback? _remove;

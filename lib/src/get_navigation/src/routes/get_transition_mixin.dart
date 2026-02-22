@@ -67,7 +67,8 @@ class CupertinoBackGestureController<T> {
           _kMaxDroppedSwipePageForwardAnimationTime,
           0,
           controller.value,
-        )!.floor(),
+        )!
+            .floor(),
         _kMaxPageBackAnimationTime,
       );
       controller.animateTo(
@@ -87,7 +88,8 @@ class CupertinoBackGestureController<T> {
           0,
           _kMaxDroppedSwipePageForwardAnimationTime,
           controller.value,
-        )!.floor();
+        )!
+            .floor();
         controller.animateBack(
           0.0,
           duration: Duration(milliseconds: droppedPageBackAnimationTime),

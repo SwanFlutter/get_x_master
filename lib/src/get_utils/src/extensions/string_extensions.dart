@@ -408,14 +408,11 @@ extension GetStringUtils on String {
   static String titleCase(String input) {
     if (input.isEmpty) return input;
 
-    return input
-        .split(' ')
-        .map((word) {
-          if (word.isEmpty) return word;
+    return input.split(' ').map((word) {
+      if (word.isEmpty) return word;
 
-          return word[0].toUpperCase() + word.substring(1).toLowerCase();
-        })
-        .join(' ');
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
   }
 }
 
@@ -827,9 +824,8 @@ extension StringNumberFormatter on String {
   String intlToTimeFormatted({String? locale, bool use24Hour = false}) {
     try {
       final date = DateTime.parse(this);
-      final formatter = use24Hour
-          ? DateFormat.Hm(locale)
-          : DateFormat.jm(locale);
+      final formatter =
+          use24Hour ? DateFormat.Hm(locale) : DateFormat.jm(locale);
       return formatter.format(date);
     } catch (e) {
       return this;

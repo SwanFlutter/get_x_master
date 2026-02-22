@@ -151,18 +151,18 @@ class GetConnect extends GetConnectInterface {
 
   @override
   GetHttpClient get httpClient => _httpClient ??= GetHttpClient(
-    userAgent: userAgent,
-    sendUserAgent: sendUserAgent,
-    timeout: timeout,
-    followRedirects: followRedirects,
-    maxRedirects: maxRedirects,
-    maxAuthRetries: maxAuthRetries,
-    allowAutoSignedCert: allowAutoSignedCert,
-    baseUrl: baseUrl,
-    trustedCertificates: trustedCertificates,
-    withCredentials: withCredentials,
-    findProxy: findProxy,
-  );
+        userAgent: userAgent,
+        sendUserAgent: sendUserAgent,
+        timeout: timeout,
+        followRedirects: followRedirects,
+        maxRedirects: maxRedirects,
+        maxAuthRetries: maxAuthRetries,
+        allowAutoSignedCert: allowAutoSignedCert,
+        baseUrl: baseUrl,
+        trustedCertificates: trustedCertificates,
+        withCredentials: withCredentials,
+        findProxy: findProxy,
+      );
 
   /// Performs a GET request to the specified URL.
   ///
@@ -440,10 +440,13 @@ class GetConnect extends GetConnectInterface {
     try {
       // Use empty string if url is null to use baseUrl
       final targetUrl = url ?? '';
-      final res = await post(targetUrl, {
-        'query': query,
-        'variables': variables,
-      }, headers: headers);
+      final res = await post(
+          targetUrl,
+          {
+            'query': query,
+            'variables': variables,
+          },
+          headers: headers);
 
       // Check if body is null or not a Map
       final body = res.body;
@@ -469,11 +472,10 @@ class GetConnect extends GetConnectInterface {
           graphQLErrors: listError
               .map(
                 (e) => GraphQLError(
-                  code:
-                      (e is Map && e['extensions'] != null
-                              ? e['extensions']['code'] ?? ''
-                              : '')
-                          .toString(),
+                  code: (e is Map && e['extensions'] != null
+                          ? e['extensions']['code'] ?? ''
+                          : '')
+                      .toString(),
                   message: (e is Map ? e['message'] ?? '' : '').toString(),
                 ),
               )
@@ -498,10 +500,13 @@ class GetConnect extends GetConnectInterface {
     try {
       // Use empty string if url is null to use baseUrl
       final targetUrl = url ?? '';
-      final res = await post(targetUrl, {
-        'query': mutation,
-        'variables': variables,
-      }, headers: headers);
+      final res = await post(
+          targetUrl,
+          {
+            'query': mutation,
+            'variables': variables,
+          },
+          headers: headers);
 
       // Check if body is null or not a Map
       final body = res.body;

@@ -71,7 +71,8 @@ extension Inst on GetInterface {
     InstanceBuilderCallback<S> builder, {
     String? tag,
     bool permanent = true,
-  }) => GetInstance().create<S>(builder, tag: tag, permanent: permanent);
+  }) =>
+      GetInstance().create<S>(builder, tag: tag, permanent: permanent);
 
   /// Finds a Instance of the required Class `<S>`(or [tag])
   /// In the case of using `Get.create()`, it will generate an Instance
@@ -97,7 +98,8 @@ extension Inst on GetInterface {
     String? tag,
     bool permanent = false,
     InstanceBuilderCallback<S>? builder,
-  }) => GetInstance().put<S>(dependency, tag: tag, permanent: permanent);
+  }) =>
+      GetInstance().put<S>(dependency, tag: tag, permanent: permanent);
 
   /// Clears all registered instances (and/or tags).
   /// Even the persistent ones.
