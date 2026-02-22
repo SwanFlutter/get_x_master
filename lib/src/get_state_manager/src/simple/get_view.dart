@@ -101,7 +101,7 @@ abstract class ReactiveGetView<T> extends StatelessWidget {
     if (useSmartFind) {
       return GetInstance().smartFind<T>(tag: tag)!;
     } else {
-      return GetInstance().find<T>(tag: tag);
+      return GetInstance().find<T>(tag: tag)!;
     }
   }
 

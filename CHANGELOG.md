@@ -1,12 +1,30 @@
 # Changelog
 
 
+## 0.0.28
+
+### 🐛 Bug Fixes - Flutter 3.35.0+ Compatibility
+
+* **Fixed Deprecated TickerMode Usage**: Updated `TickerMode.of(context)` to `TickerMode.valuesOf(context).enabled` for Flutter 3.35.0+ compatibility.
+  - Updated `GetSingleTickerProviderStateMixin.didChangeDependencies()`
+  - Updated `GetTickerProviderStateMixin.didChangeDependencies()`
+
+* **Files Modified**:
+  - `lib/src/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart`
+
+---
+
+## 0.0.27
+
+---
+
 ## 0.0.27
 
 ### 🐛 Bug Fixes - Responsive System
 
 * Fix bug responsive system.
 
+---
 
 ## 0.0.26
 

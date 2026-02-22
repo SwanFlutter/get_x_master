@@ -61,7 +61,7 @@ mixin GetSingleTickerProviderStateMixin on GetXController
   }
 
   void didChangeDependencies(BuildContext context) {
-    if (_ticker != null) _ticker!.muted = !TickerMode.of(context);
+    if (_ticker != null) _ticker!.muted = !TickerMode.valuesOf(context).enabled;
   }
 
   @override
@@ -134,7 +134,7 @@ mixin GetTickerProviderStateMixin on GetXController implements TickerProvider {
   }
 
   void didChangeDependencies(BuildContext context) {
-    final muted = !TickerMode.of(context);
+    final muted = !TickerMode.valuesOf(context).enabled;
     if (_tickers != null) {
       for (final ticker in _tickers!) {
         ticker.muted = muted;

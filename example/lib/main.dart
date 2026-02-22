@@ -26,7 +26,91 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      home: const DemoHomePage(),
+      home: const TestScreenresponsive(),
+    );
+  }
+}
+
+class TestScreenresponsive extends StatefulWidget {
+  const TestScreenresponsive({super.key});
+
+  @override
+  State<TestScreenresponsive> createState() => _TestScreenresponsiveState();
+}
+
+class _TestScreenresponsiveState extends State<TestScreenresponsive> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Test"),
+      ),
+      body: GetResponsiveBuilder(
+        builder: (BuildContext context, ResponsiveData data) {
+          final isMobile = data.isPhone;
+          final isTablet = data.isTablet;
+          final isLaptop = data.isLaptop;
+          final isDesktop = data.isDesktop;
+
+          debugPrint(
+              "Screen Type - Mobile: $isMobile, Tablet: $isTablet, Laptop: $isLaptop, Desktop: $isDesktop");
+          return SizedBox(
+            width: context.width,
+            height: context.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FractionallySizedBox(
+                  widthFactor: isDesktop ? 1.0 : 0.8,
+                  child: Card(
+                    color: Colors.amber,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Screen Size: ",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Breakpoint: ",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Width: ${context.width}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          Text(
+                            "Height: ${context.height}",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
