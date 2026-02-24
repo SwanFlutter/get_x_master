@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.0.29
+
+### ✨ New Features - Enhanced Conditional Navigation
+
+* **Advanced ConditionalNavigation**: Added support for different destination pages in `off()` and `offAll()` methods.
+  - New optional parameters: `truePageOff`, `falsePageOff` for `off()` method
+  - New optional parameters: `truePageOffAll`, `falsePageOffAll` for `offAll()` method
+  - Falls back to default `truePage`/`falsePage` when optional parameters are `null`
+  - Allows different navigation flows for different navigation methods
+
+* **New Evaluation Methods**:
+  - `evaluateOff()`: Evaluates condition specifically for `off()` navigation
+  - `evaluateOffAll()`: Evaluates condition specifically for `offAll()` navigation
+
+### 📚 Documentation
+
+* Updated `README.md` with comprehensive ConditionalNavigation examples
+* Added detailed usage examples for `off()` and `offAll()` with different pages
+* Included use cases and best practices for conditional navigation
+
+
+---
+
 
 ## 0.0.28
 
@@ -9,14 +32,17 @@
   - Updated `GetSingleTickerProviderStateMixin.didChangeDependencies()`
   - Updated `GetTickerProviderStateMixin.didChangeDependencies()`
 
-* **Files Modified**:
-  - `lib/src/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart`
+* **Fixed Async Result Type Errors**: Added `await` keywords in `flatMapAsync()` and `recoverAsync()` methods to properly handle Future return types.
+
+* **Fixed Duplicate Parameter Names**: Replaced duplicate underscore parameters in `badCertificateCallback` with named parameters `(cert, host, port)`.
+
+* **Fixed Missing Type Annotation**: Added explicit `dynamic` type annotation to `_updateTree` parameter in `ObxState` class.
+
+
 
 ---
 
-## 0.0.27
 
----
 
 ## 0.0.27
 

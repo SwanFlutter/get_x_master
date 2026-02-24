@@ -113,7 +113,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.28
+  get_x_master: ^0.0.29
 ```
 
 Then run:
@@ -246,17 +246,58 @@ Navigate anywhere in your app without `BuildContext`:
 - **`Get.back()`**: Go back to the previous screen.
 - **`Get.off(NextScreen())`**: Go to the next screen and remove the previous one.
 - **`Get.offAll(NextScreen())`**: Go to the next screen and remove all previous screens.
-- **Conditional Navigation:** Navigate based on conditions using `ConditionalNavigation`. Supported in `to`, `off`, and `offAll`:
-  ```dart
-  Get.to( 
-    () => Send(), 
-    condition: ConditionalNavigation( 
-      condition: homeController.isPlatforms, 
-      truePage: () => Send(),      
-      falsePage: () => SendMacWindows(), 
-    ), 
-  );
-  ```
+
+#### Conditional Navigation
+
+Navigate based on conditions using specialized conditional classes. GetX provides three classes for different navigation scenarios:
+
+**1. ConditionalNavigation** - For `to()` method (standard navigation):
+```dart
+Get.to( 
+  () => HomePage(), 
+  condition: ConditionalNavigation( 
+    condition: () => AuthService.isLoggedIn, 
+    truePage: () => HomePage(),      
+    falsePage: () => LoginPage(), 
+  ), 
+);
+```
+
+**2. ConditionalNavigationOff** - For `off()` method (replacement navigation):
+```dart
+Get.off(
+  () => HomePage(),
+  conditionOff: ConditionalNavigationOff(
+    condition: () => UserService.hasProfile,
+    truePage: () => DashboardPage(),
+    falsePage: () => WelcomePage(),
+  ),
+);
+```
+
+**3. ConditionalNavigationOffAll** - For `offAll()` method (clear-all navigation):
+```dart
+Get.offAll(
+  () => HomePage(),
+  conditionOffAll: ConditionalNavigationOffAll(
+    condition: () => UserService.isFirstTime,
+    truePage: () => OnboardingPage(),
+    falsePage: () => MainPage(),
+  ),
+);
+```
+
+**Benefits:**
+- **Type-safe**: Each class is specifically designed for its navigation method
+- **Clean code**: No need for if-else statements in navigation logic
+- **Declarative**: Express navigation intent clearly and concisely
+
+**Use Cases:**
+- **Authentication flows**: Navigate to different pages based on login status
+- **Onboarding**: Show onboarding for first-time users, skip for returning users
+- **Permission-based navigation**: Route users to different pages based on their permissions
+- **Profile completion**: Direct users to setup pages if profile is incomplete
+
 - **Dialogs, BottomSheets, and Snackbars:** Show overlays from anywhere in your code.
 
 📖 [View Full Navigation Documentation →](lib/src/get_navigation/README.md)
@@ -1031,7 +1072,7 @@ Comprehensive state management with multiple approaches:
 **Quick Example:**
 ```dart
 // Simple Controller
-class CounterController extends GetxController {
+class CounterController extends GetXController {
   var count = 0.obs;
   void increment() => count++;
 }

@@ -6,26 +6,6 @@ import 'package:get_x_master/get_x_master.dart';
 /// This example shows how to use conditional navigation to dynamically
 /// decide which page to navigate to based on runtime conditions.
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Conditional Navigation Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
-      home: const StartPage(),
-    );
-  }
-}
-
 // Simulated authentication service
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -86,7 +66,7 @@ class NavigationController extends GetXController {
   void _navigateOffExample() {
     Get.off(
       () => const HomePage(),
-      condition: ConditionalNavigation(
+      conditionOff: ConditionalNavigationOff(
         condition: () => authService.hasCompletedOnboarding,
         truePage: () => const HomePage(),
         falsePage: () => const OnboardingPage(),
@@ -99,7 +79,7 @@ class NavigationController extends GetXController {
   void _navigateOffAllExample() {
     Get.offAll(
       () => const HomePage(),
-      condition: ConditionalNavigation(
+      conditionOffAll: ConditionalNavigationOffAll(
         condition: () => authService.isPremiumUser,
         truePage: () => const PremiumDashboard(),
         falsePage: () => const HomePage(),

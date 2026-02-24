@@ -372,83 +372,98 @@ Get.showSnackbar(
 
 ---
 
-
-# Conditional Navigation Support - Implementation Walkthrough
+# Conditional Navigation Support - Complete Guide
 
 ## Overview
-Successfully added `ConditionalNavigation` parameter support to all route-based navigation methods in the GetX `extension_navigation.dart` file, enabling dynamic page navigation based on runtime conditions.
+GetX provides powerful conditional navigation capabilities through three specialized classes:
+- `ConditionalNavigation` - For `to()` method (standard navigation)
+- `ConditionalNavigationOff` - For `off()` method (replacement navigation)
+- `ConditionalNavigationOffAll` - For `offAll()` method (clear-all navigation)
 
-## Changes Made
+Each class is designed specifically for its navigation method, providing a clean and type-safe API.
 
-### 1. Updated Navigation Methods
+## Navigation Classes
 
-Modified the following methods in `extension_navigation.dart`:
-
-#### Method: `to()` (Already Implemented)
-- ✅ Already had `ConditionalNavigation? condition` parameter
-- Located at lines 759-798
-- Serves as the reference implementation
-
-#### Method: `off()`
-- ✅ Added `ConditionalNavigation? condition` parameter at line 1166
-- ✅ Added condition evaluation logic at lines 1168-1171
-- Updated documentation with examples at lines 1138-1151
+### 1. ConditionalNavigation (for `to()`)
+Used for standard push navigation where you can go back.
 
 ```dart
-Future<T?>? off<T>(
-  dynamic page, {
-  // ... other parameters
-  ConditionalNavigation? condition,
-}) {
-  if (condition != null) {
-    page = condition.evaluate();
-  }
-  // ... rest of implementation
+class ConditionalNavigation {
+  final dynamic Function() condition;
+  final dynamic Function() truePage;
+  final dynamic Function() falsePage;
+  
+  // Optional: Different pages for off() and offAll()
+  final dynamic Function()? truePageOff;
+  final dynamic Function()? falsePageOff;
+  final dynamic Function()? truePageOffAll;
+  final dynamic Function()? falsePageOffAll;
 }
 ```
 
-#### Method: `offAll()`
-- ✅ Added `ConditionalNavigation? condition` parameter at line 1250
-- ✅ Added condition evaluation logic at lines 1252-1255
-- Updated documentation with examples at lines 1221-1235
+**Example:**
+```dart
+Get.to(
+  () => HomePage(),
+  condition: ConditionalNavigation(
+    condition: () => AuthService.isLoggedIn,
+    truePage: () => HomePage(),
+    falsePage: () => LoginPage(),
+  ),
+);
+```
+
+### 2. ConditionalNavigationOff (for `off()`)
+Specifically designed for replacement navigation. Cleaner than using `ConditionalNavigation` with `truePageOff`/`falsePageOff`.
 
 ```dart
-Future<T?>? offAll<T>(
-  dynamic page, {
-  // ... other parameters
-  ConditionalNavigation? condition,
-}) {
-  if (condition != null) {
-    page = condition.evaluate();
-  }
-  // ... rest of implementation
+class ConditionalNavigationOff {
+  final dynamic Function() condition;
+  final dynamic Function() truePage;
+  final dynamic Function() falsePage;
 }
 ```
 
-### 2. Created Comprehensive Example
-
-Created `conditional_navigation_example.dart` with:
-
-#### Features
-- **Interactive Demo App**: Complete Flutter application showcasing all three navigation methods
-- **Auth Service Simulation**: Simulates authentication states (login, onboarding, premium)
-- **Toggle Controls**: Users can toggle conditions to see how navigation changes
-- **Three Navigation Examples**:
-  1. `Get.to()` - Conditional push navigation
-  2. `Get.off()` - Conditional replacement navigation
-  3. `Get.offAll()` - Conditional clear-all navigation
-
-#### Example Pages Included
-- `StartPage` - Main demo page with controls
-- `HomePage` - Standard home destination
-- `LoginPage` - Displayed when user is not logged in
-- `OnboardingPage` - Displayed when onboarding not completed
-- `PremiumDashboard` - Displayed for premium users
-
-#### Usage Examples in Code
-
-**Example 1: Get.to() with condition**
+**Example:**
 ```dart
+Get.off(
+  () => HomePage(),
+  conditionOff: ConditionalNavigationOff(
+    condition: () => UserService.hasProfile,
+    truePage: () => DashboardPage(),
+    falsePage: () => WelcomePage(),
+  ),
+);
+```
+
+### 3. ConditionalNavigationOffAll (for `offAll()`)
+Specifically designed for clear-all navigation. Cleaner than using `ConditionalNavigation` with `truePageOffAll`/`falsePageOffAll`.
+
+```dart
+class ConditionalNavigationOffAll {
+  final dynamic Function() condition;
+  final dynamic Function() truePage;
+  final dynamic Function() falsePage;
+}
+```
+
+**Example:**
+```dart
+Get.offAll(
+  () => HomePage(),
+  conditionOffAll: ConditionalNavigationOffAll(
+    condition: () => UserService.isFirstTime,
+    truePage: () => OnboardingPage(),
+    falsePage: () => MainPage(),
+  ),
+);
+```
+
+## Usage Examples
+
+### Example 1: Standard Navigation with `to()`
+```dart
+// Navigate based on authentication status
 Get.to(
   () => HomePage(),
   condition: ConditionalNavigation(
@@ -460,79 +475,70 @@ Get.to(
 );
 ```
 
-**Example 2: Get.off() with condition**
+### Example 2: Replacement Navigation with `off()`
 ```dart
+// Replace current page based on profile completion
 Get.off(
   () => HomePage(),
-  condition: ConditionalNavigation(
-    condition: () => AuthService.hasCompletedOnboarding,
-    truePage: () => HomePage(),
-    falsePage: () => OnboardingPage(),
+  conditionOff: ConditionalNavigationOff(
+    condition: () => UserService.hasCompletedProfile,
+    truePage: () => DashboardPage(),
+    falsePage: () => ProfileSetupPage(),
   ),
   transition: Transition.rightToLeft,
 );
 ```
 
-**Example 3: Get.offAll() with condition**
+### Example 3: Clear-All Navigation with `offAll()`
 ```dart
+// Clear all routes and navigate based on onboarding status
 Get.offAll(
   () => HomePage(),
-  condition: ConditionalNavigation(
-    condition: () => AuthService.isPremiumUser,
-    truePage: () => PremiumDashboard(),
-    falsePage: () => HomePage(),
+  conditionOffAll: ConditionalNavigationOffAll(
+    condition: () => UserService.hasSeenOnboarding,
+    truePage: () => HomePage(),
+    falsePage: () => OnboardingPage(),
   ),
   transition: Transition.zoom,
 );
 ```
 
-## How It Works
-
-### ConditionalNavigation Class
-Located at `navigation_condition.dart`:
-
+### Example 4: Complex Conditions
 ```dart
-class ConditionalNavigation {
-  final dynamic Function() condition;
-  final dynamic Function() truePage;
-  final dynamic Function() falsePage;
-
-  ConditionalNavigation({
-    required this.condition,
-    required this.truePage,
-    required this.falsePage,
-  });
-
-  dynamic Function() evaluate() {
-    return condition() ? truePage : falsePage;
-  }
-}
-```
-
-### Evaluation Flow
-1. Navigation method is called with a `page` and optional `condition`
-2. If `condition` is provided, it evaluates the boolean condition
-3. Based on result, selects either `truePage` or `falsePage`
-4. The selected page replaces the original `page` parameter
-5. Navigation proceeds with the conditionally-selected page
-
-## Benefits
-
-### 1. **Cleaner Code**
-Instead of writing:
-```dart
-if (AuthService.isLoggedIn) {
-  Get.to(() => HomePage());
-} else {
-  Get.to(() => LoginPage());
-}
-```
-
-Now write:
-```dart
+// Multiple condition checks
 Get.to(
   () => HomePage(),
   condition: ConditionalNavigation(
+    condition: () => 
+      AuthService.isLoggedIn && 
+      UserService.hasActiveSubscription &&
+      !UserService.needsPasswordReset,
+    truePage: () => PremiumDashboardPage(),
+    falsePage: () => LoginPage(),
+  ),
+);
+```
+
+## Benefits
+
+### 1. **Type-Safe Navigation**
+Each class is specifically designed for its navigation method, preventing confusion and errors.
+
+### 2. **Cleaner Code**
+Instead of:
+```dart
+if (AuthService.isLoggedIn) {
+  Get.off(() => HomePage());
+} else {
+  Get.off(() => LoginPage());
+}
+```
+
+Write:
+```dart
+Get.off(
+  () => HomePage(),
+  conditionOff: ConditionalNavigationOff(
     condition: () => AuthService.isLoggedIn,
     truePage: () => HomePage(),
     falsePage: () => LoginPage(),
@@ -540,41 +546,73 @@ Get.to(
 );
 ```
 
-### 2. **Consistent API**
-All navigation methods (`to`, `off`, `offAll`) now support conditional navigation using the same pattern.
-
 ### 3. **Declarative Navigation**
-Express navigation intent declaratively rather than imperatively, making code easier to read and maintain.
+Express navigation intent declaratively, making code easier to read and maintain.
 
-### 4. **Type Safety**
-Leverages Dart's type system to ensure proper page constructors are provided.
+### 4. **Consistent API**
+All navigation methods follow the same pattern with their dedicated conditional classes.
 
-## Testing the Example
+## Common Use Cases
 
-To run the example:
+### Authentication Flow
+```dart
+Get.offAll(
+  () => HomePage(),
+  conditionOffAll: ConditionalNavigationOffAll(
+    condition: () => AuthService.isAuthenticated,
+    truePage: () => HomePage(),
+    falsePage: () => LoginPage(),
+  ),
+);
+```
 
-1. Navigate to the example directory:
-   ```bash
-   cd example
-   ```
+### Onboarding Flow
+```dart
+Get.offAll(
+  () => HomePage(),
+  conditionOffAll: ConditionalNavigationOffAll(
+    condition: () => PreferencesService.hasCompletedOnboarding,
+    truePage: () => HomePage(),
+    falsePage: () => OnboardingPage(),
+  ),
+);
+```
 
-2. Run the example:
-   ```bash
-   flutter run -t lib/conditional_navigation_example.dart
-   ```
+### Profile Completion
+```dart
+Get.off(
+  () => HomePage(),
+  conditionOff: ConditionalNavigationOff(
+    condition: () => UserService.isProfileComplete,
+    truePage: () => DashboardPage(),
+    falsePage: () => CompleteProfilePage(),
+  ),
+);
+```
 
-3. Interact with the demo:
-   - Toggle the status switches (Login, Onboarding, Premium)
-   - Try each navigation method
-   - Observe how different conditions lead to different pages
+### Permission-Based Navigation
+```dart
+Get.to(
+  () => SettingsPage(),
+  condition: ConditionalNavigation(
+    condition: () => PermissionService.hasAdminAccess,
+    truePage: () => AdminSettingsPage(),
+    falsePage: () => UserSettingsPage(),
+  ),
+);
+```
 
 ## Summary
 
-✅ **Completed Tasks:**
-- Added `ConditionalNavigation` support to `off()` method
-- Added `ConditionalNavigation` support to `offAll()` method  
-- Added comprehensive documentation with examples
-- Created interactive demo application
-- Demonstrated all three navigation patterns
+✅ **Three Specialized Classes:**
+- `ConditionalNavigation` for `to()` - Standard navigation
+- `ConditionalNavigationOff` for `off()` - Replacement navigation  
+- `ConditionalNavigationOffAll` for `offAll()` - Clear-all navigation
 
-The implementation maintains consistency with the existing `to()` method and provides a clean, declarative API for conditional navigation across the entire GetX navigation system.
+✅ **Benefits:**
+- Type-safe and method-specific
+- Clean, declarative API
+- Backward compatible
+- Easy to understand and maintain
+
+The implementation provides a powerful yet simple way to handle conditional navigation throughout your GetX application.

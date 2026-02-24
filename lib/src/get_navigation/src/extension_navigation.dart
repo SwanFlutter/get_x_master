@@ -1134,13 +1134,13 @@ you can only use widgets and widget functions here''';
   /// // Basic replacement navigation
   /// Get.off(() => HomePage());
   ///
-  /// // Conditional replacement navigation
+  /// // Recommended: Use ConditionalNavigationOff for cleaner code
   /// Get.off(
   ///   () => HomePage(),
-  ///   condition: ConditionalNavigation(
-  ///     condition: () => AuthService.isLoggedIn,
-  ///     truePage: () => HomePage(),
-  ///     falsePage: () => LoginPage(),
+  ///   conditionOff: ConditionalNavigationOff(
+  ///     condition: () => UserService.hasProfile,
+  ///     truePage: () => DashboardPage(),
+  ///     falsePage: () => WelcomePage(),
   ///   ),
   /// );
   /// ```
@@ -1158,10 +1158,10 @@ you can only use widgets and widget functions here''';
     bool preventDuplicates = true,
     Duration? duration,
     double Function(BuildContext context)? gestureWidth,
-    ConditionalNavigation? condition,
+    ConditionalNavigationOff? conditionOff,
   }) {
-    if (condition != null) {
-      page = condition.evaluate();
+    if (conditionOff != null) {
+      page = conditionOff.evaluate();
     }
 
     routeName ??= "/${page.runtimeType.toString()}";
@@ -1222,13 +1222,13 @@ you can only use widgets and widget functions here''';
   /// // Basic navigation removing all previous routes
   /// Get.offAll(() => HomePage());
   ///
-  /// // Conditional navigation
+  /// // Recommended: Use ConditionalNavigationOffAll for cleaner code
   /// Get.offAll(
   ///   () => HomePage(),
-  ///   condition: ConditionalNavigation(
-  ///     condition: () => UserService.isFirstTime,
-  ///     truePage: () => OnboardingPage(),
-  ///     falsePage: () => HomePage(),
+  ///   conditionOffAll: ConditionalNavigationOffAll(
+  ///     condition: () => AuthService.isLoggedIn,
+  ///     truePage: () => WelcomeBackPage(),
+  ///     falsePage: () => OnboardingPage(),
   ///   ),
   /// );
   /// ```
@@ -1246,10 +1246,10 @@ you can only use widgets and widget functions here''';
     Curve? curve,
     Duration? duration,
     double Function(BuildContext context)? gestureWidth,
-    ConditionalNavigation? condition,
+    ConditionalNavigationOffAll? conditionOffAll,
   }) {
-    if (condition != null) {
-      page = condition.evaluate();
+    if (conditionOffAll != null) {
+      page = conditionOffAll.evaluate();
     }
 
     routeName ??= "/${page.runtimeType.toString()}";
