@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 
@@ -128,7 +127,7 @@ class _TestIdentityValidatorState extends State<TestIdentityValidator> {
                 ),
               ),
               const SizedBox(height: 10),
-              
+
               // Status Box
               Container(
                 width: double.infinity,
@@ -172,9 +171,10 @@ class _TestIdentityValidatorState extends State<TestIdentityValidator> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              const Text("Technical Details:", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Technical Details:",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               if (_checkNationalCode)
                 _buildValidationItem(
                   "Is Valid Iranian National Code: ${IdentityValidator.isValidIranianNationalCode(_currentInput)}",
