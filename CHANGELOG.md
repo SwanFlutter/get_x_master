@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.0.30
+
+### ✨ New Features
+
+* **Identity Validation System**:
+  - Added `IdentityValidator` class for validating national identity documents.
+  - **Iranian National Code**: Complete validation algorithm for Iranian National Codes.
+  - **International Passport**: Validation support for international passport numbers.
+  - **Country-Specific Validation**: Support for country-specific passport formats (ISO 3166-1 alpha-2).
+  - **Multi-language Support**: Error messages available in English and Persian.
+
+* **Responsive Design Enhancements**:
+  - Added `.r` extension for responsive radius calculations.
+  - Ensures circular elements (like Avatars) remain proportional based on the smallest screen dimension.
+  - Prevents deformation on devices with extreme aspect ratios.
+
+### 📚 Documentation
+
+* Updated `README.md` with new validation features.
+* Added documentation for `IdentityValidator` usage.
+* Added documentation for `.r` extension.
+
+---
+
 ## 0.0.29
 
 ### ✨ New Features - Enhanced Conditional Navigation

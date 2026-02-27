@@ -259,6 +259,37 @@ extension ResponsiveSize on num {
     return (this * clampedScaleFactor).toDouble();
   }
 
+  /// Responsive radius based on the smaller screen dimension.
+  ///
+  /// Example:
+  /// ```dart
+  /// double radius = 10.r;
+  /// ```
+  double get r {
+    try {
+      final context = Get.context;
+      if (context == null) {
+        return this.toDouble();
+      }
+      final width = MediaQuery.of(context).size.width;
+      final height = MediaQuery.of(context).size.height;
+      
+      // Base values (iPhone SE)
+      const double baseWidth = 375.0;
+      const double baseHeight = 667.0;
+
+      final widthScale = width / baseWidth;
+      final heightScale = height / baseHeight;
+      
+      // Use smaller scale to ensure it fits and stays circular-ish in feel relative to smallest dim
+      final scale = widthScale < heightScale ? widthScale : heightScale;
+      
+      return (this * scale).toDouble();
+    } catch (e) {
+      return this.toDouble();
+    }
+  }
+
   /// Enhanced text scaling with professional responsive behavior.
   ///
   /// Example:

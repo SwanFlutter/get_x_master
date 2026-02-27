@@ -57,6 +57,7 @@ The GetX Master Responsive Design System provides a unified, context-free approa
 - **⚡ Real-Time Updates** - UI adapts instantly when window is resized
 - **📐 Percentage-Based Sizing** - Use `.wp` and `.hp` for relative sizing
 - **🎨 Pixel-to-Responsive** - Convert design pixels to responsive units with `.w` and `.h`
+- **⚪ Responsive Radius** - Use `.r` for circular elements and border radius that adapts to the smallest screen dimension
 - **🔤 Smart Font Scaling** - Text scales intelligently across devices with `.sp`, `.ssp`, and `.hsp`
 - **📱 Device Detection** - Automatic detection of device type (Phone, Tablet, Laptop, Desktop, TV)
 - **🧩 Responsive Widgets** - Ready-to-use widgets that handle responsiveness automatically

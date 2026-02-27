@@ -95,7 +95,7 @@ GetX Master is a comprehensive Flutter framework that provides everything you ne
 
 ### 🛠️ Utilities & Extensions
 - ✅ **String Extensions** - Powerful string manipulation methods
-- ✅ **Validation Helpers** - Built-in validation for common use cases
+- ✅ **Validation Helpers** - Built-in validation for emails, passwords, and identity documents
 - ✅ **Platform Detection** - Easy platform and device detection
 - ✅ **Internationalization** - Complete i18n support
 - ✅ **Theme Management** - Dynamic theme switching
@@ -113,7 +113,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.29
+  get_x_master: ^0.0.30
 ```
 
 Then run:
@@ -1132,6 +1132,12 @@ final validator = PasswordValidator(
 validator.validate('MyPass123!'); // true
 validator.getFirstErrorPersian('weak'); // 'رمز عبور باید حداقل ۸ کاراکتر باشد'
 validator.getStrengthLabel('StrongPass123!'); // 'Very Strong'
+
+// Identity Validation (NEW!)
+final identityValidator = IdentityValidator(validateIranianNationalCode: true);
+identityValidator.validate('0012345678'); // true
+identityValidator.getFirstErrorPersian('123'); // 'کد ملی نامعتبر است'
+IdentityValidator.isValidPassport('A1234567'); // true
 
 // Number Formatting
 '12345.67'.intlToCurrencyFormatted(); // "$12,345.67"

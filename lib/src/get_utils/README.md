@@ -65,6 +65,64 @@ This example demonstrates how the `Equality` mixin can be used to compare object
 
 
 
+# Identity Validator
+
+The `IdentityValidator` class provides a comprehensive validation system for identity documents, including Iranian National Codes and International Passports.
+
+## Features
+
+- **Iranian National Code**: Validates Iranian National Codes using the official algorithm.
+- **Passport Validation**: Supports validation for international passport numbers.
+- **Country-Specific Support**: Validates passport formats for specific countries (ISO 3166-1 alpha-2).
+- **Flexible Configuration**: Enable/disable specific checks as needed.
+- **Multi-Language Error Messages**: Get error messages in English or Persian.
+
+## Usage
+
+### Basic Usage
+
+```dart
+// Validate Iranian National Code
+final validator = IdentityValidator(validateIranianNationalCode: true);
+bool isValid = validator.validate('0012345678');
+
+// Validate Passport (General)
+final passportValidator = IdentityValidator(
+  validateIranianNationalCode: false,
+  validatePassport: true,
+);
+```
+
+### Advanced Usage
+
+```dart
+// Validate Specific Country Passport
+final germanValidator = IdentityValidator(
+  validatePassport: true,
+  countryCode: 'DE',
+);
+
+// Get Errors
+final errors = validator.getErrors('invalid_input');
+// ['Invalid Identity Document']
+
+// Get First Error in Persian
+String? error = validator.getFirstErrorPersian('invalid_input');
+// 'مدرک شناسایی نامعتبر است'
+```
+
+### Static Methods
+
+```dart
+// Check Iranian National Code
+bool isNationalCode = IdentityValidator.isValidIranianNationalCode('0012345678');
+
+// Check Passport
+bool isPassport = IdentityValidator.isValidPassport('A1234567');
+```
+
+---
+
 # ContextExt Extension
 
 The `ContextExt` extension provides a collection of utility methods and properties for `BuildContext` in Flutter. These utilities simplify common tasks such as accessing screen dimensions, checking device orientation, and implementing responsive design.
