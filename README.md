@@ -1027,6 +1027,7 @@ GetPage(
 Complete navigation system with enhanced UI components:
 - ✅ **Custom Expandable Bottom Sheet** - Highly customizable modal sheets
 - ✅ **GetSnackBar** - Enhanced notification system
+- ✅ **Overlay & Loaders** - Show loading indicators over the entire screen or specific widgets ⭐ NEW
 - ✅ **Named Routes** - Clean route organization
 - ✅ **Custom Transitions** - Beautiful page transitions
 - ✅ **Nested Navigation** - Complex navigation patterns
@@ -1034,12 +1035,28 @@ Complete navigation system with enhanced UI components:
 **Quick Example:**
 ```dart
 // Expandable Bottom Sheet
-Get.customExpandableBottomSheet(
+Get.bottomSheetExpandable(
   builder: (context) => YourContent(),
   initialChildSize: 0.5,
   borderRadius: 20.0,
   enableDrag: true,
   startFromTop: false,
+);
+
+// Show overlay loader over the entire screen
+Get.showOverlay(
+  asyncFunction: () async {
+    await doSomeWork();
+  },
+  loadingWidget: CircularProgressIndicator(),
+);
+
+// Show loader specifically over a widget (e.g., a button)
+Get.showLoaderOnWidget(
+  targetKey: myButtonKey,
+  asyncFunction: () async {
+    await login();
+  },
 );
 
 // Enhanced Snackbar

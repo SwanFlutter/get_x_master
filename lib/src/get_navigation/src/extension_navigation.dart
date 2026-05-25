@@ -22,7 +22,7 @@ extension ExtensionBottomSheet on GetInterface {
   ///
   /// This method wraps the standard `showModalBottomSheet` functionality using GetX's navigation.
   ///
-  ///  * [bottomsheet]: The widget to display inside the bottom sheet.
+  ///  * [bottomSheet]: The widget to display inside the bottom sheet.
   ///  * [backgroundColor]: The background color of the bottom sheet.
   ///  * [elevation]: The elevation of the bottom sheet.
   ///  * [persistent]: Whether the bottom sheet is persistent (cannot be dismissed by tapping outside).
@@ -37,8 +37,23 @@ extension ExtensionBottomSheet on GetInterface {
   ///  * [settings]: The route settings.
   ///  * [enterBottomSheetDuration]: The duration of the entrance animation.
   ///  * [exitBottomSheetDuration]: The duration of the exit animation.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.bottomSheet(
+  ///   Container(
+  ///     child: Wrap(
+  ///       children: [
+  ///         ListTile(leading: Icon(Icons.music_note), title: Text('Music'), onTap: () {}),
+  ///         ListTile(leading: Icon(Icons.videocam), title: Text('Video'), onTap: () {}),
+  ///       ],
+  ///     ),
+  ///   ),
+  ///   backgroundColor: Colors.white,
+  /// );
+  /// ```
   Future<T?> bottomSheet<T>(
-    Widget bottomsheet, {
+    Widget bottomSheet, {
     /// The background color of the bottom sheet.
     Color? backgroundColor,
 
@@ -95,7 +110,7 @@ extension ExtensionBottomSheet on GetInterface {
     }
     return Navigator.of(overlayCtx, rootNavigator: useRootNavigator).push(
       GetModalBottomSheetRoute<T>(
-        builder: (_) => bottomsheet,
+        builder: (_) => bottomSheet,
         isPersistent: persistent,
         // theme: Theme.of(key.currentContext, shadowThemeOnly: true), //Consider removing this or making it optional
         theme: Theme.of(keyCtx),
@@ -122,6 +137,17 @@ extension ExtensionBottomSheet on GetInterface {
   ///
   /// This method uses the [BottomSheetExpandableRoute] to display a highly customizable
   /// bottom sheet.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.bottomSheetExpandable(
+  ///   builder: (context) => ListView(
+  ///     children: List.generate(20, (index) => ListTile(title: Text('Item $index'))),
+  ///   ),
+  ///   initialChildSize: 0.5,
+  ///   startFromTop: false,
+  /// );
+  /// ```
   Future<T?>? bottomSheetExpandable<T>({
     /// Required. A builder function that returns the widget tree for the bottom sheet content.
     required WidgetBuilder builder,
@@ -253,6 +279,19 @@ extension ExtensionDialog on GetInterface {
   /// You can pass a [transitionDuration] and/or [transitionCurve],
   /// overriding the defaults when the dialog shows up and closes.
   /// When the dialog closes, uses those animations in reverse.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.dialog(
+  ///   AlertDialog(
+  ///     title: Text('Dialog Title'),
+  ///     content: Text('This is a dialog'),
+  ///     actions: [
+  ///       TextButton(onPressed: () => Get.back(), child: Text('Close')),
+  ///     ],
+  ///   ),
+  /// );
+  /// ```
   Future<T?> dialog<T>(
     Widget widget, {
     bool barrierDismissible = true,
@@ -308,6 +347,15 @@ extension ExtensionDialog on GetInterface {
   }
 
   /// Api from showGeneralDialog with no context
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.generalDialog(
+  ///   pageBuilder: (context, anim1, anim2) => Center(child: Text('General Dialog')),
+  ///   barrierDismissible: true,
+  ///   barrierLabel: 'Label',
+  /// );
+  /// ```
   Future<T?> generalDialog<T>({
     required RoutePageBuilder pageBuilder,
     bool barrierDismissible = false,
@@ -344,6 +392,16 @@ extension ExtensionDialog on GetInterface {
   }
 
   /// Custom UI Dialog.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.defaultDialog(
+  ///   title: "Welcome",
+  ///   middleText: "This is a default dialog",
+  ///   onConfirm: () => print("Confirmed"),
+  ///   textConfirm: "OK",
+  /// );
+  /// ```
   Future<T?> defaultDialog<T>({
     String title = "Alert",
     EdgeInsetsGeometry? titlePadding,
@@ -486,6 +544,17 @@ extension ExtensionDialog on GetInterface {
 }
 
 extension ExtensionSnackbar on GetInterface {
+  /// Shows a raw snackbar with full customization options.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.rawSnackbar(
+  ///   title: "Notification",
+  ///   message: "You have a new message",
+  ///   backgroundColor: Colors.blue,
+  ///   duration: Duration(seconds: 2),
+  /// );
+  /// ```
   SnackBarController rawSnackbar({
     String? title,
     String? message,
@@ -574,12 +643,30 @@ extension ExtensionSnackbar on GetInterface {
     return controller;
   }
 
+  /// Shows a pre-built GetSnackBar.
+  ///
+  /// Example:
+  /// ```dart
+  /// final snack = GetSnackBar(title: "Title", message: "Message");
+  /// Get.showSnackbar(snack);
+  /// ```
   SnackBarController showSnackbar(GetSnackBar snackbar) {
     final controller = SnackBarController(snackbar);
     controller.show();
     return controller;
   }
 
+  /// Shows a customized snackbar with many optional parameters.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.snackbar(
+  ///   "Hey",
+  ///   "I am a snackbar",
+  ///   snackPosition: SnackPosition.BOTTOM,
+  ///   backgroundColor: Colors.green,
+  /// );
+  /// ```
   SnackBarController snackbar(
     String title,
     String message, {
@@ -828,6 +915,11 @@ you can only use widgets and widget functions here''';
   /// if you want to push anyway, set [preventDuplicates] to false
   ///
   /// Note: Always put a slash on the route ('/page1'), to avoid unnexpected errors
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.toNamed('/details', arguments: {'id': 1});
+  /// ```
   Future<T?>? toNamed<T>(
     String page, {
     dynamic arguments,
@@ -863,6 +955,11 @@ you can only use widgets and widget functions here''';
   /// if you want to push anyway, set [preventDuplicates] to false
   ///
   /// Note: Always put a slash on the route ('/page1'), to avoid unnexpected errors
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.offNamed('/home');
+  /// ```
   Future<T?>? offNamed<T>(
     String page, {
     dynamic arguments,
@@ -896,6 +993,11 @@ you can only use widgets and widget functions here''';
   /// or also like this:
   /// `Get.until((route) => !Get.isDialogOpen())`, to make sure the
   /// dialog is closed
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.until((route) => Get.currentRoute == '/home');
+  /// ```
   void until(RoutePredicate predicate, {int? id}) {
     // if (key.currentState.mounted) // add this if appear problems on future with route navigate
     // when widget don't mounted
@@ -920,6 +1022,11 @@ you can only use widgets and widget functions here''';
   /// or also like this:
   /// `Get.until((route) => !Get.isDialogOpen())`, to make sure the dialog
   /// is closed
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.offUntil(GetPageRoute(page: () => HomePage()), (route) => route.isFirst);
+  /// ```
   Future<T?>? offUntil<T>(Route<T> page, RoutePredicate predicate, {int? id}) {
     // if (key.currentState.mounted) // add this if appear problems on future with route navigate
     // when widget don't mounted
@@ -944,6 +1051,11 @@ you can only use widgets and widget functions here''';
   /// to make sure the dialog is closed
   ///
   /// Note: Always put a slash on the route name ('/page1'), to avoid unexpected errors
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.offNamedUntil('/login', ModalRoute.withName('/home'));
+  /// ```
   Future<T?>? offNamedUntil<T>(
     String page,
     RoutePredicate predicate, {
@@ -974,6 +1086,11 @@ you can only use widgets and widget functions here''';
   /// The `offNamed()` pop a page, and goes to the next. The
   /// `offAndToNamed()` goes to the next page, and removes the previous one.
   /// The route transition animation is different.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.offAndToNamed('/profile');
+  /// ```
   Future<T?>? offAndToNamed<T>(
     String page, {
     dynamic arguments,
@@ -996,6 +1113,11 @@ you can only use widgets and widget functions here''';
   ///
   /// [id] is for when you are using nested navigation,
   /// as explained in documentation
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.removeRoute(myRoute);
+  /// ```
   void removeRoute(Route<dynamic> route, {int? id}) {
     return global(id).currentState?.removeRoute(route);
   }
@@ -1020,6 +1142,11 @@ you can only use widgets and widget functions here''';
   /// as explained in documentation
   ///
   /// Note: Always put a slash on the route ('/page1'), to avoid unexpected errors
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.offAllNamed('/home');
+  /// ```
   Future<T?>? offAllNamed<T>(
     String newRouteName, {
     RoutePredicate? predicate,
@@ -1049,16 +1176,23 @@ you can only use widgets and widget functions here''';
 
   /// **Navigation.popUntil()** shortcut.<br><br>
   ///
-  /// Pop the current page, snackbar, dialog or bottomsheet in the stack
+  /// Pop the current page, snackbar, dialog or bottomSheet in the stack
   ///
   /// if your set [closeOverlays] to true, Get.back() will close the
-  /// currently open snackbar/dialog/bottomsheet AND the current page
+  /// currently open snackbar/dialog/bottomSheet AND the current page
   ///
   /// [id] is for when you are using nested navigation,
   /// as explained in documentation
   ///
   /// It has the advantage of not needing context, so you can call
   /// from your business logic.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.back();
+  /// Get.back(result: 'success');
+  /// Get.back(closeOverlays: true);
+  /// ```
   void back<T>({
     T? result,
     bool closeOverlays = false,
@@ -1093,6 +1227,11 @@ you can only use widgets and widget functions here''';
   ///
   /// [id] is for when you are using nested navigation,
   /// as explained in documentation
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.close(2); // Closes 2 routes
+  /// ```
   void close(int times, [int? id]) {
     if (times < 1) {
       times = 1;
@@ -1289,6 +1428,14 @@ you can only use widgets and widget functions here''';
   }
 
   /// change default config of Get
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.config(
+  ///   enableLog: true,
+  ///   defaultTransition: Transition.fade,
+  /// );
+  /// ```
   void config({
     bool? enableLog,
     LogWriterCallback? logWriterCallback,
@@ -1319,42 +1466,57 @@ you can only use widgets and widget functions here''';
     }
   }
 
+  /// Example:
+  /// ```dart
+  /// Get.updateLocale(Locale('fa', 'IR'));
+  /// ```
   Future<void> updateLocale(Locale l) async {
     Get.locale = l;
     await forceAppUpdate();
   }
 
-  /// As a rule, Flutter knows which widget to update,
-  /// so this command is rarely needed. We can mention situations
-  /// where you use const so that widgets are not updated with setState,
-  /// but you want it to be forcefully updated when an event like
-  /// language change happens. using context to make the widget dirty
-  /// for performRebuild() is a viable solution.
-  /// However, in situations where this is not possible, or at least,
-  /// is not desired by the developer, the only solution for updating
-  /// widgets that Flutter does not want to update is to use reassemble
-  /// to forcibly rebuild all widgets. Attention: calling this function will
-  /// reconstruct the application from the sketch, use this with caution.
-  /// Your entire application will be rebuilt, and touch events will not
-  /// work until the end of rendering.
+  /// Example:
+  /// ```dart
+  /// await Get.forceAppUpdate();
+  /// ```
   Future<void> forceAppUpdate() async {
     await engine.performReassemble();
   }
 
+  /// Example:
+  /// ```dart
+  /// Get.appUpdate();
+  /// ```
   void appUpdate() => _getxController.update();
 
+  /// Example:
+  /// ```dart
+  /// Get.changeTheme(ThemeData.dark());
+  /// ```
   void changeTheme(ThemeData theme) {
     _getxController.setTheme(theme);
   }
 
+  /// Example:
+  /// ```dart
+  /// Get.changeThemeMode(ThemeMode.dark);
+  /// ```
   void changeThemeMode(ThemeMode themeMode) {
     _getxController.setThemeMode(themeMode);
   }
 
+  /// Example:
+  /// ```dart
+  /// Get.addKey(GlobalKey<NavigatorState>());
+  /// ```
   GlobalKey<NavigatorState>? addKey(GlobalKey<NavigatorState> newKey) {
     return _getxController.addKey(newKey);
   }
 
+  /// Example:
+  /// ```dart
+  /// final key = Get.nestedKey(1);
+  /// ```
   GlobalKey<NavigatorState>? nestedKey(dynamic key) {
     keys.putIfAbsent(
       key,
@@ -1365,6 +1527,10 @@ you can only use widgets and widget functions here''';
     return keys[key];
   }
 
+  /// Example:
+  /// ```dart
+  /// Get.global(null); // returns root navigator key
+  /// ```
   GlobalKey<NavigatorState> global(int? k) {
     GlobalKey<NavigatorState> newKey;
     if (k == null) {
@@ -1402,10 +1568,18 @@ you can only use widgets and widget functions here''';
   bool get isSnackbarOpen =>
       SnackBarController.isSnackBarBeingShown; //routing.isSnackbar;
 
+  /// Example:
+  /// ```dart
+  /// Get.closeAllSnackbars();
+  /// ```
   void closeAllSnackbars() {
     SnackBarController.cancelAllSnackbars();
   }
 
+  /// Example:
+  /// ```dart
+  /// await Get.closeCurrentSnackbar();
+  /// ```
   Future<void> closeCurrentSnackbar() async {
     await SnackBarController.closeCurrentSnackbar();
   }
@@ -1413,7 +1587,7 @@ you can only use widgets and widget functions here''';
   /// check if dialog is open
   bool? get isDialogOpen => routing.isDialog;
 
-  /// check if bottomsheet is open
+  /// check if bottomSheet is open
   bool? get isBottomSheetOpen => routing.isBottomSheet;
 
   /// check a raw current route
@@ -1581,6 +1755,10 @@ you can only use widgets and widget functions here''';
 }
 
 extension NavTwoExt on GetInterface {
+  /// Example:
+  /// ```dart
+  /// Get.addPages([GetPage(name: '/home', page: () => Home())]);
+  /// ```
   void addPages(List<GetPage> getPages) {
     routeTree.addRoutes(getPages);
   }
@@ -1592,11 +1770,19 @@ extension NavTwoExt on GetInterface {
   static final _routeTree = ParseRouteTree(routes: []);
 
   ParseRouteTree get routeTree => _routeTree;
+
+  /// Example:
+  /// ```dart
+  /// Get.addPage(GetPage(name: '/home', page: () => Home()));
+  /// ```
   void addPage(GetPage getPage) {
     routeTree.addRoute(getPage);
   }
 
-  /// Casts the stored router delegate to a desired type
+  /// Example:
+  /// ```dart
+  /// final delegate = Get.delegate<MyDelegate, MyPage>();
+  /// ```
   TDelegate? delegate<TDelegate extends RouterDelegate<TPage>, TPage>() =>
       routerDelegate as TDelegate?;
 
@@ -1607,6 +1793,10 @@ extension NavTwoExt on GetInterface {
 
   // GetDelegate? getDelegate() => delegate<GetDelegate, GetNavConfig>();
 
+  /// Example:
+  /// ```dart
+  /// Get.createInformationParser(initialRoute: '/home');
+  /// ```
   GetInformationParser createInformationParser({String initialRoute = '/'}) {
     if (routeInformationParser == null) {
       return routeInformationParser = GetInformationParser(
@@ -1621,6 +1811,10 @@ extension NavTwoExt on GetInterface {
 
   GetDelegate get rootDelegate => createDelegate();
 
+  /// Example:
+  /// ```dart
+  /// Get.createDelegate(backButtonPopMode: PopMode.History);
+  /// ```
   GetDelegate createDelegate({
     GetPage<dynamic>? notFoundRoute,
     List<NavigatorObserver>? navigatorObservers,
@@ -1653,6 +1847,18 @@ extension OverlayExt on GetInterface {
   /// - `opacity`: The opacity level of the overlay background. Default is 0.5.
   ///
   /// Returns the result of the asynchronous function.
+  ///
+  /// Example:
+  /// ```dart
+  /// Get.showOverlay(
+  ///   asyncFunction: () async {
+  ///     await Future.delayed(Duration(seconds: 2));
+  ///     print("Task complete");
+  ///   },
+  ///   opacity: 0.4,
+  ///   loadingWidget: CircularProgressIndicator(),
+  /// );
+  /// ```
   Future<T> showOverlay<T>({
     required Future<T> Function() asyncFunction,
     Color opacityColor = Colors.black,
@@ -1716,5 +1922,97 @@ extension OverlayExt on GetInterface {
     overlayEntryOpacity.remove();
 
     return data;
+  }
+
+  /// Displays a loading indicator over a specific widget while an asynchronous function is executed.
+  /// This is useful for showing loading state on a button or a specific part of the UI.
+  ///
+  /// Parameters:
+  /// - `targetKey`: The GlobalKey of the widget to display the loader over.
+  /// - `asyncFunction`: The asynchronous function to be executed.
+  /// - `loadingWidget`: The widget to be displayed while loading. Default is a small CircularProgressIndicator.
+  /// - `opacityColor`: The color of the loading background over the widget. Default is black.
+  /// - `opacity`: The opacity level of the loading background over the widget. Default is 0.5.
+  /// - `borderRadius`: The border radius of the loading background to match the target widget.
+  ///
+  /// Example:
+  /// ```dart
+  /// final buttonKey = GlobalKey();
+  ///
+  /// ElevatedButton(
+  ///   key: buttonKey,
+  ///   onPressed: () {
+  ///     Get.showLoaderOnWidget(
+  ///       targetKey: buttonKey,
+  ///       asyncFunction: () async {
+  ///         await Future.delayed(Duration(seconds: 2));
+  ///         // Your async task...
+  ///       },
+  ///       borderRadius: BorderRadius.circular(8),
+  ///     );
+  ///   },
+  ///   child: Text('Login'),
+  /// )
+  /// ```
+  Future<T> showLoaderOnWidget<T>({
+    required GlobalKey targetKey,
+    required Future<T> Function() asyncFunction,
+    Widget? loadingWidget,
+    Color opacityColor = Colors.black,
+    double opacity = 0.5,
+    BorderRadius? borderRadius,
+  }) async {
+    final context = targetKey.currentContext;
+    if (context == null) return asyncFunction();
+
+    final renderBox = context.findRenderObject() as RenderBox?;
+    if (renderBox == null) return asyncFunction();
+
+    final size = renderBox.size;
+    final offset = renderBox.localToGlobal(Offset.zero);
+
+    final overlayCtx = Get.overlayContext;
+    if (overlayCtx == null) return asyncFunction();
+
+    final navigatorState = Navigator.of(overlayCtx, rootNavigator: false);
+    final overlayState = navigatorState.overlay!;
+
+    final overlayEntry = OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          left: offset.dx,
+          top: offset.dy,
+          width: size.width,
+          height: size.height,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                color: opacityColor.withValues(alpha: opacity),
+                borderRadius: borderRadius,
+              ),
+              child: Center(
+                child: loadingWidget ??
+                    const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    overlayState.insert(overlayEntry);
+
+    try {
+      return await asyncFunction();
+    } finally {
+      overlayEntry.remove();
+    }
   }
 }

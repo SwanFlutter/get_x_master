@@ -1,18 +1,18 @@
 
 
-### Documentation for `CustomExpandableBottomSheetRoute` and `customExpandableBottomSheet`
+### Documentation for `BottomSheetExpandableRoute` and `bottomSheetExpandable`
 
-This document provides an overview of the `CustomExpandableBottomSheetRoute` class and the `customExpandableBottomSheet` function, which are used to create and display a highly customizable expandable bottom sheet in a Flutter application.
+This document provides an overview of the `BottomSheetExpandableRoute` class and the `bottomSheetExpandable` function, which are used to create and display a highly customizable expandable bottom sheet in a Flutter application.
 
 ---
 
 ## Table of Contents
 1. [Introduction](#introduction)
-2. [CustomExpandableBottomSheetRoute](#customexpandablebottomsheetroute)
+2. [BottomSheetExpandableRoute](#bottomsheetexpandableroute)
    - [Constructor](#constructor)
    - [Properties](#properties)
    - [Methods](#methods)
-3. [customExpandableBottomSheet](#customexpandablebottomsheet)
+3. [bottomSheetExpandable](#bottomsheetexpandable)
    - [Parameters](#parameters)
    - [Usage](#usage)
 4. [Example](#example)
@@ -27,12 +27,12 @@ This document provides an overview of the `CustomExpandableBottomSheetRoute` cla
 
 ---
 
-## CustomExpandableBottomSheetRoute
+## BottomSheetExpandableRoute
 
 ### Constructor
 
 ```dart
-CustomExpandableBottomSheetRoute({
+BottomSheetExpandableRoute({
   required this.builder,
   this.theme,
   this.barrierLabel,
@@ -100,7 +100,7 @@ CustomExpandableBottomSheetRoute({
 
 ---
 
-## customExpandableBottomSheet
+## bottomSheetExpandable
 
 ### Parameters
 
@@ -135,7 +135,7 @@ CustomExpandableBottomSheetRoute({
 ### Usage
 
 ```dart
-Get.customExpandableBottomSheet(
+Get.bottomSheetExpandable(
   builder: (context) {
     return Container(
       padding: EdgeInsets.all(16),
@@ -168,7 +168,7 @@ Get.customExpandableBottomSheet(
 
 ## Example
 
-Here is a complete example demonstrating how to use the `customExpandableBottomSheet` function:
+Here is a complete example demonstrating how to use the `bottomSheetExpandable` function:
 
 ```dart
 import 'package:flutter/material.dart';
@@ -197,7 +197,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Get.customExpandableBottomSheet(
+            Get.bottomSheetExpandable(
               builder: (context) {
                 return Container(
                   padding: EdgeInsets.all(16),

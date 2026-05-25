@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.0.31
+
+### ✨ New Features
+
+* **Widget-Specific Loader**:
+  - Added `Get.showLoaderOnWidget()` method.
+  - Allows showing a loading indicator directly over a specific widget (e.g., a button) using its `GlobalKey`.
+  - Supports custom `loadingWidget`, `opacityColor`, `opacity`, and `borderRadius`.
+  - Useful for localized loading states without blocking the entire UI with an overlay.
+
+### 📚 Documentation
+
+* **Enhanced API Documentation**:
+  - Added comprehensive code examples for ALL major navigation and overlay methods in `ExtensionNavigation`.
+  - Examples added for: `bottomSheet`, `dialog`, `snackbar`, `toNamed`, `offNamed`, `showOverlay`, `showLoaderOnWidget`, and many more.
+  - Improved Javadoc-style comments for better IDE integration and developer experience.
+
+---
+
 ## 0.0.30
 
 ### ✨ New Features
