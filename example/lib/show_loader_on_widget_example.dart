@@ -6,10 +6,10 @@ import 'package:toastification/toastification.dart';
 class LoaderExampleController extends GetXController {
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-  
+
   /// GlobalKey used to identify the widget where the loader will be shown.
   final GlobalKey targetKey = GlobalKey();
-  
+
   final _isLoading = false.obs;
   bool get isLoading => _isLoading.value;
 
@@ -18,7 +18,8 @@ class LoaderExampleController extends GetXController {
   Future<void> login() async {
     // Simulate a network request or any async task
     await Future.delayed(const Duration(seconds: 2));
-    CustomToast.success(title: "Success", description: "Logged in successfully!");
+    CustomToast.success(
+        title: "Success", description: "Logged in successfully!");
   }
 
   void checkLogin() async {
@@ -97,35 +98,34 @@ class ShowLoaderOnWidgetExample extends GetView<LoaderExampleController> {
               obscureText: true,
             ),
             const SizedBox(height: 32),
-            
+
             // Reactive Button using Obx
             Obx(() => ElevatedButton(
-              key: controller.targetKey,
-              onPressed: controller.isLoading ? null : controller.checkLogin,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 56),
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: controller.isLoading 
-                ? const SizedBox.shrink() 
-                : const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 18),
+                  key: controller.targetKey,
+                  onPressed:
+                      controller.isLoading ? null : controller.checkLogin,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 56),
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-            )),
+                  child: controller.isLoading
+                      ? const SizedBox.shrink()
+                      : const Text(
+                          'Login',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                )),
           ],
         ),
       ),
     );
   }
 }
-
-
 
 /// کلاس سفارشی برای مدیریت Toast ها
 /// استفاده آسان در تمام پروژه
@@ -258,7 +258,7 @@ class CustomToast {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -342,7 +342,7 @@ class CustomToast {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -369,7 +369,7 @@ class CustomToast {
                       Text(
                         description,
                         style: TextStyle(
-                          color: textColor.withOpacity(0.9),
+                          color: textColor.withValues(alpha: 0.9),
                           fontSize: 12,
                         ),
                       ),
@@ -384,7 +384,7 @@ class CustomToast {
                   Toastification().dismiss(item);
                 },
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.white.withOpacity(0.2),
+                  backgroundColor: Colors.white.withValues(alpha: 0.2),
                   foregroundColor: textColor,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -415,74 +415,3 @@ class CustomToast {
     Toastification().dismiss(item);
   }
 }
-
-// ============== مثال استفاده ==============
-/*
-
-// Toast موفقیت
-CustomToast.success(
-  title: 'عملیات موفق',
-  description: 'اطلاعات با موفقیت ذخیره شد',
-);
-
-// Toast خطا
-CustomToast.error(
-  title: 'خطا',
-  description: 'مشکلی در اتصال به سرور پیش آمد',
-  duration: Duration(seconds: 5),
-);
-
-// Toast هشدار
-CustomToast.warning(
-  title: 'هشدار',
-  description: 'لطفا فیلدهای الزامی را پر کنید',
-);
-
-// Toast اطلاعات
-CustomToast.info(
-  title: 'اطلاعات',
-  description: 'نسخه جدید در دسترس است',
-);
-
-// Toast لودینگ
-final loadingToast = CustomToast.loading(
-  title: 'در حال بارگذاری...',
-  description: 'لطفا صبر کنید',
-);
-
-// بستن Toast لودینگ بعد از اتمام عملیات
-await someAsyncOperation();
-CustomToast.dismiss(loadingToast);
-
-// Toast با دکمه اکشن
-CustomToast.withAction(
-  title: 'پیام جدید',
-  description: 'یک پیام از احمد دریافت کردید',
-  actionText: 'مشاهده',
-  onActionPressed: () {
-    // باز کردن صفحه پیام
-    print('دکمه مشاهده کلیک شد');
-  },
-  type: ToastificationType.info,
-);
-
-// تنظیم موقعیت نمایش
-CustomToast.success(
-  title: 'موفق',
-  alignment: Alignment.bottomCenter,
-);
-
-// تنظیم زمان نمایش
-CustomToast.error(
-  title: 'خطا',
-  duration: Duration(seconds: 10),
-);
-
-// بستن همه Toast ها
-CustomToast.dismissAll();
-
-*/
-
-
-
-

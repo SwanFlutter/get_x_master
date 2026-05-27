@@ -14,7 +14,6 @@ void main() async {
   // Initialize controllers
   Get.put(CounterController());
 
-
   runApp(const MyApp());
 }
 
