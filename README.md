@@ -113,7 +113,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.31
+  get_x_master: ^0.0.32
 ```
 
 Then run:

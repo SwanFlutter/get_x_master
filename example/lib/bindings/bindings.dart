@@ -5,12 +5,13 @@ import 'package:example/reactive_get_view_demo.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 import '../controller/theme_controller.dart';
+import '../show_loader_on_widget_example.dart';
 
 class MyBinding extends Bindings {
   @override
   void dependencies() {
     // Get.put(() => TodosController());
-
+    Get.put(LoaderExampleController());
     Get.smartPut(
       builder: () => TodosController(),
       // Optional condition for when you want the controller to be built only under certain conditions

@@ -1,14 +1,19 @@
 import 'package:example/reactive_get_view_demo.dart';
+import 'package:example/show_loader_on_widget_example.dart';
 import 'package:example/test_error_handling.dart';
 import 'package:example/test_expandable_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
+import 'package:toastification/toastification.dart';
+
+import 'bindings/bindings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize controllers
   Get.put(CounterController());
+
 
   runApp(const MyApp());
 }
@@ -18,15 +23,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'GetX Master Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        useMaterial3: true,
+    return ToastificationWrapper(
+      child: GetMaterialApp(
+        title: 'GetX Master Demo',
+        debugShowCheckedModeBanner: false,
+        initialBinding: MyBinding(),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          useMaterial3: true,
+        ),
+        home: const ShowLoaderOnWidgetExample(),
       ),
-      home: const TestScreenresponsive(),
     );
   }
 }

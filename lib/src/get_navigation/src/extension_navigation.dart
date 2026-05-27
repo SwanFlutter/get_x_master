@@ -1925,81 +1925,104 @@ extension OverlayExt on GetInterface {
   }
 
   /// Displays a loading indicator over a specific widget while an asynchronous function is executed.
-  /// This is useful for showing loading state on a button or a specific part of the UI.
+  /// Uses a route-scoped overlay approach to avoid conflicts with global overlay packages
+  /// like ToastFiction, flutter toast, etc.
   ///
   /// Parameters:
-  /// - `targetKey`: The GlobalKey of the widget to display the loader over.
-  /// - `asyncFunction`: The asynchronous function to be executed.
-  /// - `loadingWidget`: The widget to be displayed while loading. Default is a small CircularProgressIndicator.
-  /// - `opacityColor`: The color of the loading background over the widget. Default is black.
-  /// - `opacity`: The opacity level of the loading background over the widget. Default is 0.5.
-  /// - `borderRadius`: The border radius of the loading background to match the target widget.
+  /// - [targetKey]: The GlobalKey of the widget to display the loader over.
+  /// - [context]: Alternatively, you can pass the BuildContext of the widget directly.
+  /// - [asyncFunction]: The asynchronous function to be executed.
+  /// - [loadingWidget]: The widget to be displayed while loading.
+  /// - [opacityColor]: The color of the loading background.
+  /// - [opacity]: The opacity level.
+  /// - [borderRadius]: The border radius of the loading background.
   ///
   /// Example:
   /// ```dart
-  /// final buttonKey = GlobalKey();
+  /// final GlobalKey targetKey = GlobalKey();
   ///
   /// ElevatedButton(
-  ///   key: buttonKey,
-  ///   onPressed: () {
-  ///     Get.showLoaderOnWidget(
-  ///       targetKey: buttonKey,
+  ///   key: targetKey,
+  ///   onPressed: () async {
+  ///     await Get.showLoaderOnWidget(
+  ///       targetKey: targetKey,
   ///       asyncFunction: () async {
   ///         await Future.delayed(Duration(seconds: 2));
-  ///         // Your async task...
   ///       },
-  ///       borderRadius: BorderRadius.circular(8),
   ///     );
   ///   },
   ///   child: Text('Login'),
   /// )
   /// ```
   Future<T> showLoaderOnWidget<T>({
-    required GlobalKey targetKey,
+    GlobalKey? targetKey,
+    BuildContext? context,
     required Future<T> Function() asyncFunction,
     Widget? loadingWidget,
     Color opacityColor = Colors.black,
     double opacity = 0.5,
     BorderRadius? borderRadius,
   }) async {
-    final context = targetKey.currentContext;
-    if (context == null) return asyncFunction();
+    // Priority: direct context > targetKey context
+    final effectiveContext = context ?? targetKey?.currentContext;
 
-    final renderBox = context.findRenderObject() as RenderBox?;
+    if (effectiveContext == null) return asyncFunction();
+
+    final renderBox = effectiveContext.findRenderObject() as RenderBox?;
     if (renderBox == null) return asyncFunction();
 
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
-    final overlayCtx = Get.overlayContext;
-    if (overlayCtx == null) return asyncFunction();
+    // ✅ Use the nearest Navigator's overlay (route-scoped).
+    // rootNavigator: false ensures we stay within the current route's overlay
+    // and do NOT touch the root overlay where packages like ToastFiction live.
+    OverlayState? overlayState;
 
-    final navigatorState = Navigator.of(overlayCtx, rootNavigator: false);
-    final overlayState = navigatorState.overlay!;
+    try {
+      final navigatorState = Navigator.of(
+        effectiveContext,
+        rootNavigator: false, // ← فقط Navigator همین صفحه، نه root
+      );
+      overlayState = navigatorState.overlay;
+    } catch (_) {
+      // If Navigator is not found, fallback to Overlay.maybeOf
+      // but with the local context (not root)
+      overlayState = Overlay.maybeOf(effectiveContext, rootOverlay: false);
+    }
+
+    // If no overlay found or not mounted, just run the function
+    if (overlayState == null || !overlayState.mounted) {
+      return asyncFunction();
+    }
 
     final overlayEntry = OverlayEntry(
-      builder: (context) {
+      builder: (_) {
         return Positioned(
           left: offset.dx,
           top: offset.dy,
           width: size.width,
           height: size.height,
-          child: Material(
-            color: Colors.transparent,
-            child: Container(
-              decoration: BoxDecoration(
-                color: opacityColor.withValues(alpha: opacity),
-                borderRadius: borderRadius,
-              ),
-              child: Center(
-                child: loadingWidget ??
-                    const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
+          child: IgnorePointer(
+            ignoring: false, // Block touches on the widget below
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: opacityColor.withValues(alpha: opacity),
+                  borderRadius: borderRadius,
+                ),
+                child: Center(
+                  child: loadingWidget ??
+                      const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                ),
               ),
             ),
           ),
@@ -2007,11 +2030,13 @@ extension OverlayExt on GetInterface {
       },
     );
 
+    // Insert the overlay entry
     overlayState.insert(overlayEntry);
 
     try {
       return await asyncFunction();
     } finally {
+      // Safely remove the overlay
       overlayEntry.remove();
     }
   }

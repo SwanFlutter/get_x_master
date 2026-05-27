@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.32
+
+ * Fix Bug Get.showLoaderOnWidget()
+
 ## 0.0.31
 
 ### ✨ New Features

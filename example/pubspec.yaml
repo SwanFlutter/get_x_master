@@ -39,6 +39,11 @@ dependencies:
   intl: ^0.20.2
   app_bar_auto_hide: ^0.0.1
   get_storage: ^2.1.1
+  toastification:
+    git:
+      url: https://github.com/SwanFlutter/toastification.git
+
+
 
 dev_dependencies:
   flutter_test:
