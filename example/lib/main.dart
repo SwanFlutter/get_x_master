@@ -1,5 +1,5 @@
 import 'package:example/reactive_get_view_demo.dart';
-import 'package:example/show_loader_on_widget_example.dart';
+import 'package:example/test_conditional_navigation.dart';
 import 'package:example/test_error_handling.dart';
 import 'package:example/test_expandable_bottomsheet.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           useMaterial3: true,
         ),
-        home: const ShowLoaderOnWidgetExample(),
+        home: const DemoHomePage(),
       ),
     );
   }
@@ -136,6 +136,14 @@ class DemoHomePage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          _buildDemoCard(
+            context,
+            title: 'ConditionalNavigation Test',
+            subtitle: 'Transition animations with conditional routing',
+            icon: Icons.alt_route,
+            color: Colors.indigo,
+            onTap: () => Get.to(() => const ConditionalNavTestHome()),
+          ),
           _buildDemoCard(
             context,
             title: 'Error Handling Demo',

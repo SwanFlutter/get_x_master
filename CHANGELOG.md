@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.0.33
+
+### 🐛 Bug Fixes — ConditionalNavigation Transition Animation
+
+* **Fixed broken transition animations with `ConditionalNavigation`**:
+  - Affected methods: `Get.to()`, `Get.off()`, `Get.offAll()`
+  - **Root cause**: When `ConditionalNavigation` (or `ConditionalNavigationOff` / `ConditionalNavigationOffAll`) was used, `page` was set to the closure returned by `evaluate()`. Deriving `routeName` from `page.runtimeType` on that closure produced a garbage string like `"Closure: () => LoginPage"` instead of `"LoginPage"`. This caused the `preventDuplicates` guard to silently cancel navigation — and therefore prevented any transition animation from playing.
+  - **Fix**: After `evaluate()`, the page builder is called once to obtain the widget instance, `routeName` is derived from the widget's `runtimeType`, and the widget is re-wrapped into a proper `GetPageBuilder`. This ensures the correct route name, correct `preventDuplicates` behaviour, and fully working transition animations for all `Transition.*` values.
+
+* **Files changed**:
+  - `lib/src/get_navigation/src/extension_navigation.dart`
+
+### 🧪 Example
+
+* Added `example/lib/test_conditional_navigation.dart` — interactive test screen covering:
+  - `Get.to()` with `rightToLeft`, `fade`, `zoom` transitions
+  - `Get.off()` with `ConditionalNavigationOff`
+  - `Get.offAll()` with `ConditionalNavigationOffAll`
+  - `preventDuplicates` sanity check
+  - Toggle switches to flip `isLoggedIn` / `hasPremium` at runtime
+
+---
+
 ## 0.0.32
 
  * Fix Bug Get.showLoaderOnWidget()

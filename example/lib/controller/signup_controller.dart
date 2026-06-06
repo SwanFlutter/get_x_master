@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:example/model/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:get_x_master/get_x_master.dart';
+import 'package:get_x_storage/get_x_storage.dart';
 
 class SignupController extends GetXController {
   static SignupController get to => Get.smartFind<SignupController>();
@@ -12,7 +12,7 @@ class SignupController extends GetXController {
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
 
-  final storage = GetStorage();
+  final storage = GetXStorage();
 
   GetConnect http = GetConnect(
     allowAutoSignedCert: true,
@@ -99,7 +99,7 @@ class SignupController extends GetXController {
   }
 
   Future<String?> getToken() async {
-    return storage.read('token');
+    return storage.read(key: 'token');
   }
 
   Future<UserModel?> signUp() async {

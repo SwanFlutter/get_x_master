@@ -32,7 +32,7 @@ class LoaderExampleController extends GetXController {
       CustomToast.warning(title: "هشدار", description: 'فرمت ایمیل معتبر نیست');
     } else if (passwordController.text.isEmpty) {
       CustomToast.warning(title: "هشدار", description: 'رمز عبور را وارد کنید');
-    } else if (validator.validate(passwordController.text)) {
+    } else if (!validator.validate(passwordController.text)) {
       CustomToast.warning(
         title: "هشدار",
         description: 'رمز عبور باید حداقل ۸ کاراکتر باشد',

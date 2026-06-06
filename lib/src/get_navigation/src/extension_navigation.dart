@@ -858,6 +858,20 @@ extension GetNavigation on GetInterface {
       page = condition.evaluate();
     }
 
+    // When a ConditionalNavigation is used, `page` is a `() => Widget` closure.
+    // Calling `page.runtimeType` on a closure gives "Closure: () => Widget"
+    // instead of the actual widget class name, which breaks routeName derivation
+    // and causes `preventDuplicates` to silently cancel the navigation, which
+    // also prevents the transition animation from playing.
+    // Fix: call the page builder to get the widget instance for routeName derivation,
+    // then wrap it back so _resolvePage receives a proper GetPageBuilder.
+    if (condition != null && page is Function) {
+      final resolvedWidget = (page as dynamic Function())();
+      routeName ??= "/${resolvedWidget.runtimeType}";
+      final capturedWidget = resolvedWidget;
+      page = () => capturedWidget as Widget;
+    }
+
     routeName ??= "/${page.runtimeType}";
     routeName = _cleanRouteName(routeName);
     if (preventDuplicates && routeName == currentRoute) {
@@ -1303,6 +1317,16 @@ you can only use widgets and widget functions here''';
       page = conditionOff.evaluate();
     }
 
+    // Same fix as Get.to(): when ConditionalNavigationOff is used, `page` is a
+    // closure and `page.runtimeType` gives "Closure" instead of the widget class
+    // name, which breaks routeName and prevents the transition animation.
+    if (conditionOff != null && page is Function) {
+      final resolvedWidget = (page as dynamic Function())();
+      routeName ??= "/${resolvedWidget.runtimeType}";
+      final capturedWidget = resolvedWidget;
+      page = () => capturedWidget as Widget;
+    }
+
     routeName ??= "/${page.runtimeType.toString()}";
     routeName = _cleanRouteName(routeName);
     if (preventDuplicates && routeName == currentRoute) {
@@ -1389,6 +1413,16 @@ you can only use widgets and widget functions here''';
   }) {
     if (conditionOffAll != null) {
       page = conditionOffAll.evaluate();
+    }
+
+    // Same fix as Get.to(): when ConditionalNavigationOffAll is used, `page` is a
+    // closure and `page.runtimeType` gives "Closure" instead of the widget class
+    // name, which breaks routeName and prevents the transition animation.
+    if (conditionOffAll != null && page is Function) {
+      final resolvedWidget = (page as dynamic Function())();
+      routeName ??= "/${resolvedWidget.runtimeType}";
+      final capturedWidget = resolvedWidget;
+      page = () => capturedWidget as Widget;
     }
 
     routeName ??= "/${page.runtimeType.toString()}";
