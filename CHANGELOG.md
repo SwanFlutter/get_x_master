@@ -1,5 +1,51 @@
 # Changelog
 
+## 0.0.34
+
+### ✨ New Features
+
+* **`ObxValue.named` constructor**:
+  - Added a named constructor `ObxValue.named(builder, {required initialValue})` for explicit, readable call sites.
+  - The original positional constructor `ObxValue(builder, value)` is fully preserved — no breaking change.
+  - Example:
+    ```dart
+    // classic positional style (unchanged)
+    ObxValue(
+      (isActive) => Switch(
+        value: isActive.value,
+        onChanged: (flag) => isActive.value = flag,
+      ),
+      false.obs,
+    )
+
+    // new named style
+    ObxValue.named(
+      (isVisible) => Visibility(
+        visible: isVisible.value,
+        child: const Text('Hello!'),
+      ),
+      initialValue: true.obs,
+    )
+    ```
+
+* **`ObxValue.initialValue` property**:
+  - Renamed internal `data` field to `initialValue` for clarity.
+  - IDE tooltips and autocomplete now show a meaningful property name instead of the generic `data`.
+
+### 📚 Documentation
+
+* **`ObxValue`** — Completely rewritten doc comment with four real-world examples:
+  - Toggle (`bool`) with `Switch`
+  - Counter (`int`) with increment/decrement buttons
+  - Visibility flag with `Visibility` widget
+  - Selected tab index with `BottomNavigationBar`
+
+* **`DisposableInterface`** — Added rich doc comments with examples to `onInit`, `onReady`, and `onClose` lifecycle methods so IDE autocomplete generates complete override stubs.
+
+* **`GetXController` / `GetxController`** — Added full lifecycle example in the typedef doc comment covering `onInit`, `onReady`, and `onClose`.
+
+---
+
 ## 0.0.33
 
 ### 🐛 Bug Fixes — ConditionalNavigation Transition Animation

@@ -113,7 +113,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.32
+  get_x_master: ^0.0.34
 ```
 
 Then run:
@@ -1108,6 +1108,26 @@ GetBuilderObs<MyController>(
       Text('${controller.count}'),
       Text(controller.message.value),
     ],
+  ),
+)
+
+// ObxValue — local reactive state, no controller needed
+ObxValue(
+  (isActive) => Switch(
+    value: isActive.value,
+    onChanged: (flag) => isActive.value = flag,
+  ),
+  false.obs,
+)
+
+// ObxValue.named — explicit named style
+ObxValue.named(
+  (isVisible) => Visibility(
+    visible: isVisible.value,
+    child: const Text('Hello!'),
+  ),
+  initialValue: true.obs,
+)
   ),
 )
 ```

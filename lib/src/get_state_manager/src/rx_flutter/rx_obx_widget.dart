@@ -72,23 +72,120 @@ class Obx extends ObxWidget {
   Widget build() => builder();
 }
 
-/// Similar to Obx, but manages a local state.
-/// Pass the initial data in constructor.
-/// Useful for simple local states, like toggles, visibility, themes,
-/// button states, etc.
-///  Sample:
-///    ObxValue((data) => Switch(
-///      value: data.value,
-///      onChanged: (flag) => data.value = flag,
-///    ),
-///    false.obs,
+/// Similar to [Obx], but manages a **local** reactive state without needing
+/// a controller. Pass the initial [RxInterface] value via [initialValue].
+///
+/// Useful for simple, self-contained states like toggles, counters,
+/// visibility flags, selected indices, theme switches, etc.
+///
+/// The widget automatically rebuilds whenever [initialValue] changes.
+///
+/// ---
+///
+/// ### Toggle (bool)
+/// ```dart
+/// ObxValue(
+///   (isActive) => Switch(
+///     value: isActive.value,
+///     onChanged: (flag) => isActive.value = flag,
 ///   ),
+///   false.obs,
+/// )
+/// ```
+///
+/// ### Counter (int)
+/// ```dart
+/// ObxValue(
+///   (count) => Row(
+///     children: [
+///       IconButton(
+///         icon: const Icon(Icons.remove),
+///         onPressed: () => count.value--,
+///       ),
+///       Text('${count.value}'),
+///       IconButton(
+///         icon: const Icon(Icons.add),
+///         onPressed: () => count.value++,
+///       ),
+///     ],
+///   ),
+///   0.obs,
+/// )
+/// ```
+///
+/// ### Visibility flag
+/// ```dart
+/// ObxValue(
+///   (isVisible) => Visibility(
+///     visible: isVisible.value,
+///     child: const Text('Hello!'),
+///   ),
+///   true.obs,
+/// )
+/// ```
+///
+/// ### Selected tab index
+/// ```dart
+/// ObxValue(
+///   (selectedIndex) => BottomNavigationBar(
+///     currentIndex: selectedIndex.value,
+///     onTap: (index) => selectedIndex.value = index,
+///     items: const [
+///       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+///       BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+///     ],
+///   ),
+///   0.obs,
+/// )
+/// ```
 class ObxValue<T extends RxInterface> extends ObxWidget {
   final Widget Function(T) builder;
-  final T data;
 
-  const ObxValue(this.builder, this.data, {super.key});
+  /// The reactive value passed to [builder].
+  ///
+  /// Must be an [RxInterface] instance — use `.obs` to create one:
+  /// `false.obs`, `0.obs`, `''.obs`, `<String>[].obs`, etc.
+  final T initialValue;
+
+  /// Creates an [ObxValue] with positional arguments (classic style).
+  ///
+  /// ```dart
+  /// ObxValue(
+  ///   (isActive) => Switch(
+  ///     value: isActive.value,
+  ///     onChanged: (flag) => isActive.value = flag,
+  ///   ),
+  ///   false.obs,
+  /// )
+  /// ```
+  const ObxValue(this.builder, this.initialValue, {super.key});
+
+  /// Creates an [ObxValue] with a named [initialValue] parameter (explicit style).
+  ///
+  /// Useful when the value type needs to be clear at the call site.
+  ///
+  /// ```dart
+  /// ObxValue.named(
+  ///   (isVisible) => Visibility(
+  ///     visible: isVisible.value,
+  ///     child: const Text('Hello!'),
+  ///   ),
+  ///   initialValue: true.obs,
+  /// )
+  /// ```
+  ///
+  /// ```dart
+  /// ObxValue.named(
+  ///   (count) => Text('${count.value}'),
+  ///   initialValue: 0.obs,
+  /// )
+  /// ```
+  const ObxValue.named(
+    this.builder, {
+    required this.initialValue,
+    super.key,
+  });
 
   @override
-  Widget build() => builder(data);
+  Widget build() => builder(initialValue);
 }

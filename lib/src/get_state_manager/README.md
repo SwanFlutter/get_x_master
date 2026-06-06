@@ -664,7 +664,7 @@ Here's a simple example demonstrating how to create a controller using `GetxCont
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_x_master/get_x_master.dart';
 
 class MyController extends GetxController with ScrollMixin {
   var items = <String>[].obs; // Observable list of items

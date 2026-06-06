@@ -1,5 +1,6 @@
 // ignore: prefer_mixin
 import 'package:flutter/widgets.dart';
+
 import '../../../get_core/get_core.dart';
 import '../../../get_instance/src/lifecycle.dart';
 import '../rx_flutter/rx_disposable.dart';
