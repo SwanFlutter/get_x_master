@@ -7,10 +7,10 @@ issue_tracker: "https://github.com/SwanFlutter/get_x_master/issues"
 documentation: "https://github.com/SwanFlutter/get_x_master#readme"
 topics:
   - getx
-  - get
-  - get_x_master
-  - get_x
   - getxmaster
+  - get
+  - getx-master
+  - get-x-master
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
