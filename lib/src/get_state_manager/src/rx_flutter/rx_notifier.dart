@@ -64,6 +64,28 @@ mixin StateMixin<T> on ListNotifierMixin {
     }
   }
 
+  /// Executes a future and automatically handles the [RxStatus].
+  /// It will set the status to [RxStatus.loading()] before executing the future,
+  /// and [RxStatus.success()] or [RxStatus.error()] after.
+  /// If the result is null or empty, it can optionally set [RxStatus.empty()].
+  Future<void> futurize(
+    Future<T> Function() body, {
+    String? errorMessage,
+    bool useEmpty = false,
+  }) async {
+    change(_value, status: RxStatus.loading());
+    try {
+      final result = await body();
+      if (useEmpty && _isNullOrEmpty(result)) {
+        change(result, status: RxStatus.empty());
+      } else {
+        change(result, status: RxStatus.success());
+      }
+    } catch (e) {
+      change(_value, status: RxStatus.error(errorMessage ?? e.toString()));
+    }
+  }
+
   void append(Future<T> Function() Function() body, {String? errorMessage}) {
     final compute = body();
     compute().then(

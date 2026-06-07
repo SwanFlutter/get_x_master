@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get_x_master/get_x_master.dart';
 import 'package:toastification/toastification.dart';
 
+import 'async_builder_example.dart';
 import 'bindings/bindings.dart';
 
 void main() async {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           useMaterial3: true,
         ),
-        home: const DemoHomePage(),
+        home: const AsyncBuilderExample(),
       ),
     );
   }

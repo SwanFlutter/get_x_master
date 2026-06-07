@@ -1886,3 +1886,88 @@ The combination of `ValueBuilder` and state management classes in this code prov
 
 ---
 
+## Declarative Async State Management: GetAsyncBuilder & GetStateView
+
+The `GetAsyncBuilder` and `GetStateView` widgets provide a professional way to handle asynchronous data (Futures and Streams) without the boilerplate of manual loading, error, and empty state management.
+
+### ❓ GetStateView vs ReactiveGetView
+
+| Feature | `ReactiveGetView` | `GetStateView` |
+| :--- | :--- | :--- |
+| **Primary Use** | General UI with many `Rx` variables | Data-driven views (API/Database) |
+| **Logic** | Manual `if/else` for loading/error | Automatic state transitions |
+| **State Source** | Any `Rx` (e.g., `count.obs`) | `StateMixin` (Status-based) |
+| **Best For** | Settings, Counters, Forms | Lists, Profiles, Search results |
+
+### 1. GetAsyncBuilder
+
+A declarative alternative to `FutureBuilder` and `StreamBuilder` that integrates with GetX Master's `RxStatus`.
+
+**Key Features:**
+- ✅ **Simplified API**: Dedicated factories for `.future()` and `.stream()`.
+- ✅ **Smooth UX**: `keepDataOnReload` maintains existing data while fetching updates.
+- ✅ **Professional Defaults**: Built-in error views with retry support.
+- ✅ **Empty State Detection**: Automatically handles empty results.
+
+**Example Usage:**
+
+```dart
+GetAsyncBuilder<List<Post>>.future(
+  future: () => api.getPosts(), // fetch from https://jsonplaceholder.typicode.com/posts
+  isEmpty: (data) => data.isEmpty,
+  onSuccess: (context, posts) => ListView.builder(
+    itemCount: posts.length,
+    itemBuilder: (_, i) => ListTile(
+      title: Text(posts[i].title),
+      subtitle: Text(posts[i].body),
+    ),
+  ),
+  onEmpty: (context) => Center(child: Text("No posts found")),
+)
+```
+
+### 2. GetStateView
+
+A clean, declarative wrapper for controllers that use `StateMixin`. It's a more organized way to implement `controller.obx()`.
+
+**Key Features:**
+- ✅ **Auto-Finding**: Automatically finds the controller if not provided.
+- ✅ **State Transitions**: Seamlessly switches between loading, error, empty, and success.
+
+**Example Usage:**
+
+```dart
+class PostController extends GetxController with StateMixin<List<Post>> {
+  void load() => futurize(() => api.fetchPosts());
+}
+
+// In UI
+GetStateView<PostController, List<Post>>(
+  onSuccess: (context, posts) => PostList(posts!),
+)
+```
+
+### 3. StateMixin.futurize()
+
+A new method in `StateMixin` that automates the state transition process for asynchronous calls.
+
+**Usage:**
+
+```dart
+class PostController extends GetxController with StateMixin<List<Post>> {
+  @override
+  void onInit() {
+    super.onInit();
+    // Automatically sets loading, success, or error based on the future result
+    futurize(
+      () => api.getPosts(), 
+      errorMessage: "Failed to load posts from JSONPlaceholder"
+    );
+  }
+}
+```
+
+---
+
+---
+

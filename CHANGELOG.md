@@ -32,6 +32,12 @@
   - Renamed internal `data` field to `initialValue` for clarity.
   - IDE tooltips and autocomplete now show a meaningful property name instead of the generic `data`.
 
+* **Declarative Async State Management**:
+  - Added `GetAsyncBuilder`: A unified widget for `Future` and `Stream` handling with automatic state management (loading, error, success, empty).
+  - Added `GetStateView`: A clean, declarative wrapper for controllers using `StateMixin`.
+  - Added `StateMixin.futurize()`: Automates the process of executing a Future and updating the controller's `RxStatus`.
+  - Added professional default error views with built-in retry logic for async operations.
+
 ### 📚 Documentation
 
 * **`ObxValue`** — Completely rewritten doc comment with four real-world examples:

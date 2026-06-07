@@ -21,6 +21,7 @@ GetX Master is a completely separate implementation that provides similar functi
 - ✅ **Enhanced Cupertino Support** - Apple-authentic design elements with squircle shapes
 - ✅ **ReactiveGetView** - Smart reactive widgets with automatic UI updates
 - ✅ **Advanced Responsive Design** - Context-free responsive system with real-time updates
+- ✅ **Async & State Builders** - `GetAsyncBuilder` & `GetStateView` for effortless Future/Stream handling
 - ✅ **Improved Performance** - Optimized for latest Flutter versions
 - ✅ **Independent Development** - Active maintenance and continuous improvements
 - ✅ **Modern Architecture** - Built with current Flutter best practices

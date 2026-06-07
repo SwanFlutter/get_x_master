@@ -1,0 +1,398 @@
+حالا کامل با ساختار پکیج آشنا شدم. این پکیج `StateMixin`، `RxStatus` (یعنی `LoadingStatus`، `SuccessStatus`، `ErrorStatus`، `EmptyStatus`) و `futurize` دارد که دقیقاً همان زیرساختی است که برای چیزی شبیه `FutureBuilder`/`StreamBuilder` لازم است.
+
+بذار برات یک ویجت کامل و حرفه‌ای بسازم که دقیقاً همان رفتار `FutureBuilder` و `StreamBuilder` را داشته باشد، اما با ساختار GetX Master و بدون نیاز به مدیریت دستی لودینگ.
+
+## ایده‌ی کلی
+
+من یک ویجت به اسم `GetAsyncBuilder` می‌سازم که سه حالت اصلی دارد:
+
+یکی برای کار با `Future` (مثل `FutureBuilder`)، یکی برای کار با `Stream` (مثل `StreamBuilder`)، و یکی برای کار با کنترلری که از `StateMixin` استفاده می‌کند (روش native خود GetX Master). در هر سه حالت، خودش لودینگ، خطا، حالت خالی و موفقیت را مدیریت می‌کند و تو فقط ویجت هر حالت را می‌دهی.
+
+## کد کامل ویجت
+
+```dart
+// file: get_async_builder.dart
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:get_x_master/get_x_master.dart';
+
+/// وضعیت‌های ممکن برای داده‌ی async
+enum AsyncState { loading, success, error, empty }
+
+/// امضای سازنده‌ی ویجت موفقیت
+typedef AsyncSuccessBuilder<T> = Widget Function(BuildContext context, T data);
+
+/// امضای سازنده‌ی ویجت خطا
+typedef AsyncErrorBuilder = Widget Function(
+    BuildContext context, Object error, VoidCallback? onRetry);
+
+/// ویجتی شبیه FutureBuilder / StreamBuilder اما با ساختار GetX Master.
+///
+/// همه‌ی حالت‌های loading / error / empty / success را خودش هندل می‌کند،
+/// نیازی به گذاشتن دستی CircularProgressIndicator یا try/catch نیست.
+///
+/// سه روش استفاده:
+///   1) GetAsyncBuilder.future(...)      مثل FutureBuilder
+///   2) GetAsyncBuilder.stream(...)      مثل StreamBuilder
+///   3) GetAsyncBuilder.state(...)       با StateMixin کنترلر GetX Master
+class GetAsyncBuilder<T> extends StatefulWidget {
+  /// تابع تولیدکننده‌ی Future (برای حالت future)
+  final Future<T> Function()? future;
+
+  /// تابع تولیدکننده‌ی Stream (برای حالت stream)
+  final Stream<T> Function()? stream;
+
+  /// ویجت حالت موفقیت
+  final AsyncSuccessBuilder<T> onSuccess;
+
+  /// ویجت حالت لودینگ (اختیاری؛ پیش‌فرض یک لودینگ وسط صفحه)
+  final WidgetBuilder? onLoading;
+
+  /// ویجت حالت خطا (اختیاری؛ پیش‌فرض پیام خطا + دکمه‌ی تلاش مجدد)
+  final AsyncErrorBuilder? onError;
+
+  /// ویجت حالت خالی (اختیاری)
+  final WidgetBuilder? onEmpty;
+
+  /// تشخیص اینکه داده خالی است یا نه (مثلاً لیست خالی)
+  final bool Function(T data)? isEmpty;
+
+  /// آیا با تغییر داده‌ی قبلی، داده‌ی قدیمی تا رسیدن داده‌ی جدید نمایش داده شود
+  final bool keepDataOnReload;
+
+  /// آیا با pull-to-refresh یا فراخوانی دستی، دوباره لود شود
+  final bool autoLoad;
+
+  const GetAsyncBuilder._({
+    super.key,
+    this.future,
+    this.stream,
+    required this.onSuccess,
+    this.onLoading,
+    this.onError,
+    this.onEmpty,
+    this.isEmpty,
+    this.keepDataOnReload = true,
+    this.autoLoad = true,
+  });
+
+  /// سازنده مثل FutureBuilder
+  factory GetAsyncBuilder.future({
+    Key? key,
+    required Future<T> Function() future,
+    required AsyncSuccessBuilder<T> onSuccess,
+    WidgetBuilder? onLoading,
+    AsyncErrorBuilder? onError,
+    WidgetBuilder? onEmpty,
+    bool Function(T data)? isEmpty,
+    bool keepDataOnReload = true,
+  }) {
+    return GetAsyncBuilder._(
+      key: key,
+      future: future,
+      onSuccess: onSuccess,
+      onLoading: onLoading,
+      onError: onError,
+      onEmpty: onEmpty,
+      isEmpty: isEmpty,
+      keepDataOnReload: keepDataOnReload,
+    );
+  }
+
+  /// سازنده مثل StreamBuilder
+  factory GetAsyncBuilder.stream({
+    Key? key,
+    required Stream<T> Function() stream,
+    required AsyncSuccessBuilder<T> onSuccess,
+    WidgetBuilder? onLoading,
+    AsyncErrorBuilder? onError,
+    WidgetBuilder? onEmpty,
+    bool Function(T data)? isEmpty,
+    bool keepDataOnReload = true,
+  }) {
+    return GetAsyncBuilder._(
+      key: key,
+      stream: stream,
+      onSuccess: onSuccess,
+      onLoading: onLoading,
+      onError: onError,
+      onEmpty: onEmpty,
+      isEmpty: isEmpty,
+      keepDataOnReload: keepDataOnReload,
+    );
+  }
+
+  @override
+  State<GetAsyncBuilder<T>> createState() => GetAsyncBuilderState<T>();
+}
+
+class GetAsyncBuilderState<T> extends State<GetAsyncBuilder<T>> {
+  AsyncState _state = AsyncState.loading;
+  T? _data;
+  Object? _error;
+  StreamSubscription<T>? _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoLoad) {
+      _start();
+    }
+  }
+
+  /// شروع / شروع مجدد بارگذاری
+  void _start() {
+    if (widget.future != null) {
+      _runFuture();
+    } else if (widget.stream != null) {
+      _listenStream();
+    }
+  }
+
+  /// متد عمومی برای reload از بیرون (مثلاً pull-to-refresh)
+  Future<void> reload() async {
+    if (!widget.keepDataOnReload) {
+      _setLoading();
+    }
+    _start();
+  }
+
+  void _setLoading() {
+    if (!mounted) return;
+    setState(() => _state = AsyncState.loading);
+  }
+
+  Future<void> _runFuture() async {
+    if (!widget.keepDataOnReload || _data == null) {
+      _setLoading();
+    }
+    try {
+      final result = await widget.future!();
+      if (!mounted) return;
+      _emitData(result);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = e;
+        _state = AsyncState.error;
+      });
+    }
+  }
+
+  void _listenStream() {
+    _subscription?.cancel();
+    if (!widget.keepDataOnReload || _data == null) {
+      _setLoading();
+    }
+    _subscription = widget.stream!().listen(
+      (event) {
+        if (!mounted) return;
+        _emitData(event);
+      },
+      onError: (Object e) {
+        if (!mounted) return;
+        setState(() {
+          _error = e;
+          _state = AsyncState.error;
+        });
+      },
+    );
+  }
+
+  void _emitData(T result) {
+    final empty = widget.isEmpty?.call(result) ?? false;
+    setState(() {
+      _data = result;
+      _error = null;
+      _state = empty ? AsyncState.empty : AsyncState.success;
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    switch (_state) {
+      case AsyncState.loading:
+        // اگر keepDataOnReload روشن است و داده‌ی قبلی داریم، همان را نشان بده
+        if (widget.keepDataOnReload && _data != null) {
+          return widget.onSuccess(context, _data as T);
+        }
+        return widget.onLoading?.call(context) ??
+            const Center(child: CircularProgressIndicator());
+
+      case AsyncState.error:
+        return widget.onError?.call(context, _error!, reload) ??
+            _DefaultError(error: _error!, onRetry: reload);
+
+      case AsyncState.empty:
+        return widget.onEmpty?.call(context) ??
+            const Center(child: Text('داده‌ای موجود نیست'));
+
+      case AsyncState.success:
+        return widget.onSuccess(context, _data as T);
+    }
+  }
+}
+
+/// ویجت پیش‌فرض حالت خطا
+class _DefaultError extends StatelessWidget {
+  final Object error;
+  final VoidCallback onRetry;
+
+  const _DefaultError({required this.error, required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 48, color: Colors.redAccent),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Text(
+              error.toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.redAccent),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton.icon(
+            onPressed: onRetry,
+            icon: const Icon(Icons.refresh),
+            label: const Text('تلاش مجدد'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## نسخه‌ی متصل به StateMixin (روش native پکیج)
+
+این نسخه از `StateMixin` و `RxStatus` خود پکیج استفاده می‌کند که از همه تمیزتر است، چون منطق async داخل کنترلر می‌ماند و ویجت فقط نمایش می‌دهد:
+
+```dart
+// file: get_state_view.dart
+import 'package:flutter/material.dart';
+import 'package:get_x_master/get_x_master.dart';
+
+/// ویجتی که روی کنترلرِ دارای StateMixin گوش می‌دهد و همه‌ی حالت‌ها را
+/// خودکار رندر می‌کند؛ معادل ترکیب FutureBuilder + Obx در یک ویجت.
+class GetStateView<C extends GetxController, T> extends StatelessWidget {
+  /// کنترلر (اگر null باشد با Get.find پیدا می‌شود)
+  final C? controller;
+
+  /// تگ کنترلر (در صورت استفاده از چند نمونه)
+  final String? tag;
+
+  final Widget Function(BuildContext context, T? data) onSuccess;
+  final WidgetBuilder? onLoading;
+  final Widget Function(BuildContext context, String? message)? onError;
+  final WidgetBuilder? onEmpty;
+
+  const GetStateView({
+    super.key,
+    this.controller,
+    this.tag,
+    required this.onSuccess,
+    this.onLoading,
+    this.onError,
+    this.onEmpty,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = controller ?? Get.find<C>(tag: tag);
+
+    // (c as dynamic) چون StateMixin روی هر کنترلری ترکیب می‌شود
+    return (c as dynamic).obx(
+      (T? data) => onSuccess(context, data),
+      onLoading: onLoading?.call(context) ??
+          const Center(child: CircularProgressIndicator()),
+      onError: (String? error) =>
+          onError?.call(context, error) ??
+          Center(child: Text(error ?? 'خطایی رخ داد')),
+      onEmpty: onEmpty?.call(context) ??
+          const Center(child: Text('داده‌ای موجود نیست')),
+    );
+  }
+}
+```
+
+## نمونه‌ی استفاده
+
+حالت اول، شبیه `FutureBuilder` برای گرفتن داده از دیتابیس/API بدون کنترلر:
+
+```dart
+GetAsyncBuilder<List<User>>.future(
+  future: () => userRepository.getUsers(),
+  isEmpty: (users) => users.isEmpty,
+  onSuccess: (context, users) => ListView.builder(
+    itemCount: users.length,
+    itemBuilder: (_, i) => ListTile(title: Text(users[i].name)),
+  ),
+  // onLoading و onError اختیاری‌اند؛ اگر ندهی پیش‌فرض می‌گیرد
+);
+```
+
+حالت دوم، با `RefreshIndicator` برای pull-to-refresh. کافی است یک `GlobalKey` به ویجت بدهی و `reload()` را صدا بزنی:
+
+```dart
+final _key = GlobalKey<GetAsyncBuilderState<List<User>>>();
+
+RefreshIndicator(
+  onRefresh: () => _key.currentState!.reload(),
+  child: GetAsyncBuilder<List<User>>.future(
+    key: _key,
+    future: () => userRepository.getUsers(),
+    onSuccess: (context, users) => ListView(/* ... */),
+  ),
+);
+```
+
+حالت سوم، روش native با `StateMixin` که تمیزترین معماری است. کنترلر:
+
+```dart
+class UserController extends GetxController with StateMixin<List<User>> {
+  final UserRepository repo;
+  UserController(this.repo);
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchUsers();
+  }
+
+  void fetchUsers() {
+    // futurize خودش loading/success/error را ست می‌کند
+    futurize(() => repo.getUsers(),
+        errorMessage: 'دریافت کاربران ناموفق بود');
+  }
+}
+```
+
+و در UI:
+
+```dart
+GetStateView<UserController, List<User>>(
+  onSuccess: (context, users) => ListView.builder(
+    itemCount: users?.length ?? 0,
+    itemBuilder: (_, i) => ListTile(title: Text(users![i].name)),
+  ),
+  // بقیه‌ی حالت‌ها پیش‌فرض دارند
+);
+```
+
+## کدام را انتخاب کنم؟
+
+اگر می‌خواهی کمترین تغییر در کد فعلی‌ات بدهی و دقیقاً مثل `FutureBuilder`/`StreamBuilder` عمل کند، از `GetAsyncBuilder` استفاده کن. اما برای پروژه‌های جدی‌تر، روش `StateMixin` + `GetStateView` به شدت تمیزتر است، چون منطق دریافت داده داخل کنترلر می‌ماند، تست‌پذیر است، و از زیرساخت خود پکیج (که از قبل بهینه شده) استفاده می‌کند. در واقع پکیج `get_x_master` همین `StateMixin` و متد `.obx()` را دارد، پس `GetStateView` فقط یک لایه‌ی راحتی روی آن است.
+
+یک نکته: چون امضای دقیق متد `obx` و `futurize` ممکن است بین نسخه‌ها کمی فرق کند، اگر هنگام کامپایل به خطای امضا خوردی بگو نسخه‌ی پکیجت چند است تا دقیقاً تطبیق بدهم. می‌خوای نسخه‌ای هم برای حالت pagination (با `ScrollMixin` که پکیج دارد) اضافه کنم؟
