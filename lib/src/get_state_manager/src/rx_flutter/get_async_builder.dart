@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../simple/list_notifier.dart';
 import '../../../../get_x_master.dart';
 
 /// A builder that handles asynchronous operations (Future/Stream) and automatically

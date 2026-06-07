@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../get_x_master.dart';
-import '../../../get_state_manager/src/simple/list_notifier.dart';
 
 class GetDelegate extends RouterDelegate<GetNavConfig>
     with ListenableMixin, ListNotifierMixin {

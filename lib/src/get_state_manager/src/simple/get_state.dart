@@ -3,7 +3,6 @@
 import '../../../get_instance/src/get_instance.dart';
 import '../../get_state_manager.dart';
 import '../rx_flutter/rx_disposable.dart';
-import 'list_notifier.dart';
 
 /// Complies with `GetStateUpdater`
 ///
@@ -237,7 +236,6 @@ import '../../../get_instance/src/get_instance.dart';
 import '../../../get_rx/src/rx_types/rx_types.dart';
 import '../../get_state_manager.dart';
 import '../rx_flutter/rx_disposable.dart';
-import 'list_notifier.dart';
 
 /// Complies with `GetStateUpdater`
 ///
