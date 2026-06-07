@@ -6,7 +6,6 @@ import 'package:flutter/scheduler.dart';
 
 import '../../../../get_x_master.dart';
 
-
 mixin StateMixin<T> on ListNotifierMixin {
   T? _value;
   RxStatus? _status;
