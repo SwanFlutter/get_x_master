@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 0.0.35
+
+* Fix pub point
+
+
 ## 0.0.34
 
 ### ✨ New Features

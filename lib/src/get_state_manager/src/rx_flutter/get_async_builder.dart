@@ -22,7 +22,8 @@ class GetAsyncBuilder<T> extends StatefulWidget {
   final WidgetBuilder? onLoading;
 
   /// Builder for the error state. Defaults to a professional error view with retry button.
-  final Widget Function(BuildContext context, Object error, VoidCallback? onRetry)? onError;
+  final Widget Function(
+      BuildContext context, Object error, VoidCallback? onRetry)? onError;
 
   /// Builder for the empty state.
   final WidgetBuilder? onEmpty;
@@ -55,7 +56,8 @@ class GetAsyncBuilder<T> extends StatefulWidget {
     required Future<T> Function() future,
     required Widget Function(BuildContext context, T data) onSuccess,
     WidgetBuilder? onLoading,
-    Widget Function(BuildContext context, Object error, VoidCallback? onRetry)? onError,
+    Widget Function(BuildContext context, Object error, VoidCallback? onRetry)?
+        onError,
     WidgetBuilder? onEmpty,
     bool Function(T data)? isEmpty,
     bool keepDataOnReload = true,
@@ -80,7 +82,8 @@ class GetAsyncBuilder<T> extends StatefulWidget {
     required Stream<T> Function() stream,
     required Widget Function(BuildContext context, T data) onSuccess,
     WidgetBuilder? onLoading,
-    Widget Function(BuildContext context, Object error, VoidCallback? onRetry)? onError,
+    Widget Function(BuildContext context, Object error, VoidCallback? onRetry)?
+        onError,
     WidgetBuilder? onEmpty,
     bool Function(T data)? isEmpty,
     bool keepDataOnReload = true,
@@ -247,7 +250,8 @@ class _DefaultErrorView extends StatelessWidget {
               icon: const Icon(Icons.refresh),
               label: const Text('Try Again'),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
             ),
           ],

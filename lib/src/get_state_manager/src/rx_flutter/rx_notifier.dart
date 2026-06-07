@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../../../../get_x_master.dart';
-import '../simple/list_notifier.dart';
+
 
 mixin StateMixin<T> on ListNotifierMixin {
   T? _value;
