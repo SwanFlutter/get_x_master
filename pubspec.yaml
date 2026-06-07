@@ -6,16 +6,11 @@ repository: "https://github.com/SwanFlutter/get_x_master"
 issue_tracker: "https://github.com/SwanFlutter/get_x_master/issues"
 documentation: "https://github.com/SwanFlutter/get_x_master#readme"
 topics:
-  - state-management
-  - navigation
-  - dependency-injection
   - getx
   - get
-  - flutter
   - get_x_master
   - get_x
   - getxmaster
-  - framework
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
