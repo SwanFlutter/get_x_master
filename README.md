@@ -235,6 +235,9 @@ GetX Master offers multiple state management solutions:
 - **`ReactiveGetView`:** A smart widget that automatically rebuilds when its controller's observable variables change. No more `Obx()` or `GetX()` boilerplate.
 - **`GetBuilder`:** A lightweight widget for manual state updates via `update()`, ideal for simple use cases.
 - **`StateMixin`:** Handle UI states (loading, success, error, empty) with ease.
+- **`GetAsyncBuilder.future`:** Declarative Future widget — automatically shows loading, success, error, and empty states with zero boilerplate.
+- **`GetAsyncBuilder.stream`:** Declarative Stream widget — listens to a stream and rebuilds on every event with built-in state management.
+- **`GetStateView`:** Renders a controller's `StateMixin` state (loading/success/error/empty) declaratively without calling `controller.obx()` manually.
 
 📖 [View Full State Management Documentation →](lib/src/get_state_manager/README.md)
 
@@ -1083,6 +1086,8 @@ Comprehensive state management with multiple approaches:
 - ✅ **GetBuilderObs** - Combined GetBuilder + Obx power
 - ✅ **MultiObx** - Watch multiple observables
 - ✅ **StateMixin** - Handle loading, success, error states
+- ✅ **GetAsyncBuilder** - Declarative Future/Stream widgets with auto state handling
+- ✅ **GetStateView** - Declarative controller state rendering (loading/success/error/empty)
 - ✅ **ScrollMixin** - Automatic scroll-based data fetching
 - ✅ **GetResponsiveView** - Responsive layouts per device type
 - ✅ **Animation Mixins** - Ticker providers for animations
@@ -1129,7 +1134,36 @@ ObxValue.named(
   ),
   initialValue: true.obs,
 )
+
+// GetAsyncBuilder.future — fetch data without a controller
+GetAsyncBuilder<List<Post>>.future(
+  future: () => PostService().fetchPosts(),
+  isEmpty: (posts) => posts.isEmpty,
+  onEmpty: (context) => const Center(child: Text('No posts found.')),
+  onSuccess: (context, posts) => ListView.builder(
+    itemCount: posts.length,
+    itemBuilder: (context, i) => ListTile(title: Text(posts[i].title)),
   ),
+)
+
+// GetAsyncBuilder.stream — listen to a stream with auto state management
+GetAsyncBuilder<int>.stream(
+  stream: () => timerStream(),
+  onSuccess: (context, count) => Text(
+    '$count',
+    style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+  ),
+)
+
+// GetStateView — render controller state declaratively
+GetStateView<PostController, List<Post>>(
+  onLoading: (context) => const Center(child: CircularProgressIndicator()),
+  onSuccess: (context, posts) => ListView.builder(
+    itemCount: posts?.length ?? 0,
+    itemBuilder: (context, i) => ListTile(title: Text(posts![i].title)),
+  ),
+  onError: (context, error) => Center(child: Text('Error: $error')),
+  onEmpty: (context) => const Center(child: Text('No data.')),
 )
 ```
 

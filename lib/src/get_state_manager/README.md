@@ -1971,3 +1971,326 @@ class PostController extends GetxController with StateMixin<List<Post>> {
 
 ---
 
+
+
+---
+
+## GetAsyncBuilder — Declarative Async State Widget
+
+`GetAsyncBuilder<T>` handles **Future** and **Stream** operations declaratively, automatically managing loading, success, error, and empty states — without needing a full controller.
+
+It is a cleaner alternative to Flutter's native `FutureBuilder` and `StreamBuilder`, with built-in state management integration.
+
+### Key Features
+
+- ✅ **Two named constructors** — `GetAsyncBuilder.future` and `GetAsyncBuilder.stream`
+- ✅ **Automatic state handling** — loading → success / error / empty
+- ✅ **Built-in retry** — default error view includes a "Try Again" button
+- ✅ **`keepDataOnReload`** — keeps showing old data while reloading (no flicker)
+- ✅ **`autoLoad`** — optionally delay execution until manually triggered
+- ✅ **Custom empty/error/loading** — every state is fully overridable
+- ✅ **`isEmpty` predicate** — define when a successful result counts as empty
+- ✅ **`reload()`** — method exposed via `GlobalKey<GetAsyncBuilderState>` for manual reload
+
+---
+
+### GetAsyncBuilder.future
+
+Use this constructor for **one-off async operations** such as HTTP requests, database reads, or any `Future<T>`.
+
+#### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `future` | `Future<T> Function()` | ✅ | — | The async function to execute |
+| `onSuccess` | `Widget Function(BuildContext, T)` | ✅ | — | Widget to show on success |
+| `onLoading` | `WidgetBuilder?` | ❌ | `CircularProgressIndicator` | Widget to show while loading |
+| `onError` | `Widget Function(BuildContext, Object, VoidCallback?)?` | ❌ | Built-in error view | Widget to show on error |
+| `onEmpty` | `WidgetBuilder?` | ❌ | `Text('No data available')` | Widget to show when empty |
+| `isEmpty` | `bool Function(T)?` | ❌ | `null` | Custom predicate to detect empty result |
+| `keepDataOnReload` | `bool` | ❌ | `true` | Keep showing last data during reload |
+| `autoLoad` | `bool` | ❌ | `true` | Auto-start on widget init |
+
+#### Basic Example
+
+```dart
+GetAsyncBuilder<List<Post>>.future(
+  future: () => PostService().fetchPosts(),
+  onSuccess: (context, posts) => ListView.builder(
+    itemCount: posts.length,
+    itemBuilder: (context, index) => ListTile(
+      title: Text(posts[index].title),
+    ),
+  ),
+)
+```
+
+#### With Custom States
+
+```dart
+GetAsyncBuilder<List<Post>>.future(
+  future: () => PostService().fetchPosts(),
+  onLoading: (context) => const Center(
+    child: CircularProgressIndicator(color: Colors.indigo),
+  ),
+  onError: (context, error, retry) => Center(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('Error: $error'),
+        ElevatedButton(onPressed: retry, child: const Text('Retry')),
+      ],
+    ),
+  ),
+  onEmpty: (context) => const Center(
+    child: Text('No posts found.'),
+  ),
+  isEmpty: (posts) => posts.isEmpty,
+  onSuccess: (context, posts) => ListView.builder(
+    itemCount: posts.length,
+    itemBuilder: (context, index) => ListTile(
+      title: Text(posts[index].title),
+      subtitle: Text(posts[index].body),
+    ),
+  ),
+)
+```
+
+#### keepDataOnReload
+
+When `keepDataOnReload: true` (default), the widget keeps displaying the last successful data during a reload instead of switching back to the loading indicator — useful for pull-to-refresh patterns.
+
+```dart
+final _key = GlobalKey<GetAsyncBuilderState<List<Post>>>();
+
+RefreshIndicator(
+  onRefresh: () => _key.currentState!.reload(),
+  child: GetAsyncBuilder<List<Post>>.future(
+    key: _key,
+    future: () => PostService().fetchPosts(),
+    keepDataOnReload: true,   // no loading flash on refresh
+    onSuccess: (context, posts) => ListView.builder(
+      itemCount: posts.length,
+      itemBuilder: (_, i) => ListTile(title: Text(posts[i].title)),
+    ),
+  ),
+)
+```
+
+---
+
+### GetAsyncBuilder.stream
+
+Use this constructor to **listen to a Stream<T>** and automatically rebuild as new events arrive.
+
+#### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `stream` | `Stream<T> Function()` | ✅ | — | The stream factory to listen to |
+| `onSuccess` | `Widget Function(BuildContext, T)` | ✅ | — | Widget to show for each emitted event |
+| `onLoading` | `WidgetBuilder?` | ❌ | `CircularProgressIndicator` | Widget to show before first event |
+| `onError` | `Widget Function(BuildContext, Object, VoidCallback?)?` | ❌ | Built-in error view | Widget to show on stream error |
+| `onEmpty` | `WidgetBuilder?` | ❌ | `Text('No data available')` | Widget to show when isEmpty returns true |
+| `isEmpty` | `bool Function(T)?` | ❌ | `null` | Custom predicate to detect empty event |
+| `keepDataOnReload` | `bool` | ❌ | `true` | Keep showing last event while reconnecting |
+| `autoLoad` | `bool` | ❌ | `true` | Auto-subscribe on widget init |
+
+#### Basic Example
+
+```dart
+GetAsyncBuilder<int>.stream(
+  stream: () => timerStream(),   // emits 1, 2, 3 … every second
+  onSuccess: (context, count) => Center(
+    child: Text(
+      '$count',
+      style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+    ),
+  ),
+)
+```
+
+#### Real-time List (e.g. Firestore / WebSocket)
+
+```dart
+GetAsyncBuilder<List<Message>>.stream(
+  stream: () => chatService.messagesStream(roomId),
+  isEmpty: (messages) => messages.isEmpty,
+  onEmpty: (context) => const Center(child: Text('No messages yet.')),
+  onError: (context, error, retry) => Center(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.wifi_off, size: 48, color: Colors.grey),
+        const SizedBox(height: 8),
+        Text('Connection error: $error'),
+        TextButton(onPressed: retry, child: const Text('Reconnect')),
+      ],
+    ),
+  ),
+  onSuccess: (context, messages) => ListView.builder(
+    reverse: true,
+    itemCount: messages.length,
+    itemBuilder: (context, index) => MessageBubble(message: messages[index]),
+  ),
+)
+```
+
+#### Manual Subscription Control (autoLoad: false)
+
+```dart
+final _key = GlobalKey<GetAsyncBuilderState<int>>();
+
+Column(
+  children: [
+    ElevatedButton(
+      onPressed: () => _key.currentState?.reload(),
+      child: const Text('Start Stream'),
+    ),
+    GetAsyncBuilder<int>.stream(
+      key: _key,
+      autoLoad: false,                     // don't start automatically
+      stream: () => countdownStream(from: 10),
+      onSuccess: (context, value) => Text('$value'),
+    ),
+  ],
+)
+```
+
+---
+
+### State Flow Diagram
+
+```
+Widget initializes
+        │
+   autoLoad?──No──► waits for reload() call
+        │
+       Yes
+        │
+        ▼
+  [loading state] ──► onLoading widget (or default spinner)
+        │
+        ├─ Future resolves / Stream emits
+        │         │
+        │    isEmpty(data)?──Yes──► [empty state] ──► onEmpty widget
+        │         │
+        │        No
+        │         ▼
+        │   [success state] ──► onSuccess(context, data)
+        │
+        └─ error thrown / stream error
+                  │
+                  ▼
+           [error state] ──► onError(context, error, retryCallback)
+                              (default: built-in error card with retry button)
+```
+
+---
+
+### Comparison with Flutter's Built-in Widgets
+
+| Feature | `FutureBuilder` | `StreamBuilder` | `GetAsyncBuilder` |
+|---------|----------------|-----------------|-------------------|
+| Future support | ✅ | ❌ | ✅ |
+| Stream support | ❌ | ✅ | ✅ |
+| Loading state | manual | manual | ✅ automatic |
+| Error state | manual | manual | ✅ automatic |
+| Empty state | manual | manual | ✅ automatic |
+| Built-in retry | ❌ | ❌ | ✅ |
+| keepDataOnReload | ❌ | ❌ | ✅ |
+| autoLoad control | ❌ | ❌ | ✅ |
+| Custom states | verbose | verbose | clean callbacks |
+
+---
+
+### Full Working Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:get_x_master/get_x_master.dart';
+
+// Model
+class Post {
+  final int id;
+  final String title;
+  Post({required this.id, required this.title});
+  factory Post.fromJson(Map<String, dynamic> j) =>
+      Post(id: j['id'], title: j['title']);
+}
+
+// Service
+class PostService extends GetConnect {
+  Future<List<Post>> fetchPosts() async {
+    final res = await get('https://jsonplaceholder.typicode.com/posts');
+    if (res.status.hasError) throw Exception(res.statusText);
+    return (res.body as List).map((j) => Post.fromJson(j)).toList();
+  }
+
+  Stream<int> countStream() async* {
+    for (int i = 1; i <= 5; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      yield i;
+    }
+  }
+}
+
+// Screen
+class AsyncBuilderDemo extends StatelessWidget {
+  const AsyncBuilderDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('GetAsyncBuilder Demo')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Future ───────────────────────────────────────
+            const Text('Posts via Future',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 300,
+              child: GetAsyncBuilder<List<Post>>.future(
+                future: () => PostService().fetchPosts(),
+                isEmpty: (posts) => posts.isEmpty,
+                onEmpty: (context) =>
+                    const Center(child: Text('No posts found.')),
+                onSuccess: (context, posts) => ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) => ListTile(
+                    leading: CircleAvatar(child: Text('${posts[index].id}')),
+                    title: Text(posts[index].title,
+                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // ── Stream ───────────────────────────────────────
+            const Text('Counter via Stream',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const SizedBox(height: 8),
+            GetAsyncBuilder<int>.stream(
+              stream: () => PostService().countStream(),
+              onSuccess: (context, count) => Center(
+                child: Text(
+                  '$count',
+                  style: const TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
