@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import '../../../../get_x_master.dart';
 
 /// A builder that handles asynchronous operations (Future/Stream) and automatically
@@ -18,7 +20,26 @@ class GetAsyncBuilder<T> extends StatefulWidget {
   /// Builder for the success state.
   final Widget Function(BuildContext context, T data) onSuccess;
 
-  /// Builder for the loading state. Defaults to a centered [CircularProgressIndicator].
+  /// Builder for the loading state.
+  ///
+  /// If `null`, defaults to `Center(child: CircularProgressIndicator())`.
+  ///
+  /// Pass any widget here to fully replace the default spinner:
+  ///
+  /// ```dart
+  /// // Custom spinner
+  /// onLoading: (context) => const Center(
+  ///   child: CircularProgressIndicator(color: Colors.indigo),
+  /// ),
+  ///
+  /// // Custom branded loader
+  /// onLoading: (context) => const Center(
+  ///   child: MyBrandedLoader(),
+  /// ),
+  ///
+  /// // Shimmer skeleton
+  /// onLoading: (context) => const PostListSkeleton(),
+  /// ```
   final WidgetBuilder? onLoading;
 
   /// Builder for the error state. Defaults to a professional error view with retry button.
