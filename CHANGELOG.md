@@ -1,6 +1,17 @@
 # Changelog
 
 
+## 0.0.36
+
+### 🐛 Bug Fixes
+
+* **Fixed lint warning in `GetConnect` HTTP client**:
+  - Added `await` to the recursive `_performRequest<T>()` call inside the `try` block in `lib/src/get_connect/http/src/http.dart` (line 256).
+  - Resolves: `WARNING: Returning a 'Future' without 'await' inside a try block.`
+  - Without `await`, any exception thrown inside the recursive call would escape the surrounding `try/catch`, potentially causing unhandled errors. Adding `await` ensures exceptions are properly caught by the `on Exception catch` handler.
+
+---
+
 ## 0.0.35
 
 * Fix pub point
