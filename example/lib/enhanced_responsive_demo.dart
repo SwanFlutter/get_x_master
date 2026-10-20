@@ -1,6 +1,6 @@
 // ignore_for_file: unused_element
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class EnhancedResponsiveDemo extends StatelessWidget {

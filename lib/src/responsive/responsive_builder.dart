@@ -1,6 +1,6 @@
 // ignore_for_file: unreachable_switch_default
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../get_core/get_core.dart';
 import '../get_navigation/get_navigation.dart';

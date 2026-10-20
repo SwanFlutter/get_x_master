@@ -1137,7 +1137,7 @@ Widget myWidget2 = Text("Hello").centered(horizontal: true, vertical: false);
 Here’s an example of how to use the extension in a Flutter app:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(MyApp());

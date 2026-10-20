@@ -3,7 +3,7 @@
 import 'package:example/controller/login_controller.dart';
 import 'package:example/new.dart';
 import 'package:example/screen/signup.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class CupertinoLoginPage extends StatefulWidget {

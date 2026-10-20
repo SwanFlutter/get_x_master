@@ -1,6 +1,6 @@
 import 'package:example/controller/signup_controller.dart';
 import 'package:example/screen/login.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class SignUp extends StatelessWidget {

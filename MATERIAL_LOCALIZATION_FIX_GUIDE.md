@@ -131,7 +131,7 @@ CupertinoPageScaffold(
 ## مثال کامل - صفحه ورود با Material Design
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyApp extends StatelessWidget {
@@ -199,7 +199,7 @@ class LoginPage extends StatelessWidget {
 ## مثال کامل - صفحه ورود با Cupertino Design
 
 ```dart
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyApp extends StatelessWidget {

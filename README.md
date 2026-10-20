@@ -114,7 +114,7 @@ Add GetX Master to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_x_master: ^0.0.36
+  get_x_master: ^1.0.0-beta.1
 ```
 
 Then run:
@@ -123,12 +123,31 @@ Then run:
 flutter pub get
 ```
 
+### Which version should I use?
+
+Flutter 3.47 moved Material and Cupertino into the standalone `material_ui` and `cupertino_ui` packages. Their types are not interchangeable with the ones in `package:flutter/material.dart`, so GetX Master has two lines:
+
+| Your project | `pubspec.yaml` |
+|---|---|
+| Flutter 3.47+ using `material_ui` / `cupertino_ui` | `get_x_master: ^1.0.0-beta.1` (prerelease) |
+| Older Flutter, or not migrated yet | `get_x_master: '>=0.0.36 <1.0.0'` |
+
+To migrate your app to the standalone packages:
+
+```bash
+flutter pub add material_ui cupertino_ui
+dart fix --apply --code=migrate_design_widgets
+dart fix --apply
+```
+
+If you set localization delegates manually, use `GlobalMaterialLocalizations.delegates` from `material_ui`.
+
 ## 🎯 Quick Start
 
 ### 1. Setup GetMaterialApp
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() {
@@ -189,7 +208,7 @@ class HomePage extends ReactiveGetView<CounterController> {
 ### 🚀 Quick Start with Cupertino
 
 ```dart
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() => runApp(MyApp());
@@ -883,7 +902,7 @@ showCupertinoModalPopup(
 ### 🚀 Quick Start with Cupertino
 
 ```dart
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() => runApp(MyApp());

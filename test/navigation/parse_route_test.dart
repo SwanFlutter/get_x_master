@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_x_master/get_x_master.dart';
 import 'package:get_x_master/src/get_navigation/src/root/parse_route.dart';

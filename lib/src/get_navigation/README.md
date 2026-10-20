@@ -171,7 +171,7 @@ Get.bottomSheetExpandable(
 Here is a complete example demonstrating how to use the `bottomSheetExpandable` function:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() {

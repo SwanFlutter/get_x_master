@@ -20,7 +20,7 @@ This happens because Material widgets (like `TextField`, `Scaffold`, `MaterialBu
 If your app primarily uses Material Design widgets, switch to `GetMaterialApp`:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyApp extends StatelessWidget {
@@ -104,8 +104,8 @@ CupertinoPageScaffold(
 Use `GetCupertinoApp` with a builder that provides Material support:
 
 ```dart
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyApp extends StatelessWidget {

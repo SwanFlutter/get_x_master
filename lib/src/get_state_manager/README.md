@@ -29,7 +29,7 @@ The `GetX` widget is a powerful component from the GetX package in Flutter, desi
 Here’s a simple example demonstrating how to use the `GetX` widget:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 // Define a simple controller
@@ -130,7 +130,7 @@ The provided Dart code introduces the `Obx` and `ObxValue` widgets, which are es
 Here’s a practical example demonstrating how to use both `Obx` and `ObxValue` in a Flutter application:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get/get.dart';
 
 // Reactive variable
@@ -663,7 +663,7 @@ The provided Dart code outlines various classes and mixins that are part of the 
 Here's a simple example demonstrating how to create a controller using `GetxController` and implement scrolling functionality using `ScrollMixin`.
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyController extends GetxController with ScrollMixin {
@@ -722,7 +722,7 @@ The code provides a robust framework for managing state and lifecycle events in 
 
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 import 'path_to_your_responsive_file.dart'; // Import the responsive file
 import 'path_to_your_context_extension_file.dart'; // Import the ContextExt extension
@@ -1030,7 +1030,7 @@ class ExampleController extends GetxController {
 - In widgets, you can use the BuildContext that is automatically available in the build method. Example:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 import 'path_to_your_extension_file.dart';
 
@@ -1251,7 +1251,7 @@ The provided Dart code introduces two important classes, `GetView` and `GetWidge
 Here's an example demonstrating how to use `GetView` and `GetWidget`:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get/get.dart';
 
 class MyController extends GetxController {
@@ -1380,7 +1380,7 @@ class CounterView extends ReactiveGetView<CounterController> {
 ### Complete Example
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 // Controller with observable variables
@@ -1461,7 +1461,7 @@ ReactiveGetView makes GetX state management even more intuitive and powerful by 
 ### Example: CounterWidget
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Define the WidgetCache for the CounterWidget
 class CounterCache extends WidgetCache<CounterWidget> {
@@ -1610,7 +1610,7 @@ The provided Dart code defines a robust structure for managing state and notifyi
 Here’s an example demonstrating how to use `GetNotifier` and `StateMixin`:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get/get.dart';
 
 class CounterController extends GetNotifier<int> {
@@ -1707,7 +1707,7 @@ The provided Dart code defines a `MixinBuilder` widget, which combines the funct
 Here’s an example demonstrating how to use the `MixinBuilder`:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class MyController extends GetxController {
@@ -1805,7 +1805,7 @@ The provided Dart code introduces a `ValueBuilder` widget, which manages local s
 Here’s an example demonstrating how to use the `ValueBuilder` widget:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -2207,7 +2207,7 @@ Widget initializes
 ### Full Working Example
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 // Model

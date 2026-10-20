@@ -128,7 +128,7 @@ CupertinoButton(
 
 ### main.dart
 ```dart
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 void main() {

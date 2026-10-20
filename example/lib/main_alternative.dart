@@ -1,5 +1,5 @@
 import 'package:example/bindings/bindings.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 import 'controller/theme_controller.dart';

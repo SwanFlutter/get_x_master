@@ -1,6 +1,29 @@
 # Changelog
 
 
+## 1.0.0-beta.1
+
+### ⚠️ BREAKING: standalone `material_ui` and `cupertino_ui`
+
+Flutter 3.47 ships Material and Cupertino as standalone packages (`material_ui` and `cupertino_ui`, both 1.0+). The in-SDK libraries are scheduled for deprecation. Types from `package:flutter/material.dart` and `package:material_ui` are **different types** and cannot be passed to each other, and `MaterialUiCompatibilityBridge` cannot fix mismatches in a package's public API. Because `get_x_master` exposes Material/Cupertino types (`GetMaterialApp.theme`, `GetCupertinoApp.theme`, `Get.changeTheme`, `Get.theme`, `context.theme`, bottom sheet `theme`, `scaffoldKey` / `messengerKey`, ...), this package now imports them from the standalone packages. No public API names were changed.
+
+**What changed**
+- All `package:flutter/material.dart` imports are now `package:material_ui/material_ui.dart`.
+- All `package:flutter/cupertino.dart` imports are now `package:cupertino_ui/cupertino_ui.dart`.
+- New dependencies: `material_ui: ^1.0.0`, `cupertino_ui: ^1.0.0`.
+- Minimum Dart SDK raised to `>=3.12.0` (required by `material_ui` 1.0.0).
+- Example app, tests and documentation updated to the new imports.
+
+**How to migrate your app**
+1. `flutter pub add material_ui cupertino_ui`
+2. `dart fix --apply --code=migrate_design_widgets` then `dart fix --apply`
+3. If you set localization delegates by hand, use `GlobalMaterialLocalizations.delegates` from `material_ui` instead of the `flutter_localizations` delegates.
+4. Stay on the previous line if you cannot migrate yet: `get_x_master: '>=0.0.36 <1.0.0'`.
+
+This is a prerelease. Opt in with `get_x_master: ^1.0.0-beta.1`.
+
+---
+
 ## 0.0.36
 
 ### 🐛 Bug Fixes

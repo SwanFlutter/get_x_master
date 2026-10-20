@@ -2,7 +2,7 @@ import 'package:example/reactive_get_view_demo.dart';
 import 'package:example/test_conditional_navigation.dart';
 import 'package:example/test_error_handling.dart';
 import 'package:example/test_expandable_bottomsheet.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 import 'package:toastification/toastification.dart';
 

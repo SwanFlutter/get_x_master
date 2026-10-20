@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+/*import 'package:material_ui/material_ui.dart';
 
 import '../../../get_instance/src/get_instance.dart';
 import '../../get_state_manager.dart';
@@ -230,7 +230,7 @@ class GetBuilderState<T extends GetXController> extends State<GetBuilder<T>>
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../get_instance/src/get_instance.dart';
 import '../../../get_rx/src/rx_types/rx_types.dart';

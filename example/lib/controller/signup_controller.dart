@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:example/model/user_model.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 import 'package:get_x_storage/get_x_storage.dart';
 

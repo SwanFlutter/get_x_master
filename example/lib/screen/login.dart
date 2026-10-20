@@ -3,7 +3,7 @@
 import 'package:example/controller/login_controller.dart';
 import 'package:example/new.dart';
 import 'package:example/screen/signup.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:get_x_master/get_x_master.dart';
 
 class LoginPage extends StatefulWidget {

@@ -1,6 +1,6 @@
 name: get_x_master
 description: "Independent Flutter state management, routing, and DI solution inspired by GetX with high performance."
-version: 0.0.36
+version: 1.0.0-beta.1
 homepage: "https://github.com/SwanFlutter/get_x_master"
 repository: "https://github.com/SwanFlutter/get_x_master"
 issue_tracker: "https://github.com/SwanFlutter/get_x_master/issues"
@@ -13,7 +13,7 @@ topics:
   - get-x-master
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.12.0 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
+  material_ui: ^1.0.0
+  cupertino_ui: ^1.0.0
   web: ^1.1.1
   intl: ^0.20.3
   shamsi_date: ^1.1.1
