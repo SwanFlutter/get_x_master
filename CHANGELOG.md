@@ -11,7 +11,7 @@ Flutter 3.47 ships Material and Cupertino as standalone packages (`material_ui` 
 - All `package:flutter/material.dart` imports are now `package:material_ui/material_ui.dart`.
 - All `package:flutter/cupertino.dart` imports are now `package:cupertino_ui/cupertino_ui.dart`.
 - New dependencies: `material_ui: ^1.0.0`, `cupertino_ui: ^1.0.0`.
-- Minimum Dart SDK raised to `>=3.12.0` (required by `material_ui` 1.0.0).
+- Minimum SDKs raised to Dart `>=3.12.0` and Flutter `>=3.47.0` (required by `material_ui` / `cupertino_ui`). Projects on an older Flutter automatically resolve to the legacy `0.0.x` line.
 - Example app, tests and documentation updated to the new imports.
 
 **How to migrate your app**

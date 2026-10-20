@@ -142,6 +142,8 @@ dart fix --apply
 
 If you set localization delegates manually, use `GlobalMaterialLocalizations.delegates` from `material_ui`.
 
+> **Note:** `get_x_master` 1.x requires Flutter 3.47 or newer (the minimum of `material_ui` / `cupertino_ui`). On an older Flutter, `pub` automatically picks the legacy `0.0.x` line. If one of your other dependencies still imports `package:flutter/material.dart`, wrap your app with `MaterialUiCompatibilityBridge` (see the [Flutter migration guide](https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui)).
+
 ## 🎯 Quick Start
 
 ### 1. Setup GetMaterialApp
